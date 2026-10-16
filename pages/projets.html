@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marie Tiers · portfolio développement et test logiciel</title>
-  <meta name="description" content="Portfolio de Marie Tiers, étudiante en BUT informatique à l'IUT de Lens, spécialisée en test logiciel. Recherche un stage dès avril 2027, puis une alternance.">
+  <title>Projets · Marie Tiers</title>
+  <meta name="description" content="Projets de Marie Tiers, étudiante en BUT informatique : sites web à visiter et applications à télécharger.">
   <meta name="theme-color" content="#ddedf8">
 
   <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
@@ -26,75 +26,29 @@
 
   <!-- ===== En-tête (défile avec la page) ===== -->
   <header class="entete">
-
-    <!-- Ligne de navigation : nom à gauche, menu à droite -->
     <div class="conteneur entete-nav">
-      <a class="logo" href="#haut" data-defilement="haut">
+      <a class="logo" href="../index.html">
         <span class="logo-pastille" aria-hidden="true">mt</span>Marie Tiers
       </a>
       <nav class="navigation" aria-label="Navigation principale">
         <ul class="navigation-liste">
-          <li><a href="#projets">Projets</a></li>
-          <li><a href="#parcours">Parcours</a></li>
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="projets.html" aria-current="page">Projets</a></li>
+          <li><a href="../index.html#parcours">Parcours</a></li>
           <li><a href="#contact">Contact</a></li>
-          <!-- Dépose ton CV à la racine du dépôt sous ce nom -->
-          <li><a href="cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="../cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
         </ul>
       </nav>
-    </div>
-
-    <!-- La « une » : portrait d'un côté, présentation de l'autre -->
-    <div class="une">
-      <div class="conteneur">
-        <div class="une-grille">
-
-          <figure class="une-portrait">
-            <!-- Photo provisoire tirée du CV : la remplacer par une version d'au moins 800 px de large -->
-            <img src="medias/photo-marie.jpg" alt="Portrait de Marie Tiers, souriante" width="226" height="293">
-          </figure>
-
-          <div class="une-entete">
-            <p class="une-surtitre">bonjour, je suis Marie</p>
-            <h1 class="une-titre" id="titre-principal" tabindex="-1">
-              Je conçois, développe <span class="une-titre-accent">et teste</span> des applications
-            </h1>
-          </div>
-
-          <div class="une-corps">
-            <p>
-              Étudiante en <strong class="kw">BUT informatique</strong> à l'IUT de Lens, spécialisée en
-              <strong class="kw">test logiciel</strong>, j'allie la double culture
-              <strong>développement</strong> et <strong><abbr title="assurance qualité">QA</abbr></strong>.
-            </p>
-            <p class="une-objectif">
-              Je recherche un <strong class="kw">stage rémunéré</strong> dès le 26 avril 2027,
-              puis une <strong class="kw">alternance</strong> en <i lang="en">full-stack</i> ou en test automatisé.
-            </p>
-            <p class="une-actions">
-              <a class="bouton" href="#contact">Me contacter</a>
-              <a class="bouton bouton-second" href="#projets">Voir mes projets</a>
-            </p>
-          </div>
-
-        </div>
-
-        <!-- Brèves : trois faits saillants, comme les colonnes sous la une -->
-        <ul class="breves">
-          <li class="breve"><strong class="kw">certifiée <abbr title="International Software Testing Qualifications Board">ISTQB</abbr></strong> Foundation (CTFL v4.0)</li>
-          <li class="breve"><strong class="kw">stage de 8 à 10 semaines</strong> dès le 26/04/2027</li>
-          <li class="breve"><strong class="kw">mobile</strong> sur Lille, Lens, Douai et Arras</li>
-        </ul>
-      </div>
     </div>
   </header>
 
   <main id="contenu">
 
     <!-- ===== Projets : cartes ===== -->
-    <section class="section" id="projets" aria-labelledby="projets-titre">
+    <section class="section" id="projets" aria-labelledby="titre-principal">
       <div class="conteneur">
         <div class="section-entete">
-          <h2 class="section-titre" id="projets-titre">Mes projets</h2>
+          <h1 class="section-titre" id="titre-principal" tabindex="-1">Mes projets</h1>
           <p class="section-intro">
             Les <strong class="kw">sites web</strong> s'ouvrent directement dans le navigateur ;
             les <strong class="kw">applications</strong> se récupèrent en archive <strong>.zip</strong>
@@ -103,7 +57,7 @@
         </div>
 
         <!--
-          Pour ajouter un projet : copier un <li class="carte-emplacement"> et remplacer
+          Pour ajouter un projet : copier un <li class="emplacement carte-emplacement"> et remplacer
           « nom-du-depot » par le vrai nom du dépôt GitHub.
             · site web     → https://marietiers59.github.io/nom-du-depot/
             · application  → https://github.com/marietiers59/nom-du-depot/archive/refs/heads/main.zip
@@ -112,7 +66,7 @@
         -->
         <ul class="cartes">
 
-          <li class="carte-emplacement">
+          <li class="emplacement carte-emplacement">
             <article class="carte carte-web">
               <div class="carte-face">
                 <img class="carte-image" src="https://picsum.photos/seed/jumelage/600/600" alt="" width="600" height="600" loading="lazy">
@@ -132,7 +86,7 @@
             </article>
           </li>
 
-          <li class="carte-emplacement">
+          <li class="emplacement carte-emplacement">
             <article class="carte carte-web">
               <div class="carte-face">
                 <img class="carte-image" src="https://picsum.photos/seed/fullstack/600/600" alt="" width="600" height="600" loading="lazy">
@@ -152,7 +106,7 @@
             </article>
           </li>
 
-          <li class="carte-emplacement">
+          <li class="emplacement carte-emplacement">
             <article class="carte carte-web">
               <div class="carte-face">
                 <img class="carte-image" src="https://picsum.photos/seed/otakulist/600/600" alt="" width="600" height="600" loading="lazy">
@@ -172,7 +126,7 @@
             </article>
           </li>
 
-          <li class="carte-emplacement">
+          <li class="emplacement carte-emplacement">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <img class="carte-image" src="https://picsum.photos/seed/spaceinvaders/600/600" alt="" width="600" height="600" loading="lazy">
@@ -192,7 +146,7 @@
             </article>
           </li>
 
-          <li class="carte-emplacement">
+          <li class="emplacement carte-emplacement">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <img class="carte-image" src="https://picsum.photos/seed/pacman/600/600" alt="" width="600" height="600" loading="lazy">
@@ -212,7 +166,7 @@
             </article>
           </li>
 
-          <li class="carte-emplacement">
+          <li class="emplacement carte-emplacement">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
@@ -233,73 +187,6 @@
           </li>
 
         </ul>
-      </div>
-    </section>
-
-    <!-- ===== Parcours : frise chronologique en quinconce ===== -->
-    <section class="section section-parcours" id="parcours" aria-labelledby="parcours-titre">
-      <div class="conteneur">
-        <div class="section-entete">
-          <h2 class="section-titre" id="parcours-titre">Mon parcours</h2>
-          <p class="frise-legende">
-            <span class="legende legende-projet">projets<span class="legende-cote"> (à gauche)</span></span>
-            <span class="legende legende-formation">formations<span class="legende-cote"> (à droite)</span></span>
-          </p>
-        </div>
-
-        <!--
-          Du plus récent au plus ancien. Un jalon = une année de début, toujours au même format.
-          Classe frise-projet = à gauche, frise-formation = à droite.
-        -->
-        <ol class="frise">
-          <li class="frise-etape frise-projet">
-            <p class="frise-jalon"><time datetime="2026">2026</time></p>
-            <div class="frise-boite">
-              <h3><span class="sr">Projet : </span>Projets d'équipe</h3>
-              <p>Un site web complet (<i lang="en">front-end</i> et <i lang="en">back-end</i>), <i lang="en">Otaku List</i> et un jeu <i lang="en">Space Invaders</i>, menés en <strong>équipe</strong>.</p>
-            </div>
-          </li>
-
-          <li class="frise-etape frise-projet">
-            <p class="frise-jalon"><time datetime="2026">2026</time></p>
-            <div class="frise-boite">
-              <h3><span class="sr">Projet : </span>Projets individuels</h3>
-              <p><i lang="en">ToDoList+</i> et un jeu <i lang="en">Pac-Man</i>, développés en <strong>autonomie</strong>.</p>
-            </div>
-          </li>
-
-          <li class="frise-etape frise-formation">
-            <p class="frise-jalon"><time datetime="2025">2025</time></p>
-            <div class="frise-boite">
-              <h3><span class="sr">Formation : </span>BUT informatique <span class="badge">en cours</span></h3>
-              <p>IUT de Lens, Université d'Artois, jusqu'en 2028 — parcours <strong class="kw">réalisation d'applications</strong>.</p>
-            </div>
-          </li>
-
-          <li class="frise-etape frise-formation">
-            <p class="frise-jalon"><time datetime="2025">2025</time></p>
-            <div class="frise-boite">
-              <h3><span class="sr">Formation : </span>Spécialisation testeur logiciel</h3>
-              <p>AFPA Roubaix — certification <strong class="kw">ISTQB Foundation (CTFL v4.0)</strong>.</p>
-            </div>
-          </li>
-
-          <li class="frise-etape frise-formation">
-            <p class="frise-jalon"><time datetime="2025">2025</time></p>
-            <div class="frise-boite">
-              <h3><span class="sr">Formation : </span>Techniques de base du développement</h3>
-              <p>AFPA Roubaix — algorithmique, <strong>développement web et web mobile</strong>.</p>
-            </div>
-          </li>
-
-          <li class="frise-etape frise-projet">
-            <p class="frise-jalon"><time datetime="2025">2025</time></p>
-            <div class="frise-boite">
-              <h3><span class="sr">Projet : </span>Robot roulant Arduino</h3>
-              <p>Atelier codage et robotique : programmation du <strong>comportement d'un robot</strong> via Studuino.</p>
-            </div>
-          </li>
-        </ol>
       </div>
     </section>
 
@@ -360,7 +247,7 @@
       </form>
 
     </div>
-    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · images provisoires : <a href="https://picsum.photos">Lorem Picsum</a></p>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · images provisoires : <a href="https://picsum.photos">Lorem Picsum</a> · mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace perso</a></p>
   </footer>
 
   <!-- ===== Barre fixe du bas ===== -->

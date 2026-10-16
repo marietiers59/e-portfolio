@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espace perso · Marie Tiers</title>
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Projets de Marie Tiers, étudiante en BUT informatique : sites web à visiter et applications à télécharger.">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <link rel="stylesheet" href="../styles/style.css">
+  <script src="../scripts/script.js" defer></script>
+</head>
+
+<body id="haut" data-sans-compteur>
+  <a class="evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+    <div class="conteneur entete-nav">
+      <a class="logo" href="../index.html">
+        <span class="logo-pastille" aria-hidden="true">mt</span>Marie Tiers
+      </a>
+      <nav class="navigation" aria-label="Navigation principale">
+        <ul class="navigation-liste">
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="projets.html">Projets</a></li>
+          <li><a href="../index.html#parcours">Parcours</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="../cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="section" aria-labelledby="titre-principal">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h1 class="section-titre" id="titre-principal" tabindex="-1">Espace perso</h1>
+          <p class="section-intro">
+            Raccourcis réservés à la gestion du portfolio. Cette page n'est pas protégée par un mot de passe :
+            elle ne contient rien de confidentiel.
+          </p>
+        </div>
+
+        <div class="espace">
+          <div class="espace-bloc">
+            <h2 class="espace-titre">Compteur de visites</h2>
+            <p class="espace-etat" id="etat-comptage" role="status">…</p>
+            <p class="espace-aide">
+              Le réglage vaut pour <strong>ce navigateur, sur cet appareil</strong> :
+              à refaire sur ton téléphone, ta tablette, etc.
+            </p>
+            <button class="bouton" id="bouton-comptage" type="button" aria-pressed="false">Ne plus compter cet appareil</button>
+          </div>
+
+          <div class="espace-bloc">
+            <h2 class="espace-titre">Liens utiles</h2>
+            <ul class="espace-liens">
+              <li><a href="https://github.com/marietiers59/e-portfolio">Dépôt GitHub du portfolio</a></li>
+              <li><a href="https://github.com/marietiers59/e-portfolio/settings/pages">Réglages GitHub Pages</a></li>
+              <!-- Remplacer MONCODE par ton code GoatCounter -->
+              <li><a href="https://MONCODE.goatcounter.com">Statistiques de visites (GoatCounter)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Pied de page (défile avec la page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Me contacter</h2>
+        <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
+        <ul class="coordonnees">
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2709;&#xFE0E;</span><a href="mailto:marietiers.france@gmail.com">marietiers.france@gmail.com</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x260E;&#xFE0E;</span><a href="tel:+33669474195">06 69 47 41 95</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Formulaire de contact"
+            data-endpoint="" data-destinataire="marietiers.france@gmail.com">
+        <p class="champ">
+          <label for="nom">Nom</label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Objet</label>
+          <select id="objet" name="objet">
+            <option>Proposition de stage</option>
+            <option>Proposition d'alternance</option>
+            <option>Question sur un projet</option>
+            <option>Autre</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Champ piège anti-robots : invisible pour les humains -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Ne pas remplir</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Envoyer</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · images provisoires : <a href="https://picsum.photos">Lorem Picsum</a> · mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html" aria-current="page">espace perso</a></p>
+  </footer>
+
+  <!-- ===== Barre fixe du bas ===== -->
+  <div class="barre barre-bas">
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>

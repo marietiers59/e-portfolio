@@ -9,7 +9,7 @@
    3. Barres fixes
    4. En-tête, navigation et une
    5. Sections
-   6. Cartes
+   6. Cartes projets et piliers
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
@@ -255,6 +255,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   transition: transform var(--duree) ease, box-shadow var(--duree) ease, color var(--duree);
 }
 .navigation-liste a:hover  { transform: translate(-1px, -2px); box-shadow: var(--ombre-repos); color: var(--indigo-700); }
+.navigation-liste a[aria-current="page"] { background: var(--bleu-100); color: var(--bleu-700); }
 .navigation-liste a:active { transform: translate(1px, 1px); box-shadow: var(--ombre-appui); transition-duration: 60ms; }
 
 /* La une : texte toujours aligné à gauche */
@@ -363,7 +364,9 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 /* ---------- 5. Sections ---------- */
 .section { padding-block: clamp(3rem, 7vw, 5.5rem); }
-#projets { background: var(--grain), var(--gris-100); } /* gris clair : l'aura blanche ressort mieux */
+#projets,
+.section-piliers { background: var(--grain), var(--gris-100); } /* gris clair : l'aura blanche ressort mieux */
+.section-piliers { padding-bottom: clamp(5rem, 10vw, 8rem); } /* marge pour le résumé déployé */
 .section-parcours {
   --fond-local: var(--bleu-50);
   background: var(--grain), var(--fond-local);
@@ -386,19 +389,13 @@ abbr[title] { text-decoration: none; cursor: help; }
 .section-entete .section-titre::after { margin-inline: auto; }
 .section-intro { max-width: 46rem; margin: 0 auto 2.5rem; color: var(--encre-douce); }
 
-/* ---------- 6. Cartes ---------- */
-/* Mobile : une colonne, cartes dans le flux, résumé toujours visible */
-.cartes {
-  list-style: none;
-  margin: 0 auto;
-  padding: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2.5rem;
-  max-width: 26rem;
-}
-
-.carte-emplacement { position: relative; }
+/* ---------- 6. Cartes projets et piliers ---------- */
+/*
+  Socle commun aux deux familles :
+    .emplacement → la place réservée dans la grille
+    .carte       → la carte elle-même (bords, arrondis, ombres, survol, clic)
+*/
+.emplacement { position: relative; }
 
 .carte {
   position: relative;
@@ -429,7 +426,27 @@ abbr[title] { text-decoration: none; cursor: help; }
   box-shadow: var(--ombre-appui);
   transition-duration: 60ms;
 }
-.carte:has(.carte-lien:focus-visible) { outline: 3px solid var(--indigo-400); outline-offset: 4px; }
+.carte:has(:is(.carte-lien, .pilier-lien):focus-visible) { outline: 3px solid var(--indigo-400); outline-offset: 4px; }
+
+/* Déploiement vers le bas : la ligne de grille passe de 0fr à 1fr */
+.carte-deploiement {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 280ms ease;
+}
+.carte-deploiement-interieur { min-height: 0; overflow: hidden; }
+
+/* --- Cartes projets (page Projets) : carrées --- */
+/* Mobile : une colonne, cartes dans le flux, résumé toujours visible */
+.cartes {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  max-width: 26rem;
+}
 
 .carte-face {
   aspect-ratio: 1;               /* la carte repliée est carrée */
@@ -475,15 +492,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   box-shadow: var(--ombre-legere);
 }
 
-/* Déploiement vers le bas : la ligne de grille passe de 0fr à 1fr */
-.carte-deploiement {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 280ms ease;
-}
-.carte-deploiement-interieur { min-height: 0; overflow: hidden; }
 .carte-texte { padding: 0 1.1rem 1.1rem; }
-
 .carte-resume {
   margin: 0 0 0.75rem;
   font-size: 0.95rem;
@@ -509,41 +518,121 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 .carte-action:hover { background: var(--turquoise-200); color: var(--bleu-700); }
 
-/* Appareils à souris : carte carrée, résumé replié, déploiement au survol ou au focus clavier */
+/* --- Piliers (accueil) : rectangles portrait --- */
+/* Structure : titre + logo, image carrée, résumé qui se déploie, lien en bas */
+.piliers {
+  --pilier-entete-h: 4.75rem;    /* hauteurs fixes : elles servent à réserver la place */
+  --pilier-pied-h: 3.5rem;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  gap: 2.5rem;
+  max-width: 24rem;              /* mobile : une colonne */
+}
+
+.pilier-entete {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: var(--pilier-entete-h);
+  padding: 0 1.1rem;
+}
+.pilier-logo {
+  flex: none;
+  width: 2.75rem; height: 2.75rem;
+  padding: 0.45rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(160deg, var(--bleu-50), var(--bleu-200));
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.7), var(--ombre-legere);
+  fill: none;
+  stroke: var(--bleu-700);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pilier-titre {
+  margin: 0;
+  font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+  font-weight: 800;
+}
+.pilier-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;               /* illustration carrée */
+  object-fit: cover;
+  background: var(--bleu-100);
+}
+.pilier-resume {
+  margin: 0;
+  padding: 1rem 1.1rem 0.4rem;
+  font-size: 0.95rem;
+  color: var(--encre-douce);
+}
+.pilier-pied {
+  margin: 0;
+  height: var(--pilier-pied-h);
+  display: flex;
+  align-items: center;
+  padding: 0 1.1rem;
+}
+.pilier-lien {
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--indigo-700);
+  text-decoration: none;
+}
+.pilier-lien::after {            /* toute la carte devient cliquable */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.pilier-lien:focus-visible { outline: none; }
+.pilier-fleche { display: inline-block; transition: transform var(--duree) ease; }
+.pilier:hover .pilier-lien { text-decoration: underline; text-decoration-color: var(--sapin-400); }
+.pilier:hover .pilier-fleche { transform: translateX(0.2rem); }
+
+/* --- Appareils à souris : cartes repliées, déploiement au survol ou au focus clavier --- */
 @media (hover: hover) {
-  .carte-emplacement {
-    aspect-ratio: 1;
-    transition: z-index 0s linear 300ms; /* reste au-dessus pendant qu'elle se replie */
+  .emplacement { transition: z-index 0s linear 300ms; } /* reste au-dessus pendant le repli */
+  .emplacement:hover,
+  .emplacement:focus-within { z-index: 5; transition-delay: 0s; }
+
+  /* La place réservée a la taille de la carte repliée : la carte déployée déborde par-dessus */
+  .carte-emplacement { aspect-ratio: 1; }
+  .pilier-emplacement { container-type: inline-size; }
+  .pilier-emplacement::before {
+    content: "";
+    display: block;
+    height: calc(100cqw + var(--pilier-entete-h) + var(--pilier-pied-h)); /* entête + image carrée + pied */
   }
-  .carte { position: absolute; inset: 0 0 auto 0; }
+  .emplacement > .carte { position: absolute; inset: 0 0 auto 0; }
+
   .carte-deploiement { grid-template-rows: 0fr; }
-
-  .carte-emplacement:hover,
-  .carte-emplacement:focus-within { z-index: 5; transition-delay: 0s; }
-
-  .carte-emplacement:hover .carte-deploiement,
-  .carte-emplacement:focus-within .carte-deploiement { grid-template-rows: 1fr; }
+  .emplacement:hover .carte-deploiement,
+  .emplacement:focus-within .carte-deploiement { grid-template-rows: 1fr; }
 
   /* Carte survolée : agrandie, plus en relief, détachée par une aura blanche */
-  .carte-emplacement:hover .carte,
-  .carte-emplacement:focus-within .carte {
+  .emplacement:hover .carte,
+  .emplacement:focus-within .carte {
     transform: translate(-0.125rem, -0.3rem) scale(1.04);
     box-shadow: var(--aura), var(--ombre-survol);
     filter: contrast(1.06) saturate(1.1);   /* un cran plus nette et plus vive */
   }
-  .carte-emplacement:hover .carte:active {
+  .emplacement:hover .carte:active {
     transform: translate(0.125rem, 0.1875rem) scale(1.02);
     box-shadow: var(--aura), var(--ombre-appui);
   }
 
-  /* Les autres cartes passent légèrement sous un voile blanc */
-  /* Les autres cartes : désaturées, à peine floues, sous un voile blanc */
-  .cartes:has(.carte-emplacement:hover) .carte-emplacement:not(:hover) .carte,
-  .cartes:has(.carte-emplacement:focus-within) .carte-emplacement:not(:focus-within) .carte {
+  /* Les autres cartes du même groupe : désaturées, à peine floues, sous un voile blanc */
+  :is(.cartes, .piliers):has(.emplacement:hover) .emplacement:not(:hover) .carte,
+  :is(.cartes, .piliers):has(.emplacement:focus-within) .emplacement:not(:focus-within) .carte {
     filter: saturate(0.25) blur(0.6px);
   }
-  .cartes:has(.carte-emplacement:hover) .carte-emplacement:not(:hover) .carte::before,
-  .cartes:has(.carte-emplacement:focus-within) .carte-emplacement:not(:focus-within) .carte::before {
+  :is(.cartes, .piliers):has(.emplacement:hover) .emplacement:not(:hover) .carte::before,
+  :is(.cartes, .piliers):has(.emplacement:focus-within) .emplacement:not(:focus-within) .carte::before {
     opacity: 0.5;
   }
 }
@@ -556,6 +645,14 @@ abbr[title] { text-decoration: none; cursor: help; }
     column-gap: clamp(1.5rem, 3.5vw, 3rem);
     row-gap: clamp(2.5rem, 5vw, 4rem);
   }
+  /* Trois rectangles de même largeur, répartis avec des espaces égaux */
+  .piliers {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    max-width: none;
+  }
+  .pilier-emplacement { flex: 0 0 min(21rem, 30%); }
 }
 
 /* ---------- 7. Frise chronologique ---------- */
@@ -816,6 +913,34 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
     gap: clamp(2rem, 5vw, 4rem);
   }
 }
+
+/* Lien discret du pied de page */
+.lien-discret { color: var(--encre-douce); }
+
+/* Espace perso */
+.espace {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+.espace-bloc {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  padding: clamp(1.1rem, 3vw, 1.6rem);
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+}
+.espace-titre { margin: 0; font-size: 1.2rem; font-weight: 800; }
+.espace-etat { margin: 0; font-weight: 700; }
+.espace-etat[data-etat="compte"] { color: var(--bleu-700); }
+.espace-etat[data-etat="exclu"]  { color: var(--sapin-700); }
+.espace-etat[data-etat="erreur"] { color: hsl(355 40% 40%); }
+.espace-aide { margin: 0; color: var(--encre-douce); font-size: 0.95rem; }
+.espace-liens { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
 
 /* ---------- 9. Écrans larges, TV, mouvement réduit ---------- */
 @media (min-width: 100em) { html { font-size: 112.5%; } }

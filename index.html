@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marie Tiers · portfolio développement et test logiciel</title>
+  <meta name="description" content="Portfolio de Marie Tiers, étudiante en BUT informatique à l'IUT de Lens, spécialisée en test logiciel. Recherche un stage dès avril 2027, puis une alternance.">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="scripts/script.js" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+
+    <!-- Ligne de navigation : nom à gauche, menu à droite -->
+    <div class="conteneur entete-nav">
+      <a class="logo" href="#haut" data-defilement="haut">
+        <span class="logo-pastille" aria-hidden="true">mt</span>Marie Tiers
+      </a>
+      <nav class="navigation" aria-label="Navigation principale">
+        <ul class="navigation-liste">
+          <li><a href="pages/projets.html">Projets</a></li>
+          <li><a href="#parcours">Parcours</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <!-- CV à la racine du dépôt, sous ce nom -->
+          <li><a href="cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- La « une » : portrait d'un côté, présentation de l'autre -->
+    <div class="une">
+      <div class="conteneur">
+        <div class="une-grille">
+
+          <figure class="une-portrait">
+            <!-- Photo provisoire tirée du CV : la remplacer par une version d'au moins 800 px de large -->
+            <img src="medias/photo-marie.jpg" alt="Portrait de Marie Tiers, souriante" width="226" height="293">
+          </figure>
+
+          <div class="une-entete">
+            <p class="une-surtitre">bonjour, je suis Marie</p>
+            <h1 class="une-titre" id="titre-principal" tabindex="-1">
+              Je conçois, développe <span class="une-titre-accent">et teste</span> des applications
+            </h1>
+          </div>
+
+          <div class="une-corps">
+            <p>
+              Étudiante en <strong class="kw">BUT informatique</strong> à l'IUT de Lens, spécialisée en
+              <strong class="kw">test logiciel</strong>, j'allie la double culture
+              <strong>développement</strong> et <strong><abbr title="assurance qualité">QA</abbr></strong>.
+            </p>
+            <p class="une-objectif">
+              Je recherche un <strong class="kw">stage rémunéré</strong> dès le 26 avril 2027,
+              puis une <strong class="kw">alternance</strong> en <i lang="en">full-stack</i> ou en test automatisé.
+            </p>
+            <p class="une-actions">
+              <a class="bouton" href="#contact">Me contacter</a>
+              <a class="bouton bouton-second" href="pages/projets.html">Voir mes projets</a>
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Brèves : trois faits saillants, comme les colonnes sous la une -->
+        <ul class="breves">
+          <li class="breve"><strong class="kw">certifiée <abbr title="International Software Testing Qualifications Board">ISTQB</abbr></strong> Foundation (CTFL v4.0)</li>
+          <li class="breve"><strong class="kw">stage de 8 à 10 semaines</strong> dès le 26/04/2027</li>
+          <li class="breve"><strong class="kw">mobile</strong> sur Lille, Lens, Douai et Arras</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <!-- ===== Piliers : philosophie, parcours, objectif ===== -->
+    <section class="section section-piliers" aria-labelledby="piliers-titre">
+      <div class="conteneur">
+        <h2 class="sr" id="piliers-titre">En bref</h2>
+        <!-- Pour changer une illustration : remplacer l'adresse picsum par medias/mon-image.jpg (format carré) -->
+        <ul class="piliers">
+          <li class="emplacement pilier-emplacement">
+            <article class="carte pilier">
+              <header class="pilier-entete">
+                <svg class="pilier-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 13V8.5"/>
+                  <path d="M12 10c0-2.3-1.7-3.8-4-3.8 0 2.3 1.7 3.8 4 3.8z"/>
+                  <path d="M12 8.5c0-2.5 1.9-4.3 4.5-4.3 0 2.5-1.9 4.3-4.5 4.3z"/>
+                  <path d="M8 15.5c.4-1.5 2-2.5 4-2.5s3.6 1 4 2.5"/>
+                  <path d="M2.5 15h2.8l3.4 1.3h4.1a1.4 1.4 0 0 1 0 2.8H9.5"/>
+                  <path d="M12.8 19.1l5.4-2.6a1.5 1.5 0 0 1 1.6 2.5l-6.1 3.5H5.3"/>
+                  <path d="M5.3 14.5v8"/>
+                </svg>
+                <h3 class="pilier-titre">Ma philosophie</h3>
+              </header>
+              <img class="pilier-image" src="https://picsum.photos/seed/philosophie/600/600" alt="" width="600" height="600" loading="lazy">
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <p class="pilier-resume">La qualité ne s'ajoute pas à la fin : elle se cultive dès la première ligne de code. Forte d'une double culture <strong class="kw">développement</strong> et <strong class="kw">test logiciel</strong>, je conçois des applications <strong>fiables</strong>, <strong>maintenables</strong> et <strong>accessibles</strong> à tous, dans le respect des référentiels <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> et <abbr title="Référentiel général d'amélioration de l'accessibilité">RGAA</abbr>. J'aime comprendre le besoin réel avant de coder, documenter mon travail et avancer en équipe, en méthode <strong>agile</strong> comme en cycle en V.</p>
+                </div>
+              </div>
+              <p class="pilier-pied">
+                <!-- Lien provisoire vers le CV : le remplacer par la future page « compétences » -->
+                <a class="pilier-lien" href="cv-marie-tiers.pdf">En savoir plus sur mes compétences<span class="pilier-fleche" aria-hidden="true"> →</span></a>
+              </p>
+            </article>
+          </li>
+          <li class="emplacement pilier-emplacement">
+            <article class="carte pilier">
+              <header class="pilier-entete">
+                <svg class="pilier-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 6a4.6 4.6 0 0 0-2.8 8.3c.6.45.9 1.1.9 1.8v.9h3.8v-.9c0-.7.3-1.35.9-1.8A4.6 4.6 0 0 0 12 6z"/>
+                  <path d="M10.2 19.5h3.6"/><path d="M10.8 21.8h2.4"/>
+                  <path d="M12 1.5v2"/><path d="M4 10.6H2.2"/><path d="M21.8 10.6H20"/>
+                  <path d="M6.2 4.9l1.3 1.3"/><path d="M17.8 4.9l-1.3 1.3"/>
+                </svg>
+                <h3 class="pilier-titre">Mon parcours</h3>
+              </header>
+              <img class="pilier-image" src="https://picsum.photos/seed/parcours/600/600" alt="" width="600" height="600" loading="lazy">
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <p class="pilier-resume">Après une première expérience dans la <strong>coordination d'équipes internationales</strong>, je me suis tournée vers l'informatique en 2025 : formation aux <strong>bases du développement</strong>, puis spécialisation <strong class="kw">testeuse logiciel</strong> à l'AFPA de Roubaix, validée par la certification <strong class="kw">ISTQB Foundation</strong>. Une mission chez <strong>Worldline</strong> m'a fait tester des applications bancaires européennes. Je poursuis aujourd'hui en <strong class="kw">BUT informatique</strong> à l'IUT de Lens.</p>
+                </div>
+              </div>
+              <p class="pilier-pied">
+                <a class="pilier-lien" href="#parcours">En savoir plus sur mon parcours<span class="pilier-fleche" aria-hidden="true"> →</span></a>
+              </p>
+            </article>
+          </li>
+          <li class="emplacement pilier-emplacement">
+            <article class="carte pilier">
+              <header class="pilier-entete">
+                <svg class="pilier-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="10.5" cy="13.5" r="8"/><circle cx="10.5" cy="13.5" r="4.8"/><circle cx="10.5" cy="13.5" r="1.6"/>
+                  <path d="M10.5 13.5l9-9"/>
+                  <path d="M16.6 4.4v3h3"/><path d="M19.4 1.6v3h3"/>
+                </svg>
+                <h3 class="pilier-titre">Mon objectif</h3>
+              </header>
+              <img class="pilier-image" src="https://picsum.photos/seed/objectif/600/600" alt="" width="600" height="600" loading="lazy">
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <p class="pilier-resume">Je recherche un <strong class="kw">stage rémunéré</strong> de 8 à 10 semaines à partir du 26 avril 2027, en développement <i lang="en">full-stack</i> ou en <strong>assurance qualité</strong>, puis une <strong class="kw">alternance</strong> en troisième année. Mon souhait : m'intégrer durablement dans une même entreprise, du stage jusqu'au <strong>CDI</strong>, et y faire grandir des projets concrets, de la conception aux <strong>tests automatisés</strong>.</p>
+                </div>
+              </div>
+              <p class="pilier-pied">
+                <a class="pilier-lien" href="pages/projets.html">En savoir plus sur mes réalisations<span class="pilier-fleche" aria-hidden="true"> →</span></a>
+              </p>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Parcours : frise chronologique en quinconce ===== -->
+    <section class="section section-parcours" id="parcours" aria-labelledby="parcours-titre">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h2 class="section-titre" id="parcours-titre">Mon parcours</h2>
+          <p class="frise-legende">
+            <span class="legende legende-projet">projets<span class="legende-cote"> (à gauche)</span></span>
+            <span class="legende legende-formation">formations<span class="legende-cote"> (à droite)</span></span>
+          </p>
+        </div>
+
+        <!--
+          Du plus récent au plus ancien. Un jalon = une année de début, toujours au même format.
+          Classe frise-projet = à gauche, frise-formation = à droite.
+        -->
+        <ol class="frise">
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2026">2026</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Projet : </span>Projets d'équipe</h3>
+              <p>Un site web complet (<i lang="en">front-end</i> et <i lang="en">back-end</i>), <i lang="en">Otaku List</i> et un jeu <i lang="en">Space Invaders</i>, menés en <strong>équipe</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2026">2026</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Projet : </span>Projets individuels</h3>
+              <p><i lang="en">ToDoList+</i> et un jeu <i lang="en">Pac-Man</i>, développés en <strong>autonomie</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Formation : </span>BUT informatique <span class="badge">en cours</span></h3>
+              <p>IUT de Lens, Université d'Artois, jusqu'en 2028 — parcours <strong class="kw">réalisation d'applications</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Formation : </span>Spécialisation testeur logiciel</h3>
+              <p>AFPA Roubaix — certification <strong class="kw">ISTQB Foundation (CTFL v4.0)</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Formation : </span>Techniques de base du développement</h3>
+              <p>AFPA Roubaix — algorithmique, <strong>développement web et web mobile</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Projet : </span>Robot roulant Arduino</h3>
+              <p>Atelier codage et robotique : programmation du <strong>comportement d'un robot</strong> via Studuino.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Pied de page (défile avec la page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Me contacter</h2>
+        <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
+        <ul class="coordonnees">
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2709;&#xFE0E;</span><a href="mailto:marietiers.france@gmail.com">marietiers.france@gmail.com</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x260E;&#xFE0E;</span><a href="tel:+33669474195">06 69 47 41 95</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Formulaire de contact"
+            data-endpoint="" data-destinataire="marietiers.france@gmail.com">
+        <p class="champ">
+          <label for="nom">Nom</label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Objet</label>
+          <select id="objet" name="objet">
+            <option>Proposition de stage</option>
+            <option>Proposition d'alternance</option>
+            <option>Question sur un projet</option>
+            <option>Autre</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Champ piège anti-robots : invisible pour les humains -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Ne pas remplir</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Envoyer</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · images provisoires : <a href="https://picsum.photos">Lorem Picsum</a> · mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="pages/espace.html">espace perso</a></p>
+  </footer>
+
+  <!-- ===== Barre fixe du bas ===== -->
+  <div class="barre barre-bas">
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>
