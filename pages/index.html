@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marie Tiers · portfolio développement et test logiciel</title>
+  <meta name="description" content="Portfolio de Marie Tiers, étudiante en BUT informatique à l'IUT de Lens, spécialisée en test logiciel. Recherche un stage dès avril 2027, puis une alternance.">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+
+    <!-- Ligne de navigation : nom à gauche, menu à droite -->
+    <div class="conteneur entete-nav">
+      <a class="logo" href="#haut" data-defilement="haut">
+        <span class="logo-pastille" aria-hidden="true">mt</span>Marie Tiers
+      </a>
+      <nav class="navigation" aria-label="Navigation principale">
+        <ul class="navigation-liste">
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#parcours">Parcours</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <!-- Dépose ton CV à la racine du dépôt sous ce nom -->
+          <li><a href="cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- La « une » : portrait d'un côté, présentation de l'autre -->
+    <div class="une">
+      <div class="conteneur">
+        <div class="une-grille">
+
+          <figure class="une-portrait">
+            <!-- Photo provisoire tirée du CV : la remplacer par une version d'au moins 800 px de large -->
+            <img src="medias/photo-marie.jpg" alt="Portrait de Marie Tiers, souriante" width="226" height="293">
+          </figure>
+
+          <div class="une-entete">
+            <p class="une-surtitre">bonjour, je suis Marie</p>
+            <h1 class="une-titre" id="titre-principal" tabindex="-1">
+              Je conçois, développe <span class="une-titre-accent">et teste</span> des applications
+            </h1>
+          </div>
+
+          <div class="une-corps">
+            <p>
+              Étudiante en <strong class="kw">BUT informatique</strong> à l'IUT de Lens, spécialisée en
+              <strong class="kw">test logiciel</strong>, j'allie la double culture
+              <strong>développement</strong> et <strong><abbr title="assurance qualité">QA</abbr></strong>.
+            </p>
+            <p class="une-objectif">
+              Je recherche un <strong class="kw">stage rémunéré</strong> dès le 26 avril 2027,
+              puis une <strong class="kw">alternance</strong> en <i lang="en">full-stack</i> ou en test automatisé.
+            </p>
+            <p class="une-actions">
+              <a class="bouton" href="#contact">Me contacter</a>
+              <a class="bouton bouton-second" href="#projets">Voir mes projets</a>
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Brèves : trois faits saillants, comme les colonnes sous la une -->
+        <ul class="breves">
+          <li class="breve"><strong class="kw">certifiée <abbr title="International Software Testing Qualifications Board">ISTQB</abbr></strong> Foundation (CTFL v4.0)</li>
+          <li class="breve"><strong class="kw">stage de 8 à 10 semaines</strong> dès le 26/04/2027</li>
+          <li class="breve"><strong class="kw">mobile</strong> sur Lille, Lens, Douai et Arras</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+
+    <!-- ===== Projets : cartes ===== -->
+    <section class="section" id="projets" aria-labelledby="projets-titre">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h2 class="section-titre" id="projets-titre">Mes projets</h2>
+          <p class="section-intro">
+            Les <strong class="kw">sites web</strong> s'ouvrent directement dans le navigateur ;
+            les <strong class="kw">applications</strong> se récupèrent en archive <strong>.zip</strong>
+            (votre navigateur l'ouvre ou l'enregistre selon vos réglages).
+          </p>
+        </div>
+
+        <!--
+          Pour ajouter un projet : copier un <li class="carte-emplacement"> et remplacer
+          « nom-du-depot » par le vrai nom du dépôt GitHub.
+            · site web     → https://marietiers59.github.io/nom-du-depot/
+            · application  → https://github.com/marietiers59/nom-du-depot/archive/refs/heads/main.zip
+            · code source  → https://github.com/marietiers59/nom-du-depot
+          Un jeu écrit en HTML/JS peut passer en « carte-web » : il se joue alors au clic.
+        -->
+        <ul class="cartes">
+
+          <li class="carte-emplacement">
+            <article class="carte carte-web">
+              <div class="carte-face">
+                <img class="carte-image" src="https://picsum.photos/seed/jumelage/600/600" alt="" width="600" height="600" loading="lazy">
+                <h3 class="carte-titre">
+                  <a class="carte-lien" href="https://marietiers59.github.io/jumelage/">Site de l'association de jumelage</a>
+                </h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/jumelage">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">site web</span>
+            </article>
+          </li>
+
+          <li class="carte-emplacement">
+            <article class="carte carte-web">
+              <div class="carte-face">
+                <img class="carte-image" src="https://picsum.photos/seed/fullstack/600/600" alt="" width="600" height="600" loading="lazy">
+                <h3 class="carte-titre">
+                  <a class="carte-lien" href="https://marietiers59.github.io/site-full-stack/">Site web <i lang="en">front-end</i> et <i lang="en">back-end</i></a>
+                </h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum, vestibulum id ligula porta felis.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/site-full-stack">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">site web</span>
+            </article>
+          </li>
+
+          <li class="carte-emplacement">
+            <article class="carte carte-web">
+              <div class="carte-face">
+                <img class="carte-image" src="https://picsum.photos/seed/otakulist/600/600" alt="" width="600" height="600" loading="lazy">
+                <h3 class="carte-titre">
+                  <a class="carte-lien" href="https://marietiers59.github.io/otaku-list/"><i lang="en">Otaku List</i></a>
+                </h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/otaku-list">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">site web</span>
+            </article>
+          </li>
+
+          <li class="carte-emplacement">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <img class="carte-image" src="https://picsum.photos/seed/spaceinvaders/600/600" alt="" width="600" height="600" loading="lazy">
+                <h3 class="carte-titre">
+                  <a class="carte-lien" href="https://github.com/marietiers59/space-invaders/archive/refs/heads/main.zip"><i lang="en">Space Invaders</i><span class="sr"> (télécharger l'archive .zip)</span></a>
+                </h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/space-invaders">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">application · .zip</span>
+            </article>
+          </li>
+
+          <li class="carte-emplacement">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <img class="carte-image" src="https://picsum.photos/seed/pacman/600/600" alt="" width="600" height="600" loading="lazy">
+                <h3 class="carte-titre">
+                  <a class="carte-lien" href="https://github.com/marietiers59/pac-man/archive/refs/heads/main.zip"><i lang="en">Pac-Man</i><span class="sr"> (télécharger l'archive .zip)</span></a>
+                </h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor, integer posuere.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/pac-man">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">application · .zip</span>
+            </article>
+          </li>
+
+          <li class="carte-emplacement">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
+                <h3 class="carte-titre">
+                  <a class="carte-lien" href="https://github.com/marietiers59/todolist-plus/archive/refs/heads/main.zip"><i lang="en">ToDoList+</i><span class="sr"> (télécharger l'archive .zip)</span></a>
+                </h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/todolist-plus">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">application · .zip</span>
+            </article>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Parcours : frise chronologique en quinconce ===== -->
+    <section class="section section-parcours" id="parcours" aria-labelledby="parcours-titre">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h2 class="section-titre" id="parcours-titre">Mon parcours</h2>
+          <p class="frise-legende">
+            <span class="legende legende-projet">projets<span class="legende-cote"> (à gauche)</span></span>
+            <span class="legende legende-formation">formations<span class="legende-cote"> (à droite)</span></span>
+          </p>
+        </div>
+
+        <!--
+          Du plus récent au plus ancien. Un jalon = une année de début, toujours au même format.
+          Classe frise-projet = à gauche, frise-formation = à droite.
+        -->
+        <ol class="frise">
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2026">2026</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Projet : </span>Projets d'équipe</h3>
+              <p>Un site web complet (<i lang="en">front-end</i> et <i lang="en">back-end</i>), <i lang="en">Otaku List</i> et un jeu <i lang="en">Space Invaders</i>, menés en <strong>équipe</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2026">2026</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Projet : </span>Projets individuels</h3>
+              <p><i lang="en">ToDoList+</i> et un jeu <i lang="en">Pac-Man</i>, développés en <strong>autonomie</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Formation : </span>BUT informatique <span class="badge">en cours</span></h3>
+              <p>IUT de Lens, Université d'Artois, jusqu'en 2028 — parcours <strong class="kw">réalisation d'applications</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Formation : </span>Spécialisation testeur logiciel</h3>
+              <p>AFPA Roubaix — certification <strong class="kw">ISTQB Foundation (CTFL v4.0)</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Formation : </span>Techniques de base du développement</h3>
+              <p>AFPA Roubaix — algorithmique, <strong>développement web et web mobile</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Projet : </span>Robot roulant Arduino</h3>
+              <p>Atelier codage et robotique : programmation du <strong>comportement d'un robot</strong> via Studuino.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Pied de page (défile avec la page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Me contacter</h2>
+        <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
+        <ul class="coordonnees">
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2709;&#xFE0E;</span><a href="mailto:marietiers.france@gmail.com">marietiers.france@gmail.com</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x260E;&#xFE0E;</span><a href="tel:+33669474195">06 69 47 41 95</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Formulaire de contact"
+            data-endpoint="" data-destinataire="marietiers.france@gmail.com">
+        <p class="champ">
+          <label for="nom">Nom</label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Objet</label>
+          <select id="objet" name="objet">
+            <option>Proposition de stage</option>
+            <option>Proposition d'alternance</option>
+            <option>Question sur un projet</option>
+            <option>Autre</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Champ piège anti-robots : invisible pour les humains -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Ne pas remplir</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Envoyer</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · images provisoires : <a href="https://picsum.photos">Lorem Picsum</a></p>
+  </footer>
+
+  <!-- ===== Barre fixe du bas ===== -->
+  <div class="barre barre-bas">
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>
