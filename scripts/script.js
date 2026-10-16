@@ -176,7 +176,7 @@ function definirExclusion(exclure) {
 
 /** Le compteur ne se charge que sur le vrai site, hors appareil exclu et hors espace perso. */
 function chargerCompteur() {
-  const codeRenseigne = !ADRESSE_GOATCOUNTER.includes('MONCODE');
+  const codeRenseigne = !ADRESSE_GOATCOUNTER.includes('MON' + 'CODE'); // écrit en deux morceaux : un remplacement global de MONCODE ne le touche pas
   const enLigne = location.protocol === 'https:' && location.hostname !== 'localhost';
   const pageExclue = document.body.hasAttribute('data-sans-compteur');
   if (!codeRenseigne || !enLigne || pageExclue || appareilExclu()) return;
