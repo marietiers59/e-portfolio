@@ -2,7 +2,8 @@
    Portfolio — Marie Tiers
    1. Défilement amorti (Menu ⏫, Contact ⏬, liens internes)
    2. Formulaire de contact
-   3. Utilitaires
+   3. Compteur de visites (GoatCounter) et espace perso
+   4. Utilitaires
    ========================================================= */
 'use strict';
 
@@ -155,7 +156,64 @@ if (formulaire) {
   });
 }
 
-/* ---------- 3. Utilitaires ---------- */
+/* ---------- 3. Compteur de visites (GoatCounter) et espace perso ---------- */
+// Remplacer MONCODE par le code choisi à l'inscription sur goatcounter.com
+const ADRESSE_GOATCOUNTER = 'https://MONCODE.goatcounter.com/count';
+const CLE_EXCLUSION = 'portfolio-ne-pas-me-compter';
+
+/** Lecture prudente : le stockage peut être bloqué (navigation privée, réglages). */
+function appareilExclu() {
+  try { return localStorage.getItem(CLE_EXCLUSION) === '1'; } catch { return false; }
+}
+
+function definirExclusion(exclure) {
+  try {
+    if (exclure) localStorage.setItem(CLE_EXCLUSION, '1');
+    else localStorage.removeItem(CLE_EXCLUSION);
+    return true;
+  } catch { return false; }
+}
+
+/** Le compteur ne se charge que sur le vrai site, hors appareil exclu et hors espace perso. */
+function chargerCompteur() {
+  const codeRenseigne = !ADRESSE_GOATCOUNTER.includes('MONCODE');
+  const enLigne = location.protocol === 'https:' && location.hostname !== 'localhost';
+  const pageExclue = document.body.hasAttribute('data-sans-compteur');
+  if (!codeRenseigne || !enLigne || pageExclue || appareilExclu()) return;
+
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://gc.zgo.at/count.js';
+  script.dataset.goatcounter = ADRESSE_GOATCOUNTER;
+  document.head.append(script);
+}
+chargerCompteur();
+
+// Espace perso : bouton « me compter / ne plus me compter » sur cet appareil
+const boutonComptage = document.getElementById('bouton-comptage');
+if (boutonComptage) {
+  const etat = document.getElementById('etat-comptage');
+  const afficherEtat = () => {
+    const exclu = appareilExclu();
+    etat.textContent = exclu
+      ? 'Cet appareil n’est pas compté dans les visites.'
+      : 'Cet appareil est compté dans les visites.';
+    etat.dataset.etat = exclu ? 'exclu' : 'compte';
+    boutonComptage.textContent = exclu ? 'Recompter cet appareil' : 'Ne plus compter cet appareil';
+    boutonComptage.setAttribute('aria-pressed', String(exclu));
+  };
+  boutonComptage.addEventListener('click', () => {
+    if (!definirExclusion(!appareilExclu())) {
+      etat.textContent = 'Votre navigateur bloque le stockage local : réglage impossible ici.';
+      etat.dataset.etat = 'erreur';
+      return;
+    }
+    afficherEtat();
+  });
+  afficherEtat();
+}
+
+/* ---------- 4. Utilitaires ---------- */
 document.querySelectorAll('[data-annee]').forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
