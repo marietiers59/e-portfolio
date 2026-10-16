@@ -1,0 +1,829 @@
+/* =========================================================
+   Portfolio — Marie Tiers
+   Feuille de styles mobile-first : les règles de base visent
+   le mobile en portrait, les requêtes @media élargissent ensuite.
+
+   Sommaire
+   1. Variables (couleurs, ombres, polices)
+   2. Base
+   3. Barres fixes
+   4. En-tête, navigation et une
+   5. Sections
+   6. Cartes
+   7. Frise chronologique
+   8. Pied de page et formulaire
+   9. Écrans larges, TV, mouvement réduit
+   ========================================================= */
+
+/* ---------- 1. Variables ---------- */
+:root {
+  /*
+    Palette pastel, harmonie de teintes voisines sur le cercle chromatique
+    (vert sapin 165° → bleu 200° → lavande 260°), posée sur des neutres
+    tièdes : blanc cassé, blanc pur, gris clair et gris perlé.
+  */
+  /* Neutres */
+  --fond:     hsl(42 42% 98%);     /* blanc cassé chaud : fond général */
+  --carte:    hsl(0 0% 100%);      /* blanc pur */
+  --gris-100: hsl(36 14% 94%);     /* gris clair légèrement chaud */
+  --gris-200: hsl(34 10% 86%);
+  --perle-1:  hsl(40 9% 94%);      /* gris perlé : un reflet tiède… */
+  --perle-2:  hsl(220 6% 90%);     /* …et un reflet frais, qui s'équilibrent */
+  --perle-trait: hsl(30 6% 84%);
+  --encre:       hsl(220 18% 20%);
+  --encre-douce: hsl(220 9% 38%);
+  --trait:       hsl(34 14% 87%);
+
+  /* Bleu clair : grandes surfaces (une, pied de page, barres) */
+  --bleu-50:  hsl(205 80% 97%);
+  --bleu-100: hsl(205 75% 93%);
+  --bleu-200: hsl(205 68% 86%);
+  --bleu-400: hsl(205 58% 62%);
+  --bleu-700: hsl(205 60% 30%);
+
+  /* Turquoise clair : boutons et pastilles d'action */
+  --turquoise-100: hsl(180 45% 92%);
+  --turquoise-200: hsl(180 36% 82%);
+
+  /* Indigo très clair → indigo soutenu : mots-clés, accents de texte */
+  --indigo-100: hsl(235 55% 96%);
+  --indigo-200: hsl(235 42% 89%);
+  --indigo-400: hsl(235 32% 64%);
+  --indigo-700: hsl(235 35% 38%);
+
+  /* Lavande très clair : aplat derrière la photo */
+  --lavande-100: hsl(260 50% 96%);
+  --lavande-200: hsl(260 38% 88%);
+  --lavande-400: hsl(260 26% 66%);
+  --lavande-700: hsl(260 30% 36%);
+
+
+  /* Couleurs d'origine de la frise : rose pour les projets, anis pour les formations */
+  --rose-100: hsl(325 70% 95%);
+  --rose-200: hsl(325 58% 87%);
+  --rose-400: hsl(325 45% 64%);
+  --rose-700: hsl(325 45% 36%);
+  --anis-100: hsl(85 55% 92%);
+  --anis-200: hsl(85 45% 81%);
+  --anis-400: hsl(85 38% 55%);
+  --anis-700: hsl(85 50% 24%);
+
+  /* Vert sapin clair, légèrement froid : filets et liserés */
+  --sapin-400: hsl(165 26% 48%);
+  --sapin-700: hsl(165 35% 25%);
+
+  /* Ombres orientées : lumière venant d'en haut à gauche */
+  --ombre-teinte: 30 20% 25%;
+  --ombre-legere: 0.125rem 0.1875rem 0.5rem hsl(var(--ombre-teinte) / 0.1);
+  --ombre-repos:  0.25rem 0.375rem 0.75rem hsl(var(--ombre-teinte) / 0.13),
+                  0.0625rem 0.125rem 0.25rem hsl(var(--ombre-teinte) / 0.09);
+  --ombre-survol: 0.625rem 1rem 1.75rem hsl(var(--ombre-teinte) / 0.2),
+                  0.1875rem 0.3125rem 0.5rem hsl(var(--ombre-teinte) / 0.1);
+  --ombre-appui:  0.0625rem 0.0625rem 0.1875rem hsl(var(--ombre-teinte) / 0.18);
+  /* Aura blanchâtre : bord à peine marqué, puis halo large et de plus en plus transparent */
+  --aura: 0 0 0 1px hsl(0 0% 100% / 0.5),
+          0 0 2rem 0.75rem hsl(0 0% 100% / 0.7),
+          0 0 5rem 2.5rem hsl(0 0% 100% / 0.45);
+
+  /* Trois polices sans empattement */
+  --police-texte: "Trebuchet MS", "Lucida Grande", "Segoe UI", sans-serif;
+  --police-titre: "Nunito", "Trebuchet MS", sans-serif;
+  --police-interface: "Atkinson Hyperlegible", Verdana, sans-serif;
+
+  /* Divers */
+  --rayon: 1.25rem;
+  --barre-h: 3rem;
+  --duree: 180ms;
+  --conteneur: 72rem;
+
+  /* Grain de papier très fin, presque invisible (supprimer la ligne pour l'enlever) */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 2. Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-block: calc(var(--barre-h) + 1rem);
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; } /* repli sans JavaScript */
+}
+
+body {
+  margin: 0;
+  padding-block: var(--barre-h); /* place pour les deux barres fixes */
+  font-family: var(--police-texte);
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--encre);
+  background-color: var(--fond);
+  background-image: var(--grain);
+}
+
+img { display: block; max-width: 100%; }
+
+h1, h2, h3 {
+  font-family: var(--police-titre);
+  line-height: 1.2;
+  color: var(--encre);
+  text-wrap: balance;
+}
+
+a { color: var(--indigo-700); text-underline-offset: 0.2em; }
+a:hover { color: var(--bleu-700); }
+
+:focus-visible {
+  outline: 3px solid var(--indigo-400);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
+
+/* Mots anglais en italique, mots-clés en gras et en couleur */
+i[lang="en"] { font-style: italic; }
+strong { font-weight: 700; }
+.kw { color: var(--indigo-700); }
+
+abbr[title] { text-decoration: none; cursor: help; }
+
+.conteneur { width: min(100% - 2rem, var(--conteneur)); margin-inline: auto; }
+
+.sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.evitement {
+  position: fixed;
+  top: 0.5rem; left: 0.5rem;
+  z-index: 200;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--carte);
+  box-shadow: var(--ombre-repos);
+  font-family: var(--police-interface);
+  transform: translateY(-200%);
+}
+.evitement:focus { transform: none; }
+
+/* ---------- 3. Barres fixes ---------- */
+.barre {
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 100;
+  height: var(--barre-h);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;            /* lien aligné à droite… */
+  padding-inline: max(1rem, (100% - var(--conteneur)) / 2); /* …sur le bord du contenu */
+  background: hsl(205 72% 92% / 0.94);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.barre-haut { top: 0;    box-shadow: 0 0.125rem 0.5rem hsl(var(--ombre-teinte) / 0.1); }
+.barre-bas  { bottom: 0; box-shadow: 0 -0.125rem 0.5rem hsl(var(--ombre-teinte) / 0.1); }
+
+/* Simple lien texte, souligné d'un filet au survol */
+.barre-lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding-block: 0.2rem;
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--duree), color var(--duree);
+}
+.barre-lien:hover { color: var(--indigo-700); border-bottom-color: var(--sapin-400); }
+.barre-lien:active { transform: translateY(1px); }
+
+/* ---------- 4. En-tête, navigation et une ---------- */
+/* Ligne de navigation : empilée sur mobile, en ligne à partir de la tablette */
+.entete-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-block: 1rem;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--police-titre);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--encre);
+  text-decoration: none;
+}
+.logo-pastille {
+  display: grid;
+  place-items: center;
+  width: 2.25rem; height: 2.25rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(160deg, var(--indigo-100), var(--indigo-200));
+  color: var(--indigo-700);
+  font-size: 1rem;
+  box-shadow: var(--ombre-legere);
+}
+
+.navigation-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.navigation-liste a {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--encre);
+  font-family: var(--police-interface);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, color var(--duree);
+}
+.navigation-liste a:hover  { transform: translate(-1px, -2px); box-shadow: var(--ombre-repos); color: var(--indigo-700); }
+.navigation-liste a:active { transform: translate(1px, 1px); box-shadow: var(--ombre-appui); transition-duration: 60ms; }
+
+/* La une : texte toujours aligné à gauche */
+.une {
+  padding-block: clamp(2rem, 6vw, 4.5rem);
+  background: var(--grain), linear-gradient(160deg, var(--perle-1), var(--perle-2));
+  border-block: 1px solid var(--perle-trait);
+}
+.une-grille {
+  display: grid;
+  /* mobile : la photo à gauche, le titre en face, puis le texte sur toute la largeur */
+  grid-template-columns: minmax(6.5rem, 34%) minmax(0, 1fr);
+  grid-template-areas:
+    "portrait entete"
+    "corps    corps";
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+  align-items: center;
+}
+.une-portrait { grid-area: portrait; }
+.une-entete   { grid-area: entete; }
+.une-corps    { grid-area: corps; }
+
+.une-surtitre {
+  margin: 0 0 0.4rem;
+  font-family: var(--police-interface);
+  font-weight: 700;
+  color: var(--bleu-700);
+}
+.une-titre {
+  margin: 0;
+  font-size: clamp(1.45rem, 1rem + 2.6vw, 3.25rem);
+  font-weight: 800;
+}
+.une-titre-accent { color: var(--indigo-700); }
+.une-corps p { margin: 0 0 0.85rem; max-width: 38rem; }
+.une-objectif { color: var(--encre-douce); }
+
+.une-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.4rem !important;
+}
+
+.une-portrait {
+  position: relative;
+  margin: 0 0.6rem 0.6rem 0;
+}
+.une-portrait::before {          /* aplat lavande décalé derrière la photo */
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate(0.6rem, 0.6rem);
+  border-radius: var(--rayon);
+  background: var(--lavande-200);
+}
+.une-portrait img {
+  position: relative;
+  width: 100%;
+  height: auto;                  /* garde le format 4/5, quelle que soit la taille de l'écran */
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+}
+
+/* Brèves : 1 colonne sur mobile, 3 colonnes ensuite */
+.breves {
+  list-style: none;
+  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.breve {
+  padding: 0.8rem 1.1rem;
+  border-radius: 0.9rem;
+  border-left: 4px solid var(--sapin-400);
+  background: var(--carte);
+  box-shadow: var(--ombre-legere);
+  font-size: 0.95rem;
+}
+.breve strong { display: block; }
+
+@media (min-width: 40em) {
+  .breves { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 2rem); }
+}
+
+@media (min-width: 48em) {
+  .entete-nav { flex-direction: row; justify-content: space-between; align-items: center; }
+  .une-grille {
+    /* texte à gauche, photo à droite */
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    grid-template-areas:
+      "entete portrait"
+      "corps  portrait";
+    column-gap: clamp(2rem, 6vw, 5rem);
+    row-gap: 1.25rem;
+  }
+  .une-entete { align-self: end; }
+  .une-corps  { align-self: start; }
+  .une-portrait { justify-self: end; width: min(100%, 18rem); margin: 0 0.9rem 0.9rem 0; }
+  .une-portrait::before { transform: translate(0.9rem, 0.9rem); }
+}
+
+/* ---------- 5. Sections ---------- */
+.section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+#projets { background: var(--grain), var(--gris-100); } /* gris clair : l'aura blanche ressort mieux */
+.section-parcours {
+  --fond-local: var(--bleu-50);
+  background: var(--grain), var(--fond-local);
+}
+
+.section-entete { text-align: center; }
+.section-titre {
+  margin: 0 0 1rem;
+  font-size: clamp(1.6rem, 1.3rem + 1.5vw, 2.25rem);
+  font-weight: 800;
+}
+.section-titre::after {
+  content: "";
+  display: block;
+  width: 3rem; height: 0.3rem;
+  margin-top: 0.5rem;
+  border-radius: 999px;
+  background: var(--sapin-400);
+}
+.section-entete .section-titre::after { margin-inline: auto; }
+.section-intro { max-width: 46rem; margin: 0 auto 2.5rem; color: var(--encre-douce); }
+
+/* ---------- 6. Cartes ---------- */
+/* Mobile : une colonne, cartes dans le flux, résumé toujours visible */
+.cartes {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  max-width: 26rem;
+}
+
+.carte-emplacement { position: relative; }
+
+.carte {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+  transition: transform 260ms ease, box-shadow 260ms ease, filter 260ms ease;
+}
+/* Voile blanc, invisible par défaut : il estompe les cartes non survolées */
+.carte::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: var(--carte);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+/* Enfoncement « touche de clavier » le temps du clic */
+.carte:active {
+  transform: translate(0.125rem, 0.1875rem);
+  box-shadow: var(--ombre-appui);
+  transition-duration: 60ms;
+}
+.carte:has(.carte-lien:focus-visible) { outline: 3px solid var(--indigo-400); outline-offset: 4px; }
+
+.carte-face {
+  aspect-ratio: 1;               /* la carte repliée est carrée */
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;                 /* sans cela, l'image étire la carte au-delà du carré */
+}
+.carte-image {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  background: var(--bleu-100);   /* teinte d'attente pendant le chargement */
+}
+.carte-titre {
+  margin: 0;
+  padding: 0.9rem 1.1rem 1rem;
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+  font-weight: 800;
+}
+.carte-lien { color: inherit; text-decoration: none; }
+.carte-lien:hover { color: inherit; }
+.carte-lien:focus-visible { outline: none; }
+.carte-lien::after {             /* toute la carte devient cliquable */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.carte-type {
+  position: absolute;
+  top: 0.75rem; left: 0.75rem;
+  z-index: 2;
+  pointer-events: none;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.9);
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: var(--ombre-legere);
+}
+
+/* Déploiement vers le bas : la ligne de grille passe de 0fr à 1fr */
+.carte-deploiement {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 280ms ease;
+}
+.carte-deploiement-interieur { min-height: 0; overflow: hidden; }
+.carte-texte { padding: 0 1.1rem 1.1rem; }
+
+.carte-resume {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--encre-douce);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;          /* 3 lignes maximum */
+  line-clamp: 3;
+  overflow: hidden;
+}
+.carte-actions { margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.carte-action {
+  position: relative;
+  z-index: 2;                    /* au-dessus du lien qui couvre la carte */
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: var(--turquoise-100);
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.carte-action:hover { background: var(--turquoise-200); color: var(--bleu-700); }
+
+/* Appareils à souris : carte carrée, résumé replié, déploiement au survol ou au focus clavier */
+@media (hover: hover) {
+  .carte-emplacement {
+    aspect-ratio: 1;
+    transition: z-index 0s linear 300ms; /* reste au-dessus pendant qu'elle se replie */
+  }
+  .carte { position: absolute; inset: 0 0 auto 0; }
+  .carte-deploiement { grid-template-rows: 0fr; }
+
+  .carte-emplacement:hover,
+  .carte-emplacement:focus-within { z-index: 5; transition-delay: 0s; }
+
+  .carte-emplacement:hover .carte-deploiement,
+  .carte-emplacement:focus-within .carte-deploiement { grid-template-rows: 1fr; }
+
+  /* Carte survolée : agrandie, plus en relief, détachée par une aura blanche */
+  .carte-emplacement:hover .carte,
+  .carte-emplacement:focus-within .carte {
+    transform: translate(-0.125rem, -0.3rem) scale(1.04);
+    box-shadow: var(--aura), var(--ombre-survol);
+    filter: contrast(1.06) saturate(1.1);   /* un cran plus nette et plus vive */
+  }
+  .carte-emplacement:hover .carte:active {
+    transform: translate(0.125rem, 0.1875rem) scale(1.02);
+    box-shadow: var(--aura), var(--ombre-appui);
+  }
+
+  /* Les autres cartes passent légèrement sous un voile blanc */
+  /* Les autres cartes : désaturées, à peine floues, sous un voile blanc */
+  .cartes:has(.carte-emplacement:hover) .carte-emplacement:not(:hover) .carte,
+  .cartes:has(.carte-emplacement:focus-within) .carte-emplacement:not(:focus-within) .carte {
+    filter: saturate(0.25) blur(0.6px);
+  }
+  .cartes:has(.carte-emplacement:hover) .carte-emplacement:not(:hover) .carte::before,
+  .cartes:has(.carte-emplacement:focus-within) .carte-emplacement:not(:focus-within) .carte::before {
+    opacity: 0.5;
+  }
+}
+
+/* Tablette, PC, TV : trois colonnes */
+@media (min-width: 40em) {
+  .cartes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+    column-gap: clamp(1.5rem, 3.5vw, 3rem);
+    row-gap: clamp(2.5rem, 5vw, 4rem);
+  }
+}
+
+/* ---------- 7. Frise chronologique ---------- */
+.frise-legende {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 2.5rem;
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+}
+.legende::before {
+  content: "";
+  display: inline-block;
+  width: 0.9rem; height: 0.9rem;
+  margin-right: 0.4rem;
+  vertical-align: -0.1rem;
+  border-radius: 0.3rem;
+}
+.legende-projet::before    { background: var(--rose-200); border: 1px solid var(--rose-400); }
+.legende-formation::before { background: var(--anis-200); border: 1px solid var(--anis-400); }
+.legende-cote { display: none; }
+
+/* Mobile : ligne à gauche, toutes les étapes à droite */
+.frise {
+  --ligne-x: 1rem;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+}
+.frise::before {                 /* la ligne verticale */
+  content: "";
+  position: absolute;
+  top: 0.5rem; bottom: 0.5rem;
+  left: var(--ligne-x);
+  width: 3px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--bleu-400);
+}
+.frise-etape { position: relative; padding-left: calc(var(--ligne-x) + 1.5rem); }
+.frise-etape::before {           /* point sur la ligne (mobile) */
+  content: "";
+  position: absolute;
+  top: 0.45rem;
+  left: var(--ligne-x);
+  width: 0.95rem; height: 0.95rem;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--carte);
+  border: 3px solid var(--bleu-400);
+}
+
+/* Le macaron : taille fixe, léger dégradé et reflet en haut pour le relief */
+.frise-jalon {
+  display: inline-block;
+  width: 4.25rem;
+  margin: 0 0 0.6rem;
+  padding: 0.25rem 0;
+  border: 1px solid hsl(205 55% 76%);
+  border-radius: 999px;
+  background: linear-gradient(180deg, hsl(205 80% 93%), hsl(205 64% 81%));
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.7), var(--ombre-legere);
+}
+
+.frise-boite {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  box-shadow: var(--ombre-legere);
+}
+.frise-boite h3 { margin: 0 0 0.35rem; font-size: 1.1rem; }
+.frise-boite p  { margin: 0; }
+
+.frise-projet .frise-boite    { background: var(--rose-100); border: 1px solid var(--rose-200); }
+.frise-projet .frise-boite h3 { color: var(--rose-700); }
+.frise-formation .frise-boite    { background: var(--anis-100); border: 1px solid var(--anis-200); }
+.frise-formation .frise-boite h3 { color: var(--anis-700); }
+
+.badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.6rem;
+  border: 1px solid var(--anis-400);
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--anis-700);
+  font-family: var(--police-interface);
+  font-size: 0.75rem;
+  font-weight: 700;
+  vertical-align: 0.15em;
+}
+
+/* Tablette et plus : ligne centrale, projets à gauche, formations à droite, en quinconce */
+@media (min-width: 48em) {
+  .legende-cote { display: inline; }
+
+  .frise { --ligne-x: 50%; gap: 1.75rem; }
+
+  .frise-etape {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: 1.25rem;
+    align-items: start;
+    padding-left: 0;
+  }
+  .frise-etape::before { display: none; }
+
+  .frise-jalon {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    /* fin liseré couleur de fond : il « coupe » la ligne sans faire de bordure blanche épaisse */
+    box-shadow: 0 0 0 2px var(--fond-local, var(--fond)),
+                inset 0 1px 0 hsl(0 0% 100% / 0.7),
+                var(--ombre-legere);
+  }
+  .frise-projet .frise-boite    { grid-column: 1; grid-row: 1; }
+  .frise-formation .frise-boite { grid-column: 3; grid-row: 1; }
+
+  /* Quinconce : quand on change de côté, l'étape remonte le long de la précédente */
+  .frise-projet + .frise-formation,
+  .frise-formation + .frise-projet { margin-top: -2.5rem; }
+}
+
+/* ---------- 8. Pied de page et formulaire ---------- */
+.pied {
+  padding-block: clamp(1.75rem, 4vw, 2.75rem) 1rem;
+  background: var(--grain), var(--bleu-100);
+  border-top: 1px solid var(--bleu-200);
+}
+.pied-grille {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;           /* contenu centré dans la hauteur du pied de page */
+}
+.pied-coordonnees p { margin: 0; }
+.pied .section-titre { margin-bottom: 0.75rem; }
+
+.coordonnees {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem 1.25rem;
+}
+.coordonnees li { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+.coordonnees a  { overflow-wrap: anywhere; }
+.coordonnees-icone {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.9rem; height: 1.9rem;
+  border-radius: 50%;
+  background: var(--carte);
+  color: var(--indigo-700);
+  font-family: var(--police-interface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: var(--ombre-legere);
+}
+
+.formulaire {
+  display: grid;
+  gap: 0.75rem 1rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+}
+.champ { margin: 0; display: grid; gap: 0.25rem; }
+.champ label {
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--encre);
+}
+.champ :is(input, select, textarea) {
+  width: 100%;
+  min-width: 0;                  /* les champs ne débordent plus de leur colonne */
+  font: inherit;
+  color: var(--encre);
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--gris-200);
+  border-radius: 0.7rem;
+  background: var(--fond);
+  transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
+}
+.champ :is(input, select, textarea):focus {
+  outline: none;
+  border-color: var(--indigo-400);
+  box-shadow: 0 0 0 3px var(--indigo-100);
+  background: var(--carte);
+}
+.champ :is(input, textarea):user-invalid { border-color: hsl(355 40% 60%); }
+.champ textarea { min-height: 5.5rem; resize: vertical; }
+
+.champ-piege { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.formulaire-pied {
+  margin: 0.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
+
+.bouton {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--turquoise-100), hsl(180 38% 86%));
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--ombre-repos);
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, background-color var(--duree);
+}
+.bouton:hover    { transform: translate(-1px, -2px); box-shadow: var(--ombre-survol); }
+.bouton:active   { transform: translate(1px, 2px); box-shadow: var(--ombre-appui); transition-duration: 60ms; }
+.bouton:disabled { opacity: 0.6; cursor: progress; }
+a.bouton { display: inline-block; text-decoration: none; }
+a.bouton:hover { color: var(--bleu-700); }
+.bouton-second { background: var(--carte); border-color: var(--trait); color: var(--encre); }
+a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
+
+.formulaire-statut { font-size: 0.95rem; color: var(--sapin-700); }
+.formulaire-statut[data-etat="erreur"] { color: hsl(355 40% 40%); }
+
+.pied-mentions {
+  margin: 1.5rem 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--encre-douce);
+}
+
+@media (min-width: 30em) {
+  .formulaire { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .champ-large { grid-column: 1 / -1; }
+}
+@media (min-width: 48em) {
+  .pied-grille {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+/* ---------- 9. Écrans larges, TV, mouvement réduit ---------- */
+@media (min-width: 100em) { html { font-size: 112.5%; } }
+@media (min-width: 140em) { html { font-size: 137.5%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
