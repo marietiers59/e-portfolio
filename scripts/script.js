@@ -157,8 +157,8 @@ if (formulaire) {
 }
 
 /* ---------- 3. Compteur de visites (GoatCounter) et espace perso ---------- */
-// Remplacer MONCODE par le code choisi à l'inscription sur goatcounter.com
-const ADRESSE_GOATCOUNTER = 'https://MONCODE.goatcounter.com/count';
+// Remplacer marie-tiers par le code choisi à l'inscription sur goatcounter.com
+const ADRESSE_GOATCOUNTER = 'https://marie-tiers.goatcounter.com/count';
 const CLE_EXCLUSION = 'portfolio-ne-pas-me-compter';
 
 /** Lecture prudente : le stockage peut être bloqué (navigation privée, réglages). */
@@ -176,7 +176,7 @@ function definirExclusion(exclure) {
 
 /** Le compteur ne se charge que sur le vrai site, hors appareil exclu et hors espace perso. */
 function chargerCompteur() {
-  const codeRenseigne = !ADRESSE_GOATCOUNTER.includes('MON' + 'CODE'); // écrit en deux morceaux : un remplacement global de MONCODE ne le touche pas
+  const codeRenseigne = !ADRESSE_GOATCOUNTER.includes('MON' + 'CODE'); // écrit en deux morceaux : un remplacement global de marie-tiers ne le touche pas
   const enLigne = location.protocol === 'https:' && location.hostname !== 'localhost';
   const pageExclue = document.body.hasAttribute('data-sans-compteur');
   if (!codeRenseigne || !enLigne || pageExclue || appareilExclu()) return;
