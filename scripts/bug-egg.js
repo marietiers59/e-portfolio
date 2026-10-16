@@ -30,7 +30,7 @@
   const style = document.createElement("style");
   style.textContent = `
     .be-hote{position:relative;overflow:hidden}
-    .be-bug{all:unset;position:absolute;right:0;bottom:1rem;width:64px;cursor:pointer;
+    .be-bug{all:unset;position:absolute;z-index:2;right:0;bottom:1rem;width:64px;cursor:pointer;
       transform:translateX(110%);transition:transform .6s steps(5)}
     .be-bug.be-visible{transform:translateX(40%)}
     .be-bug.be-attrapee{transform:translateX(15%) rotate(-12deg);transition:transform .3s ease-out}
@@ -40,7 +40,7 @@
     .be-r{fill:var(--bug-corps,#F0997B)} .be-d{fill:var(--bug-points,#993C1D)}
     .be-h,.be-g{fill:var(--bug-tete,#444441)} .be-a{fill:var(--bug-antennes,#5F5E5A)}
     .be-k{fill:var(--bug-ligne,#2C2C2A)} .be-w{fill:#fff} .be-l{fill:#FAECE7}
-    .be-bulle{position:absolute;right:70px;bottom:4.2rem;max-width:12rem;padding:.4rem .7rem;
+    .be-bulle{position:absolute;z-index:2;right:70px;bottom:4.2rem;max-width:12rem;padding:.4rem .7rem;
       border-radius:10px;background:var(--bug-bulle-fond,#E1F5EE);color:var(--bug-bulle-texte,#085041);
       font-size:.85rem;box-shadow:0 1px 3px rgba(0,0,0,.08);opacity:0;transition:opacity .3s;pointer-events:none}
     .be-bulle.be-montree{opacity:1}
