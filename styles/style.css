@@ -131,7 +131,7 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
-a { color: var(--indigo-700); text-underline-offset: 0.2em; }
+a { color: var(--indigo-700); text-decoration: none; }   /* aucun lien souligné */
 a:hover { color: var(--bleu-700); }
 
 :focus-visible {
@@ -194,15 +194,30 @@ abbr[title] { text-decoration: none; cursor: help; }
   align-items: center;
   gap: 0.35rem;
   padding-block: 0.2rem;
-  color: var(--bleu-700);
+  --couleur-lien: var(--bleu-700);
+  color: var(--couleur-lien);
   font-family: var(--police-interface);
   font-weight: 700;
   text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: border-color var(--duree), color var(--duree);
 }
-.barre-lien:hover { color: var(--indigo-700); border-bottom-color: var(--sapin-400); }
+.barre-lien:hover { --couleur-lien: var(--indigo-700); border-bottom-color: var(--sapin-400); }
 .barre-lien:active { transform: translateY(1px); }
+
+/* Tout en haut de la page (classe posée par script.js), la flèche du haut devient une pastille pleine */
+.barre-lien > span[aria-hidden] { position: relative; }
+.en-haut .barre-haut .barre-lien > span[aria-hidden] { color: transparent; }  /* la flèche garde sa place, invisible… */
+.en-haut .barre-haut .barre-lien > span[aria-hidden]::before {                /* …et une puce • se centre dessus */
+  content: "\2022";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.5em;
+  line-height: 1;
+  color: var(--couleur-lien);
+}
 
 /* ---------- 4. En-tête, navigation et une ---------- */
 /* Ligne de navigation : empilée sur mobile, en ligne à partir de la tablette */
@@ -222,16 +237,6 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-weight: 800;
   color: var(--encre);
   text-decoration: none;
-}
-.logo-pastille {
-  display: grid;
-  place-items: center;
-  width: 2.25rem; height: 2.25rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(160deg, var(--indigo-100), var(--indigo-200));
-  color: var(--indigo-700);
-  font-size: 1rem;
-  box-shadow: var(--ombre-legere);
 }
 
 .navigation-liste {
@@ -258,11 +263,25 @@ abbr[title] { text-decoration: none; cursor: help; }
 .navigation-liste a[aria-current="page"] { background: var(--bleu-100); color: var(--bleu-700); }
 .navigation-liste a:active { transform: translate(1px, 1px); box-shadow: var(--ombre-appui); transition-duration: 60ms; }
 
-/* La une : texte toujours aligné à gauche */
+/* La une : bannière illustrée, texte toujours aligné à gauche */
 .une {
+  /*
+    Voile clair entre l'image et le texte : très couvrant derrière le texte,
+    il s'efface progressivement pour laisser voir l'image côté photo.
+    Mobile : le texte occupe toute la largeur, le voile couvre donc tout.
+  */
+  --voile: linear-gradient(180deg, hsl(0 0% 100% / 0.84), hsl(0 0% 100% / 0.8));
   padding-block: clamp(2rem, 6vw, 4.5rem);
-  background: var(--grain), linear-gradient(160deg, var(--perle-1), var(--perle-2));
+  background:
+    var(--voile),
+    url("../medias/banniere-une.jpg") center / cover no-repeat,
+    linear-gradient(160deg, var(--perle-1), var(--perle-2)); /* teinte d'attente pendant le chargement */
   border-block: 1px solid var(--perle-trait);
+}
+/* Aura claire diffuse autour des lettres : le texte se détache de l'image sans effort */
+.une-entete,
+.une-corps p:not(.une-actions) {
+  text-shadow: 0 0 0.35rem hsl(0 0% 100% / 0.9), 0 0 1.2rem hsl(0 0% 100% / 0.8);
 }
 .une-grille {
   display: grid;
@@ -292,7 +311,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 .une-titre-accent { color: var(--indigo-700); }
 .une-corps p { margin: 0 0 0.85rem; max-width: 38rem; }
-.une-objectif { color: var(--encre-douce); }
+.une-objectif { color: hsl(220 16% 27%); }   /* plus foncé que --encre-douce : reste lisible sur la bannière */
 
 .une-actions {
   display: flex;
@@ -301,26 +320,29 @@ abbr[title] { text-decoration: none; cursor: help; }
   margin-top: 1.4rem !important;
 }
 
+/* Photo ronde, sans cadre : halo clair et contour fin qui flotte autour */
 .une-portrait {
   position: relative;
-  margin: 0 0.6rem 0.6rem 0;
+  margin: 0.6rem;
+  border-radius: 50%;
+  box-shadow:
+    0 0 2.5rem 0.5rem hsl(0 0% 100% / 0.35),             /* halo clair */
+    0 1.25rem 2.5rem -0.75rem hsl(var(--ombre-teinte) / 0.45); /* ombre portée douce */
 }
-.une-portrait::before {          /* aplat lavande décalé derrière la photo */
+.une-portrait::before {          /* contour fin, détaché du cadre */
   content: "";
   position: absolute;
-  inset: 0;
-  transform: translate(0.6rem, 0.6rem);
-  border-radius: var(--rayon);
-  background: var(--lavande-200);
+  inset: -0.6rem;
+  border: 1.5px solid hsl(0 0% 100% / 0.85);
+  border-radius: 50%;
+  pointer-events: none;
 }
 .une-portrait img {
-  position: relative;
   width: 100%;
-  height: auto;                  /* garde le format 4/5, quelle que soit la taille de l'écran */
-  aspect-ratio: 4 / 5;
+  height: auto;                  /* laisse aspect-ratio fixer la hauteur */
+  aspect-ratio: 1;               /* cercle parfait (la photo est déjà carrée, cadrée du crâne au cou) */
   object-fit: cover;
-  border-radius: var(--rayon);
-  box-shadow: var(--ombre-repos);
+  border-radius: 50%;
 }
 
 /* Brèves : 1 colonne sur mobile, 3 colonnes ensuite */
@@ -331,15 +353,29 @@ abbr[title] { text-decoration: none; cursor: help; }
   display: grid;
   gap: 0.75rem;
 }
+/* Verre dépoli : l'image transparaît, floutée, sous un blanc translucide */
 .breve {
-  padding: 0.8rem 1.1rem;
-  border-radius: 0.9rem;
-  border-left: 4px solid var(--sapin-400);
-  background: var(--carte);
-  box-shadow: var(--ombre-legere);
+  padding: 0.85rem 1.15rem;
+  border: 1px solid hsl(0 0% 100% / 0.85);
+  border-radius: 1rem;
+  background: hsl(0 0% 100% / 0.7);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.9),                   /* reflet sur l'arête du haut */
+    0 0.75rem 1.5rem -0.75rem hsl(var(--ombre-teinte) / 0.35);
   font-size: 0.95rem;
 }
 .breve strong { display: block; }
+.breve strong::before {          /* petite pastille vert sapin devant l'intitulé */
+  content: "";
+  display: inline-block;
+  width: 0.5rem; height: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background: var(--sapin-400);
+  vertical-align: 0.1em;
+}
 
 @media (min-width: 40em) {
   .breves { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 2rem); }
@@ -356,10 +392,17 @@ abbr[title] { text-decoration: none; cursor: help; }
     column-gap: clamp(2rem, 6vw, 5rem);
     row-gap: 1.25rem;
   }
+  .une {
+    --voile: linear-gradient(90deg,
+      hsl(0 0% 100% / 0.86) 0%,
+      hsl(0 0% 100% / 0.82) 45%,
+      hsl(0 0% 100% / 0.45) 62%,
+      hsl(0 0% 100% / 0.05) 82%);
+  }
   .une-entete { align-self: end; }
   .une-corps  { align-self: start; }
-  .une-portrait { justify-self: end; width: min(100%, 18rem); margin: 0 0.9rem 0.9rem 0; }
-  .une-portrait::before { transform: translate(0.9rem, 0.9rem); }
+  .une-portrait { justify-self: end; width: min(100% - 1.5rem, 17rem); margin: 0.9rem; }
+  .une-portrait::before { inset: -0.75rem; }
 }
 
 /* ---------- 5. Sections ---------- */
@@ -591,7 +634,6 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 .pilier-lien:focus-visible { outline: none; }
 .pilier-fleche { display: inline-block; transition: transform var(--duree) ease; }
-.pilier:hover .pilier-lien { text-decoration: underline; text-decoration-color: var(--sapin-400); }
 .pilier:hover .pilier-fleche { transform: translateX(0.2rem); }
 
 /* --- Appareils à souris : cartes repliées, déploiement au survol ou au focus clavier --- */
