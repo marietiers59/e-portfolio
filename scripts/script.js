@@ -214,6 +214,18 @@ if (boutonComptage) {
 }
 
 /* ---------- 4. Utilitaires ---------- */
+// Tout en haut de la page : classe « en-haut » sur <html> (la flèche du Menu devient une pastille, cf. CSS)
+const racine = document.documentElement;
+let verificationPrevue = false;
+function verifierHaut() {
+  verificationPrevue = false;
+  racine.classList.toggle('en-haut', window.scrollY < 8);
+}
+window.addEventListener('scroll', () => {
+  if (!verificationPrevue) { verificationPrevue = true; requestAnimationFrame(verifierHaut); }
+}, { passive: true });
+verifierHaut();
+
 document.querySelectorAll('[data-annee]').forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
