@@ -426,66 +426,130 @@ if (outilsProjets) {
 
 /* ---------- 6. Calendrier au survol d'une date (accueil) ---------- */
 // Sur <time datetime="2027-04-26" data-calendrier>…</time> : au survol ou au focus, le mois s'affiche
-// avec le jour mis en valeur et la fin de sa semaine teintée. Il disparaît instantanément à la sortie.
+// avec le jour mis en valeur et la fin de sa semaine teintée.
+//  · Il reste ouvert tant que le curseur est sur la date OU sur le calendrier, et disparaît
+//    instantanément dès qu'il quitte les deux.
+//  · Les flèches ‹ › (ou les touches ← → quand la date a le focus) changent de mois ;
+//    « Revenir à avril 2027 » ramène au mois de départ.
 // Aucune dépendance ni iframe : le mois est construit ici, en français, semaine commençant le lundi.
 document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const [annee, mois, jour] = date.getAttribute('datetime').split('-').map(Number);
   const cible = new Date(annee, mois - 1, jour);
-  const nomMois = cible.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  const nomMoisCible = cible.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
   const nomJour = cible.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const jourSemaineCible = (cible.getDay() + 6) % 7;   // 0 = lundi
+  let affiche = new Date(annee, mois - 1, 1);           // mois actuellement affiché
 
   const bulle = document.createElement('div');
   bulle.className = 'calendrier';
   bulle.id = `calendrier-${rang + 1}`;
-  bulle.setAttribute('role', 'tooltip');
+  bulle.setAttribute('role', 'dialog');
+  bulle.setAttribute('aria-label', `Calendrier : ${nomJour}`);
   bulle.hidden = true;
-
-  const premierJour = (new Date(annee, mois - 1, 1).getDay() + 6) % 7; // 0 = lundi
-  const nbJours = new Date(annee, mois, 0).getDate();
-  const jourSemaineCible = (cible.getDay() + 6) % 7;
-  let cases = '';
-  for (let k = 0; k < Math.ceil((premierJour + nbJours) / 7) * 7; k++) {
-    const n = k - premierJour + 1;
-    if (k % 7 === 0) cases += '<tr>';
-    if (n < 1 || n > nbJours) cases += '<td></td>';
-    else {
-      const classes = [];
-      if (k % 7 >= 5) classes.push('we');
-      if (n > jour && n <= jour + (4 - jourSemaineCible)) classes.push('stage');
-      if (n === jour) classes.push('jour');
-      cases += `<td class="${classes.join(' ')}"><span>${n}</span></td>`;
-    }
-    if (k % 7 === 6) cases += '</tr>';
-  }
   bulle.innerHTML =
-    `<p class="calendrier-titre">${nomMois}</p>` +
+    '<div class="calendrier-entete">' +
+      '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="-1" aria-label="Mois précédent">&#x2039;</button>' +
+      '<p class="calendrier-titre" aria-live="polite"></p>' +
+      '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="Mois suivant">&#x203A;</button>' +
+    '</div>' +
     '<table><thead><tr><th abbr="lundi">L</th><th abbr="mardi">M</th><th abbr="mercredi">M</th>' +
     '<th abbr="jeudi">J</th><th abbr="vendredi">V</th><th abbr="samedi">S</th><th abbr="dimanche">D</th></tr></thead>' +
-    `<tbody>${cases}</tbody></table>` +
-    `<p class="calendrier-legende">Début du stage : ${nomJour}</p>`;
+    '<tbody></tbody></table>' +
+    `<p class="calendrier-legende">Début du stage : ${nomJour}</p>` +
+    `<button class="calendrier-retour" type="button" tabindex="-1">Revenir à ${nomMoisCible}</button>`;
   document.body.append(bulle);
+  const titre = bulle.querySelector('.calendrier-titre');
+  const corps = bulle.querySelector('tbody');
+  const retour = bulle.querySelector('.calendrier-retour');
 
-  date.tabIndex = 0;
-  date.setAttribute('aria-describedby', bulle.id);
+  /** Construit la grille du mois affiché. */
+  const dessiner = () => {
+    const a = affiche.getFullYear(), m = affiche.getMonth();
+    const premierJour = (new Date(a, m, 1).getDay() + 6) % 7;
+    const nbJours = new Date(a, m + 1, 0).getDate();
+    const memeMois = a === annee && m === mois - 1;
+    let cases = '';
+    for (let k = 0; k < 42; k++) {   // toujours 6 semaines : le calendrier garde la même hauteur d'un mois à l'autre
+      const n = k - premierJour + 1;
+      if (k % 7 === 0) cases += '<tr>';
+      if (n < 1 || n > nbJours) cases += '<td><span></span></td>';
+      else {
+        const classes = [];
+        if (k % 7 >= 5) classes.push('we');
+        if (memeMois && n > jour && n <= jour + (4 - jourSemaineCible)) classes.push('stage');
+        if (memeMois && n === jour) classes.push('jour');
+        cases += `<td class="${classes.join(' ')}"><span>${n}</span></td>`;
+      }
+      if (k % 7 === 6) cases += '</tr>';
+    }
+    corps.innerHTML = cases;
+    titre.textContent = affiche.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+    retour.style.visibility = memeMois ? 'hidden' : 'visible';   // garde sa place : rien ne bouge sous le curseur
+  };
 
-  const montrer = () => {
-    bulle.hidden = false;
+  /** Place le calendrier sous la date, ou au-dessus s'il manque de place en bas. */
+  const placer = () => {
     const zone = date.getBoundingClientRect();
     const largeur = bulle.offsetWidth, hauteur = bulle.offsetHeight;
     const gauche = Math.min(Math.max(8, zone.left + zone.width / 2 - largeur / 2), document.documentElement.clientWidth - largeur - 8);
     const placeDessous = window.innerHeight - zone.bottom - (document.querySelector('.barre-bas')?.offsetHeight ?? 0);
-    const haut = placeDessous >= hauteur + 12 ? zone.bottom + 8 : zone.top - hauteur - 8;
+    const dessous = placeDessous >= hauteur + 12;
+    bulle.dataset.cote = dessous ? 'dessous' : 'dessus';   // sert au « pont » invisible entre la date et le calendrier
     bulle.style.left = `${gauche + window.scrollX}px`;
-    bulle.style.top = `${haut + window.scrollY}px`;
+    bulle.style.top = `${(dessous ? zone.bottom + 8 : zone.top - hauteur - 8) + window.scrollY}px`;
+  };
+
+  const montrer = () => {
+    if (!bulle.hidden) return;
+    affiche = new Date(annee, mois - 1, 1);   // chaque ouverture repart du mois de la date
+    dessiner();
+    bulle.hidden = false;
+    placer();
   };
   const cacher = () => { bulle.hidden = true; };
+  const changerMois = (pas) => {
+    affiche = new Date(affiche.getFullYear(), affiche.getMonth() + pas, 1);
+    dessiner();
+    placer();                                 // le nombre de semaines peut changer la hauteur
+  };
+  const survole = () => date.matches(':hover') || bulle.matches(':hover');
 
-  // Souris : survol. Clavier : focus. Écran tactile : toucher la date l'affiche, toucher ailleurs la cache.
+  // Souris : survol de la date ou du calendrier ; sortie des deux = disparition immédiate
   date.addEventListener('pointerenter', (evt) => { if (evt.pointerType === 'mouse') montrer(); });
-  date.addEventListener('pointerleave', (evt) => { if (evt.pointerType === 'mouse') cacher(); });
+  const quitter = (evt) => {
+    if (evt.pointerType !== 'mouse') return;
+    const versOu = evt.relatedTarget;
+    if (versOu && (date.contains(versOu) || bulle.contains(versOu))) return;
+    cacher();
+  };
+  date.addEventListener('pointerleave', quitter);
+  bulle.addEventListener('pointerleave', quitter);
+
+  // Clavier : focus sur la date ; ← → changent de mois ; Échap ferme
+  date.tabIndex = 0;
+  date.setAttribute('aria-controls', bulle.id);
   date.addEventListener('focus', montrer);
-  date.addEventListener('blur', cacher);
+  date.addEventListener('blur', () => { if (!survole()) cacher(); });
+  date.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') cacher();
+    else if (!bulle.hidden && (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight')) {
+      evt.preventDefault();
+      changerMois(evt.key === 'ArrowLeft' ? -1 : 1);
+    }
+  });
+
+  // Écran tactile : toucher la date l'ouvre, toucher ailleurs la ferme
   date.addEventListener('click', montrer);
-  date.addEventListener('keydown', (evt) => { if (evt.key === 'Escape') cacher(); });
-  window.addEventListener('scroll', () => { if (!bulle.hidden && document.activeElement !== date) cacher(); }, { passive: true });
+
+  // Boutons du calendrier : un clic ne retire pas le focus de la date (le calendrier reste ouvert)
+  bulle.addEventListener('mousedown', (evt) => evt.preventDefault());
+  bulle.addEventListener('click', (evt) => {
+    const fleche = evt.target.closest('.calendrier-fleche');
+    if (fleche) changerMois(Number(fleche.dataset.pas));
+    else if (evt.target.closest('.calendrier-retour')) { affiche = new Date(annee, mois - 1, 1); dessiner(); placer(); }
+  });
+
+  window.addEventListener('scroll', () => {
+    if (!bulle.hidden && document.activeElement !== date && !survole()) cacher();
+  }, { passive: true });
 });
