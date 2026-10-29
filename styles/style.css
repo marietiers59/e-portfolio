@@ -606,6 +606,24 @@ abbr[title] { text-decoration: none; cursor: help; }
 .tag-techno { background: var(--bleu-50);          border-color: var(--bleu-200);    color: var(--bleu-700); }
 .carte-tags-repere .tag { box-shadow: var(--ombre-legere); }
 
+/* Libellé du cadre : version longue par défaut, version courte (BUT 1, BUT 2, perso) sur les cartes étroites */
+.cadre-court { display: none; }
+
+/*
+  Cartes étroites (trois colonnes sur petite tablette, ou texte agrandi par le visiteur) :
+  étiquettes plus compactes sur une seule ligne et titre un cran plus petit,
+  pour que l'image garde de la hauteur et que les étiquettes ne passent jamais sous la pastille du haut.
+*/
+.carte-emplacement { container-type: inline-size; }
+@container (max-width: 15rem) {
+  .cadre-long  { display: none; }
+  .cadre-court { display: inline; }
+  .carte-tags-repere { left: 0.5rem; right: 0.5rem; bottom: 0.5rem; flex-wrap: nowrap; }
+  .tag { padding-inline: 0.45rem; font-size: 0.72rem; }
+  .carte-type { top: 0.5rem; left: 0.5rem; font-size: 0.72rem; padding-inline: 0.55rem; }
+  .carte-titre { font-size: 0.95rem; padding: 0.7rem 0.75rem 0.8rem; }
+}
+
 /* Carte « bientôt en ligne » : visible, lisible au survol ou au clavier, mais sans lien */
 .carte-bientot { cursor: default; }
 .carte-bientot .carte-image { filter: saturate(0.65); }
