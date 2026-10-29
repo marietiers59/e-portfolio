@@ -9,7 +9,7 @@
    3. Barres fixes
    4. En-tête, navigation et une
    5. Sections
-   6. Cartes projets et piliers
+   6. Cartes projets, filtres et piliers
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
@@ -95,6 +95,7 @@
   --barre-h: 3rem;
   --duree: 180ms;
   --conteneur: 72rem;
+  --taille-titre-une: clamp(1.4rem, 0.95rem + 2.2vw, 2.8rem); /* nom en haut de page = titre de la une */
 
   /* Grain de papier très fin, presque invisible (supprimer la ligne pour l'enlever) */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
@@ -131,8 +132,10 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
-a { color: var(--indigo-700); text-decoration: none; }   /* aucun lien souligné */
+a { color: var(--indigo-700); }
 a:hover { color: var(--bleu-700); }
+/* Aucun lien souligné, dans aucun état ni aucune page du site */
+a, a:any-link, a:hover, a:focus, a:active, a:visited { text-decoration: none !important; }
 
 :focus-visible {
   outline: 3px solid var(--indigo-400);
@@ -198,17 +201,18 @@ abbr[title] { text-decoration: none; cursor: help; }
   color: var(--couleur-lien);
   font-family: var(--police-interface);
   font-weight: 700;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: border-color var(--duree), color var(--duree);
+  transition: color var(--duree);
 }
-.barre-lien:hover { --couleur-lien: var(--indigo-700); border-bottom-color: var(--sapin-400); }
+.barre-lien:hover { --couleur-lien: var(--indigo-700); }
 .barre-lien:active { transform: translateY(1px); }
 
-/* Tout en haut de la page (classe posée par script.js), la flèche du haut devient une pastille pleine */
+/* La flèche devient une pastille pleine (classes posées par script.js) :
+   « Menu » tout en haut de la page, « Contact » quand le bouton « Envoyer » est entièrement visible */
 .barre-lien > span[aria-hidden] { position: relative; }
-.en-haut .barre-haut .barre-lien > span[aria-hidden] { color: transparent; }  /* la flèche garde sa place, invisible… */
-.en-haut .barre-haut .barre-lien > span[aria-hidden]::before {                /* …et une puce • se centre dessus */
+.en-haut .barre-haut .barre-lien > span[aria-hidden],
+.en-bas  .barre-bas  .barre-lien > span[aria-hidden] { color: transparent; }  /* la flèche garde sa place, invisible… */
+.en-haut .barre-haut .barre-lien > span[aria-hidden]::before,
+.en-bas  .barre-bas  .barre-lien > span[aria-hidden]::before {                /* …et une puce • se centre dessus */
   content: "\2022";
   position: absolute;
   inset: 0;
@@ -233,10 +237,10 @@ abbr[title] { text-decoration: none; cursor: help; }
   align-items: center;
   gap: 0.6rem;
   font-family: var(--police-titre);
-  font-size: 1.25rem;
+  font-size: var(--taille-titre-une);   /* aussi grand que le titre de la une */
   font-weight: 800;
+  line-height: 1.2;
   color: var(--encre);
-  text-decoration: none;
 }
 
 .navigation-liste {
@@ -300,13 +304,14 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 .une-surtitre {
   margin: 0 0 0.4rem;
+  font-size: clamp(1.1rem, 0.95rem + 0.55vw, 1.4rem);   /* un peu plus grand que le texte, moins que le titre */
   font-family: var(--police-interface);
   font-weight: 700;
   color: var(--bleu-700);
 }
 .une-titre {
   margin: 0;
-  font-size: clamp(1.45rem, 1rem + 2.6vw, 3.25rem);
+  font-size: var(--taille-titre-une);
   font-weight: 800;
 }
 .une-titre-accent { color: var(--indigo-700); }
@@ -432,7 +437,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 .section-entete .section-titre::after { margin-inline: auto; }
 .section-intro { max-width: 46rem; margin: 0 auto 2.5rem; color: var(--encre-douce); }
 
-/* ---------- 6. Cartes projets et piliers ---------- */
+/* ---------- 6. Cartes projets, filtres et piliers ---------- */
 /*
   Socle commun aux deux familles :
     .emplacement → la place réservée dans la grille
@@ -510,7 +515,8 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
   font-weight: 800;
 }
-.carte-lien { color: inherit; text-decoration: none; }
+.carte-titre i { font-style: normal; }   /* titres harmonisés : pas d'italique, même pour les noms anglais */
+.carte-lien { color: inherit; }
 .carte-lien:hover { color: inherit; }
 .carte-lien:focus-visible { outline: none; }
 .carte-lien::after {             /* toute la carte devient cliquable */
@@ -542,8 +548,8 @@ abbr[title] { text-decoration: none; cursor: help; }
   color: var(--encre-douce);
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;          /* 3 lignes maximum */
-  line-clamp: 3;
+  -webkit-line-clamp: 14;         /* simple garde-fou : un résumé ne devrait jamais l'atteindre */
+  line-clamp: 14;
   overflow: hidden;
 }
 .carte-actions { margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -560,6 +566,138 @@ abbr[title] { text-decoration: none; cursor: help; }
   text-decoration: none;
 }
 .carte-action:hover { background: var(--turquoise-200); color: var(--bleu-700); }
+
+/* Image animée + image fixe (mouvement réduit) : <picture> s'efface, l'image reste dans la grille */
+.carte-face picture { display: contents; }
+
+/* Visuel : l'image remplit la case, les étiquettes année + cadre se posent en bas à gauche */
+.carte-visuel { position: relative; min-height: 0; }
+.carte-visuel .carte-image { position: absolute; inset: 0; }
+
+/* Étiquettes : trois familles de couleur (année, cadre, technologies), en minuscules sauf noms propres */
+.carte-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.carte-tags-repere {
+  position: absolute;
+  left: 0.75rem; right: 0.75rem; bottom: 0.65rem;
+  z-index: 2;
+  pointer-events: none;
+}
+.carte-texte > .carte-tags { margin: 0 0 0.6rem; }
+.tag {
+  padding: 0.1rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--police-interface);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.tag sup { font-size: 0.7em; line-height: 0; }
+.tag-annee  { background: hsl(165 40% 93% / 0.95); border-color: hsl(165 26% 78%); color: var(--sapin-700); font-variant-numeric: tabular-nums; }
+.tag-cadre  { background: hsl(260 50% 96% / 0.95); border-color: var(--lavande-200); color: var(--lavande-700); }
+.tag-techno { background: var(--bleu-50);          border-color: var(--bleu-200);    color: var(--bleu-700); }
+.carte-tags-repere .tag { box-shadow: var(--ombre-legere); }
+
+/* Carte « bientôt en ligne » : visible, lisible au survol ou au clavier, mais sans lien */
+.carte-bientot { cursor: default; }
+.carte-bientot .carte-image { filter: saturate(0.65); }
+.carte-bientot .carte-type {
+  background: hsl(0 0% 100% / 0.92);
+  color: var(--lavande-700);
+  outline: 1px dashed var(--lavande-400);
+  outline-offset: -1px;
+}
+.carte-bientot:active { transform: none; box-shadow: var(--ombre-repos); }
+.carte-bientot:focus-visible { outline: 3px solid var(--indigo-400); outline-offset: 4px; border-radius: var(--rayon); }
+
+/* Filtres de la page Projets : pilules, comme le menu */
+.outils-projets {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin: 0 0 2.5rem;
+}
+.outils-projets[hidden] { display: none; }
+.filtres, .outils-tri {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.filtre {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid var(--trait);
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--encre);
+  font-family: var(--police-interface);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, background-color var(--duree), color var(--duree);
+}
+.filtre:hover  { transform: translate(-1px, -2px); box-shadow: var(--ombre-repos); color: var(--indigo-700); }
+.filtre:active { transform: translate(1px, 1px); box-shadow: var(--ombre-appui); transition-duration: 60ms; }
+.filtre[aria-pressed="true"] {
+  background: var(--bleu-100);
+  border-color: var(--bleu-200);
+  color: var(--bleu-700);
+  box-shadow: inset 0 1px 2px hsl(var(--ombre-teinte) / 0.12);
+}
+.filtre-nombre {
+  min-width: 1.6rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--gris-100);
+  color: var(--encre-douce);
+  font-size: 0.8rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.filtre[aria-pressed="true"] .filtre-nombre { background: var(--carte); color: var(--bleu-700); }
+.filtre-nombre:empty { display: none; }
+
+/* Tri et réinitialisation : boutons texte, plus discrets que les filtres */
+.outil {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 999px;
+  background: var(--turquoise-100);
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--duree), transform var(--duree) ease;
+}
+.outil:hover  { background: var(--turquoise-200); }
+.outil:active { transform: translateY(1px); }
+.outil[hidden] { display: none; }
+.outil-discret { background: transparent; border-color: var(--trait); color: var(--encre-douce); }
+.outil-discret:hover { background: var(--gris-100); color: var(--encre); }
+
+/* Carte écartée par un filtre */
+.carte-emplacement[hidden] { display: none; }
+
+/* Seconde phrase d'intro (mode d'emploi), plus discrète */
+.section-intro-pratique { margin-top: -1.5rem; font-size: 0.95rem; }
 
 /* --- Piliers (accueil) : rectangles portrait --- */
 /* Structure : titre + logo, image carrée, résumé qui se déploie, lien en bas */
@@ -667,6 +805,11 @@ abbr[title] { text-decoration: none; cursor: help; }
     transform: translate(0.125rem, 0.1875rem) scale(1.02);
     box-shadow: var(--aura), var(--ombre-appui);
   }
+  /* Pas d'enfoncement au clic sur une carte sans lien */
+  .emplacement:hover .carte-bientot:active {
+    transform: translate(-0.125rem, -0.3rem) scale(1.04);
+    box-shadow: var(--aura), var(--ombre-survol);
+  }
 
   /* Les autres cartes du même groupe : désaturées, à peine floues, sous un voile blanc */
   :is(.cartes, .piliers):has(.emplacement:hover) .emplacement:not(:hover) .carte,
@@ -696,6 +839,130 @@ abbr[title] { text-decoration: none; cursor: help; }
   }
   .pilier-emplacement { flex: 0 0 min(21rem, 30%); }
 }
+/* Petites tablettes : trois colonnes étroites, résumé un cran plus petit pour rester entier */
+@media (min-width: 40em) and (max-width: 47.99em) {
+  .carte-titre  { padding-inline: 0.85rem; }
+  .carte-texte  { padding-inline: 0.85rem; }
+  .carte-resume { font-size: 0.85rem; line-height: 1.5; }
+}
+
+/* --- Piliers (accueil, souris, tablette et plus) : la carte survolée s'élargit jusqu'à toucher ses voisines --- */
+/*
+  Les trois piliers ont une largeur l = min(21rem, 30 % de la rangée), un écart minimal de 1rem,
+  et l'espace restant est réparti également (space-evenly) : marge extérieure m = (rangée − 3l − 2rem) / 4,
+  écart entre deux piliers = 1rem + m. La carte survolée s'étend de cet écart du côté de chaque voisine,
+  et de m du côté extérieur. @property fige la valeur en pixels sur .piliers, où 100cqw = largeur de la rangée.
+*/
+@property --pilier-marge {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+@media (hover: hover) and (min-width: 40em) {
+  .section-piliers > .conteneur { container-type: inline-size; }
+  .piliers { --pilier-marge: calc((100cqw - 3 * min(21rem, 30cqw) - 2rem) / 4); }
+
+  .pilier-emplacement > .carte {
+    left: 0; right: 0;
+    transition: transform 260ms ease, box-shadow 260ms ease, filter 260ms ease, left 260ms ease, right 260ms ease;
+  }
+  /* Image : même hauteur qu'au repos (100cqw = largeur du pilier replié), recadrée en largeur */
+  .pilier-image { height: 100cqw; }
+
+  .pilier-emplacement:is(:hover, :focus-within) > .carte {
+    left:  calc(-1rem - var(--pilier-marge));
+    right: calc(-1rem - var(--pilier-marge));
+    transform: translateY(-0.3rem);   /* pas d'agrandissement : l'élargissement suffit, la carte ne déborde pas sur ses voisines */
+  }
+  .pilier-emplacement:first-child:is(:hover, :focus-within) > .carte { left:  calc(-1 * var(--pilier-marge)); }
+  .pilier-emplacement:last-child:is(:hover, :focus-within)  > .carte { right: calc(-1 * var(--pilier-marge)); }
+  .pilier-emplacement:hover > .carte:active { transform: translateY(0); }
+
+  /* Section « Mon parcours » : même voile que les piliers voisins tant qu'un pilier est survolé */
+  .section-parcours { position: relative; z-index: 0; transition: filter 260ms ease; }
+  .section-parcours::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: var(--carte);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 260ms ease;
+  }
+  body:has(.piliers .emplacement:is(:hover, :focus-within)) .section-parcours { filter: saturate(0.25) blur(0.6px); }
+  body:has(.piliers .emplacement:is(:hover, :focus-within)) .section-parcours::after { opacity: 0.5; }
+}
+
+/* --- Date avec calendrier au survol (accueil) --- */
+.date-calendrier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--indigo-700);
+  font-weight: 700;
+  cursor: help;
+  border-radius: 0.3rem;
+}
+.date-calendrier::after {            /* petite icône de calendrier, dessinée en CSS */
+  content: "";
+  width: 0.85em; height: 0.85em;
+  border: 2px solid currentColor;
+  border-top-width: 4px;
+  border-radius: 3px;
+  opacity: 0.7;
+}
+.calendrier {
+  position: absolute;
+  z-index: 300;
+  width: 15.5rem;
+  padding: 0.75rem 0.85rem 0.85rem;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: 1rem;
+  box-shadow: var(--ombre-survol);
+  font-family: var(--police-interface);
+  font-size: 0.85rem;
+  color: var(--encre);
+  pointer-events: none;              /* il ne gêne jamais le survol */
+}
+.calendrier[hidden] { display: none; }     /* disparition instantanée, sans transition */
+.calendrier-titre {
+  margin: 0 0 0.5rem;
+  font-family: var(--police-titre);
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--bleu-700);
+}
+.calendrier table { width: 100%; border-collapse: collapse; text-align: center; font-variant-numeric: tabular-nums; }
+.calendrier th { padding-bottom: 0.25rem; font-weight: 700; color: var(--encre-douce); font-size: 0.75rem; }
+.calendrier td { padding: 0.12rem 0; }
+.calendrier td span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem; height: 1.75rem;
+  border-radius: 50%;
+}
+.calendrier .we span    { color: var(--encre-douce); background: var(--gris-100); }
+.calendrier .stage span { background: var(--turquoise-100); }          /* semaine de début du stage */
+.calendrier .jour span  { background: var(--indigo-700); color: var(--carte); font-weight: 700; box-shadow: var(--ombre-legere); }
+.calendrier-legende { margin: 0.55rem 0 0; color: var(--encre-douce); font-size: 0.78rem; text-align: center; }
+
+/* --- Formulaire : aide sous le champ e-mail (erreur ou suggestion) --- */
+.champ-aide { margin: 0; min-height: 0; font-size: 0.85rem; color: var(--encre-douce); }
+.champ-aide:empty { display: none; }
+.champ-aide[data-etat="erreur"] { color: hsl(355 40% 40%); }
+.champ-aide button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--indigo-700);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.champ-aide button:hover { color: var(--bleu-700); }
 
 /* ---------- 7. Frise chronologique ---------- */
 .frise-legende {

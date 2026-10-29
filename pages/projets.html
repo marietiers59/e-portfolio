@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
 
-  <link rel="stylesheet" href="../styles/style.css">
-  <script src="../scripts/script.js" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=4">
+  <script src="../scripts/script.js?v=4" defer></script>
 </head>
 
 <body id="haut">
@@ -42,101 +42,70 @@
 
   <main id="contenu">
 
-    <!-- ===== Projets : cartes ===== -->
+    <!-- ===== Projets : intro, filtres, tri, cartes ===== -->
     <section class="section" id="projets" aria-labelledby="titre-principal">
       <div class="conteneur">
         <div class="section-entete">
           <h1 class="section-titre" id="titre-principal" tabindex="-1">Mes projets</h1>
           <p class="section-intro">
-            Les <strong class="kw">sites web</strong> s'ouvrent directement dans le navigateur ;
-            les <strong class="kw">applications</strong> se récupèrent en archive <strong>.zip</strong>
-            (votre navigateur l'ouvre ou l'enregistre selon vos réglages).
+            Travaux d'<strong class="kw">équipe</strong> ou réalisations en <strong class="kw">solo</strong>, projets de cours
+            ou idées nées d'une envie personnelle : chaque vignette raconte une étape de mon apprentissage,
+            en <strong>Java</strong>, en <strong>web</strong>, en <strong>Python</strong> ou en <strong>réseau</strong>.
+            Les plus récents ouvrent la marche. Faites défiler pour remonter le temps,
+            et voyez mon code rajeunir à chaque projet.
+          </p>
+          <p class="section-intro section-intro-pratique">
+            Les <strong class="kw">applications</strong> se récupèrent en archive <strong>.zip</strong> ;
+            la pastille <strong>bientôt en ligne</strong> signale un dépôt encore en préparation.
           </p>
         </div>
 
+        <!-- Filtres et tri : barre cachée sans JavaScript (toutes les cartes s'affichent alors, des plus récentes aux plus anciennes) -->
+        <div class="outils-projets" hidden>
+          <div class="filtres" role="group" aria-label="Filtrer les projets">
+            <button class="filtre" type="button" data-filtre="tous" aria-pressed="true">Tous <span class="filtre-nombre"></span></button>
+            <button class="filtre" type="button" data-filtre="but2" aria-pressed="false">BUT 2 <span class="filtre-nombre"></span></button>
+            <button class="filtre" type="button" data-filtre="but1" aria-pressed="false">BUT 1 <span class="filtre-nombre"></span></button>
+            <button class="filtre" type="button" data-filtre="perso" aria-pressed="false">Projets perso <span class="filtre-nombre"></span></button>
+          </div>
+          <div class="outils-tri">
+            <button class="outil" type="button" id="bouton-tri" data-ordre="recent"><span aria-hidden="true">&#x21C5;&#xFE0E;</span> <span class="outil-texte">Du plus récent au plus ancien</span></button>
+            <button class="outil outil-discret" type="button" id="bouton-reinitialiser" hidden>Réinitialiser</button>
+          </div>
+        </div>
+        <p class="sr" id="filtres-statut" role="status"></p>
+
         <!--
-          Pour ajouter un projet : copier un <li class="emplacement carte-emplacement"> et remplacer
-          « nom-du-depot » par le vrai nom du dépôt GitHub.
-            · site web     → https://marietiers59.github.io/nom-du-depot/
-            · application  → https://github.com/marietiers59/nom-du-depot/archive/refs/heads/main.zip
-            · code source  → https://github.com/marietiers59/nom-du-depot
-          Un jeu écrit en HTML/JS peut passer en « carte-web » : il se joue alors au clic.
+          Du plus récent au plus ancien : c'est l'ordre par défaut, le bouton de tri l'inverse.
+          data-cadre = "but2", "but1" ou "perso" (sert aux filtres) ; data-annee-projet = l'année de l'étiquette (pas data-annee, réservé au © du pied de page).
+          Étiquettes : tag-annee (vert sapin), tag-cadre (lavande), tag-techno (bleu).
+          · Carte disponible : class="carte carte-appli", lien .zip + bouton « Voir le code ».
+              application → https://github.com/marietiers59/nom-du-depot/archive/refs/heads/main.zip
+              code source → https://github.com/marietiers59/nom-du-depot
+              site web    → class="carte carte-web", lien https://marietiers59.github.io/nom-du-depot/, carte-type « site web »
+          · Carte en attente : class="carte carte-bientot" tabindex="0", titre sans lien, pas de bouton,
+            carte-type « bientôt en ligne ». Quand le dépôt devient public, la transformer en carte disponible.
         -->
         <ul class="cartes">
 
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-web">
-              <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/jumelage/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://marietiers59.github.io/jumelage/">Site de l'association de jumelage</a>
-                </h3>
-              </div>
-              <div class="carte-deploiement">
-                <div class="carte-deploiement-interieur">
-                  <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus, posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/jumelage">Voir le code</a></p>
-                  </div>
-                </div>
-              </div>
-              <span class="carte-type">site web</span>
-            </article>
-          </li>
-
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-web">
-              <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/fullstack/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://marietiers59.github.io/site-full-stack/">Site web <i lang="en">front-end</i> et <i lang="en">back-end</i></a>
-                </h3>
-              </div>
-              <div class="carte-deploiement">
-                <div class="carte-deploiement-interieur">
-                  <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum, vestibulum id ligula porta felis.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/site-full-stack">Voir le code</a></p>
-                  </div>
-                </div>
-              </div>
-              <span class="carte-type">site web</span>
-            </article>
-          </li>
-
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-web">
-              <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/otakulist/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://marietiers59.github.io/otaku-list/"><i lang="en">Otaku List</i></a>
-                </h3>
-              </div>
-              <div class="carte-deploiement">
-                <div class="carte-deploiement-interieur">
-                  <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/otaku-list">Voir le code</a></p>
-                  </div>
-                </div>
-              </div>
-              <span class="carte-type">site web</span>
-            </article>
-          </li>
-
-          <li class="emplacement carte-emplacement">
+          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/spaceinvaders/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/space-invaders/archive/refs/heads/main.zip"><i lang="en">Space Invaders</i><span class="sr"> (télécharger l'archive .zip)</span></a>
-                </h3>
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/otakulist/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 2<sup>e</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/Otaku-List/archive/refs/heads/main.zip"><i lang="en">Otaku List</i><span class="sr"> (télécharger l'archive .zip)</span></a></h3>
               </div>
               <div class="carte-deploiement">
                 <div class="carte-deploiement-interieur">
                   <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod. Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/space-invaders">Voir le code</a></p>
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Laravel</li><li class="tag tag-techno">PHP</li><li class="tag tag-techno">GitLab</li></ul>
+                    <p class="carte-resume">Application web <strong class="kw">Laravel</strong> conçue à quatre pour que les fans d'animés et de mangas tiennent leurs listes à jour.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/Otaku-List">Voir le code</a></p>
                   </div>
                 </div>
               </div>
@@ -144,78 +113,98 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-appli">
+          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/pacman/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/pac-man/archive/refs/heads/main.zip"><i lang="en">Pac-Man</i><span class="sr"> (télécharger l'archive .zip)</span></a>
-                </h3>
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/spaceinvaders/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 2<sup>e</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><i lang="en">Space Invaders</i></h3>
               </div>
               <div class="carte-deploiement">
                 <div class="carte-deploiement-interieur">
                   <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor, integer posuere.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/pac-man">Voir le code</a></p>
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">GitLab</li></ul>
+                    <p class="carte-resume">Le classique <i lang="en">Space Invaders</i> recodé en <strong class="kw">Java</strong> en équipe sous GitLab, avec la qualité du code pour boussole.</p>
                   </div>
                 </div>
               </div>
-              <span class="carte-type">application · .zip</span>
+              <span class="carte-type">bientôt en ligne</span>
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-appli">
+          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/todolist-plus/archive/refs/heads/main.zip"><i lang="en">ToDoList+</i><span class="sr"> (télécharger l'archive .zip)</span></a>
-                </h3>
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/voixenimage/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">projet personnel</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Voix en image</h3>
               </div>
               <div class="carte-deploiement">
                 <div class="carte-deploiement-interieur">
                   <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/todolist-plus">Voir le code</a></p>
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li><li class="tag tag-techno">audio</li></ul>
+                    <p class="carte-resume">Script <strong class="kw">Python</strong> qui transforme une voix en image : son spectrogramme s'enroule en spirale lumineuse ou en couronne de rayons.</p>
                   </div>
                 </div>
               </div>
-              <span class="carte-type">application · .zip</span>
+              <span class="carte-type">bientôt en ligne</span>
             </article>
           </li>
-          
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-appli">
+
+          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/centre_sante_bien-etre"><i lang="en">Centre Santé Bien-Être</i><span class="sr"> (télécharger l'archive .zip)</span></a>
-                </h3>
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/cartetoutpetits/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">projet personnel</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Carte des tout-petits</h3>
               </div>
               <div class="carte-deploiement">
                 <div class="carte-deploiement-interieur">
                   <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/centre_sante_bien-etre">Voir le code</a></p>
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Laravel</li><li class="tag tag-techno">PHP</li><li class="tag tag-techno">OpenStreetMap</li></ul>
+                    <p class="carte-resume">Application web <strong class="kw">Laravel</strong>, conçue seule, où les parents épinglent sur une carte OpenStreetMap les lieux adaptés aux tout-petits.</p>
                   </div>
                 </div>
               </div>
-              <span class="carte-type">application · .zip</span>
+              <span class="carte-type">bientôt en ligne</span>
             </article>
           </li>
-          
-          <li class="emplacement carte-emplacement">
+
+          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
-                <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/FractaLens"><i lang="en">FractaLens</i><span class="sr"> (télécharger l'archive .zip)</span></a>
-                </h3>
+                <div class="carte-visuel">
+                  <picture>
+                    <source srcset="../medias/fractalens.png" media="(prefers-reduced-motion: reduce)">
+                    <img class="carte-image" src="../medias/fractalens.gif" alt="" width="300" height="300" loading="lazy">
+                  </picture>
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 2<sup>e</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/FractaLens/archive/refs/heads/main.zip"><i lang="en">FractaLens</i><span class="sr"> (télécharger l'archive .zip)</span></a></h3>
               </div>
               <div class="carte-deploiement">
                 <div class="carte-deploiement-interieur">
                   <div class="carte-texte">
-                    <p class="carte-resume" lang="la">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Gradle</li><li class="tag tag-techno">tests unitaires</li></ul>
+                    <p class="carte-resume">Six <i lang="en">sprints</i> en équipe pour bâtir <i lang="en">FractaLens</i> : une bibliothèque <strong class="kw">Java</strong> qui change des nombres complexes en fractales animées.</p>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/FractaLens">Voir le code</a></p>
                   </div>
                 </div>
@@ -223,7 +212,395 @@
               <span class="carte-type">application · .zip</span>
             </article>
           </li>
-          
+
+          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/geocodage/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 2<sup>e</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Géocodage Flask</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li><li class="tag tag-techno">Flask</li><li class="tag tag-techno">API REST</li></ul>
+                    <p class="carte-resume">Application <strong class="kw">Flask</strong> qui interroge l'API de géocodage de l'État et traduit chaque adresse en données lisibles, en français.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/caisse/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">projet personnel</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Caisse de <i lang="en">food-truck</i></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Android</li><li class="tag tag-techno">Flask</li><li class="tag tag-techno">PostgreSQL</li></ul>
+                    <p class="carte-resume">Caisse Android pour <i lang="en">food-truck</i> de quiches : API <strong class="kw">Flask</strong>, PostgreSQL et TPE SumUp suivent chaque vente jusqu'au dernier ingrédient.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/jumelage/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">projet personnel</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Les Amis de Buxton</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSS</li></ul>
+                    <p class="carte-resume">Site de l'association de <strong class="kw">jumelage</strong> Oignies–Buxton, un pont numérique entre deux villes de part et d'autre de la Manche.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/netsim/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">projet personnel</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Labo netsim</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">KVM</li><li class="tag tag-techno">Linux</li><li class="tag tag-techno">réseau</li></ul>
+                    <p class="carte-resume">Laboratoire <strong class="kw">réseau</strong> personnel sous KVM qui fait naître huit topologies de cours à partir d'une seule image système.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/centresante/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/centre_sante_bien-etre/archive/refs/heads/main.zip">Centre Santé Bien-Être<span class="sr"> (télécharger l'archive .zip)</span></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Gradle</li><li class="tag tag-techno">journalisation</li></ul>
+                    <p class="carte-resume">Application <strong class="kw">Java</strong> et Gradle menée à trois pour un cabinet médical : patients, médecins, rendez-vous et ordonnances y trouvent leur dossier.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/centre_sante_bien-etre">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">application · .zip</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><i lang="en">ToDoList+</i></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">JavaFX</li><li class="tag tag-techno">Gradle</li></ul>
+                    <p class="carte-resume">Gestionnaire de tâches en <strong class="kw">JavaFX</strong> et Gradle, monté presque de zéro, de la configuration jusqu'à la première case cochée.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/resumecv/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><i lang="en">resumeCV</i></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">JavaFX</li><li class="tag tag-techno">MVC</li><li class="tag tag-techno">Scene Builder</li></ul>
+                    <p class="carte-resume">Visionneuse de CV en <strong class="kw">JavaFX</strong> bâtie en MVC avec Scene Builder, où l'interface et les données vivent chacune chez elles.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/pacman/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><i lang="en">Pac-Man</i></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">JavaFX</li></ul>
+                    <p class="carte-resume"><i lang="en">Pac-Man</i> recodé en <strong class="kw">JavaFX</strong>, où le héros pivote pour toujours regarder dans la direction où il avance.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/basededonnees/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Base de données (SAÉ R2.04)</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">PostgreSQL</li><li class="tag tag-techno">Merise</li><li class="tag tag-techno">Docker</li></ul>
+                    <p class="carte-resume">Base <strong class="kw">PostgreSQL</strong> sur l'emploi modélisée en Merise, normalisée en 3FN puis interrogée en SQL depuis un conteneur Docker.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/scriptsreseau/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Scripts réseau</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Bash</li><li class="tag tag-techno">réseau</li></ul>
+                    <p class="carte-resume">Scripts <strong class="kw">Bash</strong> qui configurent routeurs et réseaux d'entreprises fictives en Suisse, pour une topologie qui démarre d'un seul geste.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/graphes/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Graphes</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li><li class="tag tag-techno">Jupyter</li></ul>
+                    <p class="carte-resume">Boîte à outils <strong class="kw">Python</strong> en <i lang="en">notebook</i> Jupyter qui trouve plus courts chemins et arbres couvrants sur n'importe quel graphe.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/statistiques/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Statistiques</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li></ul>
+                    <p class="carte-resume">Moyennes, écarts-types et corrélations recodés en <strong class="kw">Python</strong>, pour voir les formules statistiques prendre vie ligne par ligne.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/portfoliobut1/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre">Portfolio BUT 1</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Markdown</li></ul>
+                    <p class="carte-resume">Portfolio de BUT 1 qui relie chaque SAÉ aux <strong class="kw">six compétences</strong> du référentiel, preuves à l'appui.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">bientôt en ligne</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="../medias/carte-sae-1-02.jpg" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes">Comparaison d'approches algorithmiques</a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Python</li><li class="tag tag-techno">Jupyter</li></ul>
+                    <p class="carte-resume">SAÉ 1.02 : tests d'une <strong>structure de données inconnue</strong>, algorithmes de piles, files et <strong>tri fusion</strong>, mesures de performance analysées dans un <i lang="en">notebook</i> Python.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">code · Java, Python</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="../medias/carte-sae-1-01.jpg" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/sae-1-01-gestion-notes">Gestion des notes en Java</a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSV</li></ul>
+                    <p class="carte-resume">SAÉ 1.01 : application <strong>Java</strong> pilotant le navigateur pour saisir les notes d'une promotion, calculer les <strong>moyennes pondérées</strong>, sauvegarder, classer et exporter en CSV.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-01-gestion-notes">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">code · Java</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2025">
+            <article class="carte carte-web">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://marietiers59.github.io/BycloWatt/img/carouselProduct.jpg" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="Année et cadre">
+                    <li class="tag tag-annee"><time datetime="2025">2025</time></li>
+                    <li class="tag tag-cadre">BUT info · 1<sup>re</sup> année</li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://marietiers59.github.io/BycloWatt/">BycloWatt, attractions festives autonomes en énergie</a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSS</li><li class="tag tag-techno">JavaScript</li><li class="tag tag-techno">Figma</li></ul>
+                    <p class="carte-resume">SAÉ 1.05 / 1.06 : création d'une <strong>entreprise fictive</strong> de l'économie sociale et solidaire, de l'enquête et des <strong>personae</strong> jusqu'aux chartes, aux maquettes Figma et au <strong>site vitrine</strong> <i lang="en">responsive</i> en HTML, CSS et JavaScript.</p>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/BycloWatt">Voir le code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">site web</span>
+            </article>
+          </li>
+
         </ul>
       </div>
     </section>
@@ -243,66 +620,6 @@
           <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
           <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
           <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-web">
-              <div class="carte-face">
-                <img class="carte-image" src="https://marietiers59.github.io/BycloWatt/img/carouselProduct.jpg" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://marietiers59.github.io/BycloWatt/">BycloWatt, attractions festives autonomes en énergie</a>
-                </h3>
-              </div>
-              <div class="carte-deploiement">
-                <div class="carte-deploiement-interieur">
-                  <div class="carte-texte">
-                    <p class="carte-resume">SAÉ 1.05 / 1.06 : création d'une <strong>entreprise fictive</strong> de l'économie sociale et solidaire, de l'enquête et des <strong>personae</strong> jusqu'aux chartes, aux maquettes Figma et au <strong>site vitrine</strong> <i lang="en">responsive</i> en HTML, CSS et JavaScript.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/BycloWatt">Voir le code</a></p>
-                  </div>
-                </div>
-              </div>
-              <span class="carte-type">site web</span>
-            </article>
-          </li>
-
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-appli">
-              <div class="carte-face">
-                <img class="carte-image" src="../medias/carte-sae-1-01.jpg" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/sae-1-01-gestion-notes">Gestion des notes en Java</a>
-                </h3>
-              </div>
-              <div class="carte-deploiement">
-                <div class="carte-deploiement-interieur">
-                  <div class="carte-texte">
-                    <p class="carte-resume">SAÉ 1.01 : application <strong>Java</strong> pilotant le navigateur pour saisir les notes d'une promotion, calculer les <strong>moyennes pondérées</strong>, sauvegarder, classer et exporter en CSV.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-01-gestion-notes">Voir le code</a></p>
-                  </div>
-                </div>
-              </div>
-              <span class="carte-type">code · Java</span>
-            </article>
-          </li>
-
-          <li class="emplacement carte-emplacement">
-            <article class="carte carte-appli">
-              <div class="carte-face">
-                <img class="carte-image" src="../medias/carte-sae-1-02.jpg" alt="" width="600" height="600" loading="lazy">
-                <h3 class="carte-titre">
-                  <a class="carte-lien" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes">Comparaison d'approches algorithmiques</a>
-                </h3>
-              </div>
-              <div class="carte-deploiement">
-                <div class="carte-deploiement-interieur">
-                  <div class="carte-texte">
-                    <p class="carte-resume">SAÉ 1.02 : tests d'une <strong>structure de données inconnue</strong>, algorithmes de piles, files et <strong>tri fusion</strong>, mesures de performance analysées dans un <i lang="en">notebook</i> Python.</p>
-                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes">Voir le code</a></p>
-                  </div>
-                </div>
-              </div>
-              <span class="carte-type">code · Java, Python</span>
-            </article>
-          </li>
-
         </ul>
       </div>
 
@@ -345,7 +662,9 @@
       </form>
 
     </div>
-    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · images provisoires : <a href="https://picsum.photos">Lorem Picsum</a> · mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace perso</a></p>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
+      Images provisoires : <a href="https://picsum.photos">Lorem Picsum</a><br>
+      Mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a></p>
   </footer>
 
   <!-- ===== Barre fixe du bas ===== -->
