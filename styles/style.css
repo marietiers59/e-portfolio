@@ -942,11 +942,54 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-family: var(--police-interface);
   font-size: 0.85rem;
   color: var(--encre);
-  pointer-events: none;              /* il ne gêne jamais le survol */
 }
+/* « Pont » invisible entre la date et le calendrier : le curseur passe de l'une à l'autre sans le fermer */
+.calendrier::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 0.75rem;
+}
+.calendrier[data-cote="dessous"]::before { bottom: 100%; }
+.calendrier[data-cote="dessus"]::before  { top: 100%; }
 .calendrier[hidden] { display: none; }     /* disparition instantanée, sans transition */
-.calendrier-titre {
+.calendrier-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin: 0 0 0.5rem;
+}
+.calendrier-fleche {
+  display: grid;
+  place-items: center;
+  width: 2rem; height: 2rem;
+  padding: 0 0 0.15rem;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 50%;
+  background: var(--turquoise-100);
+  color: var(--bleu-700);
+  font: 700 1.3rem/1 var(--police-interface);
+  cursor: pointer;
+  box-shadow: var(--ombre-legere);
+  transition: background-color var(--duree), transform var(--duree) ease;
+}
+.calendrier-fleche:hover  { background: var(--turquoise-200); }
+.calendrier-fleche:active { transform: translateY(1px); box-shadow: var(--ombre-appui); }
+.calendrier-retour {
+  display: block;
+  margin: 0.45rem auto 0;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--trait);
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--indigo-700);
+  font: 700 0.78rem/1.4 var(--police-interface);
+  cursor: pointer;
+}
+.calendrier-retour:hover { background: var(--gris-100); }
+.calendrier-titre {
+  margin: 0;
   font-family: var(--police-titre);
   font-size: 1rem;
   font-weight: 800;
