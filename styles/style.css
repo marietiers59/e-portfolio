@@ -711,59 +711,6 @@ abbr[title] { text-decoration: none; cursor: help; }
 .outil-discret { background: transparent; border-color: var(--trait); color: var(--encre-douce); }
 .outil-discret:hover { background: var(--gris-100); color: var(--encre); }
 
-/* Case « Afficher les projets en cours » : une pilule qui se teinte quand elle est cochée */
-.bascule {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.35rem 0.85rem 0.35rem 0.7rem;
-  border: 1px solid var(--trait);
-  border-radius: 999px;
-  background: var(--carte);
-  color: var(--encre-douce);
-  font-family: var(--police-interface);
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color var(--duree), border-color var(--duree), color var(--duree);
-}
-.bascule[hidden] { display: none; }
-.bascule:hover { background: var(--gris-100); color: var(--encre); }
-.bascule-case {
-  width: 1.05rem;
-  height: 1.05rem;
-  margin: 0;
-  accent-color: var(--lavande-700);
-  cursor: pointer;
-}
-.bascule:has(.bascule-case:checked) {
-  background: var(--lavande-100);
-  border-color: var(--lavande-200);
-  color: var(--lavande-700);
-}
-.bascule:has(.bascule-case:focus-visible) { outline: 3px solid var(--indigo-400); outline-offset: 2px; }
-.bascule-case:focus-visible { outline: none; }
-.bascule:has(.bascule-case:checked) .filtre-nombre { background: var(--carte); color: var(--lavande-700); }
-
-/* Message quand un filtre ne contient que des projets en cours */
-.projets-vide {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0 auto;
-  padding: 1.5rem;
-  max-width: 34rem;
-  border: 1px dashed var(--lavande-200);
-  border-radius: var(--rayon);
-  background: var(--lavande-100);
-  color: var(--encre-douce);
-  text-align: center;
-}
-.projets-vide[hidden] { display: none; }
-
 /* Carte écartée par un filtre */
 .carte-emplacement[hidden] { display: none; }
 
@@ -1364,6 +1311,43 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .espace-etat[data-etat="erreur"] { color: hsl(355 40% 40%); }
 .espace-aide { margin: 0; color: var(--encre-douce); font-size: 0.95rem; }
 .espace-liens { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+
+/* Rideau : coordonnées réservées aux recruteurs (scripts/rideau.js) */
+.rideau-masque { color: var(--encre-douce); font-style: italic; }
+.rideau {
+  margin: 1rem 0 0;
+  padding: 0.9rem 1rem;
+  display: grid;
+  gap: 0.6rem;
+  background: var(--carte);
+  border: 1px dashed var(--indigo-200);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-legere);
+}
+.rideau p { margin: 0; }
+.rideau-texte { font-size: 0.95rem; }
+.rideau-ligne { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.rideau-ligne input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  font: inherit;
+  color: var(--encre);
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--gris-200);
+  border-radius: 0.7rem;
+  background: var(--fond);
+  transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
+}
+.rideau-ligne input:focus {
+  outline: none;
+  border-color: var(--indigo-400);
+  box-shadow: 0 0 0 3px var(--indigo-100);
+  background: var(--carte);
+}
+.rideau-ligne .bouton { padding-inline: 1.1rem; }
+.rideau-aide { font-size: 0.85rem; color: var(--encre-douce); }
+.rideau-aide:empty { display: none; }
+.rideau-aide[data-etat="erreur"] { color: hsl(355 40% 40%); }
 
 /* ---------- 9. Écrans larges, TV, mouvement réduit ---------- */
 @media (min-width: 100em) { html { font-size: 112.5%; } }
