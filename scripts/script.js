@@ -237,7 +237,7 @@ if (formulaire) {
 if (formulaire) {
   const statut = formulaire.querySelector('.formulaire-statut');
   const bouton = formulaire.querySelector('button[type="submit"]');
-  const destinataire = formulaire.dataset.destinataire;
+  const destinataire = { toString: () => formulaire.dataset.destinataire ?? '' }; // lue à l'envoi : rideau.js la renseigne
 
   const afficher = (texte, etat = 'ok') => {
     statut.textContent = texte;

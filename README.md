@@ -48,4 +48,4 @@ Détails dans [LICENSE](LICENSE).
 
 ## contact
 
-adresse-retiree · [LinkedIn](https://www.linkedin.com/in/marie-tiers-1991-59-France)
+[Me contacter](https://marietiers59.github.io/e-portfolio/#contact) · [LinkedIn](https://www.linkedin.com/in/marie-tiers-1991-59-France)
