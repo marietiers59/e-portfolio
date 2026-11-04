@@ -711,6 +711,59 @@ abbr[title] { text-decoration: none; cursor: help; }
 .outil-discret { background: transparent; border-color: var(--trait); color: var(--encre-douce); }
 .outil-discret:hover { background: var(--gris-100); color: var(--encre); }
 
+/* Case « Afficher les projets en cours » : une pilule qui se teinte quand elle est cochée */
+.bascule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+  border: 1px solid var(--trait);
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--encre-douce);
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--duree), border-color var(--duree), color var(--duree);
+}
+.bascule[hidden] { display: none; }
+.bascule:hover { background: var(--gris-100); color: var(--encre); }
+.bascule-case {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--lavande-700);
+  cursor: pointer;
+}
+.bascule:has(.bascule-case:checked) {
+  background: var(--lavande-100);
+  border-color: var(--lavande-200);
+  color: var(--lavande-700);
+}
+.bascule:has(.bascule-case:focus-visible) { outline: 3px solid var(--indigo-400); outline-offset: 2px; }
+.bascule-case:focus-visible { outline: none; }
+.bascule:has(.bascule-case:checked) .filtre-nombre { background: var(--carte); color: var(--lavande-700); }
+
+/* Message quand un filtre ne contient que des projets en cours */
+.projets-vide {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  max-width: 34rem;
+  border: 1px dashed var(--lavande-200);
+  border-radius: var(--rayon);
+  background: var(--lavande-100);
+  color: var(--encre-douce);
+  text-align: center;
+}
+.projets-vide[hidden] { display: none; }
+
 /* Carte écartée par un filtre */
 .carte-emplacement[hidden] { display: none; }
 

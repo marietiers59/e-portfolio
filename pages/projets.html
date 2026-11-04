@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
 
-  <link rel="stylesheet" href="../styles/style.css?v=6">
-  <script src="../scripts/script.js?v=6" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=7">
+  <script src="../scripts/script.js?v=7" defer></script>
 </head>
 
 <body id="haut">
@@ -69,6 +69,11 @@
             <button class="filtre" type="button" data-filtre="perso" aria-pressed="false">Projets perso <span class="filtre-nombre"></span></button>
           </div>
           <div class="outils-tri">
+			<label class="bascule" for="afficher-en-cours">
+			  <input class="bascule-case" type="checkbox" id="afficher-en-cours">
+			  <span class="bascule-texte">Afficher les projets bientôt en ligne</span>
+			  <span class="filtre-nombre" id="nombre-en-cours"></span>
+			</label>
             <button class="outil" type="button" id="bouton-tri" data-ordre="recent"><span aria-hidden="true">&#x21C5;&#xFE0E;</span> <span class="outil-texte">Du plus récent au plus ancien</span></button>
             <button class="outil outil-discret" type="button" id="bouton-reinitialiser" hidden>Réinitialiser</button>
           </div>
@@ -603,6 +608,11 @@
           </li>
 
         </ul>
+		<!-- Message affiché par le script quand le filtre choisi ne contient que des projets en cours -->
+		<p class="projets-vide" id="projets-vide" hidden>
+		  <span>Les projets de cette catégorie sont encore <strong>bientôt en ligne</strong>.</span>
+		  <button class="outil" type="button" id="bouton-voir-en-cours">Les afficher</button>
+		</p>
       </div>
     </section>
 

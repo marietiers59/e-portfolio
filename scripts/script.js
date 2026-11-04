@@ -379,26 +379,39 @@ document.querySelectorAll('[data-annee]').forEach((el) => {
 });
 
 /* ---------- 5. Filtres et tri de la page Projets ---------- */
-// Par défaut : filtre « Tous », tri du plus récent au plus ancien (l'ordre du HTML).
+// Par défaut : filtre « Tous », tri du plus récent au plus ancien (l'ordre du HTML),
+// projets « bientôt en ligne » (cartes .carte-bientot) masqués tant que la case n'est pas cochée.
 const outilsProjets = document.querySelector('.outils-projets');
 if (outilsProjets) {
   const listeCartes = document.querySelector('.cartes');
   const boutonsFiltre = [...outilsProjets.querySelectorAll('.filtre')];
   const boutonTri = document.getElementById('bouton-tri');
   const boutonReinit = document.getElementById('bouton-reinitialiser');
+  const caseEnCours = document.getElementById('afficher-en-cours');
+  const nombreEnCours = document.getElementById('nombre-en-cours');
+  const messageVide = document.getElementById('projets-vide');
   const statutFiltres = document.getElementById('filtres-statut');
   const cartesFiltrables = [...listeCartes.querySelectorAll(':scope > [data-cadre]')]; // ordre d'origine
-  const etat = { cadre: 'tous', ordre: 'recent' };
+  const estEnCours = (c) => c.querySelector('.carte-bientot') !== null;
+  const etat = { cadre: 'tous', ordre: 'recent', enCours: false };
 
-  const compter = (cadre) =>
-    cadre === 'tous' ? cartesFiltrables.length : cartesFiltrables.filter((c) => c.dataset.cadre === cadre).length;
-
-  // Les nombres se calculent seuls : rien à mettre à jour quand on ajoute une carte.
-  boutonsFiltre.forEach((b) => { b.querySelector('.filtre-nombre').textContent = compter(b.dataset.filtre); });
+  const dansCadre = (c, cadre) => cadre === 'tous' || c.dataset.cadre === cadre;
+  const visible = (c, cadre) => dansCadre(c, cadre) && (etat.enCours || !estEnCours(c));
+  const compter = (cadre) => cartesFiltrables.filter((c) => visible(c, cadre)).length;
 
   const afficher = () => {
-    boutonsFiltre.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filtre === etat.cadre)));
-    cartesFiltrables.forEach((c) => { c.hidden = etat.cadre !== 'tous' && c.dataset.cadre !== etat.cadre; });
+    // Les nombres se recalculent seuls : rien à mettre à jour quand on ajoute une carte.
+    boutonsFiltre.forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.filtre === etat.cadre));
+      b.querySelector('.filtre-nombre').textContent = compter(b.dataset.filtre);
+    });
+    cartesFiltrables.forEach((c) => { c.hidden = !visible(c, etat.cadre); });
+
+    // Pastille de la case : combien de projets en cours dans le filtre choisi
+    const enCoursDuCadre = cartesFiltrables.filter((c) => dansCadre(c, etat.cadre) && estEnCours(c)).length;
+    caseEnCours.checked = etat.enCours;
+    caseEnCours.closest('.bascule').hidden = enCoursDuCadre === 0 && !etat.enCours;
+    nombreEnCours.textContent = enCoursDuCadre;
 
     const ordre = etat.ordre === 'recent' ? cartesFiltrables : [...cartesFiltrables].reverse();
     listeCartes.append(...ordre); // déplace les cartes sans les recréer
@@ -406,21 +419,36 @@ if (outilsProjets) {
     boutonTri.querySelector('.outil-texte').textContent =
       etat.ordre === 'recent' ? 'Du plus récent au plus ancien' : 'Du plus ancien au plus récent';
 
-    boutonReinit.hidden = etat.cadre === 'tous' && etat.ordre === 'recent';
     const n = compter(etat.cadre);
+    messageVide.hidden = n > 0;
+    boutonReinit.hidden = etat.cadre === 'tous' && etat.ordre === 'recent' && !etat.enCours;
     statutFiltres.textContent = `${n} projet${n > 1 ? 's' : ''} affiché${n > 1 ? 's' : ''}, ` +
-      (etat.ordre === 'recent' ? 'du plus récent au plus ancien.' : 'du plus ancien au plus récent.');
+      (etat.ordre === 'recent' ? 'du plus récent au plus ancien' : 'du plus ancien au plus récent') +
+      (etat.enCours ? ', projets bientôt en ligne compris.' : '.');
   };
 
   outilsProjets.addEventListener('click', (evt) => {
     const filtre = evt.target.closest('.filtre');
     if (filtre) etat.cadre = filtre.dataset.filtre;
     else if (evt.target.closest('#bouton-tri')) etat.ordre = etat.ordre === 'recent' ? 'ancien' : 'recent';
-    else if (evt.target.closest('#bouton-reinitialiser')) { etat.cadre = 'tous'; etat.ordre = 'recent'; boutonsFiltre[0].focus(); }
+    else if (evt.target.closest('#bouton-reinitialiser')) {
+      Object.assign(etat, { cadre: 'tous', ordre: 'recent', enCours: false });
+      boutonsFiltre[0].focus();
+    }
     else return;
     afficher();
   });
 
+  caseEnCours.addEventListener('change', () => { etat.enCours = caseEnCours.checked; afficher(); });
+
+  // Bouton du message « catégorie vide » : coche la case à la place du visiteur
+  document.getElementById('bouton-voir-en-cours').addEventListener('click', () => {
+    etat.enCours = true;
+    afficher();
+    caseEnCours.focus();
+  });
+
+  afficher();
   outilsProjets.hidden = false; // sans JavaScript, la barre reste cachée et toutes les cartes s'affichent
 }
 
