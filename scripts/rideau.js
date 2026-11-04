@@ -17,6 +17,7 @@
   'use strict';
 
   /* ---------- 1. Réglages ---------- */
+  const NOM_CV = 'CV_TIERS_MARIE_BUT_IT.pdf';     // nom du fichier téléchargé par le visiteur (à ton choix)
   const DUREE_JOURS = 30;                         // le rideau reste levé 30 jours sur l'appareil
   const CLE_STOCKAGE = 'portfolio-rideau';
   const VIA_ACCEPTES = ['linkedin', 'annonce', 'francetravail', 'candidature'];
@@ -178,6 +179,8 @@
   const lignesTel = document.querySelectorAll('[data-rideau="tel"]');
   const formulaire = document.getElementById('formulaire-contact');
   const liensCv = document.querySelectorAll('a[href$="cv-marie-tiers.pdf"]');
+  // Le CV (public ou complet) se télécharge toujours sous le nom choisi
+  liensCv.forEach((a) => { a.download = NOM_CV; });
   let leve = false;
   let blocRideau = null;
 
@@ -209,7 +212,7 @@
       const cle = await crypto.subtle.importKey('raw', octets(CLE_CV), 'AES-GCM', false, ['decrypt']);
       const pdf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: donnees.slice(0, 12) }, cle, donnees.slice(12));
       const url = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
-      liensCv.forEach((a) => { a.href = url; a.target = '_blank'; a.rel = 'noopener'; });
+      liensCv.forEach((a) => { a.href = url; });
     } catch { /* le CV public reste en place */ }
   }
 

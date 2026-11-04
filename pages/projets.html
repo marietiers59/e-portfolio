@@ -12,8 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
 
-  <link rel="stylesheet" href="../styles/style.css?v=7">
-  <script src="../scripts/script.js?v=7" defer></script>
+  <link rel="stylesheet" href="../styles/style.css?v=8">
+  <script src="../scripts/rideau.js?v=1" defer></script>
+  <script src="../scripts/script.js?v=8" defer></script>
 </head>
 
 <body id="haut">
@@ -626,8 +627,8 @@
         <h2 class="section-titre" id="contact-titre" tabindex="-1">Me contacter</h2>
         <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
         <ul class="coordonnees">
-          <li><span class="coordonnees-icone" aria-hidden="true">&#x2709;&#xFE0E;</span><a href="mailto:adresse-retiree">adresse-retiree</a></li>
-          <li><span class="coordonnees-icone" aria-hidden="true">&#x260E;&#xFE0E;</span><a href="tel:numero-retire">numero-retire</a></li>
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
           <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
           <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
           <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
@@ -639,7 +640,7 @@
         data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
       -->
       <form class="formulaire" id="formulaire-contact" aria-label="Formulaire de contact"
-            data-endpoint="" data-destinataire="adresse-retiree">
+            data-endpoint="">
         <p class="champ">
           <label for="nom">Nom</label>
           <input id="nom" name="nom" autocomplete="name" required>
@@ -675,7 +676,8 @@
     </div>
     <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
       Images provisoires : <a href="https://picsum.photos">Lorem Picsum</a><br>
-      Mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a></p>
+      Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site<br>
+	  Mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a></p>
   </footer>
 
   <!-- ===== Barre fixe du bas ===== -->
