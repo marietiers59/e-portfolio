@@ -382,6 +382,29 @@ abbr[title] { text-decoration: none; cursor: help; }
   vertical-align: 0.1em;
 }
 
+/* Lien en attente sous une brève (calendrier d'alternance) : même code que les cartes « bientôt en ligne » */
+.lien-a-venir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--lavande-700);
+  cursor: default;
+}
+.lien-a-venir a { font-weight: 700; }
+.pastille-bientot {
+  font-style: normal;
+  font-size: 0.75rem;
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  background: hsl(0 0% 100% / 0.92);
+  outline: 1px dashed var(--lavande-400);
+  outline-offset: -1px;
+  white-space: nowrap;
+}
+
 @media (min-width: 40em) {
   .breves { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 2rem); }
 }
