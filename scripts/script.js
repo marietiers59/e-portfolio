@@ -558,7 +558,11 @@ if (outilsProjets) {
 
 /* ---------- 6. Calendrier au survol d'une date (accueil) ---------- */
 // Sur <time datetime="2027-04-26" data-calendrier>…</time> : au survol ou au focus, le mois s'affiche
-// avec le jour mis en valeur et la fin de sa semaine teintée.
+// avec le jour de début mis en valeur et la période de stage colorée, sur tous les mois concernés :
+//  · durée minimale (8 semaines) : du jour de début au samedi de la 8e semaine (dimanche exclu) ;
+//  · prolongation possible, dans un ton plus clair : du dimanche qui suit la 8e semaine au samedi de la 10e semaine.
+//    Durées réglables avec data-semaines="8-10" sur la balise <time> (8 et 10 par défaut).
+//  · une petite colonne à gauche numérote les semaines de stage (1 → 10).
 //  · Il reste ouvert tant que le curseur est sur la date OU sur le calendrier, et disparaît
 //    instantanément dès qu'il quitte les deux.
 //  · Les flèches ‹ › (ou les touches ← → quand la date a le focus) changent de mois ;
@@ -578,6 +582,15 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const jourSemaineCible = (cible.getDay() + 6) % 7;   // 0 = lundi
   let affiche = new Date(annee, mois - 1, 1);           // mois actuellement affiché
 
+  // Période de stage : fin = samedi de la Ne semaine (la semaine 1 est celle du jour de début)
+  const [semMin, semMax] = (date.dataset.semaines || '8-10').split('-').map(Number);
+  const samediSemaine = (n) => new Date(annee, mois - 1, jour + (n - 1) * 7 + (5 - jourSemaineCible));
+  const finMin = samediSemaine(semMin);
+  const finMax = samediSemaine(semMax || semMin);
+  const lundiDebut = new Date(annee, mois - 1, jour - jourSemaineCible);   // lundi de la 1re semaine de stage
+  const debutProlongation = new Date(finMin.getFullYear(), finMin.getMonth(), finMin.getDate() + 1);   // dimanche suivant : il ouvre la prolongation
+  const finCourte = (d) => d.toLocaleDateString(LOCALE, { weekday: 'short', day: 'numeric', month: 'long' });
+
   const bulle = document.createElement('div');
   bulle.className = 'calendrier';
   bulle.id = `calendrier-${rang + 1}`;
@@ -590,9 +603,15 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       '<p class="calendrier-titre" aria-live="polite"></p>' +
       `<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="${t('Mois suivant', 'Next month')}">&#x203A;</button>` +
     '</div>' +
-    '<table><thead><tr>' + joursSemaine.map(([nom, initiale]) => `<th abbr="${nom}">${initiale}</th>`).join('') +
+    '<table><thead><tr>' +
+      `<th class="calendrier-sem" abbr="${t('semaine de stage', 'internship week')}" title="${t('Semaine de stage', 'Internship week')}">${t('n°', 'wk')}</th>` +
+      joursSemaine.map(([nom, initiale]) => `<th abbr="${nom}">${initiale}</th>`).join('') +
     '</tr></thead><tbody></tbody></table>' +
     `<p class="calendrier-legende">${t('Début du stage : ', 'Internship starts on ')}${nomJour}</p>` +
+    '<ul class="calendrier-cles">' +
+      `<li><span class="cle cle-stage" aria-hidden="true"></span>${t(`${semMin} sem. : jusqu'au `, `${semMin} weeks: until `)}${finCourte(finMin)}</li>` +
+      (finMax > finMin ? `<li><span class="cle cle-prolongation" aria-hidden="true"></span>${t(`${semMax} sem. : jusqu'au `, `${semMax} weeks: until `)}${finCourte(finMax)}</li>` : '') +
+    '</ul>' +
     `<button class="calendrier-retour" type="button" tabindex="-1">${t('Revenir à ', 'Back to ')}${nomMoisCible}</button>`;
   document.body.append(bulle);
   const titre = bulle.querySelector('.calendrier-titre');
@@ -608,14 +627,26 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     let cases = '';
     for (let k = 0; k < 42; k++) {   // toujours 6 semaines : le calendrier garde la même hauteur d'un mois à l'autre
       const n = k - premierJour + 1;
-      if (k % 7 === 0) cases += '<tr>';
+      if (k % 7 === 0) {
+        // Compteur de semaines : numéro de la semaine de stage (1 → semMax), si la rangée contient des jours du mois
+        const lundi = new Date(a, m, n);
+        const sem = Math.round((lundi - lundiDebut) / 864e5 / 7) + 1;
+        const rangeeUtile = n <= nbJours && n + 6 >= 1;
+        const typeSem = sem >= 1 && sem <= semMin ? 'sem-stage' : sem > semMin && sem <= semMax ? 'sem-prolongation' : '';
+        cases += '<tr>' + (rangeeUtile && typeSem
+          ? `<th class="calendrier-sem ${typeSem}" scope="row" title="${t(`Semaine ${sem} de stage`, `Internship week ${sem}`)}">${sem}</th>`
+          : '<th class="calendrier-sem" scope="row"></th>');
+      }
       if (n < 1 || n > nbJours) cases += '<td><span></span></td>';
       else {
         const classes = [];
+        const ce = new Date(a, m, n);
+        let info = '';
         if (k % 7 >= 5) classes.push('we');
-        if (memeMois && n > jour && n <= jour + (4 - jourSemaineCible)) classes.push('stage');
+        if (ce >= cible && ce <= finMin) { classes.push('stage'); info = ` title="${t(`Stage : ${semMin} premières semaines`, `Internship: first ${semMin} weeks`)}"`; }
+        else if (ce >= debutProlongation && ce <= finMax) { classes.push('prolongation'); info = ` title="${t(`Prolongation possible jusqu'à ${semMax} semaines`, `Possible extension up to ${semMax} weeks`)}"`; }
         if (memeMois && n === jour) classes.push('jour');
-        cases += `<td class="${classes.join(' ')}"><span>${n}</span></td>`;
+        cases += `<td class="${classes.join(' ')}"${info}><span>${n}</span></td>`;
       }
       if (k % 7 === 6) cases += '</tr>';
     }
