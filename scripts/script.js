@@ -458,6 +458,7 @@ if (outilsProjets) {
 //  · durée minimale (8 semaines) : du jour de début au samedi de la 8e semaine (dimanche exclu) ;
 //  · prolongation possible (semaines 9 et 10), dans un ton plus clair : jusqu'au samedi de la 10e semaine.
 //    Durées réglables avec data-semaines="8-10" sur la balise <time> (8 et 10 par défaut).
+//  · une petite colonne à gauche numérote les semaines de stage (1 → 10).
 //  · Il reste ouvert tant que le curseur est sur la date OU sur le calendrier, et disparaît
 //    instantanément dès qu'il quitte les deux.
 //  · Les flèches ‹ › (ou les touches ← → quand la date a le focus) changent de mois ;
@@ -476,6 +477,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const samediSemaine = (n) => new Date(annee, mois - 1, jour + (n - 1) * 7 + (5 - jourSemaineCible));
   const finMin = samediSemaine(semMin);
   const finMax = samediSemaine(semMax || semMin);
+  const lundiDebut = new Date(annee, mois - 1, jour - jourSemaineCible);   // lundi de la 1re semaine de stage
   const debutProlongation = new Date(finMin.getFullYear(), finMin.getMonth(), finMin.getDate() + 2);   // lundi suivant (dimanche exclu)
   const finCourte = (d) => d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'long' });
 
@@ -491,7 +493,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       '<p class="calendrier-titre" aria-live="polite"></p>' +
       '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="Mois suivant">&#x203A;</button>' +
     '</div>' +
-    '<table><thead><tr><th abbr="lundi">L</th><th abbr="mardi">M</th><th abbr="mercredi">M</th>' +
+    '<table><thead><tr><th class="calendrier-sem" abbr="semaine de stage" title="Semaine de stage">n°</th><th abbr="lundi">L</th><th abbr="mardi">M</th><th abbr="mercredi">M</th>' +
     '<th abbr="jeudi">J</th><th abbr="vendredi">V</th><th abbr="samedi">S</th><th abbr="dimanche">D</th></tr></thead>' +
     '<tbody></tbody></table>' +
     `<p class="calendrier-legende">Début du stage : ${nomJour}</p>` +
@@ -514,7 +516,16 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     let cases = '';
     for (let k = 0; k < 42; k++) {   // toujours 6 semaines : le calendrier garde la même hauteur d'un mois à l'autre
       const n = k - premierJour + 1;
-      if (k % 7 === 0) cases += '<tr>';
+      if (k % 7 === 0) {
+        // Compteur de semaines : numéro de la semaine de stage (1 → semMax), si la rangée contient des jours du mois
+        const lundi = new Date(a, m, n);
+        const sem = Math.round((lundi - lundiDebut) / 864e5 / 7) + 1;
+        const rangeeUtile = n <= nbJours && n + 6 >= 1;
+        const typeSem = sem >= 1 && sem <= semMin ? 'sem-stage' : sem > semMin && sem <= semMax ? 'sem-prolongation' : '';
+        cases += '<tr>' + (rangeeUtile && typeSem
+          ? `<th class="calendrier-sem ${typeSem}" scope="row" title="Semaine ${sem} de stage">${sem}</th>`
+          : '<th class="calendrier-sem" scope="row"></th>');
+      }
       if (n < 1 || n > nbJours) cases += '<td><span></span></td>';
       else {
         const classes = [];

@@ -1009,7 +1009,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 .calendrier {
   position: absolute;
   z-index: 300;
-  width: 15.5rem;
+  width: 16.75rem;
   padding: 0.75rem 0.85rem 0.85rem;
   background: var(--carte);
   border: 1px solid var(--trait);
@@ -1090,6 +1090,11 @@ abbr[title] { text-decoration: none; cursor: help; }
 .calendrier .prolongation.we span { color: var(--encre-douce); }
 .calendrier .jour span  { background: var(--indigo-700); color: var(--carte); font-weight: 700; box-shadow: var(--ombre-legere); }
 .calendrier-legende { margin: 0.55rem 0 0; color: var(--encre-douce); font-size: 0.78rem; text-align: center; }
+/* Compteur des semaines de stage : petite colonne à gauche, numéro dans la teinte de sa période */
+.calendrier .calendrier-sem { width: 1.25rem; padding: 0 0.15rem 0 0; font-size: 0.62rem; font-weight: 700; color: var(--encre-douce); text-align: right; }
+.calendrier tbody .calendrier-sem { padding-bottom: 0; }
+.calendrier .calendrier-sem.sem-stage        { color: var(--sapin-700); }
+.calendrier .calendrier-sem.sem-prolongation { color: var(--sapin-400); }
 .calendrier-cles { margin: 0.35rem 0 0; padding: 0; list-style: none; color: var(--encre-douce); font-size: 0.75rem; }
 .calendrier-cles li { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.15rem; }
 .calendrier-cles .cle { flex: none; width: 0.85rem; height: 0.85rem; border-radius: 50%; }
