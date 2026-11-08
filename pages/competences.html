@@ -18,9 +18,9 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=11">
+  <link rel="stylesheet" href="../styles/style.css?v=12">
   <script src="../scripts/rideau.js?v=2" defer></script>
-  <script src="../scripts/script.js?v=10" defer></script>
+  <script src="../scripts/script.js?v=11" defer></script>
 </head>
 
 <body id="haut">
@@ -55,6 +55,7 @@
           <li><a href="../index.html#parcours">Parcours</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="../cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="cv-video.html">CV vidéo</a></li>
         </ul>
       </nav>
     </div>
@@ -215,11 +216,11 @@
       <form class="formulaire" id="formulaire-contact" aria-label="Formulaire de contact"
             data-endpoint="">
         <p class="champ">
-          <label for="nom">Nom</label>
+          <label for="nom">Nom <span class="obligatoire">(obligatoire)</span></label>
           <input id="nom" name="nom" autocomplete="name" required>
         </p>
         <p class="champ">
-          <label for="email">Adresse e-mail</label>
+          <label for="email">Adresse e-mail <span class="obligatoire">(obligatoire)</span></label>
           <input id="email" name="email" type="email" autocomplete="email" required>
         </p>
         <p class="champ champ-large">
@@ -232,7 +233,7 @@
           </select>
         </p>
         <p class="champ champ-large">
-          <label for="message">Message</label>
+          <label for="message">Message <span class="obligatoire">(obligatoire)</span></label>
           <textarea id="message" name="message" rows="3" required></textarea>
         </p>
         <!-- Champ piège anti-robots : invisible pour les humains -->
@@ -240,6 +241,8 @@
           <label for="piege">Ne pas remplir</label>
           <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
         </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
         <p class="formulaire-pied champ-large">
           <button class="bouton" type="submit">Envoyer</button>
           <span class="formulaire-statut" role="status"></span>
@@ -248,9 +251,11 @@
 
     </div>
     <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
-      Images provisoires : <a href="https://picsum.photos">Lorem Picsum</a><br>
+      Images provisoires : <a href="https://picsum.photos">Lorem Picsum</a> · Photo de l'IUT : couverture LinkedIn « IUT de Lens Alumni »<br>
       Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site<br>
-	  Mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a></p>
+      <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
+      Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="accessibilite.html">déclaration et détail des tests</a><br>
+      Mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a></p>
   </footer>
 
   <!-- ===== Barre fixe du bas ===== -->

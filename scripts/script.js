@@ -7,6 +7,8 @@
    5. Filtres et tri de la page Projets
    6. Calendrier au survol d'une date (accueil)
    7. Thème clair / sombre (bouton de la barre du haut)
+   8. Cartes déployées : la touche Échap les replie
+   9. Images animées (GIF) : en mouvement seulement à la demande
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -116,6 +118,16 @@ document.addEventListener('click', (evt) => {
 
 /* ---------- 2. Formulaire de contact ---------- */
 const formulaire = document.getElementById('formulaire-contact');
+
+/*
+  Réglages d'envoi : à remplir une seule fois ici, ils valent pour toutes les pages.
+  · formspree : adresse du formulaire Formspree (https://formspree.io/f/xxxxxxxx).
+                Vide : le message s'ouvre dans la messagerie du visiteur (mailto).
+  · turnstile : clé de site Cloudflare Turnstile (widget en mode « Non-interactive »).
+                Vide : pas de vérification anti-robots. Ne sert qu'avec formspree,
+                car c'est Formspree qui contrôle le jeton avec la clé secrète.
+*/
+const REGLAGES_ENVOI = { formspree: '', turnstile: '' };
 
 /*
   Vérification de l'adresse e-mail, en trois temps :
@@ -242,6 +254,73 @@ if (formulaire) {
     champEmail.addEventListener('input', effacer);
     champEmail.addEventListener('change', () => champEmail.verifier());
   }
+
+  /*
+    Champs obligatoires laissés vides ou mal remplis (RGAA 11.10) : à la place de la bulle
+    éphémère du navigateur, un message reste affiché sous le champ, relié par aria-describedby,
+    et le champ reçoit aria-invalid="true". Le focus va au premier champ à corriger.
+  */
+  let focusDonne = false;
+  formulaire.querySelectorAll('input[required], textarea[required], select[required]').forEach((champ) => {
+    let aide = document.getElementById(`${champ.id}-aide`);
+    if (!aide) {
+      aide = document.createElement('p');
+      aide.className = 'champ-aide';
+      aide.id = `${champ.id}-aide`;
+      aide.setAttribute('aria-live', 'polite');
+      champ.closest('.champ').append(aide);
+      champ.setAttribute('aria-describedby', aide.id);
+    }
+    champ.addEventListener('invalid', (evt) => {
+      evt.preventDefault();
+      champ.setAttribute('aria-invalid', 'true');
+      aide.textContent = champ.validity.valueMissing
+        ? t('Ce champ est obligatoire.', 'This field is required.')
+        : champ.validity.typeMismatch
+          ? t('Cette adresse ne semble pas valide : elle doit ressembler à prenom.nom@domaine.fr.',
+              'This address does not look valid: it should look like firstname.lastname@domain.com.')
+          : champ.validationMessage;
+      aide.dataset.etat = 'erreur';
+      if (!focusDonne) {
+        focusDonne = true;
+        champ.focus();
+        setTimeout(() => { focusDonne = false; }, 0);
+      }
+    });
+    champ.addEventListener('input', () => {
+      champ.removeAttribute('aria-invalid');
+      if (champ.type !== 'email' && aide.dataset.etat === 'erreur') {
+        aide.textContent = '';
+        delete aide.dataset.etat;
+      }
+    });
+  });
+}
+
+/*
+  Vérification anti-robots Cloudflare Turnstile, en mode non interactif : le visiteur n'a rien à faire,
+  le petit cadre au logo Cloudflare se valide seul. Chargée seulement si les deux réglages sont remplis.
+*/
+let idTurnstile = null;
+const adresseEnvoi = () => ((formulaire?.dataset.endpoint || '').trim() || REGLAGES_ENVOI.formspree);
+if (formulaire && REGLAGES_ENVOI.turnstile && adresseEnvoi()) {
+  const zone = formulaire.querySelector('[data-turnstile]');
+  if (zone) {
+    window.surTurnstilePret = () => {
+      idTurnstile = window.turnstile.render(zone, {
+        sitekey: REGLAGES_ENVOI.turnstile,
+        language: t('fr', 'en'),
+        theme: document.documentElement.dataset.theme === 'sombre' ? 'dark' : 'light',
+        size: 'flexible',
+      });
+    };
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=surTurnstilePret&render=explicit';
+    script.async = true;
+    document.head.append(script);
+    zone.hidden = false;
+    document.querySelectorAll('[data-mention-turnstile]').forEach((el) => { el.hidden = false; });
+  }
 }
 
 if (formulaire) {
@@ -266,7 +345,7 @@ if (formulaire) {
     const donnees = new FormData(formulaire);
     if (donnees.get('_gotcha')) return; // champ piège rempli : sans doute un robot
 
-    const adresseService = (formulaire.dataset.endpoint || '').trim();
+    const adresseService = adresseEnvoi();
 
     // Sans service d'envoi : on prépare l'e-mail dans la messagerie du visiteur.
     if (!adresseService) {
@@ -280,6 +359,11 @@ if (formulaire) {
     }
 
     // Avec un service (Formspree ou équivalent) : envoi direct.
+    if (idTurnstile !== null && !window.turnstile?.getResponse(idTurnstile)) {
+      afficher(t('Vérification anti-robots en cours : réessayez dans un instant.',
+                 'Anti-bot check in progress: please try again in a moment.'), 'erreur');
+      return;
+    }
     bouton.disabled = true;
     afficher(t('Envoi en cours…', 'Sending…'));
     try {
@@ -298,6 +382,7 @@ if (formulaire) {
                  `The message could not be sent. You can write to me directly at ${destinataire}.`), 'erreur');
     } finally {
       bouton.disabled = false;
+      if (idTurnstile !== null) window.turnstile?.reset(idTurnstile);   // un jeton ne sert qu'une fois
     }
   });
 }
@@ -496,8 +581,8 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const bulle = document.createElement('div');
   bulle.className = 'calendrier';
   bulle.id = `calendrier-${rang + 1}`;
-  bulle.setAttribute('role', 'dialog');
-  bulle.setAttribute('aria-label', t(`Calendrier : ${nomJour}`, `Calendar: ${nomJour}`));
+  // Aide visuelle seulement : la date et la légende « Début du stage » sont déjà écrites en clair dans la page.
+  bulle.setAttribute('aria-hidden', 'true');
   bulle.hidden = true;
   bulle.innerHTML =
     '<div class="calendrier-entete">' +
@@ -577,13 +662,16 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   date.addEventListener('pointerleave', quitter);
   bulle.addEventListener('pointerleave', quitter);
 
-  // Clavier : focus sur la date ; ← → changent de mois ; Échap ferme
+  // Clavier : focus sur la date ; ← → changent de mois ; Début y revient ; Échap ferme
   date.tabIndex = 0;
-  date.setAttribute('aria-controls', bulle.id);
   date.addEventListener('focus', montrer);
   date.addEventListener('blur', () => { if (!survole()) cacher(); });
   date.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') cacher();
+    else if (!bulle.hidden && evt.key === 'Home') {           // Début : retour au mois de la date
+      evt.preventDefault();
+      affiche = new Date(annee, mois - 1, 1); dessiner(); placer();
+    }
     else if (!bulle.hidden && (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight')) {
       evt.preventDefault();
       changerMois(evt.key === 'ArrowLeft' ? -1 : 1);
@@ -647,3 +735,42 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     if (!['clair', 'sombre'].includes(choixMemorise())) appliquer(e.matches ? 'sombre' : 'clair', true);
   });
 })();
+
+/* ---------- 8. Cartes déployées : la touche Échap les replie ---------- */
+// Une carte déployée au survol ou au focus recouvre la rangée suivante : Échap la replie
+// sans déplacer la souris ni le focus (RGAA 10.13, WCAG 1.4.13). Elle se redéploie au prochain survol.
+document.addEventListener('keydown', (evt) => {
+  if (evt.key !== 'Escape') return;
+  document.querySelectorAll('.emplacement:hover, .emplacement:focus-within').forEach((el) => el.classList.add('replie'));
+});
+document.querySelectorAll('.emplacement').forEach((el) => {
+  el.addEventListener('pointerleave', () => el.classList.remove('replie'));
+  el.addEventListener('focusout', (evt) => { if (!el.contains(evt.relatedTarget)) el.classList.remove('replie'); });
+});
+
+/* ---------- 9. Images animées (GIF) : en mouvement seulement à la demande ---------- */
+// Par défaut, l'image fixe (la <source> PNG du <picture>). L'animation joue au survol ou au focus
+// de la carte et s'arrête en la quittant ; sur écran tactile, 5 secondes quand la carte apparaît.
+// Avec « animations réduites » activé sur l'appareil, l'image reste fixe (RGAA 13.8).
+document.querySelectorAll('.carte picture').forEach((image) => {
+  const img = image.querySelector('img[src$=".gif"]');
+  const fixe = image.querySelector('source[srcset]')?.getAttribute('srcset');
+  if (!img || !fixe) return;
+  const anime = img.getAttribute('src');
+  const zone = img.closest('.emplacement') ?? img.closest('.carte');
+  const jouer = () => { if (!mouvementReduit.matches) img.src = anime; };
+  const arreter = () => { img.src = fixe; };
+  arreter();
+  zone.addEventListener('pointerenter', jouer);
+  zone.addEventListener('pointerleave', arreter);
+  zone.addEventListener('focusin', jouer);
+  zone.addEventListener('focusout', (evt) => { if (!zone.contains(evt.relatedTarget)) arreter(); });
+  if (!window.matchMedia('(hover: hover)').matches && 'IntersectionObserver' in window) {
+    let minuteur;
+    new IntersectionObserver(([entree]) => {
+      clearTimeout(minuteur);
+      if (entree.isIntersecting) { jouer(); minuteur = setTimeout(arreter, 5000); }
+      else arreter();
+    }, { threshold: 0.6 }).observe(img);
+  }
+});

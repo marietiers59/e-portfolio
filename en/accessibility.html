@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessibility · Marie Tiers</title>
+  <meta name="description" content="Accessibility statement for Marie Tiers's portfolio: RGAA 4.1.2 conformance rate, WCAG tests and method.">
+  <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/pages/accessibilite.html">
+  <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/accessibility.html">
+  <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/pages/accessibilite.html">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
+  <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
+
+  <link rel="stylesheet" href="../styles/style.css?v=12">
+  <script src="../scripts/rideau.js?v=2" defer></script>
+  <script src="../scripts/script.js?v=11" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#content">Skip to content</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="langue" href="../pages/accessibilite.html" hreflang="fr" data-actif="en">
+      <img class="langue-drapeau" src="../medias/drapeau-fr.svg" alt="" width="24" height="16">
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <img class="langue-drapeau" src="../medias/drapeau-gb.svg" alt="" width="32" height="16">
+      <span class="sr" lang="fr">Lire cette page en français</span>
+    </a>
+    <button class="theme" type="button" aria-pressed="false" hidden>
+      <svg class="theme-icone theme-soleil" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <svg class="theme-icone theme-lune" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      <span class="sr">Dark theme</span>
+    </button>
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+    <div class="conteneur entete-nav">
+      <a class="logo" href="index.html">Marie TIERS</a>
+      <nav class="navigation" aria-label="Main navigation">
+        <ul class="navigation-liste">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="skills.html">Skills</a></li>
+          <li><a href="index.html#journey">Journey</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="../cv-marie-tiers-en.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="video-cv.html">Video CV</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="section" aria-labelledby="titre-principal">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h1 class="section-titre" id="titre-principal" tabindex="-1">Accessibility</h1>
+          <p class="section-intro">
+            This portfolio aims to meet the <strong class="kw"><i lang="fr">RGAA</i> 4.1.2</strong> (the French accessibility standard),
+            which follows <strong class="kw">WCAG 2.1</strong> level AA. Here is where it stands, and how I checked it.
+          </p>
+        </div>
+
+        <div class="declaration">
+          <section class="declaration-bloc" aria-labelledby="a11y-resultats">
+            <h2 id="a11y-resultats">Results as of 8 November 2026</h2>
+            <ul class="chiffres">
+              <li><span class="chiffre">98.5%</span><span class="chiffre-legende">of applicable <i lang="fr">RGAA</i> criteria met (64 out of 65)</span></li>
+              <li><span class="chiffre">0 errors</span><span class="chiffre-legende">in automated WCAG 2.2 A and AA tests (axe-core)</span></li>
+              <li><span class="chiffre">100 / 100</span><span class="chiffre-legende">Lighthouse accessibility score, on every page</span></li>
+            </ul>
+            <p>The site <strong>partially conforms</strong> to <i lang="fr">RGAA</i> 4.1.2: only one criterion is not yet met (see below).</p>
+            <p>WCAG and <i lang="fr">RGAA</i> have no official “score”: the percentage above is the <strong>conformance rate</strong> defined by <i lang="fr">RGAA</i>, the share of criteria met among those that apply to the site. The Lighthouse score only measures what a robot can test.</p>
+          </section>
+
+          <section class="declaration-bloc" aria-labelledby="a11y-methode">
+            <h2 id="a11y-methode">Method</h2>
+            <ul>
+              <li><strong>Self-assessment</strong> carried out by me, not an audit by an independent body.</li>
+              <li>Pages assessed: home, projects, skills, video CV, accessibility and personal area, plus their French versions.</li>
+              <li>Automated tests: axe-core 4.10 (WCAG 2.2 A and AA rules) on desktop and mobile, in light and dark themes; Lighthouse 12; W3C HTML validator.</li>
+              <li>Manual tests: keyboard-only navigation, 200% zoom, 320 px wide display, increased text spacing, contrast of text over images measured pixel by pixel, all 106 criteria reviewed one by one.</li>
+              <li>Environment: Chromium (the engine behind Chrome and Edge) on Linux.</li>
+            </ul>
+          </section>
+
+          <section class="declaration-bloc" aria-labelledby="a11y-limites">
+            <h2 id="a11y-limites">What is not accessible yet</h2>
+            <ul>
+              <li><strong>English CV (PDF)</strong>: the file is untagged, so a screen reader may read it out of order (criterion 13.3). The French CV is tagged, and the main content of the CV is also on the pages of this site.</li>
+            </ul>
+            <h3>Points to watch</h3>
+            <ul>
+              <li>The contact form may be protected by Cloudflare Turnstile: the check needs no action from visitors and relies on no image to decipher.</li>
+              <li>The video CV is under construction: it will have subtitles and a written transcript.</li>
+            </ul>
+          </section>
+
+          <section class="declaration-bloc" aria-labelledby="a11y-detail">
+            <h2 id="a11y-detail">Details by theme</h2>
+            <div class="tableau-defilant" tabindex="0" role="region" aria-label="Results by RGAA theme"><table class="tableau-a11y">
+              <caption>Results by RGAA theme</caption>
+              <thead><tr><th scope="col">Theme</th><th scope="col" class="nombre">Compliant</th><th scope="col" class="nombre">Non-compliant</th><th scope="col" class="nombre">Not applicable</th></tr></thead>
+              <tbody>
+<tr><th scope="row">1. Images</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">6</td></tr>
+<tr><th scope="row">2. Frames</th><td class="nombre">0</td><td class="nombre">0</td><td class="nombre">2</td></tr>
+<tr><th scope="row">3. Colours</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">0</td></tr>
+<tr><th scope="row">4. Multimedia</th><td class="nombre">0</td><td class="nombre">0</td><td class="nombre">13</td></tr>
+<tr><th scope="row">5. Tables</th><td class="nombre">4</td><td class="nombre">0</td><td class="nombre">4</td></tr>
+<tr><th scope="row">6. Links</th><td class="nombre">2</td><td class="nombre">0</td><td class="nombre">0</td></tr>
+<tr><th scope="row">7. Scripts</th><td class="nombre">4</td><td class="nombre">0</td><td class="nombre">1</td></tr>
+<tr><th scope="row">8. Mandatory elements</th><td class="nombre">9</td><td class="nombre">0</td><td class="nombre">1</td></tr>
+<tr><th scope="row">9. Information structure</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">1</td></tr>
+<tr><th scope="row">10. Presentation of information</th><td class="nombre">14</td><td class="nombre">0</td><td class="nombre">0</td></tr>
+<tr><th scope="row">11. Forms</th><td class="nombre">8</td><td class="nombre">0</td><td class="nombre">5</td></tr>
+<tr><th scope="row">12. Navigation</th><td class="nombre">6</td><td class="nombre">0</td><td class="nombre">5</td></tr>
+<tr><th scope="row">13. Consultation</th><td class="nombre">8</td><td class="nombre">1</td><td class="nombre">3</td></tr>
+<tr><th scope="row">Total</th><td class="nombre">64</td><td class="nombre">1</td><td class="nombre">41</td></tr>
+              </tbody>
+            </table></div>
+            <details>
+              <summary>See all 106 criteria one by one</summary>
+              <div class="tableau-defilant" tabindex="0" role="region" aria-label="All 106 RGAA 4.1.2 criteria"><table class="tableau-a11y">
+                <caption>All 106 RGAA 4.1.2 criteria</caption>
+                <thead><tr><th scope="col">Criterion</th><th scope="col">Status</th><th scope="col">Note</th></tr></thead>
+                <tbody>
+<tr><th scope="row">1.1</th><td class="statut-c">Compliant</td><td>The portrait has a text alternative; other images are decorative.</td></tr>
+<tr><th scope="row">1.2</th><td class="statut-c">Compliant</td><td>Decorative images: empty alt; SVG icons: aria-hidden.</td></tr>
+<tr><th scope="row">1.3</th><td class="statut-c">Compliant</td><td>“Portrait of Marie Tiers, smiling”.</td></tr>
+<tr><th scope="row">1.4</th><td class="statut-na">Not applicable</td><td>No image CAPTCHA.</td></tr>
+<tr><th scope="row">1.5</th><td class="statut-na">Not applicable</td><td>No active CAPTCHA at audit date.</td></tr>
+<tr><th scope="row">1.6</th><td class="statut-na">Not applicable</td><td>No image needs a long description.</td></tr>
+<tr><th scope="row">1.7</th><td class="statut-na">Not applicable</td><td>As 1.6.</td></tr>
+<tr><th scope="row">1.8</th><td class="statut-na">Not applicable</td><td>No informative image of text.</td></tr>
+<tr><th scope="row">1.9</th><td class="statut-na">Not applicable</td><td>No image captions.</td></tr>
+<tr><th scope="row">2.1</th><td class="statut-na">Not applicable</td><td>No frames (iframe).</td></tr>
+<tr><th scope="row">2.2</th><td class="statut-na">Not applicable</td><td>As 2.1.</td></tr>
+<tr><th scope="row">3.1</th><td class="statut-c">Compliant</td><td>Step type written out (project / education); links and filters identifiable without colour.</td></tr>
+<tr><th scope="row">3.2</th><td class="statut-c">Compliant</td><td>0 contrast errors (axe-core), light and dark themes; text over images checked pixel by pixel.</td></tr>
+<tr><th scope="row">3.3</th><td class="statut-c">Compliant</td><td>Field borders ≥ 3:1; focus ring ≥ 3:1.</td></tr>
+<tr><th scope="row">4.1</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.2</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.3</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.4</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.5</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.6</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.7</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.8</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.9</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.10</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.11</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.12</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">4.13</th><td class="statut-na">Not applicable</td><td>No audio or video (video CV under construction).</td></tr>
+<tr><th scope="row">5.1</th><td class="statut-na">Not applicable</td><td>No complex tables.</td></tr>
+<tr><th scope="row">5.2</th><td class="statut-na">Not applicable</td><td>As 5.1.</td></tr>
+<tr><th scope="row">5.3</th><td class="statut-na">Not applicable</td><td>No layout tables.</td></tr>
+<tr><th scope="row">5.4</th><td class="statut-c">Compliant</td><td>Tables on this page: caption.</td></tr>
+<tr><th scope="row">5.5</th><td class="statut-c">Compliant</td><td>Relevant captions.</td></tr>
+<tr><th scope="row">5.6</th><td class="statut-c">Compliant</td><td>th headers (calendar, result tables).</td></tr>
+<tr><th scope="row">5.7</th><td class="statut-c">Compliant</td><td>Simple tables, scope on headers.</td></tr>
+<tr><th scope="row">5.8</th><td class="statut-na">Not applicable</td><td>As 5.3.</td></tr>
+<tr><th scope="row">6.1</th><td class="statut-c">Compliant</td><td>Links explicit on their own or in context (card, list).</td></tr>
+<tr><th scope="row">6.2</th><td class="statut-c">Compliant</td><td>All links have a name.</td></tr>
+<tr><th scope="row">7.1</th><td class="statut-c">Compliant</td><td>Filters (aria-pressed), status messages, language and theme toggles.</td></tr>
+<tr><th scope="row">7.2</th><td class="statut-na">Not applicable</td><td>No script alternative needed.</td></tr>
+<tr><th scope="row">7.3</th><td class="statut-c">Compliant</td><td>Everything works with keyboard and pointer.</td></tr>
+<tr><th scope="row">7.4</th><td class="statut-c">Compliant</td><td>No change of context without user action.</td></tr>
+<tr><th scope="row">7.5</th><td class="statut-c">Compliant</td><td>role=&quot;status&quot; on form, filter and counter messages.</td></tr>
+<tr><th scope="row">8.1</th><td class="statut-c">Compliant</td><td>HTML5 doctype.</td></tr>
+<tr><th scope="row">8.2</th><td class="statut-c">Compliant</td><td>0 errors in the W3C Nu Html Checker.</td></tr>
+<tr><th scope="row">8.3</th><td class="statut-c">Compliant</td><td>lang on every page.</td></tr>
+<tr><th scope="row">8.4</th><td class="statut-c">Compliant</td><td>fr / en-GB.</td></tr>
+<tr><th scope="row">8.5</th><td class="statut-c">Compliant</td><td>Title on every page.</td></tr>
+<tr><th scope="row">8.6</th><td class="statut-c">Compliant</td><td>Relevant titles.</td></tr>
+<tr><th scope="row">8.7</th><td class="statut-c">Compliant</td><td>English words in &lt;i lang=&quot;en&quot;&gt;, French words in &lt;i lang=&quot;fr&quot;&gt; on English pages.</td></tr>
+<tr><th scope="row">8.8</th><td class="statut-c">Compliant</td><td>Valid language codes.</td></tr>
+<tr><th scope="row">8.9</th><td class="statut-c">Compliant</td><td>Tags used for their meaning.</td></tr>
+<tr><th scope="row">8.10</th><td class="statut-na">Not applicable</td><td>No change of reading direction.</td></tr>
+<tr><th scope="row">9.1</th><td class="statut-c">Compliant</td><td>Consistent heading hierarchy (h1 → h2 → h3).</td></tr>
+<tr><th scope="row">9.2</th><td class="statut-c">Compliant</td><td>header, nav, main, footer.</td></tr>
+<tr><th scope="row">9.3</th><td class="statut-c">Compliant</td><td>ul / ol lists.</td></tr>
+<tr><th scope="row">9.4</th><td class="statut-na">Not applicable</td><td>No quotations.</td></tr>
+<tr><th scope="row">10.1</th><td class="statut-c">Compliant</td><td>Presentation in CSS.</td></tr>
+<tr><th scope="row">10.2</th><td class="statut-c">Compliant</td><td>Content present without CSS.</td></tr>
+<tr><th scope="row">10.3</th><td class="statut-c">Compliant</td><td>Reading order makes sense without CSS.</td></tr>
+<tr><th scope="row">10.4</th><td class="statut-c">Compliant</td><td>200% zoom: no loss, no horizontal scrolling.</td></tr>
+<tr><th scope="row">10.5</th><td class="statut-c">Compliant</td><td>Background and text colours declared together.</td></tr>
+<tr><th scope="row">10.6</th><td class="statut-c">Compliant</td><td>Links in text are bold.</td></tr>
+<tr><th scope="row">10.7</th><td class="statut-c">Compliant</td><td>Visible focus ring everywhere.</td></tr>
+<tr><th scope="row">10.8</th><td class="statut-c">Compliant</td><td>Hidden content (.sr, aria-hidden) used appropriately.</td></tr>
+<tr><th scope="row">10.9</th><td class="statut-c">Compliant</td><td>Information never conveyed by position alone.</td></tr>
+<tr><th scope="row">10.10</th><td class="statut-c">Compliant</td><td>As 10.9.</td></tr>
+<tr><th scope="row">10.11</th><td class="statut-c">Compliant</td><td>Readable at 320 px wide without horizontal scrolling.</td></tr>
+<tr><th scope="row">10.12</th><td class="statut-c">Compliant</td><td>WCAG text spacing applied without loss.</td></tr>
+<tr><th scope="row">10.13</th><td class="statut-c">Compliant</td><td>Expanded cards: Escape collapses them; calendar: Escape closes it.</td></tr>
+<tr><th scope="row">10.14</th><td class="statut-c">Compliant</td><td>Card content visible on hover and keyboard focus.</td></tr>
+<tr><th scope="row">11.1</th><td class="statut-c">Compliant</td><td>Every field has a label.</td></tr>
+<tr><th scope="row">11.2</th><td class="statut-c">Compliant</td><td>Relevant labels.</td></tr>
+<tr><th scope="row">11.3</th><td class="statut-c">Compliant</td><td>Same labels on every page.</td></tr>
+<tr><th scope="row">11.4</th><td class="statut-c">Compliant</td><td>Label next to its field.</td></tr>
+<tr><th scope="row">11.5</th><td class="statut-na">Not applicable</td><td>No related fields to group.</td></tr>
+<tr><th scope="row">11.6</th><td class="statut-na">Not applicable</td><td>As 11.5.</td></tr>
+<tr><th scope="row">11.7</th><td class="statut-na">Not applicable</td><td>As 11.5.</td></tr>
+<tr><th scope="row">11.8</th><td class="statut-na">Not applicable</td><td>Short list without groups.</td></tr>
+<tr><th scope="row">11.9</th><td class="statut-c">Compliant</td><td>Explicit buttons.</td></tr>
+<tr><th scope="row">11.10</th><td class="statut-c">Compliant</td><td>“(required)” in the label; errors shown under the field, aria-invalid.</td></tr>
+<tr><th scope="row">11.11</th><td class="statut-c">Compliant</td><td>Email address correction suggestions.</td></tr>
+<tr><th scope="row">11.12</th><td class="statut-na">Not applicable</td><td>Simple contact form.</td></tr>
+<tr><th scope="row">11.13</th><td class="statut-c">Compliant</td><td>autocomplete name / email.</td></tr>
+<tr><th scope="row">12.1</th><td class="statut-na">Not applicable</td><td>Special case: few pages, all reachable from the home page.</td></tr>
+<tr><th scope="row">12.2</th><td class="statut-c">Compliant</td><td>Menu always in the same place.</td></tr>
+<tr><th scope="row">12.3</th><td class="statut-na">Not applicable</td><td>No site map.</td></tr>
+<tr><th scope="row">12.4</th><td class="statut-na">Not applicable</td><td>As 12.3.</td></tr>
+<tr><th scope="row">12.5</th><td class="statut-na">Not applicable</td><td>No search engine.</td></tr>
+<tr><th scope="row">12.6</th><td class="statut-c">Compliant</td><td>Marked-up regions (header, nav, main, footer).</td></tr>
+<tr><th scope="row">12.7</th><td class="statut-c">Compliant</td><td>“Skip to content” link.</td></tr>
+<tr><th scope="row">12.8</th><td class="statut-c">Compliant</td><td>Logical tab order.</td></tr>
+<tr><th scope="row">12.9</th><td class="statut-c">Compliant</td><td>No keyboard trap.</td></tr>
+<tr><th scope="row">12.10</th><td class="statut-na">Not applicable</td><td>No single-key shortcuts.</td></tr>
+<tr><th scope="row">12.11</th><td class="statut-c">Compliant</td><td>Additional content reachable by keyboard.</td></tr>
+<tr><th scope="row">13.1</th><td class="statut-c">Compliant</td><td>Thank-you message: pauses on hover, close button.</td></tr>
+<tr><th scope="row">13.2</th><td class="statut-c">Compliant</td><td>No window opened automatically.</td></tr>
+<tr><th scope="row">13.3</th><td class="statut-nc">Non-compliant</td><td>English CV (PDF) is untagged; the French CV is tagged.</td></tr>
+<tr><th scope="row">13.4</th><td class="statut-na">Not applicable</td><td>No alternative document versions.</td></tr>
+<tr><th scope="row">13.5</th><td class="statut-c">Compliant</td><td>Decorative symbols hidden, arrows named.</td></tr>
+<tr><th scope="row">13.6</th><td class="statut-c">Compliant</td><td>Relevant alternatives.</td></tr>
+<tr><th scope="row">13.7</th><td class="statut-c">Compliant</td><td>No flashing.</td></tr>
+<tr><th scope="row">13.8</th><td class="statut-c">Compliant</td><td>Animated GIF only on hover or focus (5 s on touch screens); still image with “reduce motion”.</td></tr>
+<tr><th scope="row">13.9</th><td class="statut-c">Compliant</td><td>Portrait and landscape.</td></tr>
+<tr><th scope="row">13.10</th><td class="statut-na">Not applicable</td><td>No complex gestures.</td></tr>
+<tr><th scope="row">13.11</th><td class="statut-c">Compliant</td><td>Actions fire on release.</td></tr>
+<tr><th scope="row">13.12</th><td class="statut-na">Not applicable</td><td>No device motion.</td></tr>
+                </tbody>
+              </table></div>
+            </details>
+          </section>
+
+          <section class="declaration-bloc" aria-labelledby="a11y-contact">
+            <h2 id="a11y-contact">Report a problem</h2>
+            <p>Is some content inaccessible to you? Write to me using the <a href="#contact">contact form</a> at the bottom of the page: I will reply and send you the information in another format.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <!-- ===== Footer (scrolls with the page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Contact me</h2>
+        <p>An <strong class="kw">internship</strong> or <strong class="kw">work-study</strong> offer, a question about a project? Write to me and I will get back to you quickly.</p>
+        <ul class="coordonnees">
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Contact form"
+            data-endpoint="">
+        <p class="champ">
+          <label for="nom">Name <span class="obligatoire">(required)</span></label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Email address <span class="obligatoire">(required)</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Subject</label>
+          <select id="objet" name="objet">
+            <option>Internship offer</option>
+            <option>Work-study offer</option>
+            <option>Question about a project</option>
+            <option>Other</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message <span class="obligatoire">(required)</span></label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Anti-bot trap field: invisible to humans -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Do not fill in</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Send</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
+      Placeholder images: <a href="https://picsum.photos">Lorem Picsum</a> · Photo of the <i lang="fr">IUT</i>: LinkedIn cover of “IUT de Lens Alumni”<br>
+      Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site<br>
+      <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
+      Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="accessibility.html" aria-current="page">statement and test details</a><br>
+      Cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a></p>
+  </footer>
+
+  <!-- ===== Fixed bottom bar ===== -->
+  <div class="barre barre-bas">
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>

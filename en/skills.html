@@ -18,9 +18,9 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=11">
+  <link rel="stylesheet" href="../styles/style.css?v=12">
   <script src="../scripts/rideau.js?v=2" defer></script>
-  <script src="../scripts/script.js?v=10" defer></script>
+  <script src="../scripts/script.js?v=11" defer></script>
 </head>
 
 <body id="haut">
@@ -55,6 +55,7 @@
           <li><a href="index.html#journey">Journey</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="../cv-marie-tiers-en.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="video-cv.html">Video CV</a></li>
         </ul>
       </nav>
     </div>
@@ -215,11 +216,11 @@
       <form class="formulaire" id="formulaire-contact" aria-label="Contact form"
             data-endpoint="">
         <p class="champ">
-          <label for="nom">Name</label>
+          <label for="nom">Name <span class="obligatoire">(required)</span></label>
           <input id="nom" name="nom" autocomplete="name" required>
         </p>
         <p class="champ">
-          <label for="email">Email address</label>
+          <label for="email">Email address <span class="obligatoire">(required)</span></label>
           <input id="email" name="email" type="email" autocomplete="email" required>
         </p>
         <p class="champ champ-large">
@@ -232,7 +233,7 @@
           </select>
         </p>
         <p class="champ champ-large">
-          <label for="message">Message</label>
+          <label for="message">Message <span class="obligatoire">(required)</span></label>
           <textarea id="message" name="message" rows="3" required></textarea>
         </p>
         <!-- Anti-bot trap field: invisible to humans -->
@@ -240,6 +241,8 @@
           <label for="piege">Do not fill in</label>
           <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
         </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
         <p class="formulaire-pied champ-large">
           <button class="bouton" type="submit">Send</button>
           <span class="formulaire-statut" role="status"></span>
@@ -248,9 +251,11 @@
 
     </div>
     <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
-      Placeholder images: <a href="https://picsum.photos">Lorem Picsum</a><br>
+      Placeholder images: <a href="https://picsum.photos">Lorem Picsum</a> · Photo of the <i lang="fr">IUT</i>: LinkedIn cover of “IUT de Lens Alumni”<br>
       Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site<br>
-	  Cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a></p>
+      <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
+      Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="accessibility.html">statement and test details</a><br>
+      Cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a></p>
   </footer>
 
   <!-- ===== Fixed bottom bar ===== -->
