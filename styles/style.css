@@ -1550,38 +1550,26 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 /* ---------- 6 ter. Nuage de compétences (graphe Gephi) ---------- */
 /*
-  Aperçu cliquable (lien vers l'image seule sans JavaScript) + vue agrandie dans un <dialog>.
-  Le SVG est généré par outils/nuage-competences : classes .l (liens), .n (nœuds), .etq (étiquettes),
-  .k1…k7 (communautés), data-t = but | notion | projet | outil.
-  Sept teintes pastel réparties sur le cercle chromatique (abricot → anis → sapin → bleu → indigo → lavande → rose).
+  Réseau en 3D dessiné dans un <canvas> par scripts/script.js (section 8), à partir des données
+  #nuage-donnees ; sans JavaScript, le SVG à plat (classes .l liens, .n nœuds, .etq étiquettes) reste affiché.
+  Couleurs : un dégradé continu à trois teintes (orange foncé → framboise → violet), calculé par
+  outils/nuage-competences/couleurs.py : luminosité constante, contraste ≥ 4,5:1 sur les fonds du site.
+  Chaque élément porte ses deux nuances (--kc thème clair, --ks thème sombre) ; --k est celle du thème affiché.
 */
 :root {
-  --nuage-k1: hsl(25 72% 62%);
-  --nuage-k2: hsl(85 42% 48%);
-  --nuage-k3: hsl(170 40% 44%);
-  --nuage-k4: hsl(203 62% 56%);
-  --nuage-k5: hsl(235 42% 62%);
-  --nuage-k6: hsl(268 38% 64%);
-  --nuage-k7: hsl(330 50% 63%);
-  --nuage-sur-k: hsl(220 18% 16%);      /* texte posé sur une teinte pleine */
+  --nuage-a: #ac5407;                   /* orange foncé */
+  --nuage-b: #bf2e6a;                   /* framboise, la transition */
+  --nuage-c: #864cc8;                   /* violet */
+  --nuage-sur-k: hsl(0 0% 100%);        /* texte posé sur une teinte pleine */
 }
 :root[data-theme="sombre"] {
-  --nuage-k1: hsl(25 75% 70%);
-  --nuage-k2: hsl(85 45% 62%);
-  --nuage-k3: hsl(170 42% 58%);
-  --nuage-k4: hsl(203 65% 68%);
-  --nuage-k5: hsl(235 60% 76%);
-  --nuage-k6: hsl(268 48% 77%);
-  --nuage-k7: hsl(330 58% 75%);
+  --nuage-a: #f79f67;
+  --nuage-b: #fa93b2;
+  --nuage-c: #c7a3fb;
   --nuage-sur-k: hsl(228 18% 12%);
 }
-.nuage .k1, .nuage-dialogue .k1 { --k: var(--nuage-k1); }
-.nuage .k2, .nuage-dialogue .k2 { --k: var(--nuage-k2); }
-.nuage .k3, .nuage-dialogue .k3 { --k: var(--nuage-k3); }
-.nuage .k4, .nuage-dialogue .k4 { --k: var(--nuage-k4); }
-.nuage .k5, .nuage-dialogue .k5 { --k: var(--nuage-k5); }
-.nuage .k6, .nuage-dialogue .k6 { --k: var(--nuage-k6); }
-.nuage .k7, .nuage-dialogue .k7 { --k: var(--nuage-k7); }
+:is(.nuage, .nuage-dialogue) [style*="--kc"] { --k: var(--kc); }
+:root[data-theme="sombre"] :is(.nuage, .nuage-dialogue) [style*="--ks"] { --k: var(--ks); }
 
 /* Carte : aperçu puis texte sur mobile, côte à côte dès la tablette */
 .nuage {
@@ -1597,12 +1585,13 @@ abbr[title] { text-decoration: none; cursor: help; }
   box-shadow: var(--ombre-repos);
   overflow: hidden;
 }
-.nuage::before {                 /* filet du haut aux sept couleurs du nuage */
+.nuage::before {                 /* filet du haut au dégradé du nuage */
   content: "";
   position: absolute;
   inset: 0 0 auto;
   height: 0.3rem;
-  background: linear-gradient(90deg, var(--nuage-k1), var(--nuage-k2), var(--nuage-k3), var(--nuage-k4), var(--nuage-k5), var(--nuage-k6), var(--nuage-k7));
+  background: linear-gradient(90deg, var(--nuage-a), var(--nuage-b), var(--nuage-c));
+  background: linear-gradient(90deg in oklch, var(--nuage-a), var(--nuage-b), var(--nuage-c));
 }
 
 /* Aperçu : petit, cliquable, loupe en bas à droite */
@@ -1714,7 +1703,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   color: var(--bleu-700);
 }
 .nuage-texte-liste { margin: 0.6rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.45rem; font-size: 0.88rem; color: var(--encre-douce); }
-.nuage-texte-nom { color: color-mix(in oklab, var(--k) 55%, var(--encre)); }
+.nuage-texte-nom { color: var(--k); }
 .nuage-texte-liste em { font-style: normal; text-decoration: underline dotted; text-underline-offset: 0.2em; }
 
 /* Le graphe lui-même */
@@ -1732,38 +1721,20 @@ abbr[title] { text-decoration: none; cursor: help; }
   stroke-linejoin: round;
   transition: opacity var(--duree);
 }
-.nuage-svg :is(.etq-but, .etq-notion) { font-weight: 700; fill: color-mix(in oklab, var(--k) 50%, var(--encre)); }
+.nuage-svg :is(.etq-but, .etq-notion) { font-weight: 700; fill: var(--k); }
 .nuage-svg .etq-but { stroke-width: 4px; }
 /* Aperçu : seules les six compétences du BUT sont nommées, en plus gros */
 .nuage-apercu .etq:not(.etq-but) { display: none; }
 .nuage-apercu .etq-but { font-size: var(--etq-apercu, 40px); }
 
-/* Mise en évidence (vue agrandie) : un point et ses voisins, ou une communauté */
-.nuage-svg.a-selection .l:not(.actif) { opacity: 0.05; }
-.nuage-svg.a-selection .l.actif { opacity: 0.95; }
-.nuage-svg.a-selection :is(.n, .etq):not(.actif) { opacity: 0.16; }
-.nuage-svg.etiquettes-reduites :is(.etq-outil, .etq-projet):not(.actif) { display: none; }
-
-/* Apparition : liens qui se tracent, points qui éclosent du centre vers les bords, puis les noms
-   (remplissage « backwards » : une fois l'animation finie, la mise en évidence reprend la main) */
-.nuage-svg.en-attente :is(.l, .n, .etq) { opacity: 0; }
+/* Réseau 3D (canvas) : remplace le SVG à plat dès que le script tourne */
+.nuage-3d .nuage-apercu .nuage-svg { display: none; }
+.nuage-toile { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.nuage-apercu .nuage-toile { inset: 0.25rem; width: calc(100% - 0.5rem); height: calc(100% - 0.5rem); border-radius: 0.8rem; }
+.nuage-pause[aria-pressed="true"] { background: var(--turquoise-100); border-color: var(--turquoise-200); }
 @media (prefers-reduced-motion: no-preference) {
-  .nuage-svg.anime .l {
-    stroke-dasharray: 1;
-    animation: nuage-trait 1.3s ease-out 0.35s backwards;
-  }
-  .nuage-svg.anime .n {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: nuage-eclosion 0.55s cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
-    animation-delay: calc(var(--i, 0) * 11ms);
-  }
-  .nuage-svg.anime .etq { animation: nuage-fondu 0.5s ease-out backwards; animation-delay: calc(0.7s + var(--i, 0) * 7ms); }
   .nuage-dialogue[open] { animation: nuage-ouverture 0.28s ease-out; }
 }
-@keyframes nuage-trait    { from { stroke-dashoffset: 1; opacity: 0; } 20% { opacity: 0.42; } to { stroke-dashoffset: 0; opacity: 0.42; } }
-@keyframes nuage-eclosion { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes nuage-fondu    { from { opacity: 0; } to { opacity: 1; } }
 @keyframes nuage-ouverture { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
 
 /* Vue agrandie : plein écran sur mobile, grande fenêtre ailleurs */
@@ -1830,9 +1801,14 @@ abbr[title] { text-decoration: none; cursor: help; }
   background: radial-gradient(ellipse at 50% 45%, var(--carte) 35%, var(--gris-100));
 }
 .nuage-scene.glisse { cursor: grabbing; }
-.nuage-scene .nuage-svg { position: absolute; inset: 0; }
-.nuage-scene :is(.n, .etq) { cursor: pointer; }
-.nuage-info { flex: 1 1 18rem; margin: 0; font-size: 0.9rem; color: var(--encre-douce); min-height: 2.6em; }
+.nuage-info {               /* sur sa propre ligne, hauteur bornée : le réseau ne saute pas quand le texte s'allonge */
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--encre-douce);
+  height: 3.2em;
+  overflow-y: auto;
+}
 .nuage-info strong { color: var(--encre); }
 
 @media (min-width: 48em) {

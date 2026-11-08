@@ -3,12 +3,14 @@
 Graphe de la page **Compétences** : mes projets, les outils qu'ils mobilisent, les notions et les six compétences du programme national du BUT informatique.
 
 - **Gephi** (via le Gephi Toolkit) calcule les communautés (modularité, méthode de Louvain) et la disposition (ForceAtlas2).
-- `rendu.py` dessine le SVG : couleurs par communauté, taille selon le nombre de liens, noms écartés pour ne pas se chevaucher.
+- `rendu.py` dessine le SVG à plat (sans JavaScript) et prépare les données de la vue 3D : dégradé continu orange foncé → framboise → violet selon la place de chaque nœud, profondeur ajoutée aux positions de Gephi.
+- `scripts/script.js` (section 8) dessine le réseau en 3D dans un canvas : rotation, influx le long des liens, zoom, mise en évidence.
 
 | Fichier | Rôle |
 |---|---|
 | `donnees.py` | projets, outils, notions, compétences et leurs liens : **le seul fichier à modifier** |
 | `Spatialiser.java` | modularité + ForceAtlas2 avec le Gephi Toolkit |
+| `couleurs.py` | dégradé orange foncé → framboise → violet (luminosité constante, contraste vérifié : `python3 couleurs.py`) |
 | `nuage.py`, `rendu.py` | construction du graphe, rendu SVG et injection dans les pages |
 | `construire.sh` | enchaîne le tout |
 
