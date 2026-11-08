@@ -6,6 +6,7 @@
    4. Utilitaires (pastilles • de « Menu » et « Contact », année)
    5. Filtres et tri de la page Projets
    6. Calendrier au survol d'une date (accueil)
+   7. Thème clair / sombre (bouton de la barre du haut)
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -604,3 +605,45 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     if (!bulle.hidden && document.activeElement !== date && !survole()) cacher();
   }, { passive: true });
 });
+
+/* ---------- 7. Thème clair / sombre ---------- */
+// Le thème est déjà posé avant l'affichage par le petit script du <head> de chaque page
+// (choix mémorisé, sinon réglage clair/sombre de l'appareil). Ici :
+//  · le bouton soleil ⇄ lune de la barre du haut (caché sans JavaScript) ;
+//  · la mémorisation du choix sur cet appareil (localStorage, clé « theme ») ;
+//  · le suivi du réglage de l'appareil tant que le visiteur n'a rien choisi.
+(() => {
+  const racine = document.documentElement;
+  const bouton = document.querySelector('.theme');
+  const systeme = window.matchMedia('(prefers-color-scheme: dark)');
+  const couleurNavigateur = document.querySelector('meta[name="theme-color"]');
+
+  const choixMemorise = () => {
+    try { return localStorage.getItem('theme'); } catch { return null; }
+  };
+
+  function appliquer(theme, avecTransition) {
+    if (avecTransition && !mouvementReduit.matches) {
+      racine.classList.add('theme-bascule');               // fondu des couleurs (CSS, section 3)
+      setTimeout(() => racine.classList.remove('theme-bascule'), 350);
+    }
+    racine.dataset.theme = theme;
+    if (bouton) bouton.setAttribute('aria-pressed', String(theme === 'sombre'));
+    if (couleurNavigateur) couleurNavigateur.content = theme === 'sombre' ? '#222d3a' : '#ddedf8';
+  }
+
+  appliquer(racine.dataset.theme === 'sombre' ? 'sombre' : 'clair', false);
+
+  if (bouton) {
+    bouton.hidden = false;
+    bouton.addEventListener('click', () => {
+      const suivant = racine.dataset.theme === 'sombre' ? 'clair' : 'sombre';
+      appliquer(suivant, true);
+      try { localStorage.setItem('theme', suivant); } catch { /* stockage bloqué : le choix vaut pour cette page seulement */ }
+    });
+  }
+
+  systeme.addEventListener('change', (e) => {
+    if (!['clair', 'sombre'].includes(choixMemorise())) appliquer(e.matches ? 'sombre' : 'clair', true);
+  });
+})();
