@@ -454,7 +454,10 @@ if (outilsProjets) {
 
 /* ---------- 6. Calendrier au survol d'une date (accueil) ---------- */
 // Sur <time datetime="2027-04-26" data-calendrier>…</time> : au survol ou au focus, le mois s'affiche
-// avec le jour mis en valeur et la fin de sa semaine teintée.
+// avec le jour de début mis en valeur et la période de stage colorée, sur tous les mois concernés :
+//  · durée minimale (8 semaines) : du jour de début au samedi de la 8e semaine (dimanche exclu) ;
+//  · prolongation possible (semaines 9 et 10), dans un ton plus clair : jusqu'au samedi de la 10e semaine.
+//    Durées réglables avec data-semaines="8-10" sur la balise <time> (8 et 10 par défaut).
 //  · Il reste ouvert tant que le curseur est sur la date OU sur le calendrier, et disparaît
 //    instantanément dès qu'il quitte les deux.
 //  · Les flèches ‹ › (ou les touches ← → quand la date a le focus) changent de mois ;
@@ -467,6 +470,14 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const nomJour = cible.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const jourSemaineCible = (cible.getDay() + 6) % 7;   // 0 = lundi
   let affiche = new Date(annee, mois - 1, 1);           // mois actuellement affiché
+
+  // Période de stage : fin = samedi de la Ne semaine (la semaine 1 est celle du jour de début)
+  const [semMin, semMax] = (date.dataset.semaines || '8-10').split('-').map(Number);
+  const samediSemaine = (n) => new Date(annee, mois - 1, jour + (n - 1) * 7 + (5 - jourSemaineCible));
+  const finMin = samediSemaine(semMin);
+  const finMax = samediSemaine(semMax || semMin);
+  const debutProlongation = new Date(finMin.getFullYear(), finMin.getMonth(), finMin.getDate() + 2);   // lundi suivant (dimanche exclu)
+  const finCourte = (d) => d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'long' });
 
   const bulle = document.createElement('div');
   bulle.className = 'calendrier';
@@ -484,6 +495,10 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     '<th abbr="jeudi">J</th><th abbr="vendredi">V</th><th abbr="samedi">S</th><th abbr="dimanche">D</th></tr></thead>' +
     '<tbody></tbody></table>' +
     `<p class="calendrier-legende">Début du stage : ${nomJour}</p>` +
+    '<ul class="calendrier-cles">' +
+      `<li><span class="cle cle-stage" aria-hidden="true"></span>${semMin} sem. : jusqu'au ${finCourte(finMin)}</li>` +
+      (finMax > finMin ? `<li><span class="cle cle-prolongation" aria-hidden="true"></span>${semMax} sem. : jusqu'au ${finCourte(finMax)}</li>` : '') +
+    '</ul>' +
     `<button class="calendrier-retour" type="button" tabindex="-1">Revenir à ${nomMoisCible}</button>`;
   document.body.append(bulle);
   const titre = bulle.querySelector('.calendrier-titre');
@@ -503,10 +518,13 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       if (n < 1 || n > nbJours) cases += '<td><span></span></td>';
       else {
         const classes = [];
+        const ce = new Date(a, m, n);
+        let info = '';
         if (k % 7 >= 5) classes.push('we');
-        if (memeMois && n > jour && n <= jour + (4 - jourSemaineCible)) classes.push('stage');
+        if (ce >= cible && ce <= finMin) { classes.push('stage'); info = ` title="Stage : ${semMin} premières semaines"`; }
+        else if (ce >= debutProlongation && ce <= finMax) { classes.push('prolongation'); info = ` title="Prolongation possible jusqu'à ${semMax} semaines"`; }
         if (memeMois && n === jour) classes.push('jour');
-        cases += `<td class="${classes.join(' ')}"><span>${n}</span></td>`;
+        cases += `<td class="${classes.join(' ')}"${info}><span>${n}</span></td>`;
       }
       if (k % 7 === 6) cases += '</tr>';
     }

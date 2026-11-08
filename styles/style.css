@@ -1082,9 +1082,19 @@ abbr[title] { text-decoration: none; cursor: help; }
   border-radius: 50%;
 }
 .calendrier .we span    { color: var(--encre-douce); background: var(--gris-100); }
-.calendrier .stage span { background: var(--turquoise-100); }          /* semaine de début du stage */
+/* Période de stage : 8 semaines en turquoise, prolongation jusqu'à 10 semaines dans le même ton, plus clair */
+.calendrier { --stage-fond: hsl(180 40% 76%); --prolongation-fond: hsl(180 48% 88%); }
+.calendrier .stage span        { background: var(--stage-fond); color: var(--encre); }
+.calendrier .prolongation span { background: var(--prolongation-fond); color: var(--encre); }
+.calendrier .stage.we span,
+.calendrier .prolongation.we span { color: var(--encre-douce); }
 .calendrier .jour span  { background: var(--indigo-700); color: var(--carte); font-weight: 700; box-shadow: var(--ombre-legere); }
 .calendrier-legende { margin: 0.55rem 0 0; color: var(--encre-douce); font-size: 0.78rem; text-align: center; }
+.calendrier-cles { margin: 0.35rem 0 0; padding: 0; list-style: none; color: var(--encre-douce); font-size: 0.75rem; }
+.calendrier-cles li { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.15rem; }
+.calendrier-cles .cle { flex: none; width: 0.85rem; height: 0.85rem; border-radius: 50%; }
+.calendrier-cles .cle-stage        { background: var(--stage-fond); }
+.calendrier-cles .cle-prolongation { background: var(--prolongation-fond); }
 
 /* --- Formulaire : aide sous le champ e-mail (erreur ou suggestion) --- */
 .champ-aide { margin: 0; min-height: 0; font-size: 0.85rem; color: var(--encre-douce); }
