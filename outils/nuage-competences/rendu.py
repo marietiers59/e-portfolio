@@ -13,6 +13,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
+from couleurs import arrondir, couleur
 from donnees import BUT_LONG, NOTIONS
 from nuage import GEPHI, IMAGE, PAGES, degres, graphe, rayon
 
@@ -22,12 +23,6 @@ NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
 # k1…k7 définies dans style.css. Les communautés sont rangées de gauche à droite du graphe,
 # si bien que le dégradé traverse le nuage d'un bord à l'autre.
 TEINTES = ["k1", "k2", "k3", "k4", "k5", "k6", "k7"]
-# Couleurs figées pour l'image seule (thème clair), proches de celles calculées par style.css
-COULEURS_IMAGE = {
-    "k1": "hsl(24 88% 44%)", "k2": "hsl(11 76% 46%)", "k3": "hsl(353 64% 47%)", "k4": "hsl(338 58% 47%)",
-    "k5": "hsl(318 46% 46%)", "k6": "hsl(292 40% 45%)", "k7": "hsl(268 42% 44%)",
-}
-
 # Mots étrangers à la langue de la page, mis en italique dans la version texte (charte éditoriale)
 ETRANGERS = {
     "fr": ("en", ["Otaku List", "Space Invaders", "FractaLens", "ToDoList+", "resumeCV", "Pac-Man", "food-truck"]),
@@ -152,8 +147,14 @@ def forme(i, t, x, y, r):
     return f'<circle class="n" data-id="{i}" cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}"/>'
 
 
-def construire(langue):
-    """Renvoie (svg, légende des communautés, version texte, nom des communautés)."""
+def teintes_css(u, fige):
+    """Attribut de couleur : variables pour les deux thèmes (page), ou couleur écrite en clair (image seule)."""
+    return f'--kc:{couleur(u, "clair")};--ks:{couleur(u, "sombre")}' if not fige else couleur(u, "clair")
+
+
+def construire(langue, fige=False):
+    """Renvoie (svg, légende des communautés, version texte, cadrage, données 3D).
+    fige=True : couleurs écrites en clair (thème clair), pour l'image seule."""
     en = langue == "en"
     noeuds, liens = graphe()
     deg = degres(noeuds, liens)
@@ -177,6 +178,16 @@ def construire(langue):
             p = max((m for m in ms if noeuds[m][2] == "notion"), key=lambda m: deg[m], default=max(ms, key=lambda m: deg[m]))
         nom[c] = lib[p]
     k = {i: teinte[classe[i]] for i in noeuds}
+
+    # Place de chaque nœud sur le dégradé : de gauche à droite (un peu de haut en bas), en continu ;
+    # on prend le rang plutôt que la distance, pour que les trois couleurs soient également présentes
+    gx = [pos[i][0] for i in noeuds]
+    gy = [pos[i][1] for i in noeuds]
+    axe = {i: 0.85 * (pos[i][0] - min(gx)) / (max(gx) - min(gx)) + 0.15 * (pos[i][1] - min(gy)) / (max(gy) - min(gy))
+           for i in noeuds}
+    rangs = sorted(noeuds, key=lambda i: axe[i])
+    u = {i: arrondir(n / (len(rangs) - 1)) for n, i in enumerate(rangs)}
+    u_comm = {c: arrondir(sum(u[m] for m in ms) / len(ms)) for c, ms in membres.items()}
 
     # Ajustement des étiquettes (mêmes positions pour les deux langues : on prend la plus longue)
     boites = {}
@@ -206,7 +217,8 @@ def construire(langue):
         mx, my = (xa + xb) / 2, (ya + yb) / 2
         dx, dy = xb - xa, yb - ya
         qx, qy = mx - dy * 0.18, my + dx * 0.18
-        aretes.append(f'<path class="l {k[b]}" data-a="{a}" data-b="{b}" pathLength="1" stroke-width="{0.5 + 0.55 * w:.2f}" '
+        st = f'stroke:{teintes_css(u[b], True)}' if fige else teintes_css(u[b], False)
+        aretes.append(f'<path class="l {k[b]}" data-a="{a}" data-b="{b}" style="{st}" stroke-width="{0.5 + 0.55 * w:.2f}" '
                       f'd="M{xa:.1f} {ya:.1f}Q{qx:.1f} {qy:.1f} {xb:.1f} {yb:.1f}"/>')
 
     # Nœuds du centre vers l'extérieur (ordre d'apparition de l'animation), petits dessous, gros dessus
@@ -217,10 +229,16 @@ def construire(langue):
         t = noeuds[i][2]
         x, y = pos[i]
         f = taille_police(r[i] / GROSSI, t)
-        formes.append(forme(i, t, x, y, r[i]).replace(f'data-id="{i}"', f'data-id="{i}" data-t="{t}" style="--i:{rang[i]}"', 1)
+        if fige:
+            c = teintes_css(u[i], True)
+            st_forme = {"notion": f"stroke:{c}", "but": f"fill:{c};stroke:{c}"}.get(t, f"fill:{c}")
+            st_etq = f"fill:{c}" if t in ("but", "notion") else ""
+        else:
+            st_forme = st_etq = teintes_css(u[i], False)
+        formes.append(forme(i, t, x, y, r[i]).replace(f'data-id="{i}"', f'data-id="{i}" data-t="{t}" style="{st_forme}"', 1)
                       .replace('class="n', f'class="{k[i]} n', 1))
         etiquettes.append(f'<text class="etq etq-{t} {k[i]}" data-id="{i}" x="{x:.1f}" y="{y + r[i] + ECART:.1f}" dy=".85em" '
-                          f'font-size="{f:.1f}" style="--i:{rang[i]}">{html.escape(lib[i])}</text>')
+                          f'font-size="{f:.1f}"' + (f' style="{st_etq}"' if st_etq else "") + f'>{html.escape(lib[i])}</text>')
 
     titre = ("Nuage de compétences : projets, outils et compétences du BUT informatique, regroupés en communautés"
              if not en else "Skills network: projects, tools and BUT competencies, grouped into communities")
@@ -234,7 +252,7 @@ def construire(langue):
     # Légende : une puce par communauté (bouton de filtre dans la vue agrandie)
     comms = sorted(membres, key=lambda c: -len(membres[c]))
     legende = "\n".join(
-        f'<li><button class="nuage-puce {teinte[c]}" type="button" data-communaute="{teinte[c]}" aria-pressed="false" disabled>'
+        f'<li><button class="nuage-puce {teinte[c]}" type="button" data-communaute="{teinte[c]}" style="{teintes_css(u_comm[c], False)}" aria-pressed="false" disabled>'
         f'<span class="nuage-pastille" aria-hidden="true"></span>{html.escape(nom[c])}</button></li>'
         for c in comms)
 
@@ -251,14 +269,15 @@ def construire(langue):
                 continue
             noms = ", ".join(marquer(BUT_LONG[m][1 if en else 0] if fam == "but" else lib[m], langue) for m in ms)
             parties.append(f'<em>{titres_familles[fam][1 if en else 0]}</em>{" :" if not en else ":"} {noms}')
-        lignes.append(f'<li><strong class="nuage-texte-nom {teinte[c]}">{html.escape(nom[c])}</strong> — ' + ("; " if en else " ; ").join(parties) + "</li>")
+        lignes.append(f'<li><strong class="nuage-texte-nom {teinte[c]}" style="{teintes_css(u_comm[c], False)}">{html.escape(nom[c])}</strong> — ' + ("; " if en else " ; ").join(parties) + "</li>")
     texte = "\n".join(lignes)
     # Données de la vue 3D (scripts/script.js, section 8)
     z = profondeur(noeuds, liens, pos, classe)
     index = {i: n for n, i in enumerate(noeuds)}
     donnees = {
         "noeuds": [{"id": i, "nom": lib[i], "t": noeuds[i][2], "k": k[i], "x": round(pos[i][0], 1),
-                    "y": round(pos[i][1], 1), "z": round(z[i], 1), "r": round(r[i], 2)} for i in noeuds],
+                    "y": round(pos[i][1], 1), "z": round(z[i], 1), "r": round(r[i], 2),
+                    "cc": couleur(u[i], "clair"), "cs": couleur(u[i], "sombre")} for i in noeuds],
         "liens": [[index[a], index[b], w] for (a, b), w in liens.items()],
     }
     json_donnees = json.dumps(donnees, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -267,22 +286,19 @@ def construire(langue):
 
 def image_seule():
     """medias/nuage-competences.svg : l'image autonome (thème clair), pour la consulter sans JavaScript."""
-    svg, _, _, vb, _ = construire("fr")
+    svg, _, _, vb, _ = construire("fr", fige=True)
     x, y, w, h = vb.split()
     fond = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#fdfcf9"/>'
-
-    # Couleurs écrites en clair (certains lecteurs d'images ignorent les variables CSS)
-    regles = "".join(f".l.{k}{{stroke:{c}}}.n.{k}{{fill:{c}}}.n-anneau.{k},.{k} .n-halo{{stroke:{c}}}"
-                     for k, c in COULEURS_IMAGE.items())
+    # Couleurs écrites en clair dans chaque élément (certains lecteurs d'images ignorent les variables CSS)
     style = ("<style>svg{background:#fdfcf9;font-family:'Atkinson Hyperlegible',Verdana,sans-serif}"
-             ".l{fill:none;opacity:.45}.n{stroke:#fff;stroke-width:1.2}"
-             ".n-anneau{fill:#fff!important}.n-halo{fill:none;stroke-width:2;opacity:.6}" + regles +
+             ".l{fill:none;opacity:.45}.n,.n circle:not(.n-halo){stroke:#fff;stroke-width:1.2}"
+             ".n-anneau{fill:#fff!important}.n-halo{fill:none;stroke-width:2;opacity:.6}"
              "text{text-anchor:middle;fill:#2a2f3a;paint-order:stroke;stroke:#fdfcf9;stroke-width:3px;stroke-linejoin:round}"
              ".etq-but,.etq-notion{font-weight:700}</style>")
     svg = svg.replace('class="nuage-svg"', 'xmlns:xlink="http://www.w3.org/1999/xlink"', 1)
     svg = svg.replace('preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">',
                       'preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="1600">' + style + fond, 1)
-    svg = re.sub(r' (pathLength|style|data-[a-z]+)="[^"]*"', "", svg)
+    svg = re.sub(r' (pathLength|data-[a-z]+)="[^"]*"', "", svg)
     IMAGE.write_text('<?xml version="1.0" encoding="UTF-8"?>\n' + svg + "\n", encoding="utf-8")
 
 

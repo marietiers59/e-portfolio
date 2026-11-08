@@ -713,34 +713,25 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     const [r, v, b] = pixel.getImageData(0, 0, 1, 1).data;
     return `rgb(${r}, ${v}, ${b})`;
   }
+  const nuance = (i) => (palette.sombre ? noeuds[i].cs : noeuds[i].cc);
   function lirePalette() {
-    const sonde = document.createElement('span');
-    sonde.hidden = true;
-    figure.append(sonde);
-    const couleur = (classe) => { sonde.className = classe; sonde.style.color = 'var(--k, currentColor)'; return enRgb(getComputedStyle(sonde).color); };
-    const k = {};
-    for (let i = 1; i <= 7; i++) k[`k${i}`] = couleur(`k${i}`);
-    sonde.className = '';
     const style = getComputedStyle(document.documentElement);
     palette = {
-      k,
       encre: enRgb(style.getPropertyValue('--encre').trim()),
       carte: enRgb(style.getPropertyValue('--carte').trim()),
       sombre: document.documentElement.dataset.theme === 'sombre',
     };
-    sonde.remove();
     sprites.clear();
   }
 
   // Sprites pré-dessinés (une image par teinte et par famille) : halo lumineux + corps en relief
-  const S = 128, B = 26;                       // taille de l'image, rayon du corps dans l'image
-  function sprite(k, famille) {
-    const cle = `${k}|${famille}`;
+  const S = 96, B = 20;                        // taille de l'image, rayon du corps dans l'image
+  function sprite(couleur, famille) {
+    const cle = `${couleur}|${famille}`;
     if (sprites.has(cle)) return sprites.get(cle);
     const c = document.createElement('canvas');
     c.width = c.height = S;
     const g = c.getContext('2d');
-    const couleur = palette.k[k];
     // halo : masque radial, puis colorié
     const masque = g.createRadialGradient(S / 2, S / 2, B * 0.6, S / 2, S / 2, S / 2);
     masque.addColorStop(0, `rgba(0,0,0,${palette.sombre ? 0.75 : 0.42})`);
@@ -921,8 +912,8 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
         let alpha = (palette.sombre ? 0.2 : 0.24) + 0.32 * prof;
         if (sel) alpha = this.liensActifs.has(i) ? 0.95 : 0.035;
         const degrade = g.createLinearGradient(a.x, a.y, b.x, b.y);
-        degrade.addColorStop(0, palette.k[noeuds[l.a].k]);
-        degrade.addColorStop(1, palette.k[noeuds[l.b].k]);
+        degrade.addColorStop(0, nuance(l.a));
+        degrade.addColorStop(1, nuance(l.b));
         g.strokeStyle = degrade;
         g.globalAlpha = alpha * e;
         g.lineWidth = (0.45 + 0.4 * l.w) * dpr * (0.6 + 0.6 * prof) * (sel && this.liensActifs.has(i) ? 1.8 : 1);
@@ -939,8 +930,8 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
         const x = a.x + (b.x - a.x) * im.t, y = a.y + (b.y - a.y) * im.t;
         const taille = (6 + 6 * this.profondeur((a.z + b.z) / 2)) * dpr;
         g.globalAlpha = 0.95;
-        g.drawImage(sprite(noeuds[im.b].k, 'halo'), x - taille, y - taille, taille * 2, taille * 2);
-        g.fillStyle = palette.sombre ? '#fff' : palette.k[noeuds[im.b].k];
+        g.drawImage(sprite(nuance(im.b), 'halo'), x - taille, y - taille, taille * 2, taille * 2);
+        g.fillStyle = palette.sombre ? '#fff' : nuance(im.b);
         g.beginPath();
         g.arc(x, y, 1.6 * dpr, 0, Math.PI * 2);
         g.fill();
@@ -961,11 +952,11 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
           g.globalCompositeOperation = palette.sombre ? 'lighter' : 'source-over';
           g.globalAlpha = Math.min(1, this.eclats[i]) * (sel && !sel.has(i) ? 0.2 : 0.9);
           const t2 = tailleImg * (1.3 + 0.5 * this.eclats[i]);
-          g.drawImage(sprite(n.k, 'halo'), q.x - t2 / 2, q.y - t2 / 2, t2, t2);
+          g.drawImage(sprite(nuance(i), 'halo'), q.x - t2 / 2, q.y - t2 / 2, t2, t2);
           g.globalCompositeOperation = 'source-over';
         }
         g.globalAlpha = alpha;
-        g.drawImage(sprite(n.k, n.t), q.x - tailleImg / 2, q.y - tailleImg / 2, tailleImg, tailleImg);
+        g.drawImage(sprite(nuance(i), n.t), q.x - tailleImg / 2, q.y - tailleImg / 2, tailleImg, tailleImg);
       });
 
       // 4. Noms sous les nœuds : les compétences seulement dans l'aperçu ; dans la vue agrandie,
@@ -999,7 +990,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
         g.strokeStyle = palette.carte;
         g.lineWidth = 3.5 * dpr;
         g.strokeText(n.nom, q.x, y);
-        g.fillStyle = n.t === 'but' || n.t === 'notion' ? palette.k[n.k] : palette.encre;
+        g.fillStyle = n.t === 'but' || n.t === 'notion' ? nuance(i) : palette.encre;
         g.fillText(n.nom, q.x, y);
       });
       g.globalAlpha = 1;
