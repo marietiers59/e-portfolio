@@ -9,7 +9,10 @@
   const MODE_TEST = new URLSearchParams(location.search).has("bug-test");
 
   /* ---------- Réglages ---------- */
-  const TEXTE_BULLE = "<i>Bug</i> trouvé ✓ Ticket fermé.";
+  // Textes selon la langue de la page (<html lang="fr"> ou "en-GB")
+  const ANGLAIS = document.documentElement.lang.toLowerCase().startsWith("en");
+  const TEXTE_BULLE = ANGLAIS ? "Bug found ✓ Ticket closed." : "<i lang=\"en\">Bug</i> trouvé ✓ Ticket fermé.";
+  const TEXTE_BOUTON = ANGLAIS ? "Catch the hidden ladybird" : "Attraper la coccinelle cachée";
   const MAX_APPARITIONS = MODE_TEST ? Infinity : 3;  // par visite
   const DELAI_PREMIERE = MODE_TEST ? 300 : 2500;     // ms après que la boîte est visible
   const DUREE_APPARITION = 3000;                     // ms pendant lesquelles elle jette un œil
@@ -85,7 +88,7 @@
   bug.type = "button";
   bug.className = "be-bug";
   bug.tabIndex = -1;
-  bug.setAttribute("aria-label", "Attraper la coccinelle cachée");
+  bug.setAttribute("aria-label", TEXTE_BOUTON);
   bug.innerHTML = `<svg viewBox="0 0 ${H * 4} ${W * 4}" aria-hidden="true" focusable="false">${rects}</svg>`;
 
   const bulle = document.createElement("div");

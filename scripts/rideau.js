@@ -12,12 +12,17 @@
    C'est un rideau, pas un coffre-fort : il arrête les robots et les
    curieux pressés, pas une personne déterminée qui lit ce code.
    Ce fichier doit être chargé AVANT script.js (attribut defer).
+   Textes en français ou en anglais britannique, selon <html lang="…">.
    ===================================================================== */
 (() => {
   'use strict';
 
+  const ANGLAIS = document.documentElement.lang.toLowerCase().startsWith('en');
+  const t = (fr, en) => (ANGLAIS ? en : fr);
+
   /* ---------- 1. Réglages ---------- */
-  const NOM_CV = 'CV_TIERS_MARIE_BUT_IT.pdf';     // nom du fichier téléchargé par le visiteur (à ton choix)
+  // Nom du fichier téléchargé par le visiteur (à ton choix), pour chaque langue
+  const NOM_CV = t('CV_TIERS_MARIE_BUT_IT.pdf', 'CV_TIERS_MARIE_BUT_IT_EN.pdf');
   const DUREE_JOURS = 30;                         // le rideau reste levé 30 jours sur l'appareil
   const CLE_STOCKAGE = 'portfolio-rideau';
   const VIA_ACCEPTES = ['linkedin', 'annonce', 'francetravail', 'candidature'];
@@ -70,7 +75,7 @@
       '20130c6634baa49b64a328af4967448dd58452d4c3f7e7a8685c20e99debaeac': 'contact-4',
       '19ff8bcbee41baeb301b69c7825490707a842948b343d303a7d06c19da02bda6': 'contact-5'
   };                     // empreinte SHA-256 de la clé → étiquette
-  const FICHIER_CV = new URL('../medias/cv.bin', document.currentScript.src).href;
+  const FICHIER_CV = new URL(t('../medias/cv.bin', '../medias/cv-en.bin'), document.currentScript.src).href;
 
   /* ---------- 2. Outils ---------- */
   const octets = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
@@ -165,12 +170,16 @@
   /** Renvoie un message d'erreur, ou null si l'adresse est un laissez-passer. */
   async function verifierEmailPro(valeur) {
     const email = valeur.trim().toLowerCase();
-    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/.test(email)) return 'Cette adresse ne semble pas valide.';
+    if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/.test(email)) return t('Cette adresse ne semble pas valide.', 'This address does not look valid.');
     const domaine = email.split('@').pop();
     if (estPerso(domaine)) {
-      return 'Merci d’indiquer une adresse professionnelle (pas une messagerie personnelle), ou de me contacter via LinkedIn.';
+      return t('Merci d’indiquer une adresse professionnelle (pas une messagerie personnelle), ou de me contacter via LinkedIn.',
+               'Please enter a work address (not a personal mailbox), or contact me via LinkedIn.');
     }
-    if (!(await domaineRecoitMail(domaine))) return `Le domaine « ${domaine} » ne reçoit pas d’e-mails : vérifiez l’adresse.`;
+    if (!(await domaineRecoitMail(domaine))) {
+      return t(`Le domaine « ${domaine} » ne reçoit pas d’e-mails : vérifiez l’adresse.`,
+               `The domain “${domaine}” cannot receive emails: please check the address.`);
+    }
     return null;
   }
 
@@ -178,7 +187,7 @@
   const lignesEmail = document.querySelectorAll('[data-rideau="email"]');
   const lignesTel = document.querySelectorAll('[data-rideau="tel"]');
   const formulaire = document.getElementById('formulaire-contact');
-  const liensCv = document.querySelectorAll('a[href$="cv-marie-tiers.pdf"]');
+  const liensCv = document.querySelectorAll('a[href$="cv-marie-tiers.pdf"], a[href$="cv-marie-tiers-en.pdf"]');
   // Le CV (public ou complet) se télécharge toujours sous le nom choisi
   liensCv.forEach((a) => { a.download = NOM_CV; });
   let leve = false;
@@ -232,8 +241,8 @@
   }
 
   function afficherRideau() {
-    lignesEmail.forEach((li) => remplirLigne(li, '✉︎', null, 'adresse e-mail masquée'));
-    lignesTel.forEach((li) => remplirLigne(li, '☎︎', null, 'numéro masqué'));
+    lignesEmail.forEach((li) => remplirLigne(li, '✉︎', null, t('adresse e-mail masquée', 'email address hidden')));
+    lignesTel.forEach((li) => remplirLigne(li, '☎︎', null, t('numéro masqué', 'phone number hidden')));
     formulaire?.classList.add('rideau-ferme');
 
     const liste = lignesEmail[0]?.closest('ul');
@@ -241,14 +250,21 @@
     blocRideau = document.createElement('form');
     blocRideau.className = 'rideau';
     blocRideau.noValidate = true;
-    blocRideau.innerHTML = `
+    blocRideau.innerHTML = t(`
       <p class="rideau-texte">Mon <strong>e-mail</strong> et mon <strong>téléphone</strong> sont réservés aux recruteurs :
         indiquez votre <strong class="kw">e-mail professionnel</strong> pour les afficher.</p>
       <p class="rideau-ligne">
         <label class="sr" for="rideau-email">E-mail professionnel</label>
         <input id="rideau-email" type="email" autocomplete="email" placeholder="prenom.nom@entreprise.fr" required>
         <button class="bouton bouton-second" type="submit">Afficher</button>
-      </p>
+      </p>`, `
+      <p class="rideau-texte">My <strong>email address</strong> and <strong>phone number</strong> are for recruiters only:
+        enter your <strong class="kw">work email</strong> to reveal them.</p>
+      <p class="rideau-ligne">
+        <label class="sr" for="rideau-email">Work email</label>
+        <input id="rideau-email" type="email" autocomplete="email" placeholder="firstname.lastname@company.co.uk" required>
+        <button class="bouton bouton-second" type="submit">Show</button>
+      </p>`) + `
       <p class="rideau-aide" role="status" aria-live="polite"></p>`;
     liste.after(blocRideau);
 
@@ -258,7 +274,7 @@
     blocRideau.addEventListener('submit', async (evt) => {
       evt.preventDefault();
       bouton.disabled = true;
-      aide.textContent = 'Vérification…';
+      aide.textContent = t('Vérification…', 'Checking…');
       const erreur = await verifierEmailPro(champ.value);
       bouton.disabled = false;
       if (erreur) { aide.textContent = erreur; aide.dataset.etat = 'erreur'; champ.focus(); return; }

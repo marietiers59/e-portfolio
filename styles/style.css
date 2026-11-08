@@ -4,12 +4,13 @@
    le mobile en portrait, les requêtes @media élargissent ensuite.
 
    Sommaire
-   1. Variables (couleurs, ombres, polices)
+   1. Variables (couleurs, ombres, polices), thème sombre
    2. Base
    3. Barres fixes
    4. En-tête, navigation et une
    5. Sections
    6. Cartes projets, filtres et piliers
+   6 bis. Compétences
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
@@ -33,6 +34,7 @@
   --encre:       hsl(220 18% 20%);
   --encre-douce: hsl(220 9% 38%);
   --trait:       hsl(34 14% 87%);
+  --bord-champ:  hsl(220 8% 54%);   /* contour des champs de formulaire : contraste ≥ 3:1 */
 
   /* Bleu clair : grandes surfaces (une, pied de page, barres) */
   --bleu-50:  hsl(205 80% 97%);
@@ -71,6 +73,19 @@
   /* Vert sapin clair, légèrement froid : filets et liserés */
   --sapin-400: hsl(165 26% 48%);
   --sapin-700: hsl(165 35% 25%);
+  --sapin-100: hsl(165 40% 93% / 0.95);  /* étiquette « année » des cartes */
+  --sapin-200: hsl(165 26% 78%);
+
+  /* Nuances de détail, isolées pour que le thème sombre puisse les remplacer */
+  --turquoise-150: hsl(180 38% 86%);    /* bas du dégradé des boutons */
+  --jalon-haut:  hsl(205 80% 93%);      /* macarons de la frise */
+  --jalon-bas:   hsl(205 64% 81%);
+  --jalon-trait: hsl(205 55% 76%);
+  --encre-forte: hsl(220 16% 27%);      /* texte posé sur la bannière de la une */
+  --erreur:       hsl(355 40% 40%);
+  --erreur-trait: hsl(355 40% 60%);
+  --clair: 0 0% 100%;                   /* « blanc » des voiles, reflets et halos (teinte seule, pour hsl(var(--clair) / 0.8)) */
+  --barre-teinte: 205 72% 92%;          /* fond des barres fixes */
 
   /* Ombres orientées : lumière venant d'en haut à gauche */
   --ombre-teinte: 30 20% 25%;
@@ -81,9 +96,9 @@
                   0.1875rem 0.3125rem 0.5rem hsl(var(--ombre-teinte) / 0.1);
   --ombre-appui:  0.0625rem 0.0625rem 0.1875rem hsl(var(--ombre-teinte) / 0.18);
   /* Aura blanchâtre : bord à peine marqué, puis halo large et de plus en plus transparent */
-  --aura: 0 0 0 1px hsl(0 0% 100% / 0.5),
-          0 0 2rem 0.75rem hsl(0 0% 100% / 0.7),
-          0 0 5rem 2.5rem hsl(0 0% 100% / 0.45);
+  --aura: 0 0 0 1px hsl(var(--clair) / 0.5),
+          0 0 2rem 0.75rem hsl(var(--clair) / 0.7),
+          0 0 5rem 2.5rem hsl(var(--clair) / 0.45);
 
   /* Trois polices sans empattement */
   --police-texte: "Trebuchet MS", "Lucida Grande", "Segoe UI", sans-serif;
@@ -99,7 +114,86 @@
 
   /* Grain de papier très fin, presque invisible (supprimer la ligne pour l'enlever) */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  color-scheme: light;
 }
+
+/*
+  Thème sombre : mêmes noms de couleurs, valeurs inversées.
+  Les nuances claires (-50, -100, -200) deviennent des surfaces sombres teintées,
+  les nuances soutenues (-700) deviennent des pastels clairs pour le texte.
+  Activé par data-theme="sombre" sur <html> (script dans le <head> de chaque page + bouton de la barre du haut).
+*/
+:root[data-theme="sombre"] {
+  color-scheme: dark;
+
+  --fond:     hsl(228 18% 12%);    /* bleu nuit très doux, jamais noir pur */
+  --carte:    hsl(228 16% 16.5%);
+  --gris-100: hsl(228 15% 14%);
+  --gris-200: hsl(228 11% 30%);
+  --perle-1:  hsl(228 13% 18%);
+  --perle-2:  hsl(232 11% 22%);
+  --perle-trait: hsl(228 10% 25%);
+  --encre:       hsl(40 24% 90%);   /* blanc cassé chaud */
+  --encre-douce: hsl(220 13% 73%);
+  --encre-forte: hsl(40 20% 86%);
+  --trait:       hsl(228 12% 26%);
+  --bord-champ:  hsl(228 10% 52%);
+
+  --bleu-50:  hsl(210 30% 15%);
+  --bleu-100: hsl(208 30% 21%);
+  --bleu-200: hsl(206 28% 31%);
+  --bleu-400: hsl(205 50% 60%);
+  --bleu-700: hsl(205 72% 80%);
+
+  --turquoise-100: hsl(182 24% 22%);
+  --turquoise-150: hsl(182 24% 18%);
+  --turquoise-200: hsl(182 24% 33%);
+
+  --indigo-100: hsl(235 22% 20%);
+  --indigo-200: hsl(235 20% 33%);
+  --indigo-400: hsl(235 45% 72%);
+  --indigo-700: hsl(235 75% 85%);
+
+  --lavande-100: hsl(260 20% 20%);
+  --lavande-200: hsl(260 18% 33%);
+  --lavande-400: hsl(260 32% 64%);
+  --lavande-700: hsl(260 60% 85%);
+
+  --rose-100: hsl(325 20% 19%);
+  --rose-200: hsl(325 18% 31%);
+  --rose-400: hsl(325 40% 64%);
+  --rose-700: hsl(325 62% 85%);
+  --anis-100: hsl(85 18% 17%);
+  --anis-200: hsl(85 16% 29%);
+  --anis-400: hsl(85 32% 54%);
+  --anis-700: hsl(85 48% 78%);
+
+  --sapin-100: hsl(165 22% 19%);
+  --sapin-200: hsl(165 20% 31%);
+  --sapin-400: hsl(165 34% 54%);
+  --sapin-700: hsl(165 42% 76%);
+
+  --jalon-haut:  hsl(206 30% 27%);
+  --jalon-bas:   hsl(206 32% 20%);
+  --jalon-trait: hsl(206 28% 36%);
+  --erreur:       hsl(355 70% 78%);
+  --erreur-trait: hsl(355 50% 60%);
+  --clair: 228 16% 15%;              /* les voiles « blancs » deviennent bleu nuit */
+  --barre-teinte: 212 26% 18%;
+
+  --ombre-teinte: 230 40% 3%;        /* ombres plus profondes : elles restent visibles sur fond sombre */
+  --ombre-legere: 0.125rem 0.1875rem 0.5rem hsl(var(--ombre-teinte) / 0.35);
+  --ombre-repos:  0.25rem 0.375rem 0.75rem hsl(var(--ombre-teinte) / 0.4),
+                  0.0625rem 0.125rem 0.25rem hsl(var(--ombre-teinte) / 0.3);
+  --ombre-survol: 0.625rem 1rem 1.75rem hsl(var(--ombre-teinte) / 0.55),
+                  0.1875rem 0.3125rem 0.5rem hsl(var(--ombre-teinte) / 0.35);
+  --ombre-appui:  0.0625rem 0.0625rem 0.1875rem hsl(var(--ombre-teinte) / 0.5);
+}
+/* Photos un peu adoucies la nuit (confort visuel) */
+:root[data-theme="sombre"] :is(.carte-image, .pilier-image) { filter: brightness(0.88); }
+:root[data-theme="sombre"] .carte-bientot .carte-image { filter: brightness(0.88) saturate(0.65); }
+:root[data-theme="sombre"] .une-portrait::before { border-color: hsl(205 40% 70% / 0.45); }
+
 
 /* ---------- 2. Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -144,8 +238,9 @@ a, a:any-link, a:hover, a:focus, a:active, a:visited { text-decoration: none !im
 }
 h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 
-/* Mots anglais en italique, mots-clés en gras et en couleur */
-i[lang="en"] { font-style: italic; }
+/* Mots étrangers en italique (anglais sur les pages françaises, français sur les pages anglaises),
+   mots-clés en gras et en couleur */
+i[lang="en"], i[lang="fr"] { font-style: italic; }
 strong { font-weight: 700; }
 .kw { color: var(--indigo-700); }
 
@@ -184,7 +279,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   align-items: center;
   justify-content: flex-end;            /* lien aligné à droite… */
   padding-inline: max(1rem, (100% - var(--conteneur)) / 2); /* …sur le bord du contenu */
-  background: hsl(205 72% 92% / 0.94);
+  background: hsl(var(--barre-teinte) / 0.94);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
@@ -193,6 +288,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 /* Simple lien texte, souligné d'un filet au survol */
 .barre-lien {
+  margin-inline-start: auto;            /* toujours calé à droite, quels que soient les boutons à gauche */
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -210,7 +306,7 @@ abbr[title] { text-decoration: none; cursor: help; }
    « Menu » tout en haut de la page, « Contact » quand le bouton « Envoyer » est entièrement visible */
 .barre-lien > span[aria-hidden] { position: relative; }
 .en-haut .barre-haut .barre-lien > span[aria-hidden],
-.en-bas  .barre-bas  .barre-lien > span[aria-hidden] { color: transparent; }  /* la flèche garde sa place, invisible… */
+.en-bas  .barre-bas  .barre-lien > span[aria-hidden] { -webkit-text-fill-color: transparent; }  /* la flèche garde sa place, invisible… */
 .en-haut .barre-haut .barre-lien > span[aria-hidden]::before,
 .en-bas  .barre-bas  .barre-lien > span[aria-hidden]::before {                /* …et une puce • se centre dessus */
   content: "\2022";
@@ -221,6 +317,114 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-size: 1.5em;
   line-height: 1;
   color: var(--couleur-lien);
+  -webkit-text-fill-color: var(--couleur-lien);
+}
+
+/* Interrupteur de langue (barre du haut, à gauche) : drapeau français ⇄ Union Jack.
+   C'est un simple lien vers la page équivalente dans l'autre langue ;
+   data-actif="fr" ou "en" place la pastille du côté de la langue affichée. */
+.langue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.langue-drapeau {
+  display: block;
+  height: 1rem;
+  width: auto;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 1px hsl(var(--ombre-teinte) / 0.15);
+  opacity: 0.45;
+  filter: saturate(0.45);
+  transition: opacity var(--duree), filter var(--duree);
+}
+.langue[data-actif="fr"] .langue-drapeau:first-of-type,
+.langue[data-actif="en"] .langue-drapeau:last-of-type { opacity: 1; filter: saturate(0.85); }
+/* Au survol, le drapeau de l'autre langue se ranime un peu */
+.langue:hover .langue-drapeau,
+.langue:focus-visible .langue-drapeau { opacity: 0.8; filter: saturate(0.7); }
+.langue[data-actif="fr"]:hover .langue-drapeau:first-of-type,
+.langue[data-actif="en"]:hover .langue-drapeau:last-of-type { opacity: 1; filter: saturate(0.85); }
+
+.langue-interrupteur {
+  position: relative;
+  flex: none;
+  width: 2.1rem;
+  height: 1.15rem;
+  border-radius: 999px;
+  background: var(--turquoise-200);
+  box-shadow: inset 0 1px 2px hsl(var(--ombre-teinte) / 0.18);
+  transition: background var(--duree);
+}
+.langue-interrupteur::before {           /* la pastille */
+  content: "";
+  position: absolute;
+  top: 0.15rem; left: 0.15rem;
+  width: 0.85rem; height: 0.85rem;
+  border-radius: 50%;
+  background: var(--carte);
+  box-shadow: var(--ombre-legere);
+  transition: transform 220ms ease;
+}
+.langue[data-actif="en"] .langue-interrupteur::before { transform: translateX(0.95rem); }
+/* Survol : la pastille esquisse le passage ; clic : elle bascule */
+.langue:hover .langue-interrupteur { background: var(--bleu-200); }
+.langue[data-actif="fr"]:hover .langue-interrupteur::before { transform: translateX(0.3rem); }
+.langue[data-actif="en"]:hover .langue-interrupteur::before { transform: translateX(0.65rem); }
+.langue[data-actif="fr"]:active .langue-interrupteur::before { transform: translateX(0.95rem); }
+.langue[data-actif="en"]:active .langue-interrupteur::before { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .langue-interrupteur::before { transition: none; }
+}
+
+/* Bouton de thème (barre du haut, à côté de la langue) : soleil ⇄ lune, même interrupteur.
+   Bouton caché sans JavaScript (attribut hidden retiré par script.js) ;
+   aria-pressed="true" = thème sombre affiché. */
+.theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-inline-start: 0.35rem;
+  padding: 0.3rem 0.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--bleu-700);
+  font: inherit;
+  cursor: pointer;
+}
+.theme[hidden] { display: none; }
+.theme-icone {
+  width: 1.05rem; height: 1.05rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.45;
+  transition: opacity var(--duree), transform 300ms ease;
+}
+.theme[aria-pressed="false"] .theme-soleil,
+.theme[aria-pressed="true"]  .theme-lune { opacity: 1; }
+.theme:hover .theme-icone { opacity: 0.8; }
+.theme[aria-pressed="false"]:hover .theme-soleil,
+.theme[aria-pressed="true"]:hover  .theme-lune { opacity: 1; }
+.theme:hover .theme-soleil { transform: rotate(30deg); }
+.theme:hover .theme-lune   { transform: rotate(-15deg); }
+.theme[aria-pressed="true"] .langue-interrupteur::before { transform: translateX(0.95rem); }
+.theme:hover .langue-interrupteur { background: var(--bleu-200); }
+.theme[aria-pressed="false"]:hover .langue-interrupteur::before { transform: translateX(0.3rem); }
+.theme[aria-pressed="true"]:hover  .langue-interrupteur::before { transform: translateX(0.65rem); }
+
+/* Transition douce de toutes les couleurs au moment de la bascule (classe posée brièvement par script.js) */
+.theme-bascule, .theme-bascule *, .theme-bascule *::before, .theme-bascule *::after {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-icone { transition: none; }
 }
 
 /* ---------- 4. En-tête, navigation et une ---------- */
@@ -274,7 +478,7 @@ abbr[title] { text-decoration: none; cursor: help; }
     il s'efface progressivement pour laisser voir l'image côté photo.
     Mobile : le texte occupe toute la largeur, le voile couvre donc tout.
   */
-  --voile: linear-gradient(180deg, hsl(0 0% 100% / 0.84), hsl(0 0% 100% / 0.8));
+  --voile: linear-gradient(180deg, hsl(var(--clair) / 0.84), hsl(var(--clair) / 0.8));
   padding-block: clamp(2rem, 6vw, 4.5rem);
   background:
     var(--voile),
@@ -285,7 +489,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 /* Aura claire diffuse autour des lettres : le texte se détache de l'image sans effort */
 .une-entete,
 .une-corps p:not(.une-actions) {
-  text-shadow: 0 0 0.35rem hsl(0 0% 100% / 0.9), 0 0 1.2rem hsl(0 0% 100% / 0.8);
+  text-shadow: 0 0 0.35rem hsl(var(--clair) / 0.9), 0 0 1.2rem hsl(var(--clair) / 0.8);
 }
 .une-grille {
   display: grid;
@@ -316,7 +520,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 .une-titre-accent { color: var(--indigo-700); }
 .une-corps p { margin: 0 0 0.85rem; max-width: 38rem; }
-.une-objectif { color: hsl(220 16% 27%); }   /* plus foncé que --encre-douce : reste lisible sur la bannière */
+.une-objectif { color: var(--encre-forte); }   /* plus foncé que --encre-douce : reste lisible sur la bannière */
 
 .une-actions {
   display: flex;
@@ -331,14 +535,14 @@ abbr[title] { text-decoration: none; cursor: help; }
   margin: 0.6rem;
   border-radius: 50%;
   box-shadow:
-    0 0 2.5rem 0.5rem hsl(0 0% 100% / 0.35),             /* halo clair */
+    0 0 2.5rem 0.5rem hsl(var(--clair) / 0.35),             /* halo clair */
     0 1.25rem 2.5rem -0.75rem hsl(var(--ombre-teinte) / 0.45); /* ombre portée douce */
 }
 .une-portrait::before {          /* contour fin, détaché du cadre */
   content: "";
   position: absolute;
   inset: -0.6rem;
-  border: 1.5px solid hsl(0 0% 100% / 0.85);
+  border: 1.5px solid hsl(var(--clair) / 0.85);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -361,13 +565,13 @@ abbr[title] { text-decoration: none; cursor: help; }
 /* Verre dépoli : l'image transparaît, floutée, sous un blanc translucide */
 .breve {
   padding: 0.85rem 1.15rem;
-  border: 1px solid hsl(0 0% 100% / 0.85);
+  border: 1px solid hsl(var(--clair) / 0.85);
   border-radius: 1rem;
-  background: hsl(0 0% 100% / 0.7);
+  background: hsl(var(--clair) / 0.7);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
   backdrop-filter: blur(12px) saturate(1.2);
   box-shadow:
-    inset 0 1px 0 hsl(0 0% 100% / 0.9),                   /* reflet sur l'arête du haut */
+    inset 0 1px 0 hsl(var(--clair) / 0.9),                   /* reflet sur l'arête du haut */
     0 0.75rem 1.5rem -0.75rem hsl(var(--ombre-teinte) / 0.35);
   font-size: 0.95rem;
 }
@@ -399,7 +603,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-size: 0.75rem;
   padding: 0.05rem 0.55rem;
   border-radius: 999px;
-  background: hsl(0 0% 100% / 0.92);
+  background: hsl(var(--clair) / 0.92);
   outline: 1px dashed var(--lavande-400);
   outline-offset: -1px;
   white-space: nowrap;
@@ -422,10 +626,10 @@ abbr[title] { text-decoration: none; cursor: help; }
   }
   .une {
     --voile: linear-gradient(90deg,
-      hsl(0 0% 100% / 0.86) 0%,
-      hsl(0 0% 100% / 0.82) 45%,
-      hsl(0 0% 100% / 0.45) 62%,
-      hsl(0 0% 100% / 0.05) 82%);
+      hsl(var(--clair) / 0.86) 0%,
+      hsl(var(--clair) / 0.82) 45%,
+      hsl(var(--clair) / 0.45) 62%,
+      hsl(var(--clair) / 0.05) 82%);
   }
   .une-entete { align-self: end; }
   .une-corps  { align-self: start; }
@@ -435,7 +639,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 /* ---------- 5. Sections ---------- */
 .section { padding-block: clamp(3rem, 7vw, 5.5rem); }
-#projets,
+#projets, #projects,
 .section-piliers { background: var(--grain), var(--gris-100); } /* gris clair : l'aura blanche ressort mieux */
 .section-piliers { padding-bottom: clamp(5rem, 10vw, 8rem); } /* marge pour le résumé déployé */
 .section-parcours {
@@ -459,6 +663,90 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 .section-entete .section-titre::after { margin-inline: auto; }
 .section-intro { max-width: 46rem; margin: 0 auto 2.5rem; color: var(--encre-douce); }
+
+/* Page CV vidéo : cadre 16:9, d'abord « en construction », puis lecteur vidéo */
+.section-video { background: var(--grain), var(--gris-100); }
+.section-video .section-titre { margin-bottom: 0.75rem; }
+.video-statut { margin: 0 0 1.25rem; }
+.video-statut .pastille-bientot { font-size: 0.85rem; padding: 0.15rem 0.8rem; color: var(--lavande-700); }
+.video-cadre {
+  width: min(100%, 48rem);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border-radius: var(--rayon);
+  overflow: hidden;
+  background: var(--encre);
+  box-shadow: var(--ombre-repos);
+}
+.video-cadre :is(video, iframe) { display: block; width: 100%; height: 100%; border: 0; }
+.video-attente {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--grain), linear-gradient(160deg, var(--lavande-100), var(--bleu-50));
+  outline: 2px dashed var(--lavande-400);
+  outline-offset: -0.75rem;
+  color: var(--lavande-700);
+}
+.video-icone {
+  width: clamp(3rem, 10vw, 4.5rem); height: auto;
+  padding: 0.6rem;
+  border-radius: 1rem;
+  background: var(--carte);
+  box-shadow: var(--ombre-legere);
+  fill: none;
+  stroke: var(--lavande-700);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.video-attente-titre {
+  margin: 0.4rem 0 0;
+  font-family: var(--police-titre);
+  font-size: clamp(1.1rem, 0.95rem + 0.8vw, 1.5rem);
+  font-weight: 800;
+}
+.video-attente-texte { margin: 0; font-size: 0.95rem; color: var(--encre-douce); }
+.video-transcription { width: min(100%, 48rem); margin: 1rem auto 0; }
+.video-transcription summary { cursor: pointer; font-family: var(--police-interface); font-weight: 700; color: var(--bleu-700); }
+.video-relais { margin-top: 2.5rem; text-align: center; color: var(--encre-douce); }
+.video-relais p { margin: 0; }
+.video-relais-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 1rem !important; }
+
+/* Page Accessibilité : déclaration, résultats des tests, grille RGAA */
+.declaration { max-width: 52rem; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+.declaration-bloc { min-width: 0; }
+.declaration-bloc {
+  padding: clamp(1.1rem, 3vw, 1.6rem);
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+}
+.declaration-bloc > :first-child { margin-top: 0; }
+.declaration-bloc > :last-child { margin-bottom: 0; }
+.declaration-bloc h2 { font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem); margin: 0 0 0.75rem; }
+.declaration-bloc h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; }
+.declaration-bloc ul { padding-left: 1.2rem; }
+.declaration-bloc li + li { margin-top: 0.3rem; }
+.chiffres { list-style: none; padding: 0 !important; margin: 0; display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); }
+.chiffres li { margin: 0 !important; padding: 0.9rem 1rem; border-radius: 0.9rem; background: var(--bleu-50); border: 1px solid var(--bleu-200); }
+.chiffre { display: block; font-family: var(--police-titre); font-size: 1.6rem; font-weight: 800; color: var(--bleu-700); line-height: 1.2; }
+.chiffre-legende { display: block; font-size: 0.9rem; color: var(--encre-douce); }
+.tableau-defilant { overflow-x: auto; }
+.tableau-a11y { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.tableau-a11y caption { text-align: left; font-weight: 700; padding-bottom: 0.5rem; color: var(--encre); }
+.tableau-a11y :is(th, td) { padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--trait); text-align: left; vertical-align: top; }
+.tableau-a11y thead th { background: var(--gris-100); font-family: var(--police-interface); }
+.tableau-a11y td.nombre, .tableau-a11y th.nombre { text-align: right; font-variant-numeric: tabular-nums; }
+.statut-c  { color: var(--sapin-700); font-weight: 700; }
+.statut-nc { color: var(--erreur); font-weight: 700; }
+.statut-na { color: var(--encre-douce); }
+.declaration p a { font-weight: 700; }
+.declaration details summary { cursor: pointer; font-family: var(--police-interface); font-weight: 700; color: var(--bleu-700); }
 
 /* ---------- 6. Cartes projets, filtres et piliers ---------- */
 /*
@@ -556,7 +844,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   pointer-events: none;
   padding: 0.15rem 0.7rem;
   border-radius: 999px;
-  background: hsl(0 0% 100% / 0.9);
+  background: hsl(var(--clair) / 0.9);
   color: var(--bleu-700);
   font-family: var(--police-interface);
   font-size: 0.8rem;
@@ -624,8 +912,8 @@ abbr[title] { text-decoration: none; cursor: help; }
   white-space: nowrap;
 }
 .tag sup { font-size: 0.7em; line-height: 0; }
-.tag-annee  { background: hsl(165 40% 93% / 0.95); border-color: hsl(165 26% 78%); color: var(--sapin-700); font-variant-numeric: tabular-nums; }
-.tag-cadre  { background: hsl(260 50% 96% / 0.95); border-color: var(--lavande-200); color: var(--lavande-700); }
+.tag-annee  { background: var(--sapin-100); border-color: var(--sapin-200); color: var(--sapin-700); font-variant-numeric: tabular-nums; }
+.tag-cadre  { background: var(--lavande-100); border-color: var(--lavande-200); color: var(--lavande-700); }
 .tag-techno { background: var(--bleu-50);          border-color: var(--bleu-200);    color: var(--bleu-700); }
 .carte-tags-repere .tag { box-shadow: var(--ombre-legere); }
 
@@ -651,7 +939,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 .carte-bientot { cursor: default; }
 .carte-bientot .carte-image { filter: saturate(0.65); }
 .carte-bientot .carte-type {
-  background: hsl(0 0% 100% / 0.92);
+  background: hsl(var(--clair) / 0.92);
   color: var(--lavande-700);
   outline: 1px dashed var(--lavande-400);
   outline-offset: -1px;
@@ -819,7 +1107,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   padding: 0.45rem;
   border-radius: 0.85rem;
   background: linear-gradient(160deg, var(--bleu-50), var(--bleu-200));
-  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.7), var(--ombre-legere);
+  box-shadow: inset 0 1px 0 hsl(var(--clair) / 0.7), var(--ombre-legere);
   fill: none;
   stroke: var(--bleu-700);
   stroke-width: 1.6;
@@ -885,33 +1173,33 @@ abbr[title] { text-decoration: none; cursor: help; }
   .emplacement > .carte { position: absolute; inset: 0 0 auto 0; }
 
   .carte-deploiement { grid-template-rows: 0fr; }
-  .emplacement:hover .carte-deploiement,
-  .emplacement:focus-within .carte-deploiement { grid-template-rows: 1fr; }
+  .emplacement:not(.replie):hover .carte-deploiement,
+  .emplacement:not(.replie):focus-within .carte-deploiement { grid-template-rows: 1fr; }
 
   /* Carte survolée : agrandie, plus en relief, détachée par une aura blanche */
-  .emplacement:hover .carte,
-  .emplacement:focus-within .carte {
+  .emplacement:not(.replie):hover .carte,
+  .emplacement:not(.replie):focus-within .carte {
     transform: translate(-0.125rem, -0.3rem) scale(1.04);
     box-shadow: var(--aura), var(--ombre-survol);
     filter: contrast(1.06) saturate(1.1);   /* un cran plus nette et plus vive */
   }
-  .emplacement:hover .carte:active {
+  .emplacement:not(.replie):hover .carte:active {
     transform: translate(0.125rem, 0.1875rem) scale(1.02);
     box-shadow: var(--aura), var(--ombre-appui);
   }
   /* Pas d'enfoncement au clic sur une carte sans lien */
-  .emplacement:hover .carte-bientot:active {
+  .emplacement:not(.replie):hover .carte-bientot:active {
     transform: translate(-0.125rem, -0.3rem) scale(1.04);
     box-shadow: var(--aura), var(--ombre-survol);
   }
 
   /* Les autres cartes du même groupe : désaturées, à peine floues, sous un voile blanc */
-  :is(.cartes, .piliers):has(.emplacement:hover) .emplacement:not(:hover) .carte,
-  :is(.cartes, .piliers):has(.emplacement:focus-within) .emplacement:not(:focus-within) .carte {
+  :is(.cartes, .piliers):has(.emplacement:not(.replie):hover) .emplacement:not(:hover) .carte,
+  :is(.cartes, .piliers):has(.emplacement:not(.replie):focus-within) .emplacement:not(:focus-within) .carte {
     filter: saturate(0.25) blur(0.6px);
   }
-  :is(.cartes, .piliers):has(.emplacement:hover) .emplacement:not(:hover) .carte::before,
-  :is(.cartes, .piliers):has(.emplacement:focus-within) .emplacement:not(:focus-within) .carte::before {
+  :is(.cartes, .piliers):has(.emplacement:not(.replie):hover) .emplacement:not(:hover) .carte::before,
+  :is(.cartes, .piliers):has(.emplacement:not(.replie):focus-within) .emplacement:not(:focus-within) .carte::before {
     opacity: 0.5;
   }
 }
@@ -963,13 +1251,13 @@ abbr[title] { text-decoration: none; cursor: help; }
   /* Image : même hauteur qu'au repos (100cqw = largeur du pilier replié), recadrée en largeur */
   .pilier-image { height: 100cqw; }
 
-  .pilier-emplacement:is(:hover, :focus-within) > .carte {
+  .pilier-emplacement:not(.replie):is(:hover, :focus-within) > .carte {
     left:  calc(-1rem - var(--pilier-marge));
     right: calc(-1rem - var(--pilier-marge));
     transform: translateY(-0.3rem);   /* pas d'agrandissement : l'élargissement suffit, la carte ne déborde pas sur ses voisines */
   }
-  .pilier-emplacement:first-child:is(:hover, :focus-within) > .carte { left:  calc(-1 * var(--pilier-marge)); }
-  .pilier-emplacement:last-child:is(:hover, :focus-within)  > .carte { right: calc(-1 * var(--pilier-marge)); }
+  .pilier-emplacement:not(.replie):first-child:is(:hover, :focus-within) > .carte { left:  calc(-1 * var(--pilier-marge)); }
+  .pilier-emplacement:not(.replie):last-child:is(:hover, :focus-within)  > .carte { right: calc(-1 * var(--pilier-marge)); }
   .pilier-emplacement:hover > .carte:active { transform: translateY(0); }
 
   /* Section « Mon parcours » : même voile que les piliers voisins tant qu'un pilier est survolé */
@@ -984,8 +1272,8 @@ abbr[title] { text-decoration: none; cursor: help; }
     pointer-events: none;
     transition: opacity 260ms ease;
   }
-  body:has(.piliers .emplacement:is(:hover, :focus-within)) .section-parcours { filter: saturate(0.25) blur(0.6px); }
-  body:has(.piliers .emplacement:is(:hover, :focus-within)) .section-parcours::after { opacity: 0.5; }
+  body:has(.piliers .emplacement:not(.replie):is(:hover, :focus-within)) .section-parcours { filter: saturate(0.25) blur(0.6px); }
+  body:has(.piliers .emplacement:not(.replie):is(:hover, :focus-within)) .section-parcours::after { opacity: 0.5; }
 }
 
 /* --- Date avec calendrier au survol (accueil) --- */
@@ -1009,7 +1297,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 .calendrier {
   position: absolute;
   z-index: 300;
-  width: 15.5rem;
+  width: 16.75rem;
   padding: 0.75rem 0.85rem 0.85rem;
   background: var(--carte);
   border: 1px solid var(--trait);
@@ -1082,14 +1370,30 @@ abbr[title] { text-decoration: none; cursor: help; }
   border-radius: 50%;
 }
 .calendrier .we span    { color: var(--encre-douce); background: var(--gris-100); }
-.calendrier .stage span { background: var(--turquoise-100); }          /* semaine de début du stage */
+/* Période de stage : 8 semaines en turquoise, prolongation jusqu'à 10 semaines dans le même ton, plus clair */
+.calendrier { --stage-fond: hsl(180 40% 76%); --prolongation-fond: hsl(180 48% 88%); }
+:root[data-theme="sombre"] .calendrier { --stage-fond: hsl(180 32% 34%); --prolongation-fond: hsl(180 24% 23%); }
+.calendrier .stage span        { background: var(--stage-fond); color: var(--encre); }
+.calendrier .prolongation span { background: var(--prolongation-fond); color: var(--encre); }
+.calendrier .stage.we span,
+.calendrier .prolongation.we span { color: var(--encre-douce); }
 .calendrier .jour span  { background: var(--indigo-700); color: var(--carte); font-weight: 700; box-shadow: var(--ombre-legere); }
 .calendrier-legende { margin: 0.55rem 0 0; color: var(--encre-douce); font-size: 0.78rem; text-align: center; }
+/* Compteur des semaines de stage : petite colonne à gauche, numéro dans la teinte de sa période */
+.calendrier .calendrier-sem { width: 1.25rem; padding: 0 0.15rem 0 0; font-size: 0.62rem; font-weight: 700; color: var(--encre-douce); text-align: right; }
+.calendrier tbody .calendrier-sem { padding-bottom: 0; }
+.calendrier .calendrier-sem.sem-stage        { color: var(--sapin-700); }
+.calendrier .calendrier-sem.sem-prolongation { color: var(--sapin-400); }
+.calendrier-cles { margin: 0.35rem 0 0; padding: 0; list-style: none; color: var(--encre-douce); font-size: 0.75rem; }
+.calendrier-cles li { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.15rem; }
+.calendrier-cles .cle { flex: none; width: 0.85rem; height: 0.85rem; border-radius: 50%; }
+.calendrier-cles .cle-stage        { background: var(--stage-fond); }
+.calendrier-cles .cle-prolongation { background: var(--prolongation-fond); }
 
 /* --- Formulaire : aide sous le champ e-mail (erreur ou suggestion) --- */
 .champ-aide { margin: 0; min-height: 0; font-size: 0.85rem; color: var(--encre-douce); }
 .champ-aide:empty { display: none; }
-.champ-aide[data-etat="erreur"] { color: hsl(355 40% 40%); }
+.champ-aide[data-etat="erreur"] { color: var(--erreur); }
 .champ-aide button {
   padding: 0;
   border: 0;
@@ -1100,6 +1404,146 @@ abbr[title] { text-decoration: none; cursor: help; }
   cursor: pointer;
 }
 .champ-aide button:hover { color: var(--bleu-700); }
+
+/* ---------- 6 bis. Compétences ---------- */
+/*
+  Une catégorie = une carte : titre, phrase (version texte), puis vignettes logo + nom (version visuelle).
+  Les deux versions sont toujours affichées ensemble : on lit, ou on parcourt d'un coup d'œil.
+  Couleur propre à chaque catégorie avec les classes accent-bleu, accent-indigo… (filet du haut, titre, pictogrammes).
+  Logos : medias/logos.svg (Simple Icons, CC0) ; couleur de marque passée par style="--logo: #…".
+*/
+.accent-bleu      { --accent-100: var(--bleu-100);      --accent-400: var(--bleu-400);      --accent-700: var(--bleu-700); }
+.accent-indigo    { --accent-100: var(--indigo-100);    --accent-400: var(--indigo-400);    --accent-700: var(--indigo-700); }
+.accent-lavande   { --accent-100: var(--lavande-100);   --accent-400: var(--lavande-400);   --accent-700: var(--lavande-700); }
+.accent-rose      { --accent-100: var(--rose-100);      --accent-400: var(--rose-400);      --accent-700: var(--rose-700); }
+.accent-anis      { --accent-100: var(--anis-100);      --accent-400: var(--anis-400);      --accent-700: var(--anis-700); }
+.accent-sapin     { --accent-100: var(--sapin-100);     --accent-400: var(--sapin-400);     --accent-700: var(--sapin-700); }
+.accent-turquoise { --accent-100: var(--turquoise-100); --accent-400: var(--turquoise-200); --accent-700: var(--sapin-700); }
+
+.section-competences { background: var(--grain), var(--gris-100); }
+
+/* Cartes : une colonne sur mobile, deux sur tablette, trois sur ordinateur et TV */
+.competences {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2rem);
+  align-items: start;
+}
+.competences-categorie {
+  padding: clamp(1.1rem, 3vw, 1.5rem);
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-top: 0.3rem solid var(--accent-400);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+}
+.competences-titre {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--accent-700);
+}
+.competences-texte { margin: 0 0 1rem; font-size: 0.95rem; color: var(--encre-douce); }
+.competences-texte strong:not(.kw) { color: var(--encre); }
+
+/* Vignettes : autant de colonnes que la largeur le permet */
+.competences-grille {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+  gap: 0.6rem;
+}
+.competence {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.35rem 0.6rem;
+  border: 1px solid var(--trait);
+  border-radius: 0.9rem;
+  background: var(--fond);
+  text-align: center;
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, border-color var(--duree);
+}
+.competence:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ombre-legere);
+  border-color: var(--accent-400, var(--bleu-400));
+}
+.competence-logo {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  color: var(--logo, var(--accent-700, var(--bleu-700)));
+}
+.competence-picto { color: var(--accent-700, var(--bleu-700)); }
+/* Monogramme pour les outils sans logo libre de droits (Mockito, Xray, Photoshop…) */
+.competence-mono {
+  display: grid;
+  place-items: center;
+  border-radius: 0.55rem;
+  background: var(--accent-100, var(--bleu-100));
+  color: var(--accent-700, var(--bleu-700));
+  font-family: var(--police-interface);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.competence-drapeau {
+  width: 2.25rem;
+  height: auto;
+  margin-block: 0.25rem;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 1px hsl(var(--ombre-teinte) / 0.15);
+}
+.competence-nom {
+  font-family: var(--police-interface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--encre);
+  overflow-wrap: anywhere;
+}
+.competence-note {
+  font-size: 0.7rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  outline: 1px dashed var(--lavande-400);
+  outline-offset: -1px;
+  color: var(--lavande-700);
+}
+/* Thème sombre : couleurs de marque éclaircies d'un quart pour rester lisibles sur fond nuit ;
+   logos noirs ou bleu nuit (GitHub, JetBrains…) à la couleur du texte */
+:root[data-theme="sombre"] .competence-logo:not(.competence-mono) { color: color-mix(in oklab, var(--logo, var(--accent-700, var(--bleu-700))) 75%, white); }
+:root[data-theme="sombre"] .competence-logo.logo-fonce { color: var(--encre); }
+
+/* Aperçu de l'accueil : une seule grille centrée, puis le lien vers la page complète */
+.apercu-grille {                 /* rangées centrées : la dernière, incomplète, reste au milieu */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 56rem;
+  margin-inline: auto;
+}
+.apercu-grille .competence { width: 5.6rem; }
+.apercu-pied {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0 0;
+}
+
+@media (min-width: 40em) {
+  .competences { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 64em) {
+  .competences { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .competence:hover { transform: none; }
+}
 
 /* ---------- 7. Frise chronologique ---------- */
 .frise-legende {
@@ -1162,16 +1606,16 @@ abbr[title] { text-decoration: none; cursor: help; }
   width: 4.25rem;
   margin: 0 0 0.6rem;
   padding: 0.25rem 0;
-  border: 1px solid hsl(205 55% 76%);
+  border: 1px solid var(--jalon-trait);
   border-radius: 999px;
-  background: linear-gradient(180deg, hsl(205 80% 93%), hsl(205 64% 81%));
+  background: linear-gradient(180deg, var(--jalon-haut), var(--jalon-bas));
   color: var(--bleu-700);
   font-family: var(--police-interface);
   font-size: 0.9rem;
   font-weight: 700;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.7), var(--ombre-legere);
+  box-shadow: inset 0 1px 0 hsl(var(--clair) / 0.7), var(--ombre-legere);
 }
 
 .frise-boite {
@@ -1180,6 +1624,17 @@ abbr[title] { text-decoration: none; cursor: help; }
   box-shadow: var(--ombre-legere);
 }
 .frise-boite h3 { margin: 0 0 0.35rem; font-size: 1.1rem; }
+/* Nature de l'étape écrite en toutes lettres (projet / formation) : l'information ne passe pas
+   que par la couleur et le côté de la frise (RGAA 3.1 et 10.9) */
+.frise-nature {
+  display: block;
+  margin-bottom: 0.1rem;
+  font-family: var(--police-interface);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--encre-douce);
+}
 .frise-boite p  { margin: 0; }
 
 .frise-projet .frise-boite    { background: var(--rose-100); border: 1px solid var(--rose-200); }
@@ -1224,7 +1679,7 @@ abbr[title] { text-decoration: none; cursor: help; }
     margin: 0;
     /* fin liseré couleur de fond : il « coupe » la ligne sans faire de bordure blanche épaisse */
     box-shadow: 0 0 0 2px var(--fond-local, var(--fond)),
-                inset 0 1px 0 hsl(0 0% 100% / 0.7),
+                inset 0 1px 0 hsl(var(--clair) / 0.7),
                 var(--ombre-legere);
   }
   .frise-projet .frise-boite    { grid-column: 1; grid-row: 1; }
@@ -1294,7 +1749,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   font: inherit;
   color: var(--encre);
   padding: 0.5rem 0.8rem;
-  border: 1px solid var(--gris-200);
+  border: 1px solid var(--bord-champ);
   border-radius: 0.7rem;
   background: var(--fond);
   transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
@@ -1305,7 +1760,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   box-shadow: 0 0 0 3px var(--indigo-100);
   background: var(--carte);
 }
-.champ :is(input, textarea):user-invalid { border-color: hsl(355 40% 60%); }
+.champ :is(input, textarea):user-invalid { border-color: var(--erreur-trait); }
 .champ textarea { min-height: 5.5rem; resize: vertical; }
 
 .champ-piege { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
@@ -1322,7 +1777,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   padding: 0.6rem 1.5rem;
   border: 1px solid var(--turquoise-200);
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--turquoise-100), hsl(180 38% 86%));
+  background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150));
   color: var(--bleu-700);
   font-family: var(--police-interface);
   font-size: 1rem;
@@ -1340,7 +1795,7 @@ a.bouton:hover { color: var(--bleu-700); }
 a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 
 .formulaire-statut { font-size: 0.95rem; color: var(--sapin-700); }
-.formulaire-statut[data-etat="erreur"] { color: hsl(355 40% 40%); }
+.formulaire-statut[data-etat="erreur"] { color: var(--erreur); }
 
 .pied-mentions {
   margin: 1.5rem 0 0;
@@ -1348,6 +1803,17 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   font-size: 0.85rem;
   color: var(--encre-douce);
 }
+/* Liens des mentions : repérables autrement que par la couleur (RGAA 10.6, WCAG 1.4.1), sans soulignement */
+.pied-mentions a { font-weight: 700; }
+.pied-mentions a:is(:hover, :focus-visible) { box-shadow: 0 1px 0 currentColor; }
+.pied-mentions [hidden] { display: none; }
+
+/* Mention « obligatoire » dans les étiquettes (RGAA 11.10) */
+.obligatoire { font-weight: 400; color: var(--encre-douce); font-size: 0.85em; }
+
+/* Vérification anti-robots Cloudflare Turnstile (non interactive) */
+.champ-captcha { margin: 0; min-height: 0; }
+.champ-captcha[hidden] { display: none; }
 
 @media (min-width: 30em) {
   .formulaire { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1384,7 +1850,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .espace-etat { margin: 0; font-weight: 700; }
 .espace-etat[data-etat="compte"] { color: var(--bleu-700); }
 .espace-etat[data-etat="exclu"]  { color: var(--sapin-700); }
-.espace-etat[data-etat="erreur"] { color: hsl(355 40% 40%); }
+.espace-etat[data-etat="erreur"] { color: var(--erreur); }
 .espace-aide { margin: 0; color: var(--encre-douce); font-size: 0.95rem; }
 .espace-liens { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
 
@@ -1409,7 +1875,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   font: inherit;
   color: var(--encre);
   padding: 0.5rem 0.8rem;
-  border: 1px solid var(--gris-200);
+  border: 1px solid var(--bord-champ);
   border-radius: 0.7rem;
   background: var(--fond);
   transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
@@ -1423,7 +1889,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .rideau-ligne .bouton { padding-inline: 1.1rem; }
 .rideau-aide { font-size: 0.85rem; color: var(--encre-douce); }
 .rideau-aide:empty { display: none; }
-.rideau-aide[data-etat="erreur"] { color: hsl(355 40% 40%); }
+.rideau-aide[data-etat="erreur"] { color: var(--erreur); }
 
 /* ---------- 9. Écrans larges, TV, mouvement réduit ---------- */
 @media (min-width: 100em) { html { font-size: 112.5%; } }

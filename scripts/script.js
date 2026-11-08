@@ -6,8 +6,18 @@
    4. Utilitaires (pastilles • de « Menu » et « Contact », année)
    5. Filtres et tri de la page Projets
    6. Calendrier au survol d'une date (accueil)
+   7. Thème clair / sombre (bouton de la barre du haut)
+   8. Cartes déployées : la touche Échap les replie
+   9. Images animées (GIF) : en mouvement seulement à la demande
+   Les textes affichés existent en français et en anglais britannique :
+   la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
 'use strict';
+
+const ANGLAIS = document.documentElement.lang.toLowerCase().startsWith('en');
+/** Renvoie le texte dans la langue de la page. */
+const t = (fr, en) => (ANGLAIS ? en : fr);
+const LOCALE = ANGLAIS ? 'en-GB' : 'fr-FR';
 
 /* ---------- 1. Défilement amorti ---------- */
 const mouvementReduit = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -110,6 +120,16 @@ document.addEventListener('click', (evt) => {
 const formulaire = document.getElementById('formulaire-contact');
 
 /*
+  Réglages d'envoi : à remplir une seule fois ici, ils valent pour toutes les pages.
+  · formspree : adresse du formulaire Formspree (https://formspree.io/f/xxxxxxxx).
+                Vide : le message s'ouvre dans la messagerie du visiteur (mailto).
+  · turnstile : clé de site Cloudflare Turnstile (widget en mode « Non-interactive »).
+                Vide : pas de vérification anti-robots. Ne sert qu'avec formspree,
+                car c'est Formspree qui contrôle le jeton avec la clé secrète.
+*/
+const REGLAGES_ENVOI = { formspree: '', turnstile: '' };
+
+/*
   Vérification de l'adresse e-mail, en trois temps :
   1. la syntaxe (nom@domaine.extension) ;
   2. une suggestion en cas de faute de frappe sur un domaine courant (gmial.com → gmail.com) ;
@@ -208,22 +228,24 @@ if (formulaire) {
       effacer();
       if (!adresse) return true;                       // le champ obligatoire est géré par le navigateur
       if (!SYNTAXE_EMAIL.test(adresse)) {
-        signaler('Cette adresse ne semble pas valide : elle doit ressembler à prenom.nom@domaine.fr.');
+        signaler(t('Cette adresse ne semble pas valide : elle doit ressembler à prenom.nom@domaine.fr.',
+                   'This address does not look valid: it should look like firstname.lastname@domain.co.uk.'));
         return false;
       }
       const [nom, domaine] = [adresse.slice(0, adresse.lastIndexOf('@')), adresse.slice(adresse.lastIndexOf('@') + 1).toLowerCase()];
       const suggestion = domaineSuggere(domaine);
       if (suggestion) {                                // simple proposition, jamais bloquante
-        aide.textContent = 'Vouliez-vous dire ';
+        aide.textContent = t('Vouliez-vous dire ', 'Did you mean ');
         const corriger = document.createElement('button');
         corriger.type = 'button';
         corriger.textContent = `${nom}@${suggestion}`;
         corriger.addEventListener('click', () => { champEmail.value = corriger.textContent; champEmail.verifier(); champEmail.focus(); });
-        aide.append(corriger, ' ?');
+        aide.append(corriger, t(' ?', '?'));
       }
       if (!complete) return true;
       if (await domaineAccepteMail(domaine) === 'non') {
-        signaler(`Le domaine « ${domaine} » n'existe pas ou ne reçoit pas d'e-mails : vérifiez l'adresse.`);
+        signaler(t(`Le domaine « ${domaine} » n'existe pas ou ne reçoit pas d'e-mails : vérifiez l'adresse.`,
+                   `The domain “${domaine}” does not exist or cannot receive emails: please check the address.`));
         return false;
       }
       return true;
@@ -231,6 +253,73 @@ if (formulaire) {
 
     champEmail.addEventListener('input', effacer);
     champEmail.addEventListener('change', () => champEmail.verifier());
+  }
+
+  /*
+    Champs obligatoires laissés vides ou mal remplis (RGAA 11.10) : à la place de la bulle
+    éphémère du navigateur, un message reste affiché sous le champ, relié par aria-describedby,
+    et le champ reçoit aria-invalid="true". Le focus va au premier champ à corriger.
+  */
+  let focusDonne = false;
+  formulaire.querySelectorAll('input[required], textarea[required], select[required]').forEach((champ) => {
+    let aide = document.getElementById(`${champ.id}-aide`);
+    if (!aide) {
+      aide = document.createElement('p');
+      aide.className = 'champ-aide';
+      aide.id = `${champ.id}-aide`;
+      aide.setAttribute('aria-live', 'polite');
+      champ.closest('.champ').append(aide);
+      champ.setAttribute('aria-describedby', aide.id);
+    }
+    champ.addEventListener('invalid', (evt) => {
+      evt.preventDefault();
+      champ.setAttribute('aria-invalid', 'true');
+      aide.textContent = champ.validity.valueMissing
+        ? t('Ce champ est obligatoire.', 'This field is required.')
+        : champ.validity.typeMismatch
+          ? t('Cette adresse ne semble pas valide : elle doit ressembler à prenom.nom@domaine.fr.',
+              'This address does not look valid: it should look like firstname.lastname@domain.com.')
+          : champ.validationMessage;
+      aide.dataset.etat = 'erreur';
+      if (!focusDonne) {
+        focusDonne = true;
+        champ.focus();
+        setTimeout(() => { focusDonne = false; }, 0);
+      }
+    });
+    champ.addEventListener('input', () => {
+      champ.removeAttribute('aria-invalid');
+      if (champ.type !== 'email' && aide.dataset.etat === 'erreur') {
+        aide.textContent = '';
+        delete aide.dataset.etat;
+      }
+    });
+  });
+}
+
+/*
+  Vérification anti-robots Cloudflare Turnstile, en mode non interactif : le visiteur n'a rien à faire,
+  le petit cadre au logo Cloudflare se valide seul. Chargée seulement si les deux réglages sont remplis.
+*/
+let idTurnstile = null;
+const adresseEnvoi = () => ((formulaire?.dataset.endpoint || '').trim() || REGLAGES_ENVOI.formspree);
+if (formulaire && REGLAGES_ENVOI.turnstile && adresseEnvoi()) {
+  const zone = formulaire.querySelector('[data-turnstile]');
+  if (zone) {
+    window.surTurnstilePret = () => {
+      idTurnstile = window.turnstile.render(zone, {
+        sitekey: REGLAGES_ENVOI.turnstile,
+        language: t('fr', 'en'),
+        theme: document.documentElement.dataset.theme === 'sombre' ? 'dark' : 'light',
+        size: 'flexible',
+      });
+    };
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=surTurnstilePret&render=explicit';
+    script.async = true;
+    document.head.append(script);
+    zone.hidden = false;
+    document.querySelectorAll('[data-mention-turnstile]').forEach((el) => { el.hidden = false; });
   }
 }
 
@@ -256,7 +345,7 @@ if (formulaire) {
     const donnees = new FormData(formulaire);
     if (donnees.get('_gotcha')) return; // champ piège rempli : sans doute un robot
 
-    const adresseService = (formulaire.dataset.endpoint || '').trim();
+    const adresseService = adresseEnvoi();
 
     // Sans service d'envoi : on prépare l'e-mail dans la messagerie du visiteur.
     if (!adresseService) {
@@ -264,13 +353,19 @@ if (formulaire) {
       const corps = `${donnees.get('message')}\n\n${donnees.get('nom')}\n${donnees.get('email')}`;
       window.location.href =
         `mailto:${destinataire}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
-      afficher('Votre messagerie s’ouvre avec le message prêt à partir.');
+      afficher(t('Votre messagerie s’ouvre avec le message prêt à partir.',
+                 'Your email app is opening with the message ready to send.'));
       return;
     }
 
     // Avec un service (Formspree ou équivalent) : envoi direct.
+    if (idTurnstile !== null && !window.turnstile?.getResponse(idTurnstile)) {
+      afficher(t('Vérification anti-robots en cours : réessayez dans un instant.',
+                 'Anti-bot check in progress: please try again in a moment.'), 'erreur');
+      return;
+    }
     bouton.disabled = true;
-    afficher('Envoi en cours…');
+    afficher(t('Envoi en cours…', 'Sending…'));
     try {
       const reponse = await fetch(adresseService, {
         method: 'POST',
@@ -279,12 +374,15 @@ if (formulaire) {
       });
       if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
       formulaire.reset();
-      afficher('Merci ! Votre message est bien parti, je vous réponds rapidement.');
+      afficher(t('Merci ! Votre message est bien parti, je vous réponds rapidement.',
+                 'Thank you! Your message has been sent and I will reply shortly.'));
     } catch (erreur) {
       console.error(erreur);
-      afficher(`L’envoi n’a pas abouti. Vous pouvez m’écrire directement à ${destinataire}.`, 'erreur');
+      afficher(t(`L’envoi n’a pas abouti. Vous pouvez m’écrire directement à ${destinataire}.`,
+                 `The message could not be sent. You can write to me directly at ${destinataire}.`), 'erreur');
     } finally {
       bouton.disabled = false;
+      if (idTurnstile !== null) window.turnstile?.reset(idTurnstile);   // un jeton ne sert qu'une fois
     }
   });
 }
@@ -329,15 +427,18 @@ if (boutonComptage) {
   const afficherEtat = () => {
     const exclu = appareilExclu();
     etat.textContent = exclu
-      ? 'Cet appareil n’est pas compté dans les visites.'
-      : 'Cet appareil est compté dans les visites.';
+      ? t('Cet appareil n’est pas compté dans les visites.', 'This device is not counted in the visits.')
+      : t('Cet appareil est compté dans les visites.', 'This device is counted in the visits.');
     etat.dataset.etat = exclu ? 'exclu' : 'compte';
-    boutonComptage.textContent = exclu ? 'Recompter cet appareil' : 'Ne plus compter cet appareil';
+    boutonComptage.textContent = exclu
+      ? t('Recompter cet appareil', 'Count this device again')
+      : t('Ne plus compter cet appareil', 'Stop counting this device');
     boutonComptage.setAttribute('aria-pressed', String(exclu));
   };
   boutonComptage.addEventListener('click', () => {
     if (!definirExclusion(!appareilExclu())) {
-      etat.textContent = 'Votre navigateur bloque le stockage local : réglage impossible ici.';
+      etat.textContent = t('Votre navigateur bloque le stockage local : réglage impossible ici.',
+                           'Your browser blocks local storage: this setting cannot be changed here.');
       etat.dataset.etat = 'erreur';
       return;
     }
@@ -416,15 +517,18 @@ if (outilsProjets) {
     const ordre = etat.ordre === 'recent' ? cartesFiltrables : [...cartesFiltrables].reverse();
     listeCartes.append(...ordre); // déplace les cartes sans les recréer
     boutonTri.dataset.ordre = etat.ordre;
-    boutonTri.querySelector('.outil-texte').textContent =
-      etat.ordre === 'recent' ? 'Du plus récent au plus ancien' : 'Du plus ancien au plus récent';
+    const sensTri = etat.ordre === 'recent'
+      ? t('du plus récent au plus ancien', 'newest first')
+      : t('du plus ancien au plus récent', 'oldest first');
+    boutonTri.querySelector('.outil-texte').textContent = sensTri.charAt(0).toUpperCase() + sensTri.slice(1);
 
     const n = compter(etat.cadre);
     messageVide.hidden = n > 0;
     boutonReinit.hidden = etat.cadre === 'tous' && etat.ordre === 'recent' && !etat.enCours;
-    statutFiltres.textContent = `${n} projet${n > 1 ? 's' : ''} affiché${n > 1 ? 's' : ''}, ` +
-      (etat.ordre === 'recent' ? 'du plus récent au plus ancien' : 'du plus ancien au plus récent') +
-      (etat.enCours ? ', projets bientôt en ligne compris.' : '.');
+    const pluriel = n > 1 ? 's' : '';
+    statutFiltres.textContent =
+      t(`${n} projet${pluriel} affiché${pluriel}, `, `${n} project${n === 1 ? '' : 's'} shown, `) + sensTri +
+      (etat.enCours ? t(', projets bientôt en ligne compris.', ', including projects coming soon.') : '.');
   };
 
   outilsProjets.addEventListener('click', (evt) => {
@@ -454,37 +558,61 @@ if (outilsProjets) {
 
 /* ---------- 6. Calendrier au survol d'une date (accueil) ---------- */
 // Sur <time datetime="2027-04-26" data-calendrier>…</time> : au survol ou au focus, le mois s'affiche
-// avec le jour mis en valeur et la fin de sa semaine teintée.
+// avec le jour de début mis en valeur et la période de stage colorée, sur tous les mois concernés :
+//  · durée minimale (8 semaines) : du jour de début au samedi de la 8e semaine (dimanche exclu) ;
+//  · prolongation possible, dans un ton plus clair : du dimanche qui suit la 8e semaine au samedi de la 10e semaine.
+//    Durées réglables avec data-semaines="8-10" sur la balise <time> (8 et 10 par défaut).
+//  · une petite colonne à gauche numérote les semaines de stage (1 → 10).
 //  · Il reste ouvert tant que le curseur est sur la date OU sur le calendrier, et disparaît
 //    instantanément dès qu'il quitte les deux.
 //  · Les flèches ‹ › (ou les touches ← → quand la date a le focus) changent de mois ;
 //    « Revenir à avril 2027 » ramène au mois de départ.
-// Aucune dépendance ni iframe : le mois est construit ici, en français, semaine commençant le lundi.
+// Aucune dépendance ni iframe : le mois est construit ici, dans la langue de la page, semaine commençant le lundi.
 document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const [annee, mois, jour] = date.getAttribute('datetime').split('-').map(Number);
   const cible = new Date(annee, mois - 1, jour);
-  const nomMoisCible = cible.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-  const nomJour = cible.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const nomMoisCible = cible.toLocaleDateString(LOCALE, { month: 'long', year: 'numeric' });
+  const nomJour = cible.toLocaleDateString(LOCALE, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  // En-têtes des colonnes, du lundi au dimanche : [nom complet, initiale]
+  const joursSemaine = [...Array(7)].map((_, k) => {
+    const jourK = new Date(2024, 0, 1 + k);   // le 1er janvier 2024 est un lundi
+    const nom = jourK.toLocaleDateString(LOCALE, { weekday: 'long' });
+    return [nom, nom.charAt(0).toUpperCase()];
+  });
   const jourSemaineCible = (cible.getDay() + 6) % 7;   // 0 = lundi
   let affiche = new Date(annee, mois - 1, 1);           // mois actuellement affiché
+
+  // Période de stage : fin = samedi de la Ne semaine (la semaine 1 est celle du jour de début)
+  const [semMin, semMax] = (date.dataset.semaines || '8-10').split('-').map(Number);
+  const samediSemaine = (n) => new Date(annee, mois - 1, jour + (n - 1) * 7 + (5 - jourSemaineCible));
+  const finMin = samediSemaine(semMin);
+  const finMax = samediSemaine(semMax || semMin);
+  const lundiDebut = new Date(annee, mois - 1, jour - jourSemaineCible);   // lundi de la 1re semaine de stage
+  const debutProlongation = new Date(finMin.getFullYear(), finMin.getMonth(), finMin.getDate() + 1);   // dimanche suivant : il ouvre la prolongation
+  const finCourte = (d) => d.toLocaleDateString(LOCALE, { weekday: 'short', day: 'numeric', month: 'long' });
 
   const bulle = document.createElement('div');
   bulle.className = 'calendrier';
   bulle.id = `calendrier-${rang + 1}`;
-  bulle.setAttribute('role', 'dialog');
-  bulle.setAttribute('aria-label', `Calendrier : ${nomJour}`);
+  // Aide visuelle seulement : la date et la légende « Début du stage » sont déjà écrites en clair dans la page.
+  bulle.setAttribute('aria-hidden', 'true');
   bulle.hidden = true;
   bulle.innerHTML =
     '<div class="calendrier-entete">' +
-      '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="-1" aria-label="Mois précédent">&#x2039;</button>' +
+      `<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="-1" aria-label="${t('Mois précédent', 'Previous month')}">&#x2039;</button>` +
       '<p class="calendrier-titre" aria-live="polite"></p>' +
-      '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="Mois suivant">&#x203A;</button>' +
+      `<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="${t('Mois suivant', 'Next month')}">&#x203A;</button>` +
     '</div>' +
-    '<table><thead><tr><th abbr="lundi">L</th><th abbr="mardi">M</th><th abbr="mercredi">M</th>' +
-    '<th abbr="jeudi">J</th><th abbr="vendredi">V</th><th abbr="samedi">S</th><th abbr="dimanche">D</th></tr></thead>' +
-    '<tbody></tbody></table>' +
-    `<p class="calendrier-legende">Début du stage : ${nomJour}</p>` +
-    `<button class="calendrier-retour" type="button" tabindex="-1">Revenir à ${nomMoisCible}</button>`;
+    '<table><thead><tr>' +
+      `<th class="calendrier-sem" abbr="${t('semaine de stage', 'internship week')}" title="${t('Semaine de stage', 'Internship week')}">${t('n°', 'wk')}</th>` +
+      joursSemaine.map(([nom, initiale]) => `<th abbr="${nom}">${initiale}</th>`).join('') +
+    '</tr></thead><tbody></tbody></table>' +
+    `<p class="calendrier-legende">${t('Début du stage : ', 'Internship starts on ')}${nomJour}</p>` +
+    '<ul class="calendrier-cles">' +
+      `<li><span class="cle cle-stage" aria-hidden="true"></span>${t(`${semMin} sem. : jusqu'au `, `${semMin} weeks: until `)}${finCourte(finMin)}</li>` +
+      (finMax > finMin ? `<li><span class="cle cle-prolongation" aria-hidden="true"></span>${t(`${semMax} sem. : jusqu'au `, `${semMax} weeks: until `)}${finCourte(finMax)}</li>` : '') +
+    '</ul>' +
+    `<button class="calendrier-retour" type="button" tabindex="-1">${t('Revenir à ', 'Back to ')}${nomMoisCible}</button>`;
   document.body.append(bulle);
   const titre = bulle.querySelector('.calendrier-titre');
   const corps = bulle.querySelector('tbody');
@@ -499,19 +627,31 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     let cases = '';
     for (let k = 0; k < 42; k++) {   // toujours 6 semaines : le calendrier garde la même hauteur d'un mois à l'autre
       const n = k - premierJour + 1;
-      if (k % 7 === 0) cases += '<tr>';
+      if (k % 7 === 0) {
+        // Compteur de semaines : numéro de la semaine de stage (1 → semMax), si la rangée contient des jours du mois
+        const lundi = new Date(a, m, n);
+        const sem = Math.round((lundi - lundiDebut) / 864e5 / 7) + 1;
+        const rangeeUtile = n <= nbJours && n + 6 >= 1;
+        const typeSem = sem >= 1 && sem <= semMin ? 'sem-stage' : sem > semMin && sem <= semMax ? 'sem-prolongation' : '';
+        cases += '<tr>' + (rangeeUtile && typeSem
+          ? `<th class="calendrier-sem ${typeSem}" scope="row" title="${t(`Semaine ${sem} de stage`, `Internship week ${sem}`)}">${sem}</th>`
+          : '<th class="calendrier-sem" scope="row"></th>');
+      }
       if (n < 1 || n > nbJours) cases += '<td><span></span></td>';
       else {
         const classes = [];
+        const ce = new Date(a, m, n);
+        let info = '';
         if (k % 7 >= 5) classes.push('we');
-        if (memeMois && n > jour && n <= jour + (4 - jourSemaineCible)) classes.push('stage');
+        if (ce >= cible && ce <= finMin) { classes.push('stage'); info = ` title="${t(`Stage : ${semMin} premières semaines`, `Internship: first ${semMin} weeks`)}"`; }
+        else if (ce >= debutProlongation && ce <= finMax) { classes.push('prolongation'); info = ` title="${t(`Prolongation possible jusqu'à ${semMax} semaines`, `Possible extension up to ${semMax} weeks`)}"`; }
         if (memeMois && n === jour) classes.push('jour');
-        cases += `<td class="${classes.join(' ')}"><span>${n}</span></td>`;
+        cases += `<td class="${classes.join(' ')}"${info}><span>${n}</span></td>`;
       }
       if (k % 7 === 6) cases += '</tr>';
     }
     corps.innerHTML = cases;
-    titre.textContent = affiche.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+    titre.textContent = affiche.toLocaleDateString(LOCALE, { month: 'long', year: 'numeric' });
     retour.style.visibility = memeMois ? 'hidden' : 'visible';   // garde sa place : rien ne bouge sous le curseur
   };
 
@@ -553,13 +693,16 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   date.addEventListener('pointerleave', quitter);
   bulle.addEventListener('pointerleave', quitter);
 
-  // Clavier : focus sur la date ; ← → changent de mois ; Échap ferme
+  // Clavier : focus sur la date ; ← → changent de mois ; Début y revient ; Échap ferme
   date.tabIndex = 0;
-  date.setAttribute('aria-controls', bulle.id);
   date.addEventListener('focus', montrer);
   date.addEventListener('blur', () => { if (!survole()) cacher(); });
   date.addEventListener('keydown', (evt) => {
     if (evt.key === 'Escape') cacher();
+    else if (!bulle.hidden && evt.key === 'Home') {           // Début : retour au mois de la date
+      evt.preventDefault();
+      affiche = new Date(annee, mois - 1, 1); dessiner(); placer();
+    }
     else if (!bulle.hidden && (evt.key === 'ArrowLeft' || evt.key === 'ArrowRight')) {
       evt.preventDefault();
       changerMois(evt.key === 'ArrowLeft' ? -1 : 1);
@@ -580,4 +723,85 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   window.addEventListener('scroll', () => {
     if (!bulle.hidden && document.activeElement !== date && !survole()) cacher();
   }, { passive: true });
+});
+
+/* ---------- 7. Thème clair / sombre ---------- */
+// Le thème est déjà posé avant l'affichage par le petit script du <head> de chaque page
+// (choix mémorisé, sinon réglage clair/sombre de l'appareil). Ici :
+//  · le bouton soleil ⇄ lune de la barre du haut (caché sans JavaScript) ;
+//  · la mémorisation du choix sur cet appareil (localStorage, clé « theme ») ;
+//  · le suivi du réglage de l'appareil tant que le visiteur n'a rien choisi.
+(() => {
+  const racine = document.documentElement;
+  const bouton = document.querySelector('.theme');
+  const systeme = window.matchMedia('(prefers-color-scheme: dark)');
+  const couleurNavigateur = document.querySelector('meta[name="theme-color"]');
+
+  const choixMemorise = () => {
+    try { return localStorage.getItem('theme'); } catch { return null; }
+  };
+
+  function appliquer(theme, avecTransition) {
+    if (avecTransition && !mouvementReduit.matches) {
+      racine.classList.add('theme-bascule');               // fondu des couleurs (CSS, section 3)
+      setTimeout(() => racine.classList.remove('theme-bascule'), 350);
+    }
+    racine.dataset.theme = theme;
+    if (bouton) bouton.setAttribute('aria-pressed', String(theme === 'sombre'));
+    if (couleurNavigateur) couleurNavigateur.content = theme === 'sombre' ? '#222d3a' : '#ddedf8';
+  }
+
+  appliquer(racine.dataset.theme === 'sombre' ? 'sombre' : 'clair', false);
+
+  if (bouton) {
+    bouton.hidden = false;
+    bouton.addEventListener('click', () => {
+      const suivant = racine.dataset.theme === 'sombre' ? 'clair' : 'sombre';
+      appliquer(suivant, true);
+      try { localStorage.setItem('theme', suivant); } catch { /* stockage bloqué : le choix vaut pour cette page seulement */ }
+    });
+  }
+
+  systeme.addEventListener('change', (e) => {
+    if (!['clair', 'sombre'].includes(choixMemorise())) appliquer(e.matches ? 'sombre' : 'clair', true);
+  });
+})();
+
+/* ---------- 8. Cartes déployées : la touche Échap les replie ---------- */
+// Une carte déployée au survol ou au focus recouvre la rangée suivante : Échap la replie
+// sans déplacer la souris ni le focus (RGAA 10.13, WCAG 1.4.13). Elle se redéploie au prochain survol.
+document.addEventListener('keydown', (evt) => {
+  if (evt.key !== 'Escape') return;
+  document.querySelectorAll('.emplacement:hover, .emplacement:focus-within').forEach((el) => el.classList.add('replie'));
+});
+document.querySelectorAll('.emplacement').forEach((el) => {
+  el.addEventListener('pointerleave', () => el.classList.remove('replie'));
+  el.addEventListener('focusout', (evt) => { if (!el.contains(evt.relatedTarget)) el.classList.remove('replie'); });
+});
+
+/* ---------- 9. Images animées (GIF) : en mouvement seulement à la demande ---------- */
+// Par défaut, l'image fixe (la <source> PNG du <picture>). L'animation joue au survol ou au focus
+// de la carte et s'arrête en la quittant ; sur écran tactile, 5 secondes quand la carte apparaît.
+// Avec « animations réduites » activé sur l'appareil, l'image reste fixe (RGAA 13.8).
+document.querySelectorAll('.carte picture').forEach((image) => {
+  const img = image.querySelector('img[src$=".gif"]');
+  const fixe = image.querySelector('source[srcset]')?.getAttribute('srcset');
+  if (!img || !fixe) return;
+  const anime = img.getAttribute('src');
+  const zone = img.closest('.emplacement') ?? img.closest('.carte');
+  const jouer = () => { if (!mouvementReduit.matches) img.src = anime; };
+  const arreter = () => { img.src = fixe; };
+  arreter();
+  zone.addEventListener('pointerenter', jouer);
+  zone.addEventListener('pointerleave', arreter);
+  zone.addEventListener('focusin', jouer);
+  zone.addEventListener('focusout', (evt) => { if (!zone.contains(evt.relatedTarget)) arreter(); });
+  if (!window.matchMedia('(hover: hover)').matches && 'IntersectionObserver' in window) {
+    let minuteur;
+    new IntersectionObserver(([entree]) => {
+      clearTimeout(minuteur);
+      if (entree.isIntersecting) { jouer(); minuteur = setTimeout(arreter, 5000); }
+      else arreter();
+    }, { threshold: 0.6 }).observe(img);
+  }
 });

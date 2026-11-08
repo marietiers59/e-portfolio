@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills · Marie Tiers</title>
+  <meta name="description" content="Skills of Marie Tiers, Computer Science student in Lens, France: software testing, full-stack development, tools, methods, systems and networking, languages.">
+  <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/pages/competences.html">
+  <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/skills.html">
+  <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/pages/competences.html">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
+  <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
+
+  <link rel="stylesheet" href="../styles/style.css?v=12">
+  <script src="../scripts/rideau.js?v=2" defer></script>
+  <script src="../scripts/script.js?v=11" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#content">Skip to content</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="langue" href="../pages/competences.html" hreflang="fr" data-actif="en">
+      <img class="langue-drapeau" src="../medias/drapeau-fr.svg" alt="" width="24" height="16">
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <img class="langue-drapeau" src="../medias/drapeau-gb.svg" alt="" width="32" height="16">
+      <span class="sr" lang="fr">Lire cette page en français</span>
+    </a>
+    <button class="theme" type="button" aria-pressed="false" hidden>
+      <svg class="theme-icone theme-soleil" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <svg class="theme-icone theme-lune" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      <span class="sr">Dark theme</span>
+    </button>
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+    <div class="conteneur entete-nav">
+      <a class="logo" href="index.html">Marie TIERS</a>
+      <nav class="navigation" aria-label="Main navigation">
+        <ul class="navigation-liste">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="skills.html" aria-current="page">Skills</a></li>
+          <li><a href="index.html#journey">Journey</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="../cv-marie-tiers-en.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="video-cv.html">Video CV</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- ===== Compétences : une carte par catégorie (phrase + vignettes logo et nom) ===== -->
+    <section class="section section-competences" aria-labelledby="titre-principal">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h1 class="section-titre" id="titre-principal" tabindex="-1">My skills</h1>
+          <p class="section-intro">
+            A dual background in <strong class="kw">development</strong> and <strong class="kw">software testing</strong>,
+            sorted by category. Each card reads as one sentence… or scans at a glance, logo by logo.
+          </p>
+        </div>
+
+        <div class="competences">
+        <section class="competences-categorie accent-indigo" aria-labelledby="cat-test">
+          <h2 class="competences-titre" id="cat-test">Software testing and QA</h2>
+          <p class="competences-texte"><strong class="kw">ISTQB Foundation</strong> certified (CTFL v4.0): <strong>unit</strong>, <strong>integration</strong>, <strong>functional</strong> and <strong>automated</strong> testing, regression testing, API testing and <strong>accessibility</strong> audits against WCAG and RGAA (the French public-sector accessibility standard).</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><svg class="competence-logo" style="--logo: #43B02A" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#selenium"/></svg><span class="competence-nom">Selenium</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #69D3A7" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#cypress"/></svg><span class="competence-nom">Cypress</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #FF6C37" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#postman"/></svg><span class="competence-nom">Postman</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #25A162" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#junit5"/></svg><span class="competence-nom">JUnit</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Mo</span><span class="competence-nom">Mockito</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">PU</span><span class="competence-nom">PHPUnit</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #0052CC" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#jira"/></svg><span class="competence-nom">Jira</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Xr</span><span class="competence-nom">Xray</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Sq</span><span class="competence-nom">Squash</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-bleu" aria-labelledby="cat-langages">
+          <h2 class="competences-titre" id="cat-langages">Programming languages</h2>
+          <p class="competences-texte">From back end to front end, including system scripts and databases. Currently learning <strong>COBOL</strong> (<i>From Zero to COBOL</i> MOOC).</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><svg class="competence-logo" style="--logo: #E76F00" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#openjdk"/></svg><span class="competence-nom">Java</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #3776AB" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#python"/></svg><span class="competence-nom">Python</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #4EAA25" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#gnubash"/></svg><span class="competence-nom">Bash</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #E34F26" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#html5"/></svg><span class="competence-nom">HTML</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #663399" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#css"/></svg><span class="competence-nom">CSS</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #F7DF1E" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#javascript"/></svg><span class="competence-nom">JavaScript</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #777BB4" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#php"/></svg><span class="competence-nom">PHP</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#sql"/></svg><span class="competence-nom">SQL</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #4169E1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#postgresql"/></svg><span class="competence-nom">PL/pgSQL</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Cb</span><span class="competence-nom">COBOL</span><span class="competence-note">learning</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-turquoise" aria-labelledby="cat-frameworks">
+          <h2 class="competences-titre" id="cat-frameworks">Frameworks and databases</h2>
+          <p class="competences-texte"><strong class="kw">React</strong> interfaces, <strong class="kw">Laravel</strong> applications, relational (<strong>MySQL</strong>, <strong>PostgreSQL</strong>) and NoSQL (<strong>MongoDB</strong>) databases.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><svg class="competence-logo" style="--logo: #61DAFB" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#react"/></svg><span class="competence-nom">React</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #FF2D20" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#laravel"/></svg><span class="competence-nom">Laravel</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #4479A1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#mysql"/></svg><span class="competence-nom">MySQL</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #4169E1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#postgresql"/></svg><span class="competence-nom">PostgreSQL</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #47A248" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#mongodb"/></svg><span class="competence-nom">MongoDB</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-sapin" aria-labelledby="cat-outils">
+          <h2 class="competences-titre" id="cat-outils">Tools and DevOps</h2>
+          <p class="competences-texte">Version control with <strong class="kw">Git</strong>, <strong>Docker</strong> containers, continuous integration and delivery (CI/CD), shared documentation; I code in VS Code, IntelliJ IDEA, PyCharm or Eclipse.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><svg class="competence-logo" style="--logo: #F03C2E" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#git"/></svg><span class="competence-nom">Git</span></li>
+              <li class="competence"><svg class="competence-logo logo-fonce" style="--logo: #181717" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#github"/></svg><span class="competence-nom">GitHub</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #FC6D26" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#gitlab"/></svg><span class="competence-nom">GitLab</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #2496ED" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#docker"/></svg><span class="competence-nom">Docker</span></li>
+              <li class="competence"><svg class="competence-logo logo-fonce" style="--logo: #172B4D" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#confluence"/></svg><span class="competence-nom">Confluence</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #0052CC" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#trello"/></svg><span class="competence-nom">Trello</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#code"/></svg><span class="competence-nom">VS Code</span></li>
+              <li class="competence"><svg class="competence-logo logo-fonce" style="--logo: #000000" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#jetbrains"/></svg><span class="competence-nom">JetBrains</span></li>
+              <li class="competence"><svg class="competence-logo logo-fonce" style="--logo: #2C2255" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#eclipseide"/></svg><span class="competence-nom">Eclipse</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-lavande" aria-labelledby="cat-methodes">
+          <h2 class="competences-titre" id="cat-methodes">Methods and modelling</h2>
+          <p class="competences-texte"><strong>Agile</strong> (Scrum, Kanban) or <i lang="fr">cycle en V</i> (V-model) project management, test-driven development (TDD), <strong>Merise</strong> (a French data-modelling method) and <strong>UML</strong> modelling.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#agile"/></svg><span class="competence-nom">Agile</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#scrum"/></svg><span class="competence-nom">Scrum</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#kanban"/></svg><span class="competence-nom">Kanban</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#cyclev"/></svg><span class="competence-nom">V-model</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#cicd"/></svg><span class="competence-nom">CI/CD</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#tdd"/></svg><span class="competence-nom">TDD</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#merise"/></svg><span class="competence-nom">Merise</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#uml"/></svg><span class="competence-nom">UML</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-rose" aria-labelledby="cat-systeme">
+          <h2 class="competences-titre" id="cat-systeme">Systems and networking</h2>
+          <p class="competences-texte"><strong>Unix/Linux</strong> and <strong>Windows</strong> environments, <strong>TCP/IP</strong> networking (DNS, DHCP, routing, cabling) and programmable electronics with <strong>Arduino</strong>.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><svg class="competence-logo" style="--logo: #FCC624" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#linux"/></svg><span class="competence-nom">Linux</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#unix"/></svg><span class="competence-nom">Unix</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#windows"/></svg><span class="competence-nom">Windows</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#reseau"/></svg><span class="competence-nom">TCP/IP</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #00878F" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#arduino"/></svg><span class="competence-nom">Arduino</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-anis" aria-labelledby="cat-creation">
+          <h2 class="competences-titre" id="cat-creation">Graphic design and media</h2>
+          <p class="competences-texte">Desktop publishing and photo editing with Photoshop and InDesign, audio and video editing.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Ps</span><span class="competence-nom">Photoshop</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Id</span><span class="competence-nom">InDesign</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg#montage"/></svg><span class="competence-nom">Audio, video</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-bleu" aria-labelledby="cat-langues">
+          <h2 class="competences-titre" id="cat-langues">Spoken languages</h2>
+          <p class="competences-texte"><strong>French</strong> (native), professional and technical <strong>English</strong> (daily meetings with teams in the USA, the Netherlands, Bulgaria and India), fluent <strong>Spanish</strong>.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-fr.svg" alt="" width="30" height="20"><span class="competence-nom">French</span></li>
+              <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-gb.svg" alt="" width="30" height="20"><span class="competence-nom">English</span></li>
+              <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-es.svg" alt="" width="30" height="20"><span class="competence-nom">Spanish</span></li>
+          </ul>
+        </section>
+        </div>
+
+        <p class="apercu-pied">
+          <a class="bouton" href="projects.html">See them at work in my projects</a>
+          <a class="bouton bouton-second" href="../cv-marie-tiers-en.pdf" type="application/pdf">My CV <span class="sr">(PDF)</span></a>
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer (scrolls with the page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Contact me</h2>
+        <p>An <strong class="kw">internship</strong> or <strong class="kw">work-study</strong> offer, a question about a project? Write to me and I will get back to you quickly.</p>
+        <ul class="coordonnees">
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Contact form"
+            data-endpoint="">
+        <p class="champ">
+          <label for="nom">Name <span class="obligatoire">(required)</span></label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Email address <span class="obligatoire">(required)</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Subject</label>
+          <select id="objet" name="objet">
+            <option>Internship offer</option>
+            <option>Work-study offer</option>
+            <option>Question about a project</option>
+            <option>Other</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message <span class="obligatoire">(required)</span></label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Anti-bot trap field: invisible to humans -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Do not fill in</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Send</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
+      Placeholder images: <a href="https://picsum.photos">Lorem Picsum</a> · Photo of the <i lang="fr">IUT</i>: LinkedIn cover of “IUT de Lens Alumni”<br>
+      Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site<br>
+      <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
+      Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="accessibility.html">statement and test details</a><br>
+      Cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a></p>
+  </footer>
+
+  <!-- ===== Fixed bottom bar ===== -->
+  <div class="barre barre-bas">
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>
