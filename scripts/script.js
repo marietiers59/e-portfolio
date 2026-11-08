@@ -871,6 +871,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
     return `rgb(${r}, ${v}, ${b})`;
   }
   const nuance = (i) => (palette.sombre ? noeuds[i].cs : noeuds[i].cc);
+  const nuanceTexte = (i) => (palette.sombre ? noeuds[i].ts : noeuds[i].tc);   // même teinte, contraste 4,5:1 pour les noms
   function lirePalette() {
     const style = getComputedStyle(document.documentElement);
     palette = {
@@ -1147,7 +1148,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
         g.strokeStyle = palette.carte;
         g.lineWidth = 3.5 * dpr;
         g.strokeText(n.nom, q.x, y);
-        g.fillStyle = n.t === 'but' || n.t === 'notion' ? nuance(i) : palette.encre;
+        g.fillStyle = n.t === 'but' || n.t === 'notion' ? nuanceTexte(i) : palette.encre;
         g.fillText(n.nom, q.x, y);
       });
       g.globalAlpha = 1;

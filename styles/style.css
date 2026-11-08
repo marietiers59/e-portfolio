@@ -1585,14 +1585,14 @@ abbr[title] { text-decoration: none; cursor: help; }
   box-shadow: var(--ombre-repos);
   overflow: hidden;
 }
-.nuage::before {                 /* filet du haut au dégradé du nuage */
+.nuage::before {                 /* filet du haut aux couleurs des communautés */
   content: "";
   position: absolute;
   inset: 0 0 auto;
   height: 0.3rem;
-  background: linear-gradient(90deg, var(--nuage-a), var(--nuage-b), var(--nuage-c));
-  background: linear-gradient(90deg in oklch, var(--nuage-a), var(--nuage-b), var(--nuage-c));
+  background: linear-gradient(90deg, #9d1b0f 0.0% 14.29%, #767708 14.29% 28.57%, #05654e 28.57% 42.86%, #0c8cb8 42.86% 57.14%, #6b5dcd 57.14% 71.43%, #94368f 71.43% 85.71%, #df5a61 85.71% 100.0%);   /* les 7 couleurs des communautés */
 }
+:root[data-theme="sombre"] .nuage::before { background: linear-gradient(90deg, #fe9787 0.0% 14.29%, #aaab35 14.29% 28.57%, #59e7bd 28.57% 42.86%, #10a0d1 42.86% 57.14%, #b0adfe 57.14% 71.43%, #fecbf9 71.43% 85.71%, #d96c6f 85.71% 100.0%); }
 
 /* Aperçu : petit, cliquable, loupe en bas à droite */
 .nuage-apercu {

@@ -13,7 +13,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from couleurs import arrondir, couleur
+from couleurs import arrondir, couleur, couleur_point, couleur_texte
 from donnees import BUT_LONG, MASQUES, NOTIONS
 from nuage import GEPHI, IMAGE, PAGES, degres, graphe, rayon
 
@@ -147,9 +147,11 @@ def forme(i, t, x, y, r):
     return f'<circle class="n" data-id="{i}" cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}"/>'
 
 
-def teintes_css(u, fige):
-    """Attribut de couleur : variables pour les deux thèmes (page), ou couleur écrite en clair (image seule)."""
-    return f'--kc:{couleur(u, "clair")};--ks:{couleur(u, "sombre")}' if not fige else couleur(u, "clair")
+def teintes_css(k, fige, texte=False):
+    """Attribut de couleur de la communauté k : variables pour les deux thèmes (page), ou couleur écrite en clair (image seule).
+    texte=True : variante assez contrastée pour un nom (4,5:1)."""
+    f = couleur_texte if texte else couleur_point
+    return f'--kc:{f(k, "clair")};--ks:{f(k, "sombre")}' if not fige else f(k, "clair")
 
 
 def construire(langue, fige=False):
@@ -167,9 +169,12 @@ def construire(langue, fige=False):
     for i in noeuds:
         membres[classe[i]].append(i)
     teinte, nom = {}, {}
-    de_gauche_a_droite = sorted(membres, key=lambda c: sum(pos[m][0] for m in membres[c]) / len(membres[c]))
-    for rang_c, c in enumerate(de_gauche_a_droite):
-        teinte[c] = TEINTES[round(rang_c * (len(TEINTES) - 1) / max(1, len(membres) - 1))]
+    # Couleur de chaque communauté d'après la compétence du BUT qu'elle contient (toujours la même)
+    PIVOT = {"c6": "k1", "c2": "k2", "c4": "k3", "c1": "k5", "c5": "k6", "c3": "k7"}
+    libres = [t for t in TEINTES if t not in PIVOT.values()]
+    for c, ms in sorted(membres.items(), key=lambda kv: -len(kv[1])):
+        pivots = [m for m in ms if noeuds[m][2] == "but"]
+        teinte[c] = PIVOT[max(pivots, key=lambda m: deg[m])] if pivots else libres.pop(0)
     for c, ms in membres.items():
         pivots = [m for m in ms if noeuds[m][2] == "but"]
         if pivots:
@@ -217,7 +222,7 @@ def construire(langue, fige=False):
         mx, my = (xa + xb) / 2, (ya + yb) / 2
         dx, dy = xb - xa, yb - ya
         qx, qy = mx - dy * 0.18, my + dx * 0.18
-        st = f'stroke:{teintes_css(u[b], True)}' if fige else teintes_css(u[b], False)
+        st = f'stroke:{teintes_css(k[b], True)}' if fige else teintes_css(k[b], False)
         cache = " masque" if a in MASQUES or b in MASQUES else ""
         aretes.append(f'<path class="l {k[b]}{cache}" data-a="{a}" data-b="{b}" style="{st}" stroke-width="{0.5 + 0.55 * w:.2f}" '
                       f'd="M{xa:.1f} {ya:.1f}Q{qx:.1f} {qy:.1f} {xb:.1f} {yb:.1f}"/>')
@@ -231,11 +236,12 @@ def construire(langue, fige=False):
         x, y = pos[i]
         f = taille_police(r[i] / GROSSI, t)
         if fige:
-            c = teintes_css(u[i], True)
+            c = teintes_css(k[i], True)
             st_forme = {"notion": f"stroke:{c}", "but": f"fill:{c};stroke:{c}"}.get(t, f"fill:{c}")
-            st_etq = f"fill:{c}" if t in ("but", "notion") else ""
+            st_etq = f"fill:{teintes_css(k[i], True, texte=True)}" if t in ("but", "notion") else ""
         else:
-            st_forme = st_etq = teintes_css(u[i], False)
+            st_forme = teintes_css(k[i], False)
+            st_etq = teintes_css(k[i], False, texte=True)
         formes.append(forme(i, t, x, y, r[i]).replace(f'data-id="{i}"', f'data-id="{i}" data-t="{t}" style="{st_forme}"', 1)
                       .replace('class="n', f'class="{k[i]}{" masque" if i in MASQUES else ""} n', 1))
         etiquettes.append(f'<text class="etq etq-{t} {k[i]}{" masque" if i in MASQUES else ""}" data-id="{i}" x="{x:.1f}" y="{y + r[i] + ECART:.1f}" dy=".85em" '
@@ -253,7 +259,7 @@ def construire(langue, fige=False):
     # Légende : une puce par communauté (bouton de filtre dans la vue agrandie)
     comms = sorted(membres, key=lambda c: -len(membres[c]))
     legende = "\n".join(
-        f'<li><button class="nuage-puce {teinte[c]}" type="button" data-communaute="{teinte[c]}" style="{teintes_css(u_comm[c], False)}" aria-pressed="false" disabled>'
+        f'<li><button class="nuage-puce {teinte[c]}" type="button" data-communaute="{teinte[c]}" style="{teintes_css(teinte[c], False, texte=True)}" aria-pressed="false" disabled>'
         f'<span class="nuage-pastille" aria-hidden="true"></span>{html.escape(nom[c])}</button></li>'
         for c in comms)
 
@@ -275,7 +281,7 @@ def construire(langue, fige=False):
             # éléments masqués : en fin de liste, virgule comprise, pour que le texte affiché reste correct
             noms += "".join(f'<span class="masque">, {marquer(lib[m], langue)}</span>' for m in ms if m in MASQUES)
             parties.append(f'<em>{titres_familles[fam][1 if en else 0]}</em>{" :" if not en else ":"} {noms}')
-        lignes.append(f'<li><strong class="nuage-texte-nom {teinte[c]}" style="{teintes_css(u_comm[c], False)}">{html.escape(nom[c])}</strong> — ' + ("; " if en else " ; ").join(parties) + "</li>")
+        lignes.append(f'<li><strong class="nuage-texte-nom {teinte[c]}" style="{teintes_css(teinte[c], False, texte=True)}">{html.escape(nom[c])}</strong> — ' + ("; " if en else " ; ").join(parties) + "</li>")
     texte = "\n".join(lignes)
     # Données de la vue 3D (scripts/script.js, section 8)
     z = profondeur(noeuds, liens, pos, classe)
@@ -285,7 +291,8 @@ def construire(langue, fige=False):
     donnees = {
         "noeuds": [{"id": i, "nom": lib[i], "t": noeuds[i][2], "k": k[i], "x": round(pos[i][0], 1),
                     "y": round(pos[i][1], 1), "z": round(z[i], 1), "r": round(r[i], 2),
-                    "cc": couleur(u[i], "clair"), "cs": couleur(u[i], "sombre")} for i in affiches],
+                    "cc": couleur_point(k[i], "clair"), "cs": couleur_point(k[i], "sombre"),
+                    "tc": couleur_texte(k[i], "clair"), "ts": couleur_texte(k[i], "sombre")} for i in affiches],
         "liens": [[index[a], index[b], w] for (a, b), w in liens.items() if a in index and b in index],
     }
     json_donnees = json.dumps(donnees, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
