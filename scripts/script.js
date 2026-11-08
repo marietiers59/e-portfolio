@@ -809,7 +809,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
 /* ---------- 10. Nuage de compétences en 3D (page Compétences) ---------- */
 // Le graphe de Gephi (#nuage-donnees : x, y de ForceAtlas2, z ajouté pour la profondeur) est dessiné
 // dans un <canvas>, en perspective, comme un réseau de neurones : il tourne lentement sur lui-même,
-// les nœuds brillent et des influx courent le long des liens, d'un neurone à l'autre.
+// les nœuds brillent et des influx lumineux filent le long des liens, comme de petites étoiles filantes.
 //  · Aperçu : petit, tourne tant qu'il est à l'écran ; clic = vue agrandie. Bouton Pause sous la légende.
 //  · Vue agrandie (<dialog>) : glisser = faire tourner ; molette, pincement, + / − = zoom ;
 //    survol ou toucher d'un point = ses voisins ; couleur de la légende = sa communauté ;
@@ -1037,7 +1037,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
       this.prochaine -= dt;
       if (this.prochaine <= 0 && this.apparition >= 1) {
         this.lancer();
-        this.prochaine = (this.apercu ? 300 : 160) * (0.5 + Math.random());
+        this.prochaine = (this.apercu ? 420 : 240) * (0.5 + Math.random());   // influx espacés : discrets
       }
       for (let i = this.impulsions.length - 1; i >= 0; i--) {
         const im = this.impulsions[i];
@@ -1045,7 +1045,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
         if (im.t >= 1) {
           this.impulsions.splice(i, 1);
           this.eclats[im.b] = 1;
-          if (Math.random() < 0.5 && this.impulsions.length < (this.apercu ? 14 : 28)) this.lancer(im.b);
+          if (Math.random() < 0.5 && this.impulsions.length < (this.apercu ? 10 : 20)) this.lancer(im.b);
         }
       }
       const extinction = Math.exp(-dt / 420);
@@ -1081,19 +1081,47 @@ document.querySelectorAll('.carte picture').forEach((image) => {
         g.stroke();
       });
 
-      // 2. Influx en vol : une étincelle qui file le long du lien
+      // 2. Influx en vol : petites étoiles filantes, un cœur blanc incandescent et une courte traîne dorée
       g.globalCompositeOperation = palette.sombre ? 'lighter' : 'source-over';
+      g.lineCap = 'round';
       this.impulsions.forEach((im) => {
         const a = P[im.a], b = P[im.b];
         const x = a.x + (b.x - a.x) * im.t, y = a.y + (b.y - a.y) * im.t;
-        const taille = (6 + 6 * this.profondeur((a.z + b.z) / 2)) * dpr;
-        g.globalAlpha = 0.95;
-        g.drawImage(sprite(nuance(im.b), 'halo'), x - taille, y - taille, taille * 2, taille * 2);
-        g.fillStyle = palette.sombre ? '#fff' : nuance(im.b);
+        const prof = this.profondeur((a.z + b.z) / 2);
+        const longueur = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+        const traine = Math.min((10 + 12 * prof) * dpr, longueur * im.t);     // la traîne ne dépasse pas le départ
+        const ux = (b.x - a.x) / longueur, uy = (b.y - a.y) / longueur;
+        const ox = x - ux * traine, oy = y - uy * traine;
+        const or = palette.sombre ? '255, 226, 170' : '235, 170, 60';         // or pâle (sombre) ou ambré (clair)
+        // traîne
+        const fil = g.createLinearGradient(ox, oy, x, y);
+        fil.addColorStop(0, `rgba(${or}, 0)`);
+        fil.addColorStop(1, `rgba(${or}, ${palette.sombre ? 0.55 : 0.45})`);
+        g.globalAlpha = 0.6 + 0.4 * prof;
+        g.strokeStyle = fil;
+        g.lineWidth = (0.9 + 0.6 * prof) * dpr;
         g.beginPath();
-        g.arc(x, y, 1.6 * dpr, 0, Math.PI * 2);
+        g.moveTo(ox, oy);
+        g.lineTo(x, y);
+        g.stroke();
+        // lueur
+        const r = (2.6 + 2.4 * prof) * dpr;
+        const lueur = g.createRadialGradient(x, y, 0, x, y, r);
+        lueur.addColorStop(0, palette.sombre ? 'rgba(255, 252, 240, 0.9)' : 'rgba(255, 244, 214, 0.95)');
+        lueur.addColorStop(0.45, `rgba(${or}, ${palette.sombre ? 0.35 : 0.3})`);
+        lueur.addColorStop(1, `rgba(${or}, 0)`);
+        g.fillStyle = lueur;
+        g.beginPath();
+        g.arc(x, y, r, 0, Math.PI * 2);
+        g.fill();
+        // cœur blanc
+        g.globalAlpha = 0.9;
+        g.fillStyle = '#fff';
+        g.beginPath();
+        g.arc(x, y, (0.8 + 0.4 * prof) * dpr, 0, Math.PI * 2);
         g.fill();
       });
+      g.globalAlpha = 1;
       g.globalCompositeOperation = 'source-over';
 
       // 3. Nœuds, du fond vers l'avant
