@@ -18,9 +18,9 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=12">
+  <link rel="stylesheet" href="../styles/style.css?v=13">
   <script src="../scripts/rideau.js?v=2" defer></script>
-  <script src="../scripts/script.js?v=11" defer></script>
+  <script src="../scripts/script.js?v=12" defer></script>
 </head>
 
 <body id="haut">
@@ -76,7 +76,7 @@
           <section class="declaration-bloc" aria-labelledby="a11y-resultats">
             <h2 id="a11y-resultats">Results as of 8 November 2026</h2>
             <ul class="chiffres">
-              <li><span class="chiffre">98.5%</span><span class="chiffre-legende">of applicable <i lang="fr">RGAA</i> criteria met (64 out of 65)</span></li>
+              <li><span class="chiffre">98.5%</span><span class="chiffre-legende">of applicable <i lang="fr">RGAA</i> criteria met (66 out of 67)</span></li>
               <li><span class="chiffre">0 errors</span><span class="chiffre-legende">in automated WCAG 2.2 A and AA tests (axe-core)</span></li>
               <li><span class="chiffre">100 / 100</span><span class="chiffre-legende">Lighthouse accessibility score, on every page</span></li>
             </ul>
@@ -113,7 +113,7 @@
               <caption>Results by RGAA theme</caption>
               <thead><tr><th scope="col">Theme</th><th scope="col" class="nombre">Compliant</th><th scope="col" class="nombre">Non-compliant</th><th scope="col" class="nombre">Not applicable</th></tr></thead>
               <tbody>
-<tr><th scope="row">1. Images</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">6</td></tr>
+<tr><th scope="row">1. Images</th><td class="nombre">5</td><td class="nombre">0</td><td class="nombre">4</td></tr>
 <tr><th scope="row">2. Frames</th><td class="nombre">0</td><td class="nombre">0</td><td class="nombre">2</td></tr>
 <tr><th scope="row">3. Colours</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">0</td></tr>
 <tr><th scope="row">4. Multimedia</th><td class="nombre">0</td><td class="nombre">0</td><td class="nombre">13</td></tr>
@@ -126,7 +126,7 @@
 <tr><th scope="row">11. Forms</th><td class="nombre">8</td><td class="nombre">0</td><td class="nombre">5</td></tr>
 <tr><th scope="row">12. Navigation</th><td class="nombre">6</td><td class="nombre">0</td><td class="nombre">5</td></tr>
 <tr><th scope="row">13. Consultation</th><td class="nombre">8</td><td class="nombre">1</td><td class="nombre">3</td></tr>
-<tr><th scope="row">Total</th><td class="nombre">64</td><td class="nombre">1</td><td class="nombre">41</td></tr>
+<tr><th scope="row">Total</th><td class="nombre">66</td><td class="nombre">1</td><td class="nombre">39</td></tr>
               </tbody>
             </table></div>
             <details>
@@ -135,13 +135,13 @@
                 <caption>All 106 RGAA 4.1.2 criteria</caption>
                 <thead><tr><th scope="col">Criterion</th><th scope="col">Status</th><th scope="col">Note</th></tr></thead>
                 <tbody>
-<tr><th scope="row">1.1</th><td class="statut-c">Compliant</td><td>The portrait has a text alternative; other images are decorative.</td></tr>
+<tr><th scope="row">1.1</th><td class="statut-c">Compliant</td><td>The portrait and the skills cloud have a text alternative; other images are decorative.</td></tr>
 <tr><th scope="row">1.2</th><td class="statut-c">Compliant</td><td>Decorative images: empty alt; SVG icons: aria-hidden.</td></tr>
-<tr><th scope="row">1.3</th><td class="statut-c">Compliant</td><td>“Portrait of Marie Tiers, smiling”.</td></tr>
+<tr><th scope="row">1.3</th><td class="statut-c">Compliant</td><td>“Portrait of Marie Tiers, smiling”; cloud described by its label.</td></tr>
 <tr><th scope="row">1.4</th><td class="statut-na">Not applicable</td><td>No image CAPTCHA.</td></tr>
 <tr><th scope="row">1.5</th><td class="statut-na">Not applicable</td><td>No active CAPTCHA at audit date.</td></tr>
-<tr><th scope="row">1.6</th><td class="statut-na">Not applicable</td><td>No image needs a long description.</td></tr>
-<tr><th scope="row">1.7</th><td class="statut-na">Not applicable</td><td>As 1.6.</td></tr>
+<tr><th scope="row">1.6</th><td class="statut-c">Compliant</td><td>Skills cloud: expandable text version just below it.</td></tr>
+<tr><th scope="row">1.7</th><td class="statut-c">Compliant</td><td>The text version lists every group and its items.</td></tr>
 <tr><th scope="row">1.8</th><td class="statut-na">Not applicable</td><td>No informative image of text.</td></tr>
 <tr><th scope="row">1.9</th><td class="statut-na">Not applicable</td><td>No image captions.</td></tr>
 <tr><th scope="row">2.1</th><td class="statut-na">Not applicable</td><td>No frames (iframe).</td></tr>
