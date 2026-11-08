@@ -144,8 +144,9 @@ a, a:any-link, a:hover, a:focus, a:active, a:visited { text-decoration: none !im
 }
 h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 
-/* Mots anglais en italique, mots-clés en gras et en couleur */
-i[lang="en"] { font-style: italic; }
+/* Mots étrangers en italique (anglais sur les pages françaises, français sur les pages anglaises),
+   mots-clés en gras et en couleur */
+i[lang="en"], i[lang="fr"] { font-style: italic; }
 strong { font-weight: 700; }
 .kw { color: var(--indigo-700); }
 
@@ -221,6 +222,67 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-size: 1.5em;
   line-height: 1;
   color: var(--couleur-lien);
+}
+
+/* Interrupteur de langue (barre du haut, à gauche) : drapeau français ⇄ Union Jack.
+   C'est un simple lien vers la page équivalente dans l'autre langue ;
+   data-actif="fr" ou "en" place la pastille du côté de la langue affichée. */
+.langue {
+  margin-inline-end: auto;              /* repousse « Menu » à droite */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.langue-drapeau {
+  display: block;
+  height: 1rem;
+  width: auto;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 1px hsl(var(--ombre-teinte) / 0.15);
+  opacity: 0.45;
+  filter: saturate(0.45);
+  transition: opacity var(--duree), filter var(--duree);
+}
+.langue[data-actif="fr"] .langue-drapeau:first-of-type,
+.langue[data-actif="en"] .langue-drapeau:last-of-type { opacity: 1; filter: saturate(0.85); }
+/* Au survol, le drapeau de l'autre langue se ranime un peu */
+.langue:hover .langue-drapeau,
+.langue:focus-visible .langue-drapeau { opacity: 0.8; filter: saturate(0.7); }
+.langue[data-actif="fr"]:hover .langue-drapeau:first-of-type,
+.langue[data-actif="en"]:hover .langue-drapeau:last-of-type { opacity: 1; filter: saturate(0.85); }
+
+.langue-interrupteur {
+  position: relative;
+  flex: none;
+  width: 2.1rem;
+  height: 1.15rem;
+  border-radius: 999px;
+  background: var(--turquoise-200);
+  box-shadow: inset 0 1px 2px hsl(var(--ombre-teinte) / 0.18);
+  transition: background var(--duree);
+}
+.langue-interrupteur::before {           /* la pastille */
+  content: "";
+  position: absolute;
+  top: 0.15rem; left: 0.15rem;
+  width: 0.85rem; height: 0.85rem;
+  border-radius: 50%;
+  background: var(--carte);
+  box-shadow: var(--ombre-legere);
+  transition: transform 220ms ease;
+}
+.langue[data-actif="en"] .langue-interrupteur::before { transform: translateX(0.95rem); }
+/* Survol : la pastille esquisse le passage ; clic : elle bascule */
+.langue:hover .langue-interrupteur { background: var(--bleu-200); }
+.langue[data-actif="fr"]:hover .langue-interrupteur::before { transform: translateX(0.3rem); }
+.langue[data-actif="en"]:hover .langue-interrupteur::before { transform: translateX(0.65rem); }
+.langue[data-actif="fr"]:active .langue-interrupteur::before { transform: translateX(0.95rem); }
+.langue[data-actif="en"]:active .langue-interrupteur::before { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .langue-interrupteur::before { transition: none; }
 }
 
 /* ---------- 4. En-tête, navigation et une ---------- */
@@ -435,7 +497,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 /* ---------- 5. Sections ---------- */
 .section { padding-block: clamp(3rem, 7vw, 5.5rem); }
-#projets,
+#projets, #projects,
 .section-piliers { background: var(--grain), var(--gris-100); } /* gris clair : l'aura blanche ressort mieux */
 .section-piliers { padding-bottom: clamp(5rem, 10vw, 8rem); } /* marge pour le résumé déployé */
 .section-parcours {

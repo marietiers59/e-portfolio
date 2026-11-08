@@ -6,8 +6,15 @@
    4. Utilitaires (pastilles • de « Menu » et « Contact », année)
    5. Filtres et tri de la page Projets
    6. Calendrier au survol d'une date (accueil)
+   Les textes affichés existent en français et en anglais britannique :
+   la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
 'use strict';
+
+const ANGLAIS = document.documentElement.lang.toLowerCase().startsWith('en');
+/** Renvoie le texte dans la langue de la page. */
+const t = (fr, en) => (ANGLAIS ? en : fr);
+const LOCALE = ANGLAIS ? 'en-GB' : 'fr-FR';
 
 /* ---------- 1. Défilement amorti ---------- */
 const mouvementReduit = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -208,22 +215,24 @@ if (formulaire) {
       effacer();
       if (!adresse) return true;                       // le champ obligatoire est géré par le navigateur
       if (!SYNTAXE_EMAIL.test(adresse)) {
-        signaler('Cette adresse ne semble pas valide : elle doit ressembler à prenom.nom@domaine.fr.');
+        signaler(t('Cette adresse ne semble pas valide : elle doit ressembler à prenom.nom@domaine.fr.',
+                   'This address does not look valid: it should look like firstname.lastname@domain.co.uk.'));
         return false;
       }
       const [nom, domaine] = [adresse.slice(0, adresse.lastIndexOf('@')), adresse.slice(adresse.lastIndexOf('@') + 1).toLowerCase()];
       const suggestion = domaineSuggere(domaine);
       if (suggestion) {                                // simple proposition, jamais bloquante
-        aide.textContent = 'Vouliez-vous dire ';
+        aide.textContent = t('Vouliez-vous dire ', 'Did you mean ');
         const corriger = document.createElement('button');
         corriger.type = 'button';
         corriger.textContent = `${nom}@${suggestion}`;
         corriger.addEventListener('click', () => { champEmail.value = corriger.textContent; champEmail.verifier(); champEmail.focus(); });
-        aide.append(corriger, ' ?');
+        aide.append(corriger, t(' ?', '?'));
       }
       if (!complete) return true;
       if (await domaineAccepteMail(domaine) === 'non') {
-        signaler(`Le domaine « ${domaine} » n'existe pas ou ne reçoit pas d'e-mails : vérifiez l'adresse.`);
+        signaler(t(`Le domaine « ${domaine} » n'existe pas ou ne reçoit pas d'e-mails : vérifiez l'adresse.`,
+                   `The domain “${domaine}” does not exist or cannot receive emails: please check the address.`));
         return false;
       }
       return true;
@@ -264,13 +273,14 @@ if (formulaire) {
       const corps = `${donnees.get('message')}\n\n${donnees.get('nom')}\n${donnees.get('email')}`;
       window.location.href =
         `mailto:${destinataire}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
-      afficher('Votre messagerie s’ouvre avec le message prêt à partir.');
+      afficher(t('Votre messagerie s’ouvre avec le message prêt à partir.',
+                 'Your email app is opening with the message ready to send.'));
       return;
     }
 
     // Avec un service (Formspree ou équivalent) : envoi direct.
     bouton.disabled = true;
-    afficher('Envoi en cours…');
+    afficher(t('Envoi en cours…', 'Sending…'));
     try {
       const reponse = await fetch(adresseService, {
         method: 'POST',
@@ -279,10 +289,12 @@ if (formulaire) {
       });
       if (!reponse.ok) throw new Error(`HTTP ${reponse.status}`);
       formulaire.reset();
-      afficher('Merci ! Votre message est bien parti, je vous réponds rapidement.');
+      afficher(t('Merci ! Votre message est bien parti, je vous réponds rapidement.',
+                 'Thank you! Your message has been sent and I will reply shortly.'));
     } catch (erreur) {
       console.error(erreur);
-      afficher(`L’envoi n’a pas abouti. Vous pouvez m’écrire directement à ${destinataire}.`, 'erreur');
+      afficher(t(`L’envoi n’a pas abouti. Vous pouvez m’écrire directement à ${destinataire}.`,
+                 `The message could not be sent. You can write to me directly at ${destinataire}.`), 'erreur');
     } finally {
       bouton.disabled = false;
     }
@@ -329,15 +341,18 @@ if (boutonComptage) {
   const afficherEtat = () => {
     const exclu = appareilExclu();
     etat.textContent = exclu
-      ? 'Cet appareil n’est pas compté dans les visites.'
-      : 'Cet appareil est compté dans les visites.';
+      ? t('Cet appareil n’est pas compté dans les visites.', 'This device is not counted in the visits.')
+      : t('Cet appareil est compté dans les visites.', 'This device is counted in the visits.');
     etat.dataset.etat = exclu ? 'exclu' : 'compte';
-    boutonComptage.textContent = exclu ? 'Recompter cet appareil' : 'Ne plus compter cet appareil';
+    boutonComptage.textContent = exclu
+      ? t('Recompter cet appareil', 'Count this device again')
+      : t('Ne plus compter cet appareil', 'Stop counting this device');
     boutonComptage.setAttribute('aria-pressed', String(exclu));
   };
   boutonComptage.addEventListener('click', () => {
     if (!definirExclusion(!appareilExclu())) {
-      etat.textContent = 'Votre navigateur bloque le stockage local : réglage impossible ici.';
+      etat.textContent = t('Votre navigateur bloque le stockage local : réglage impossible ici.',
+                           'Your browser blocks local storage: this setting cannot be changed here.');
       etat.dataset.etat = 'erreur';
       return;
     }
@@ -416,15 +431,18 @@ if (outilsProjets) {
     const ordre = etat.ordre === 'recent' ? cartesFiltrables : [...cartesFiltrables].reverse();
     listeCartes.append(...ordre); // déplace les cartes sans les recréer
     boutonTri.dataset.ordre = etat.ordre;
-    boutonTri.querySelector('.outil-texte').textContent =
-      etat.ordre === 'recent' ? 'Du plus récent au plus ancien' : 'Du plus ancien au plus récent';
+    const sensTri = etat.ordre === 'recent'
+      ? t('du plus récent au plus ancien', 'newest first')
+      : t('du plus ancien au plus récent', 'oldest first');
+    boutonTri.querySelector('.outil-texte').textContent = sensTri.charAt(0).toUpperCase() + sensTri.slice(1);
 
     const n = compter(etat.cadre);
     messageVide.hidden = n > 0;
     boutonReinit.hidden = etat.cadre === 'tous' && etat.ordre === 'recent' && !etat.enCours;
-    statutFiltres.textContent = `${n} projet${n > 1 ? 's' : ''} affiché${n > 1 ? 's' : ''}, ` +
-      (etat.ordre === 'recent' ? 'du plus récent au plus ancien' : 'du plus ancien au plus récent') +
-      (etat.enCours ? ', projets bientôt en ligne compris.' : '.');
+    const pluriel = n > 1 ? 's' : '';
+    statutFiltres.textContent =
+      t(`${n} projet${pluriel} affiché${pluriel}, `, `${n} project${n === 1 ? '' : 's'} shown, `) + sensTri +
+      (etat.enCours ? t(', projets bientôt en ligne compris.', ', including projects coming soon.') : '.');
   };
 
   outilsProjets.addEventListener('click', (evt) => {
@@ -459,12 +477,18 @@ if (outilsProjets) {
 //    instantanément dès qu'il quitte les deux.
 //  · Les flèches ‹ › (ou les touches ← → quand la date a le focus) changent de mois ;
 //    « Revenir à avril 2027 » ramène au mois de départ.
-// Aucune dépendance ni iframe : le mois est construit ici, en français, semaine commençant le lundi.
+// Aucune dépendance ni iframe : le mois est construit ici, dans la langue de la page, semaine commençant le lundi.
 document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const [annee, mois, jour] = date.getAttribute('datetime').split('-').map(Number);
   const cible = new Date(annee, mois - 1, jour);
-  const nomMoisCible = cible.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-  const nomJour = cible.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const nomMoisCible = cible.toLocaleDateString(LOCALE, { month: 'long', year: 'numeric' });
+  const nomJour = cible.toLocaleDateString(LOCALE, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  // En-têtes des colonnes, du lundi au dimanche : [nom complet, initiale]
+  const joursSemaine = [...Array(7)].map((_, k) => {
+    const jourK = new Date(2024, 0, 1 + k);   // le 1er janvier 2024 est un lundi
+    const nom = jourK.toLocaleDateString(LOCALE, { weekday: 'long' });
+    return [nom, nom.charAt(0).toUpperCase()];
+  });
   const jourSemaineCible = (cible.getDay() + 6) % 7;   // 0 = lundi
   let affiche = new Date(annee, mois - 1, 1);           // mois actuellement affiché
 
@@ -472,19 +496,18 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   bulle.className = 'calendrier';
   bulle.id = `calendrier-${rang + 1}`;
   bulle.setAttribute('role', 'dialog');
-  bulle.setAttribute('aria-label', `Calendrier : ${nomJour}`);
+  bulle.setAttribute('aria-label', t(`Calendrier : ${nomJour}`, `Calendar: ${nomJour}`));
   bulle.hidden = true;
   bulle.innerHTML =
     '<div class="calendrier-entete">' +
-      '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="-1" aria-label="Mois précédent">&#x2039;</button>' +
+      `<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="-1" aria-label="${t('Mois précédent', 'Previous month')}">&#x2039;</button>` +
       '<p class="calendrier-titre" aria-live="polite"></p>' +
-      '<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="Mois suivant">&#x203A;</button>' +
+      `<button class="calendrier-fleche" type="button" tabindex="-1" data-pas="1" aria-label="${t('Mois suivant', 'Next month')}">&#x203A;</button>` +
     '</div>' +
-    '<table><thead><tr><th abbr="lundi">L</th><th abbr="mardi">M</th><th abbr="mercredi">M</th>' +
-    '<th abbr="jeudi">J</th><th abbr="vendredi">V</th><th abbr="samedi">S</th><th abbr="dimanche">D</th></tr></thead>' +
-    '<tbody></tbody></table>' +
-    `<p class="calendrier-legende">Début du stage : ${nomJour}</p>` +
-    `<button class="calendrier-retour" type="button" tabindex="-1">Revenir à ${nomMoisCible}</button>`;
+    '<table><thead><tr>' + joursSemaine.map(([nom, initiale]) => `<th abbr="${nom}">${initiale}</th>`).join('') +
+    '</tr></thead><tbody></tbody></table>' +
+    `<p class="calendrier-legende">${t('Début du stage : ', 'Internship starts on ')}${nomJour}</p>` +
+    `<button class="calendrier-retour" type="button" tabindex="-1">${t('Revenir à ', 'Back to ')}${nomMoisCible}</button>`;
   document.body.append(bulle);
   const titre = bulle.querySelector('.calendrier-titre');
   const corps = bulle.querySelector('tbody');
@@ -511,7 +534,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       if (k % 7 === 6) cases += '</tr>';
     }
     corps.innerHTML = cases;
-    titre.textContent = affiche.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+    titre.textContent = affiche.toLocaleDateString(LOCALE, { month: 'long', year: 'numeric' });
     retour.style.visibility = memeMois ? 'hidden' : 'visible';   // garde sa place : rien ne bouge sous le curseur
   };
 

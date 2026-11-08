@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marie Tiers · software development and testing portfolio</title>
+  <meta name="description" content="Portfolio of Marie Tiers, Computer Science student in Lens, France, specialising in software testing. Looking for an internship from April 2027, then a work-study placement.">
+  <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/">
+  <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/">
+  <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <link rel="stylesheet" href="../styles/style.css?v=10">
+  <script src="../scripts/rideau.js?v=2" defer></script>
+  <script src="../scripts/script.js?v=9" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#content">Skip to content</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="langue" href="../index.html" hreflang="fr" data-actif="en">
+      <img class="langue-drapeau" src="../medias/drapeau-fr.svg" alt="" width="24" height="16">
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <img class="langue-drapeau" src="../medias/drapeau-gb.svg" alt="" width="32" height="16">
+      <span class="sr" lang="fr">Lire cette page en français</span>
+    </a>
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+
+    <!-- Ligne de navigation : nom à gauche, menu à droite -->
+    <div class="conteneur entete-nav">
+      <a class="logo" href="#haut" data-defilement="haut">Marie TIERS</a>
+      <nav class="navigation" aria-label="Main navigation">
+        <ul class="navigation-liste">
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="#journey">Journey</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <!-- CV anglais à la racine du dépôt, sous ce nom -->
+          <li><a href="../cv-marie-tiers-en.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- La « une » : portrait d'un côté, présentation de l'autre -->
+    <div class="une">
+      <div class="conteneur">
+        <div class="une-grille">
+
+          <figure class="une-portrait">
+            <!-- Photo provisoire tirée du CV : la remplacer par une version d'au moins 800 px de large -->
+            <img src="../medias/photo-marie.jpg" alt="Portrait of Marie Tiers, smiling" width="1150" height="1150">
+          </figure>
+
+          <div class="une-entete">
+            <p class="une-surtitre">Hello, I'm Marie.</p>
+            <h1 class="une-titre" id="titre-principal" tabindex="-1">
+              I design, build <span class="une-titre-accent">and test</span> applications
+            </h1>
+          </div>
+
+          <div class="une-corps">
+            <p>
+              A second-year student on a <strong class="kw"><i lang="fr">BUT</i> in Computer Science</strong>
+              (a three-year French Bachelor of Technology) at the <i lang="fr">IUT de Lens</i> (university institute of technology),
+              I develop <strong class="kw">full-stack</strong>, from the database to the interface,
+              with the <strong class="kw">quality reflex</strong> of a certified tester.
+            </p>
+            <p class="une-objectif">
+              I am looking for an <strong class="kw">internship</strong>, the first step of a long-term plan:
+              a <strong class="kw">work-study placement</strong>, then a <strong><i lang="fr">CDI</i></strong> (permanent contract)
+              with the same company. This internship will be our mutual trial period: as a trained tester,
+              I know how to test… and I'm not afraid of being tested.
+            </p>
+            <p class="une-actions">
+              <a class="bouton" href="#contact">Contact me</a>
+              <a class="bouton bouton-second" href="projects.html">See my projects</a>
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Brèves : trois faits saillants -->
+        <ul class="breves">
+          <li class="breve"><strong class="kw"><abbr title="International Software Testing Qualifications Board">ISTQB</abbr> certified</strong> Foundation Level (CTFL v4.0)</li>
+          <li class="breve"><strong class="kw">8 to 10-week internship</strong> from <time class="date-calendrier" datetime="2027-04-26" data-calendrier>26 April 2027</time>
+            <!-- Calendrier d'alternance : en attente. Quand il sera prêt, déposer medias/calendrier-alternance.pdf et remplacer le <span> ci-dessous par :
+                 <span class="lien-a-venir"><a href="../medias/calendrier-alternance.pdf" target="_blank" rel="noopener">Work-study calendar</a> · <a href="../medias/calendrier-alternance.pdf" download>download (PDF)</a></span> -->
+            <span class="lien-a-venir">Work-study calendar <em class="pastille-bientot">coming soon</em></span>
+          </li>
+          <li class="breve"><strong class="kw">Able to work</strong> in Lille, Lens, Douai and Arras</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- ===== Piliers : philosophie, parcours, objectif ===== -->
+    <section class="section section-piliers" aria-labelledby="piliers-titre">
+      <div class="conteneur">
+        <h2 class="sr" id="piliers-titre">In brief</h2>
+        <!-- Pour changer une illustration : remplacer l'adresse picsum par medias/mon-image.jpg (format carré) -->
+        <ul class="piliers">
+          <li class="emplacement pilier-emplacement">
+            <article class="carte pilier">
+              <header class="pilier-entete">
+                <svg class="pilier-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 13V8.5"/>
+                  <path d="M12 10c0-2.3-1.7-3.8-4-3.8 0 2.3 1.7 3.8 4 3.8z"/>
+                  <path d="M12 8.5c0-2.5 1.9-4.3 4.5-4.3 0 2.5-1.9 4.3-4.5 4.3z"/>
+                  <path d="M8 15.5c.4-1.5 2-2.5 4-2.5s3.6 1 4 2.5"/>
+                  <path d="M2.5 15h2.8l3.4 1.3h4.1a1.4 1.4 0 0 1 0 2.8H9.5"/>
+                  <path d="M12.8 19.1l5.4-2.6a1.5 1.5 0 0 1 1.6 2.5l-6.1 3.5H5.3"/>
+                  <path d="M5.3 14.5v8"/>
+                </svg>
+                <h3 class="pilier-titre">My philosophy</h3>
+              </header>
+              <img class="pilier-image" src="../medias/pilier-philosophie.jpg" alt="" width="800" height="800" loading="lazy">
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <p class="pilier-resume">Quality is not added at the end: it is nurtured from the very first line of code. With a dual background in <strong class="kw">development</strong> and <strong class="kw">software testing</strong>, I build applications that are <strong>reliable</strong>, <strong>maintainable</strong> and <strong>accessible</strong> to everyone, in line with the <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> and the <i lang="fr"><abbr title="Référentiel général d'amélioration de l'accessibilité">RGAA</abbr></i> (French government accessibility standard). I like to understand the real need before coding, to document my work and to move forward as a team, with <strong>agile</strong> methods or the V-model.</p>
+                </div>
+              </div>
+              <p class="pilier-pied">
+                <!-- Lien provisoire vers le CV anglais : le remplacer par la future page « skills » -->
+                <a class="pilier-lien" href="../cv-marie-tiers-en.pdf">More about my skills<span class="pilier-fleche" aria-hidden="true"> →</span></a>
+              </p>
+            </article>
+          </li>
+          <li class="emplacement pilier-emplacement">
+            <article class="carte pilier">
+              <header class="pilier-entete">
+                <svg class="pilier-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 6a4.6 4.6 0 0 0-2.8 8.3c.6.45.9 1.1.9 1.8v.9h3.8v-.9c0-.7.3-1.35.9-1.8A4.6 4.6 0 0 0 12 6z"/>
+                  <path d="M10.2 19.5h3.6"/><path d="M10.8 21.8h2.4"/>
+                  <path d="M12 1.5v2"/><path d="M4 10.6H2.2"/><path d="M21.8 10.6H20"/>
+                  <path d="M6.2 4.9l1.3 1.3"/><path d="M17.8 4.9l-1.3 1.3"/>
+                </svg>
+                <h3 class="pilier-titre">My journey</h3>
+              </header>
+              <img class="pilier-image" src="../medias/iut_de_lens_cover_IUTdeLensAlumniLinkedIn.jpg" alt="" width="600" height="600" loading="lazy">
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <p class="pilier-resume">After a first career <strong>coordinating international teams</strong>, I moved into IT in 2025: training in <strong>development fundamentals</strong>, then a <strong class="kw">software tester</strong> specialisation at <i lang="fr">AFPA</i> (the French national adult vocational training agency) in Roubaix, validated by the <strong class="kw">ISTQB Foundation</strong> certification. An assignment at <strong>Worldline</strong> had me testing European banking applications. I am now studying for a <strong class="kw"><i lang="fr">BUT</i> in Computer Science</strong> at the <i lang="fr">IUT de Lens</i>.</p>
+                </div>
+              </div>
+              <p class="pilier-pied">
+                <a class="pilier-lien" href="#journey">More about my journey<span class="pilier-fleche" aria-hidden="true"> →</span></a>
+              </p>
+            </article>
+          </li>
+          <li class="emplacement pilier-emplacement">
+            <article class="carte pilier">
+              <header class="pilier-entete">
+                <svg class="pilier-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="10.5" cy="13.5" r="8"/><circle cx="10.5" cy="13.5" r="4.8"/><circle cx="10.5" cy="13.5" r="1.6"/>
+                  <path d="M10.5 13.5l9-9"/>
+                  <path d="M16.6 4.4v3h3"/><path d="M19.4 1.6v3h3"/>
+                </svg>
+                <h3 class="pilier-titre">My goal</h3>
+              </header>
+              <img class="pilier-image" src="../medias/pilier-objectif.jpg" alt="" width="800" height="800" loading="lazy">
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <p class="pilier-resume">I am aiming for a <strong class="kw">paid internship</strong> in full-stack development or <strong>quality assurance</strong>, then a <strong class="kw">work-study placement</strong> in my third year. <strong>Loyal</strong> and looking for <strong>stability</strong>, I want a company where I can put down roots, from internship to <strong>permanent contract</strong>, and help real projects grow, from design to <strong>automated testing</strong>.</p>
+                </div>
+              </div>
+              <p class="pilier-pied">
+                <a class="pilier-lien" href="projects.html">More about my work<span class="pilier-fleche" aria-hidden="true"> →</span></a>
+              </p>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Parcours : frise chronologique en quinconce ===== -->
+    <section class="section section-parcours" id="journey" aria-labelledby="parcours-titre">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h2 class="section-titre" id="parcours-titre">My journey</h2>
+          <p class="frise-legende">
+            <span class="legende legende-projet">projects<span class="legende-cote"> (on the left)</span></span>
+            <span class="legende legende-formation">education<span class="legende-cote"> (on the right)</span></span>
+          </p>
+        </div>
+
+        <!--
+          Du plus récent au plus ancien. Un jalon = une année de début, toujours au même format.
+          Classe frise-projet = à gauche, frise-formation = à droite.
+        -->
+        <ol class="frise">
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2026">2026</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Project: </span>Team projects</h3>
+              <p>A complete website (front end and back end), Otaku List, and a Space Invaders game, all built as a <strong>team</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2026">2026</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Project: </span>Solo projects</h3>
+              <p>ToDoList+ and a Pac-Man game, developed <strong>independently</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Education: </span><i lang="fr">BUT</i> in Computer Science <span class="badge">in progress</span></h3>
+              <p><i lang="fr">IUT de Lens</i>, <i lang="fr">Université d'Artois</i>, until 2028 — <strong class="kw">application development</strong> pathway.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite" data-bug-egg>
+              <h3><span class="sr">Education: </span>Software tester specialisation</h3>
+              <p><i lang="fr">AFPA</i> Roubaix — <strong class="kw">ISTQB Foundation (CTFL v4.0)</strong> certification.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-formation">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Education: </span>Development fundamentals</h3>
+              <p><i lang="fr">AFPA</i> Roubaix — algorithms, <strong>web and mobile web development</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="sr">Project: </span>Arduino wheeled robot</h3>
+              <p>Coding and robotics workshop: programming a <strong>robot's behaviour</strong> with Studuino.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer (scrolls with the page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Contact me</h2>
+        <p>An <strong class="kw">internship</strong> or <strong class="kw">work-study</strong> offer, a question about a project? Write to me and I will get back to you quickly.</p>
+        <ul class="coordonnees">
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span>Lille, Lens, Douai, Arras</li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Contact form"
+            data-endpoint="">
+        <p class="champ">
+          <label for="nom">Name</label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Subject</label>
+          <select id="objet" name="objet">
+            <option>Internship offer</option>
+            <option>Work-study offer</option>
+            <option>Question about a project</option>
+            <option>Other</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Anti-bot trap field: invisible to humans -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Do not fill in</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Send</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
+      Placeholder images: <a href="https://picsum.photos">Lorem Picsum</a><br>
+      Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site<br>
+	  Cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a></p>
+  </footer>
+
+  <!-- ===== Fixed bottom bar ===== -->
+  <div class="barre barre-bas">
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+  <script src="../scripts/bug-egg.js?v=3" defer></script>
+</body>
+</html>

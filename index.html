@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Marie Tiers · portfolio développement et test logiciel</title>
   <meta name="description" content="Portfolio de Marie Tiers, étudiante en BUT informatique à l'IUT de Lens, spécialisée en test logiciel. Recherche un stage dès avril 2027, puis une alternance.">
+  <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/">
+  <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/">
+  <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/">
   <meta name="theme-color" content="#ddedf8">
 
   <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
@@ -12,9 +15,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
 
-  <link rel="stylesheet" href="styles/style.css?v=9">
-  <script src="scripts/rideau.js?v=1" defer></script>
-  <script src="scripts/script.js?v=8" defer></script>
+  <link rel="stylesheet" href="styles/style.css?v=10">
+  <script src="scripts/rideau.js?v=2" defer></script>
+  <script src="scripts/script.js?v=9" defer></script>
 </head>
 
 <body id="haut">
@@ -22,6 +25,12 @@
 
   <!-- ===== Barre fixe du haut ===== -->
   <div class="barre barre-haut">
+    <a class="langue" href="en/index.html" hreflang="en-GB" data-actif="fr">
+      <img class="langue-drapeau" src="medias/drapeau-fr.svg" alt="" width="24" height="16">
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <img class="langue-drapeau" src="medias/drapeau-gb.svg" alt="" width="32" height="16">
+      <span class="sr" lang="en-GB">Read this page in English</span>
+    </a>
     <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
   </div>
 
@@ -308,6 +317,6 @@
   <div class="barre barre-bas">
     <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
   </div>
-  <script src="scripts/bug-egg.js?v=2" defer></script>
+  <script src="scripts/bug-egg.js?v=3" defer></script>
 </body>
 </html>
