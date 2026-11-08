@@ -18,7 +18,7 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=13">
+  <link rel="stylesheet" href="../styles/style.css?v=15">
   <script src="../scripts/rideau.js?v=2" defer></script>
   <script src="../scripts/script.js?v=12" defer></script>
 </head>
@@ -114,19 +114,19 @@
             <path class="l k3" data-a="bdd" data-b="sql" pathLength="1" stroke-width="1.33" d="M-341.7 190.2Q-385.2 184.9 -422.2 208.4"/>
             <path class="l k2" data-a="algo" data-b="cobol" pathLength="1" stroke-width="1.33" d="M-61.3 -119.6Q-68.3 -139.2 -86.2 -149.9"/>
             <path class="l k4" data-a="web" data-b="laravel" pathLength="1" stroke-width="1.33" d="M-118.7 184.6Q-52.8 192.6 3.2 156.8"/>
-            <path class="l k4" data-a="web" data-b="react" pathLength="1" stroke-width="1.33" d="M-118.7 184.6Q-115.3 145.2 -137.8 112.8"/>
-            <path class="l k4" data-a="ihm" data-b="react" pathLength="1" stroke-width="1.33" d="M-84.9 69.7Q-119.1 81.7 -137.8 112.8"/>
+            <path class="l k4 masque" data-a="web" data-b="react" pathLength="1" stroke-width="1.33" d="M-118.7 184.6Q-115.3 145.2 -137.8 112.8"/>
+            <path class="l k4 masque" data-a="ihm" data-b="react" pathLength="1" stroke-width="1.33" d="M-84.9 69.7Q-119.1 81.7 -137.8 112.8"/>
             <path class="l k4" data-a="web" data-b="flask" pathLength="1" stroke-width="1.33" d="M-118.7 184.6Q-111.7 81.7 -171.9 -2.0"/>
             <path class="l k5" data-a="ihm" data-b="javafx" pathLength="1" stroke-width="1.33" d="M-84.9 69.7Q-80.0 11.2 -113.4 -37.0"/>
             <path class="l k5" data-a="ihm" data-b="android" pathLength="1" stroke-width="1.33" d="M-84.9 69.7Q-137.9 15.1 -213.5 6.9"/>
-            <path class="l k3" data-a="bdd" data-b="mysql" pathLength="1" stroke-width="1.33" d="M-341.7 190.2Q-329.6 233.5 -292.6 259.0"/>
+            <path class="l k3 masque" data-a="bdd" data-b="mysql" pathLength="1" stroke-width="1.33" d="M-341.7 190.2Q-329.6 233.5 -292.6 259.0"/>
             <path class="l k3" data-a="bdd" data-b="postgresql" pathLength="1" stroke-width="1.33" d="M-341.7 190.2Q-375.3 133.2 -437.6 110.7"/>
-            <path class="l k3" data-a="bdd" data-b="mongodb" pathLength="1" stroke-width="1.33" d="M-341.7 190.2Q-313.4 222.3 -271.0 228.9"/>
+            <path class="l k3 masque" data-a="bdd" data-b="mongodb" pathLength="1" stroke-width="1.33" d="M-341.7 190.2Q-313.4 222.3 -271.0 228.9"/>
             <path class="l k4" data-a="web" data-b="api" pathLength="1" stroke-width="1.33" d="M-118.7 184.6Q-128.4 98.2 -190.9 37.8"/>
             <path class="l k1" data-a="c6" data-b="git" pathLength="1" stroke-width="1.33" d="M336.3 155.8Q295.2 100.8 228.4 84.5"/>
             <path class="l k1" data-a="c6" data-b="github" pathLength="1" stroke-width="1.33" d="M336.3 155.8Q270.7 140.4 210.4 170.4"/>
             <path class="l k1" data-a="c6" data-b="gitlab" pathLength="1" stroke-width="1.33" d="M336.3 155.8Q291.1 125.5 236.9 130.9"/>
-            <path class="l k7" data-a="c3" data-b="docker" pathLength="1" stroke-width="1.33" d="M-268.7 -271.8Q-324.6 -218.8 -333.8 -142.3"/>
+            <path class="l k7 masque" data-a="c3" data-b="docker" pathLength="1" stroke-width="1.33" d="M-268.7 -271.8Q-324.6 -218.8 -333.8 -142.3"/>
             <path class="l k5" data-a="qualite" data-b="cicd" pathLength="1" stroke-width="1.33" d="M95.9 -249.2Q66.2 -300.4 10.6 -320.9"/>
             <path class="l k5" data-a="c3" data-b="cicd" pathLength="1" stroke-width="1.33" d="M-268.7 -271.8Q-120.2 -246.1 10.6 -320.9"/>
             <path class="l k5" data-a="qualite" data-b="gradle" pathLength="1" stroke-width="1.33" d="M95.9 -249.2Q104.2 -184.4 151.9 -139.8"/>
@@ -235,7 +235,7 @@
             <path class="l k3" data-a="basedonnees" data-b="postgresql" pathLength="1" stroke-width="1.05" d="M-453.4 64.0Q-453.9 90.2 -437.6 110.7"/>
             <path class="l k3" data-a="basedonnees" data-b="sql" pathLength="1" stroke-width="1.05" d="M-453.4 64.0Q-463.8 141.9 -422.2 208.4"/>
             <path class="l k3" data-a="basedonnees" data-b="merise" pathLength="1" stroke-width="1.05" d="M-453.4 64.0Q-424.7 126.2 -363.0 155.9"/>
-            <path class="l k7" data-a="basedonnees" data-b="docker" pathLength="1" stroke-width="1.05" d="M-453.4 64.0Q-356.4 -17.6 -333.8 -142.3"/>
+            <path class="l k7 masque" data-a="basedonnees" data-b="docker" pathLength="1" stroke-width="1.05" d="M-453.4 64.0Q-356.4 -17.6 -333.8 -142.3"/>
             <path class="l k3" data-a="c4" data-b="basedonnees" pathLength="1" stroke-width="1.05" d="M-292.7 80.7Q-370.0 43.4 -453.4 64.0"/>
             <path class="l k7" data-a="scripts" data-b="bash" pathLength="1" stroke-width="1.05" d="M-437.6 -362.4Q-388.7 -386.6 -366.5 -436.4"/>
             <path class="l k7" data-a="scripts" data-b="tcpip" pathLength="1" stroke-width="1.05" d="M-437.6 -362.4Q-428.0 -334.4 -402.7 -319.0"/>
@@ -279,9 +279,9 @@
             <path class="l k4" data-a="afpa-dev" data-b="css" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-124.8 296.4 -44.7 296.5"/>
             <path class="l k4" data-a="afpa-dev" data-b="js" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-114.1 268.5 -43.6 240.2"/>
             <path class="l k3" data-a="afpa-dev" data-b="php" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-142.8 264.7 -96.9 251.8"/>
-            <path class="l k4" data-a="afpa-dev" data-b="react" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-138.3 187.8 -137.8 112.8"/>
-            <path class="l k3" data-a="afpa-dev" data-b="mysql" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-242.0 233.1 -292.6 259.0"/>
-            <path class="l k3" data-a="afpa-dev" data-b="mongodb" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-225.8 221.9 -271.0 228.9"/>
+            <path class="l k4 masque" data-a="afpa-dev" data-b="react" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-138.3 187.8 -137.8 112.8"/>
+            <path class="l k3 masque" data-a="afpa-dev" data-b="mysql" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-242.0 233.1 -292.6 259.0"/>
+            <path class="l k3 masque" data-a="afpa-dev" data-b="mongodb" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-225.8 221.9 -271.0 228.9"/>
             <path class="l k3" data-a="afpa-dev" data-b="sql" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-297.6 184.4 -422.2 208.4"/>
             <path class="l k5" data-a="afpa-dev" data-b="uml" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-96.3 235.9 -33.0 171.2"/>
             <path class="l k3" data-a="afpa-dev" data-b="merise" pathLength="1" stroke-width="1.05" d="M-186.4 245.3Q-258.6 168.8 -363.0 155.9"/>
@@ -324,10 +324,10 @@
             <circle class="k3 n n-anneau" data-id="stats" data-t="notion" style="--i:50" cx="-285.9" cy="-2.2" r="6.7" stroke-width="2.2"/>
             <circle class="k7 n n-anneau" data-id="reseau" data-t="notion" style="--i:90" cx="-385.4" cy="-287.9" r="6.7" stroke-width="2.2"/>
             <circle class="k5 n" data-id="android" data-t="outil" style="--i:29" cx="-213.5" cy="6.9" r="7.8"/>
-            <circle class="k3 n" data-id="mysql" data-t="outil" style="--i:87" cx="-292.6" cy="259.0" r="7.8"/>
-            <circle class="k3 n" data-id="mongodb" data-t="outil" style="--i:80" cx="-271.0" cy="228.9" r="7.8"/>
+            <circle class="k3 masque n" data-id="mysql" data-t="outil" style="--i:87" cx="-292.6" cy="259.0" r="7.8"/>
+            <circle class="k3 masque n" data-id="mongodb" data-t="outil" style="--i:80" cx="-271.0" cy="228.9" r="7.8"/>
             <circle class="k1 n" data-id="github" data-t="outil" style="--i:56" cx="210.4" cy="170.4" r="7.8"/>
-            <circle class="k7 n" data-id="docker" data-t="outil" style="--i:70" cx="-333.8" cy="-142.3" r="7.8"/>
+            <circle class="k7 masque n" data-id="docker" data-t="outil" style="--i:70" cx="-333.8" cy="-142.3" r="7.8"/>
             <circle class="k7 n" data-id="kvm" data-t="outil" style="--i:84" cx="-304.7" cy="-350.7" r="7.8"/>
             <circle class="k7 n" data-id="arduino" data-t="outil" style="--i:49" cx="-154.3" cy="-305.0" r="7.8"/>
             <circle class="k5 n" data-id="mockito" data-t="outil" style="--i:55" cx="176.7" cy="-315.1" r="7.8"/>
@@ -353,7 +353,7 @@
             <circle class="k7 n" data-id="bash" data-t="outil" style="--i:103" cx="-366.5" cy="-436.4" r="8.7"/>
             <circle class="k3 n" data-id="sql" data-t="outil" style="--i:100" cx="-422.2" cy="208.4" r="8.7"/>
             <circle class="k4 n" data-id="laravel" data-t="outil" style="--i:23" cx="3.2" cy="156.8" r="8.7"/>
-            <circle class="k4 n" data-id="react" data-t="outil" style="--i:27" cx="-137.8" cy="112.8" r="8.7"/>
+            <circle class="k4 masque n" data-id="react" data-t="outil" style="--i:27" cx="-137.8" cy="112.8" r="8.7"/>
             <circle class="k4 n" data-id="flask" data-t="outil" style="--i:17" cx="-171.9" cy="-2.0" r="8.7"/>
             <circle class="k3 n" data-id="postgresql" data-t="outil" style="--i:96" cx="-437.6" cy="110.7" r="8.7"/>
             <circle class="k4 n" data-id="api" data-t="outil" style="--i:22" cx="-190.9" cy="37.8" r="8.7"/>
@@ -432,10 +432,10 @@
             <text class="etq etq-notion k3" data-id="stats" x="-285.9" y="7.2" dy=".85em" font-size="12.6" style="--i:50">Statistics</text>
             <text class="etq etq-notion k7" data-id="reseau" x="-385.4" y="-278.5" dy=".85em" font-size="12.6" style="--i:90">Networking</text>
             <text class="etq etq-outil k5" data-id="android" x="-213.5" y="16.2" dy=".85em" font-size="10.4" style="--i:29">Android</text>
-            <text class="etq etq-outil k3" data-id="mysql" x="-292.6" y="268.4" dy=".85em" font-size="10.4" style="--i:87">MySQL</text>
-            <text class="etq etq-outil k3" data-id="mongodb" x="-271.0" y="238.3" dy=".85em" font-size="10.4" style="--i:80">MongoDB</text>
+            <text class="etq etq-outil k3 masque" data-id="mysql" x="-292.6" y="268.4" dy=".85em" font-size="10.4" style="--i:87">MySQL</text>
+            <text class="etq etq-outil k3 masque" data-id="mongodb" x="-271.0" y="238.3" dy=".85em" font-size="10.4" style="--i:80">MongoDB</text>
             <text class="etq etq-outil k1" data-id="github" x="210.4" y="179.7" dy=".85em" font-size="10.4" style="--i:56">GitHub</text>
-            <text class="etq etq-outil k7" data-id="docker" x="-333.8" y="-133.0" dy=".85em" font-size="10.4" style="--i:70">Docker</text>
+            <text class="etq etq-outil k7 masque" data-id="docker" x="-333.8" y="-133.0" dy=".85em" font-size="10.4" style="--i:70">Docker</text>
             <text class="etq etq-outil k7" data-id="kvm" x="-304.7" y="-341.4" dy=".85em" font-size="10.4" style="--i:84">KVM</text>
             <text class="etq etq-outil k7" data-id="arduino" x="-154.3" y="-295.7" dy=".85em" font-size="10.4" style="--i:49">Arduino</text>
             <text class="etq etq-outil k5" data-id="mockito" x="176.7" y="-305.7" dy=".85em" font-size="10.4" style="--i:55">Mockito</text>
@@ -461,7 +461,7 @@
             <text class="etq etq-outil k7" data-id="bash" x="-366.5" y="-426.2" dy=".85em" font-size="10.6" style="--i:103">Bash</text>
             <text class="etq etq-outil k3" data-id="sql" x="-422.2" y="218.6" dy=".85em" font-size="10.6" style="--i:100">SQL</text>
             <text class="etq etq-outil k4" data-id="laravel" x="3.2" y="167.0" dy=".85em" font-size="10.6" style="--i:23">Laravel</text>
-            <text class="etq etq-outil k4" data-id="react" x="-137.8" y="122.9" dy=".85em" font-size="10.6" style="--i:27">React</text>
+            <text class="etq etq-outil k4 masque" data-id="react" x="-137.8" y="122.9" dy=".85em" font-size="10.6" style="--i:27">React</text>
             <text class="etq etq-outil k4" data-id="flask" x="-171.9" y="8.1" dy=".85em" font-size="10.6" style="--i:17">Flask</text>
             <text class="etq etq-outil k3" data-id="postgresql" x="-437.6" y="120.9" dy=".85em" font-size="10.6" style="--i:96">PostgreSQL</text>
             <text class="etq etq-outil k4" data-id="api" x="-190.9" y="47.9" dy=".85em" font-size="10.6" style="--i:22">REST API</text>
@@ -560,9 +560,9 @@
                 <!-- nuage-texte:debut -->
                 <li><strong class="nuage-texte-nom k5">Develop</strong> — <em>competency</em>: Develop an application; <em>topics</em>: Quality and testing, User interfaces, Object-oriented programming; <em>projects</em>: <i lang="fr">AFPA</i> software testing, FractaLens, <i lang="fr">Centre Santé Bien-Être</i>, Pac-Man, Project 1.01 grades, resumeCV, ToDoList+; <em>tools</em>: Java, Gradle, JavaFX, CI/CD, JUnit, MVC, UML, Android, Cypress, Figma, Mockito, PHPUnit, Postman, Selenium, Squash, TDD, Xray</li>
                 <li><strong class="nuage-texte-nom k1">Collaborate</strong> — <em>competency</em>: Collaborate within an IT team; <em>topics</em>: Communication, Career planning; <em>projects</em>: BycloWatt, Otaku List, Space Invaders, Worldline assignment, <i lang="fr">BUT</i> 1 portfolio; <em>tools</em>: Git, Audio, video, GitLab, Confluence, English, GitHub, Illustrator, InDesign, Markdown, Photoshop, Spanish</li>
-                <li><strong class="nuage-texte-nom k7">Administer</strong> — <em>competency</em>: Administer complex networked systems; <em>topics</em>: Operating systems, Computer architecture, Networking; <em>projects</em>: netsim lab, Network scripts, Arduino robot; <em>tools</em>: Bash, Linux, TCP/IP, Arduino, Docker, KVM, Unix, Windows</li>
-                <li><strong class="nuage-texte-nom k3">Manage data</strong> — <em>competency</em>: Manage information data; <em>topics</em>: Databases, Statistics; <em>projects</em>: <i lang="fr">AFPA</i> development, Database, Toddler Map; <em>tools</em>: PHP, Merise, PostgreSQL, SQL, MongoDB, MySQL, OpenStreetMap</li>
-                <li><strong class="nuage-texte-nom k4">Web development</strong> — <em>topics</em>: Web development; <em>projects</em>: This portfolio, Food-truck till, Geocoding with Flask, <i lang="fr">Les Amis de Buxton</i>; <em>tools</em>: HTML, CSS, JavaScript, Flask, Laravel, React, REST API</li>
+                <li><strong class="nuage-texte-nom k7">Administer</strong> — <em>competency</em>: Administer complex networked systems; <em>topics</em>: Operating systems, Computer architecture, Networking; <em>projects</em>: netsim lab, Network scripts, Arduino robot; <em>tools</em>: Bash, Linux, TCP/IP, Arduino, KVM, Unix, Windows<span class="masque">, Docker</span></li>
+                <li><strong class="nuage-texte-nom k3">Manage data</strong> — <em>competency</em>: Manage information data; <em>topics</em>: Databases, Statistics; <em>projects</em>: <i lang="fr">AFPA</i> development, Database, Toddler Map; <em>tools</em>: PHP, Merise, PostgreSQL, SQL, OpenStreetMap<span class="masque">, MongoDB</span><span class="masque">, MySQL</span></li>
+                <li><strong class="nuage-texte-nom k4">Web development</strong> — <em>topics</em>: Web development; <em>projects</em>: This portfolio, Food-truck till, Geocoding with Flask, <i lang="fr">Les Amis de Buxton</i>; <em>tools</em>: HTML, CSS, JavaScript, Flask, Laravel, REST API<span class="masque">, React</span></li>
                 <li><strong class="nuage-texte-nom k2">Optimise</strong> — <em>competency</em>: Optimise applications; <em>topics</em>: Algorithms, Mathematics, Graph theory; <em>projects</em>: Project 1.02 algorithms, Voice to Image, Graphs (project), Statistics (project); <em>tools</em>: Python, Jupyter, COBOL</li>
                 <li><strong class="nuage-texte-nom k6">Lead a project</strong> — <em>competency</em>: Lead a project; <em>topics</em>: Project management, Sustainable economy; <em>tools</em>: Jira, Scrum, V-model, Kanban, Trello</li>
                 <!-- nuage-texte:fin -->
@@ -627,24 +627,24 @@
 
         <section class="competences-categorie accent-turquoise" aria-labelledby="cat-frameworks">
           <h2 class="competences-titre" id="cat-frameworks">Frameworks and databases</h2>
-          <p class="competences-texte"><strong class="kw">React</strong> interfaces, <strong class="kw">Laravel</strong> applications, relational (<strong>MySQL</strong>, <strong>PostgreSQL</strong>) and NoSQL (<strong>MongoDB</strong>) databases.</p>
+          <p class="competences-texte"><strong class="kw">Laravel</strong> applications<span class="masque">, <strong class="kw">React</strong> interfaces</span>, relational (<span class="masque"><strong>MySQL</strong>, </span><strong>PostgreSQL</strong>)<span class="masque"> and NoSQL (<strong>MongoDB</strong>)</span> databases.</p>
           <ul class="competences-grille" role="list">
-              <li class="competence"><svg class="competence-logo" style="--logo: #61DAFB" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#react"/></svg><span class="competence-nom">React</span></li>
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #61DAFB" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#react"/></svg><span class="competence-nom">React</span></li>
               <li class="competence"><svg class="competence-logo" style="--logo: #FF2D20" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#laravel"/></svg><span class="competence-nom">Laravel</span></li>
-              <li class="competence"><svg class="competence-logo" style="--logo: #4479A1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mysql"/></svg><span class="competence-nom">MySQL</span></li>
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #4479A1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mysql"/></svg><span class="competence-nom">MySQL</span></li>
               <li class="competence"><svg class="competence-logo" style="--logo: #4169E1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#postgresql"/></svg><span class="competence-nom">PostgreSQL</span></li>
-              <li class="competence"><svg class="competence-logo" style="--logo: #47A248" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mongodb"/></svg><span class="competence-nom">MongoDB</span></li>
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #47A248" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mongodb"/></svg><span class="competence-nom">MongoDB</span></li>
           </ul>
         </section>
 
         <section class="competences-categorie accent-sapin" aria-labelledby="cat-outils">
           <h2 class="competences-titre" id="cat-outils">Tools and DevOps</h2>
-          <p class="competences-texte">Version control with <strong class="kw">Git</strong>, <strong>Docker</strong> containers, continuous integration and delivery (CI/CD), shared documentation; I code in VS Code, IntelliJ IDEA, PyCharm or Eclipse.</p>
+          <p class="competences-texte">Version control with <strong class="kw">Git</strong>, <span class="masque"><strong>Docker</strong> containers, </span>continuous integration and delivery (CI/CD), shared documentation; I code in VS Code, IntelliJ IDEA, PyCharm or Eclipse.</p>
           <ul class="competences-grille" role="list">
               <li class="competence"><svg class="competence-logo" style="--logo: #F03C2E" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#git"/></svg><span class="competence-nom">Git</span></li>
               <li class="competence"><svg class="competence-logo logo-fonce" style="--logo: #181717" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#github"/></svg><span class="competence-nom">GitHub</span></li>
               <li class="competence"><svg class="competence-logo" style="--logo: #FC6D26" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#gitlab"/></svg><span class="competence-nom">GitLab</span></li>
-              <li class="competence"><svg class="competence-logo" style="--logo: #2496ED" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#docker"/></svg><span class="competence-nom">Docker</span></li>
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #2496ED" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#docker"/></svg><span class="competence-nom">Docker</span></li>
               <li class="competence"><svg class="competence-logo logo-fonce" style="--logo: #172B4D" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#confluence"/></svg><span class="competence-nom">Confluence</span></li>
               <li class="competence"><svg class="competence-logo" style="--logo: #0052CC" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#trello"/></svg><span class="competence-nom">Trello</span></li>
               <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#code"/></svg><span class="competence-nom">VS Code</span></li>
@@ -692,11 +692,12 @@
 
         <section class="competences-categorie accent-bleu" aria-labelledby="cat-langues">
           <h2 class="competences-titre" id="cat-langues">Spoken languages</h2>
-          <p class="competences-texte"><strong>French</strong> (native), professional and technical <strong>English</strong> (daily meetings with teams in the USA, the Netherlands, Bulgaria and India), fluent <strong>Spanish</strong>.</p>
+          <p class="competences-texte"><strong>French</strong> (native), professional and technical <strong>English</strong> (daily meetings with teams in the USA, the Netherlands, Bulgaria and India), fluent <strong>Spanish</strong>, basic conversational <strong>Dutch</strong>.</p>
           <ul class="competences-grille" role="list">
               <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-fr.svg" alt="" width="30" height="20"><span class="competence-nom">French</span></li>
               <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-gb.svg" alt="" width="30" height="20"><span class="competence-nom">English</span></li>
               <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-es.svg" alt="" width="30" height="20"><span class="competence-nom">Spanish</span></li>
+              <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-nl.svg" alt="" width="30" height="20"><span class="competence-nom">Dutch</span></li>
           </ul>
         </section>
         </div>

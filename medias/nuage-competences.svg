@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-524 -481 1052 844" role="img" aria-label="Nuage de compétences : projets, outils et compétences du BUT informatique, regroupés en communautés" focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="1600"><style>svg{background:#fdfcf9;font-family:'Atkinson Hyperlegible',Verdana,sans-serif}.l{fill:none;opacity:.45}.n{stroke:#fff;stroke-width:1.2}.n-anneau{fill:#fff!important}.n-halo{fill:none;stroke-width:2;opacity:.6}.l.k1{stroke:hsl(25 72% 62%)}.n.k1{fill:hsl(25 72% 62%)}.n-anneau.k1,.k1 .n-halo{stroke:hsl(25 72% 62%)}.l.k2{stroke:hsl(85 42% 48%)}.n.k2{fill:hsl(85 42% 48%)}.n-anneau.k2,.k2 .n-halo{stroke:hsl(85 42% 48%)}.l.k3{stroke:hsl(170 40% 44%)}.n.k3{fill:hsl(170 40% 44%)}.n-anneau.k3,.k3 .n-halo{stroke:hsl(170 40% 44%)}.l.k4{stroke:hsl(203 62% 56%)}.n.k4{fill:hsl(203 62% 56%)}.n-anneau.k4,.k4 .n-halo{stroke:hsl(203 62% 56%)}.l.k5{stroke:hsl(235 42% 62%)}.n.k5{fill:hsl(235 42% 62%)}.n-anneau.k5,.k5 .n-halo{stroke:hsl(235 42% 62%)}.l.k6{stroke:hsl(268 38% 64%)}.n.k6{fill:hsl(268 38% 64%)}.n-anneau.k6,.k6 .n-halo{stroke:hsl(268 38% 64%)}.l.k7{stroke:hsl(330 50% 63%)}.n.k7{fill:hsl(330 50% 63%)}.n-anneau.k7,.k7 .n-halo{stroke:hsl(330 50% 63%)}text{text-anchor:middle;fill:#2a2f3a;paint-order:stroke;stroke:#fdfcf9;stroke-width:3px;stroke-linejoin:round}.etq-but,.etq-notion{font-weight:700}</style><rect x="-524" y="-481" width="1052" height="844" fill="#fdfcf9"/>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-524 -481 1052 844" role="img" aria-label="Nuage de compétences : projets, outils et compétences du BUT informatique, regroupés en communautés" focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="1600"><style>svg{background:#fdfcf9;font-family:'Atkinson Hyperlegible',Verdana,sans-serif}.l{fill:none;opacity:.45}.n{stroke:#fff;stroke-width:1.2}.n-anneau{fill:#fff!important}.n-halo{fill:none;stroke-width:2;opacity:.6}.l.k1{stroke:hsl(25 72% 62%)}.n.k1{fill:hsl(25 72% 62%)}.n-anneau.k1,.k1 .n-halo{stroke:hsl(25 72% 62%)}.l.k2{stroke:hsl(85 42% 48%)}.n.k2{fill:hsl(85 42% 48%)}.n-anneau.k2,.k2 .n-halo{stroke:hsl(85 42% 48%)}.l.k3{stroke:hsl(170 40% 44%)}.n.k3{fill:hsl(170 40% 44%)}.n-anneau.k3,.k3 .n-halo{stroke:hsl(170 40% 44%)}.l.k4{stroke:hsl(203 62% 56%)}.n.k4{fill:hsl(203 62% 56%)}.n-anneau.k4,.k4 .n-halo{stroke:hsl(203 62% 56%)}.l.k5{stroke:hsl(235 42% 62%)}.n.k5{fill:hsl(235 42% 62%)}.n-anneau.k5,.k5 .n-halo{stroke:hsl(235 42% 62%)}.l.k6{stroke:hsl(268 38% 64%)}.n.k6{fill:hsl(268 38% 64%)}.n-anneau.k6,.k6 .n-halo{stroke:hsl(268 38% 64%)}.l.k7{stroke:hsl(330 50% 63%)}.n.k7{fill:hsl(330 50% 63%)}.n-anneau.k7,.k7 .n-halo{stroke:hsl(330 50% 63%)}text{text-anchor:middle;fill:#2a2f3a;paint-order:stroke;stroke:#fdfcf9;stroke-width:3px;stroke-linejoin:round}.etq-but,.etq-notion{font-weight:700}.masque{display:none}</style><rect x="-524" y="-481" width="1052" height="844" fill="#fdfcf9"/>
 <g class="liens">
 <path class="l k2" stroke-width="1.60" d="M-2.7 -0.4Q-10.5 -70.5 -61.3 -119.6"/>
 <path class="l k2" stroke-width="1.60" d="M-50.5 -232.5Q-76.2 -178.0 -61.3 -119.6"/>
@@ -32,19 +32,19 @@
 <path class="l k3" stroke-width="1.33" d="M-341.7 190.2Q-385.2 184.9 -422.2 208.4"/>
 <path class="l k2" stroke-width="1.33" d="M-61.3 -119.6Q-68.3 -139.2 -86.2 -149.9"/>
 <path class="l k4" stroke-width="1.33" d="M-118.7 184.6Q-52.8 192.6 3.2 156.8"/>
-<path class="l k4" stroke-width="1.33" d="M-118.7 184.6Q-115.3 145.2 -137.8 112.8"/>
-<path class="l k4" stroke-width="1.33" d="M-84.9 69.7Q-119.1 81.7 -137.8 112.8"/>
+<path class="l k4 masque" stroke-width="1.33" d="M-118.7 184.6Q-115.3 145.2 -137.8 112.8"/>
+<path class="l k4 masque" stroke-width="1.33" d="M-84.9 69.7Q-119.1 81.7 -137.8 112.8"/>
 <path class="l k4" stroke-width="1.33" d="M-118.7 184.6Q-111.7 81.7 -171.9 -2.0"/>
 <path class="l k5" stroke-width="1.33" d="M-84.9 69.7Q-80.0 11.2 -113.4 -37.0"/>
 <path class="l k5" stroke-width="1.33" d="M-84.9 69.7Q-137.9 15.1 -213.5 6.9"/>
-<path class="l k3" stroke-width="1.33" d="M-341.7 190.2Q-329.6 233.5 -292.6 259.0"/>
+<path class="l k3 masque" stroke-width="1.33" d="M-341.7 190.2Q-329.6 233.5 -292.6 259.0"/>
 <path class="l k3" stroke-width="1.33" d="M-341.7 190.2Q-375.3 133.2 -437.6 110.7"/>
-<path class="l k3" stroke-width="1.33" d="M-341.7 190.2Q-313.4 222.3 -271.0 228.9"/>
+<path class="l k3 masque" stroke-width="1.33" d="M-341.7 190.2Q-313.4 222.3 -271.0 228.9"/>
 <path class="l k4" stroke-width="1.33" d="M-118.7 184.6Q-128.4 98.2 -190.9 37.8"/>
 <path class="l k1" stroke-width="1.33" d="M336.3 155.8Q295.2 100.8 228.4 84.5"/>
 <path class="l k1" stroke-width="1.33" d="M336.3 155.8Q270.7 140.4 210.4 170.4"/>
 <path class="l k1" stroke-width="1.33" d="M336.3 155.8Q291.1 125.5 236.9 130.9"/>
-<path class="l k7" stroke-width="1.33" d="M-268.7 -271.8Q-324.6 -218.8 -333.8 -142.3"/>
+<path class="l k7 masque" stroke-width="1.33" d="M-268.7 -271.8Q-324.6 -218.8 -333.8 -142.3"/>
 <path class="l k5" stroke-width="1.33" d="M95.9 -249.2Q66.2 -300.4 10.6 -320.9"/>
 <path class="l k5" stroke-width="1.33" d="M-268.7 -271.8Q-120.2 -246.1 10.6 -320.9"/>
 <path class="l k5" stroke-width="1.33" d="M95.9 -249.2Q104.2 -184.4 151.9 -139.8"/>
@@ -153,7 +153,7 @@
 <path class="l k3" stroke-width="1.05" d="M-453.4 64.0Q-453.9 90.2 -437.6 110.7"/>
 <path class="l k3" stroke-width="1.05" d="M-453.4 64.0Q-463.8 141.9 -422.2 208.4"/>
 <path class="l k3" stroke-width="1.05" d="M-453.4 64.0Q-424.7 126.2 -363.0 155.9"/>
-<path class="l k7" stroke-width="1.05" d="M-453.4 64.0Q-356.4 -17.6 -333.8 -142.3"/>
+<path class="l k7 masque" stroke-width="1.05" d="M-453.4 64.0Q-356.4 -17.6 -333.8 -142.3"/>
 <path class="l k3" stroke-width="1.05" d="M-292.7 80.7Q-370.0 43.4 -453.4 64.0"/>
 <path class="l k7" stroke-width="1.05" d="M-437.6 -362.4Q-388.7 -386.6 -366.5 -436.4"/>
 <path class="l k7" stroke-width="1.05" d="M-437.6 -362.4Q-428.0 -334.4 -402.7 -319.0"/>
@@ -197,9 +197,9 @@
 <path class="l k4" stroke-width="1.05" d="M-186.4 245.3Q-124.8 296.4 -44.7 296.5"/>
 <path class="l k4" stroke-width="1.05" d="M-186.4 245.3Q-114.1 268.5 -43.6 240.2"/>
 <path class="l k3" stroke-width="1.05" d="M-186.4 245.3Q-142.8 264.7 -96.9 251.8"/>
-<path class="l k4" stroke-width="1.05" d="M-186.4 245.3Q-138.3 187.8 -137.8 112.8"/>
-<path class="l k3" stroke-width="1.05" d="M-186.4 245.3Q-242.0 233.1 -292.6 259.0"/>
-<path class="l k3" stroke-width="1.05" d="M-186.4 245.3Q-225.8 221.9 -271.0 228.9"/>
+<path class="l k4 masque" stroke-width="1.05" d="M-186.4 245.3Q-138.3 187.8 -137.8 112.8"/>
+<path class="l k3 masque" stroke-width="1.05" d="M-186.4 245.3Q-242.0 233.1 -292.6 259.0"/>
+<path class="l k3 masque" stroke-width="1.05" d="M-186.4 245.3Q-225.8 221.9 -271.0 228.9"/>
 <path class="l k3" stroke-width="1.05" d="M-186.4 245.3Q-297.6 184.4 -422.2 208.4"/>
 <path class="l k5" stroke-width="1.05" d="M-186.4 245.3Q-96.3 235.9 -33.0 171.2"/>
 <path class="l k3" stroke-width="1.05" d="M-186.4 245.3Q-258.6 168.8 -363.0 155.9"/>
@@ -242,10 +242,10 @@
 <circle class="k3 n n-anneau" cx="-285.9" cy="-2.2" r="6.7" stroke-width="2.2"/>
 <circle class="k7 n n-anneau" cx="-385.4" cy="-287.9" r="6.7" stroke-width="2.2"/>
 <circle class="k5 n" cx="-213.5" cy="6.9" r="7.8"/>
-<circle class="k3 n" cx="-292.6" cy="259.0" r="7.8"/>
-<circle class="k3 n" cx="-271.0" cy="228.9" r="7.8"/>
+<circle class="k3 masque n" cx="-292.6" cy="259.0" r="7.8"/>
+<circle class="k3 masque n" cx="-271.0" cy="228.9" r="7.8"/>
 <circle class="k1 n" cx="210.4" cy="170.4" r="7.8"/>
-<circle class="k7 n" cx="-333.8" cy="-142.3" r="7.8"/>
+<circle class="k7 masque n" cx="-333.8" cy="-142.3" r="7.8"/>
 <circle class="k7 n" cx="-304.7" cy="-350.7" r="7.8"/>
 <circle class="k7 n" cx="-154.3" cy="-305.0" r="7.8"/>
 <circle class="k5 n" cx="176.7" cy="-315.1" r="7.8"/>
@@ -271,7 +271,7 @@
 <circle class="k7 n" cx="-366.5" cy="-436.4" r="8.7"/>
 <circle class="k3 n" cx="-422.2" cy="208.4" r="8.7"/>
 <circle class="k4 n" cx="3.2" cy="156.8" r="8.7"/>
-<circle class="k4 n" cx="-137.8" cy="112.8" r="8.7"/>
+<circle class="k4 masque n" cx="-137.8" cy="112.8" r="8.7"/>
 <circle class="k4 n" cx="-171.9" cy="-2.0" r="8.7"/>
 <circle class="k3 n" cx="-437.6" cy="110.7" r="8.7"/>
 <circle class="k4 n" cx="-190.9" cy="37.8" r="8.7"/>
@@ -350,10 +350,10 @@
 <text class="etq etq-notion k3" x="-285.9" y="7.2" dy=".85em" font-size="12.6">Statistiques</text>
 <text class="etq etq-notion k7" x="-385.4" y="-278.5" dy=".85em" font-size="12.6">Réseaux</text>
 <text class="etq etq-outil k5" x="-213.5" y="16.2" dy=".85em" font-size="10.4">Android</text>
-<text class="etq etq-outil k3" x="-292.6" y="268.4" dy=".85em" font-size="10.4">MySQL</text>
-<text class="etq etq-outil k3" x="-271.0" y="238.3" dy=".85em" font-size="10.4">MongoDB</text>
+<text class="etq etq-outil k3 masque" x="-292.6" y="268.4" dy=".85em" font-size="10.4">MySQL</text>
+<text class="etq etq-outil k3 masque" x="-271.0" y="238.3" dy=".85em" font-size="10.4">MongoDB</text>
 <text class="etq etq-outil k1" x="210.4" y="179.7" dy=".85em" font-size="10.4">GitHub</text>
-<text class="etq etq-outil k7" x="-333.8" y="-133.0" dy=".85em" font-size="10.4">Docker</text>
+<text class="etq etq-outil k7 masque" x="-333.8" y="-133.0" dy=".85em" font-size="10.4">Docker</text>
 <text class="etq etq-outil k7" x="-304.7" y="-341.4" dy=".85em" font-size="10.4">KVM</text>
 <text class="etq etq-outil k7" x="-154.3" y="-295.7" dy=".85em" font-size="10.4">Arduino</text>
 <text class="etq etq-outil k5" x="176.7" y="-305.7" dy=".85em" font-size="10.4">Mockito</text>
@@ -379,7 +379,7 @@
 <text class="etq etq-outil k7" x="-366.5" y="-426.2" dy=".85em" font-size="10.6">Bash</text>
 <text class="etq etq-outil k3" x="-422.2" y="218.6" dy=".85em" font-size="10.6">SQL</text>
 <text class="etq etq-outil k4" x="3.2" y="167.0" dy=".85em" font-size="10.6">Laravel</text>
-<text class="etq etq-outil k4" x="-137.8" y="122.9" dy=".85em" font-size="10.6">React</text>
+<text class="etq etq-outil k4 masque" x="-137.8" y="122.9" dy=".85em" font-size="10.6">React</text>
 <text class="etq etq-outil k4" x="-171.9" y="8.1" dy=".85em" font-size="10.6">Flask</text>
 <text class="etq etq-outil k3" x="-437.6" y="120.9" dy=".85em" font-size="10.6">PostgreSQL</text>
 <text class="etq etq-outil k4" x="-190.9" y="47.9" dy=".85em" font-size="10.6">API REST</text>
