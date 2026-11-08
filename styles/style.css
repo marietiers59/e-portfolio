@@ -11,6 +11,7 @@
    5. Sections
    6. Cartes projets, filtres et piliers
    6 bis. Compétences
+   6 ter. Nuage de compétences (graphe Gephi)
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
@@ -1440,6 +1441,307 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 @media (prefers-reduced-motion: reduce) {
   .competence:hover { transform: none; }
+}
+
+/* ---------- 6 ter. Nuage de compétences (graphe Gephi) ---------- */
+/*
+  Aperçu cliquable (lien vers l'image seule sans JavaScript) + vue agrandie dans un <dialog>.
+  Le SVG est généré par outils/nuage-competences : classes .l (liens), .n (nœuds), .etq (étiquettes),
+  .k1…k7 (communautés), data-t = but | notion | projet | outil.
+  Sept teintes pastel réparties sur le cercle chromatique (abricot → anis → sapin → bleu → indigo → lavande → rose).
+*/
+:root {
+  --nuage-k1: hsl(25 72% 62%);
+  --nuage-k2: hsl(85 42% 48%);
+  --nuage-k3: hsl(170 40% 44%);
+  --nuage-k4: hsl(203 62% 56%);
+  --nuage-k5: hsl(235 42% 62%);
+  --nuage-k6: hsl(268 38% 64%);
+  --nuage-k7: hsl(330 50% 63%);
+  --nuage-sur-k: hsl(220 18% 16%);      /* texte posé sur une teinte pleine */
+}
+:root[data-theme="sombre"] {
+  --nuage-k1: hsl(25 75% 70%);
+  --nuage-k2: hsl(85 45% 62%);
+  --nuage-k3: hsl(170 42% 58%);
+  --nuage-k4: hsl(203 65% 68%);
+  --nuage-k5: hsl(235 60% 76%);
+  --nuage-k6: hsl(268 48% 77%);
+  --nuage-k7: hsl(330 58% 75%);
+  --nuage-sur-k: hsl(228 18% 12%);
+}
+.nuage .k1, .nuage-dialogue .k1 { --k: var(--nuage-k1); }
+.nuage .k2, .nuage-dialogue .k2 { --k: var(--nuage-k2); }
+.nuage .k3, .nuage-dialogue .k3 { --k: var(--nuage-k3); }
+.nuage .k4, .nuage-dialogue .k4 { --k: var(--nuage-k4); }
+.nuage .k5, .nuage-dialogue .k5 { --k: var(--nuage-k5); }
+.nuage .k6, .nuage-dialogue .k6 { --k: var(--nuage-k6); }
+.nuage .k7, .nuage-dialogue .k7 { --k: var(--nuage-k7); }
+
+/* Carte : aperçu puis texte sur mobile, côte à côte dès la tablette */
+.nuage {
+  position: relative;
+  display: grid;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
+  margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
+  padding: clamp(1.1rem, 3vw, 1.5rem);
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+  overflow: hidden;
+}
+.nuage::before {                 /* filet du haut aux sept couleurs du nuage */
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.3rem;
+  background: linear-gradient(90deg, var(--nuage-k1), var(--nuage-k2), var(--nuage-k3), var(--nuage-k4), var(--nuage-k5), var(--nuage-k6), var(--nuage-k7));
+}
+
+/* Aperçu : petit, cliquable, loupe en bas à droite */
+.nuage-apercu {
+  position: relative;
+  display: block;
+  width: min(100%, 26rem);
+  margin-inline: auto;
+  aspect-ratio: 6 / 5;
+  border: 1px solid var(--trait);
+  border-radius: 1rem;
+  background: radial-gradient(ellipse at 50% 45%, var(--carte) 30%, var(--gris-100));
+  cursor: zoom-in;
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, border-color var(--duree);
+}
+.nuage-apercu:hover { transform: translateY(-2px); box-shadow: var(--ombre-survol); border-color: var(--bleu-400); }
+.nuage-apercu:focus-visible { outline: 3px solid var(--bleu-400); outline-offset: 3px; }
+.nuage-apercu .nuage-svg { position: absolute; inset: 0.4rem; width: calc(100% - 0.8rem); height: calc(100% - 0.8rem); }
+.nuage-loupe {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150));
+  color: var(--bleu-700);
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease;
+}
+.nuage-apercu:hover .nuage-loupe { transform: scale(1.12); }
+.nuage-icone {
+  width: 1.15em;
+  height: 1.15em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bouton .nuage-icone { margin-right: 0.45rem; vertical-align: -0.15em; }
+
+/* Texte, légende et boutons */
+.nuage-titre { margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 800; color: var(--indigo-700); }
+.nuage-intro { margin: 0 0 1rem; font-size: 0.95rem; color: var(--encre-douce); }
+.nuage-intro strong:not(.kw) { color: var(--encre); }
+.nuage-puces {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.nuage-puce {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--k) 50%, var(--trait));
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--k) 14%, var(--carte));
+  color: var(--encre);
+  font-family: var(--police-interface);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color var(--duree), transform var(--duree) ease;
+}
+.nuage-puce:not(:disabled):hover { transform: translateY(-1px); background: color-mix(in oklab, var(--k) 28%, var(--carte)); }
+.nuage-puce:disabled { cursor: default; }
+.nuage-puce[aria-pressed="true"] { background: var(--k); border-color: var(--k); color: var(--nuage-sur-k); }
+.nuage-pastille { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--k); box-shadow: 0 0 0 2px var(--carte); }
+.nuage-formes {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  font-size: 0.8rem;
+  color: var(--encre-douce);
+}
+.nuage-forme {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.4rem;
+  vertical-align: -0.05em;
+  background: var(--encre-douce);
+}
+.forme-outil  { border-radius: 50%; transform: scale(0.8); }
+.forme-projet { border-radius: 0.22rem; }
+.forme-notion { border-radius: 50%; background: transparent; border: 0.2rem solid var(--encre-douce); box-sizing: border-box; }
+.forme-but    { border-radius: 50%; box-shadow: 0 0 0 0.12rem var(--carte), 0 0 0 0.24rem var(--encre-douce); }
+.nuage-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 1rem; }
+.nuage-ext { font-weight: 400; color: var(--encre-douce); }
+
+/* Version texte (dépliable) */
+.nuage-texte summary {
+  cursor: pointer;
+  font-family: var(--police-interface);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--bleu-700);
+}
+.nuage-texte-liste { margin: 0.6rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.45rem; font-size: 0.88rem; color: var(--encre-douce); }
+.nuage-texte-nom { color: color-mix(in oklab, var(--k) 55%, var(--encre)); }
+.nuage-texte-liste em { font-style: normal; text-decoration: underline dotted; text-underline-offset: 0.2em; }
+
+/* Le graphe lui-même */
+.nuage-svg { display: block; width: 100%; height: 100%; font-family: var(--police-interface); overflow: visible; }
+.nuage-svg .l { fill: none; stroke: var(--k); opacity: 0.42; transition: opacity var(--duree); }
+.nuage-svg .n { fill: var(--k); stroke: var(--carte); stroke-width: 1.2; transition: opacity var(--duree); }
+.nuage-svg .n-anneau { fill: var(--carte); stroke: var(--k); }
+.nuage-svg .n-halo { fill: none; stroke: var(--k); stroke-width: 2; opacity: 0.55; }
+.nuage-svg .etq {
+  text-anchor: middle;
+  fill: var(--encre);
+  paint-order: stroke;
+  stroke: var(--carte);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  transition: opacity var(--duree);
+}
+.nuage-svg :is(.etq-but, .etq-notion) { font-weight: 700; fill: color-mix(in oklab, var(--k) 50%, var(--encre)); }
+.nuage-svg .etq-but { stroke-width: 4px; }
+/* Aperçu : seules les six compétences du BUT sont nommées, en plus gros */
+.nuage-apercu .etq:not(.etq-but) { display: none; }
+.nuage-apercu .etq-but { font-size: var(--etq-apercu, 40px); }
+
+/* Mise en évidence (vue agrandie) : un point et ses voisins, ou une communauté */
+.nuage-svg.a-selection .l:not(.actif) { opacity: 0.05; }
+.nuage-svg.a-selection .l.actif { opacity: 0.95; }
+.nuage-svg.a-selection :is(.n, .etq):not(.actif) { opacity: 0.16; }
+.nuage-svg.etiquettes-reduites :is(.etq-outil, .etq-projet):not(.actif) { display: none; }
+
+/* Apparition : liens qui se tracent, points qui éclosent du centre vers les bords, puis les noms
+   (remplissage « backwards » : une fois l'animation finie, la mise en évidence reprend la main) */
+.nuage-svg.en-attente :is(.l, .n, .etq) { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .nuage-svg.anime .l {
+    stroke-dasharray: 1;
+    animation: nuage-trait 1.3s ease-out 0.35s backwards;
+  }
+  .nuage-svg.anime .n {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: nuage-eclosion 0.55s cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 11ms);
+  }
+  .nuage-svg.anime .etq { animation: nuage-fondu 0.5s ease-out backwards; animation-delay: calc(0.7s + var(--i, 0) * 7ms); }
+  .nuage-dialogue[open] { animation: nuage-ouverture 0.28s ease-out; }
+}
+@keyframes nuage-trait    { from { stroke-dashoffset: 1; opacity: 0; } 20% { opacity: 0.42; } to { stroke-dashoffset: 0; opacity: 0.42; } }
+@keyframes nuage-eclosion { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes nuage-fondu    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nuage-ouverture { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+
+/* Vue agrandie : plein écran sur mobile, grande fenêtre ailleurs */
+.nuage-dialogue {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--carte);
+  color: var(--encre);
+}
+.nuage-dialogue[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.nuage-dialogue::backdrop { background: hsl(220 30% 12% / 0.55); backdrop-filter: blur(3px); }
+.nuage-barre, .nuage-pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  padding: 0.75rem clamp(0.75rem, 2vw, 1.25rem);
+}
+.nuage-barre { border-bottom: 1px solid var(--trait); }
+.nuage-pied { border-top: 1px solid var(--trait); justify-content: flex-start; }
+.nuage-pied .nuage-puces { margin: 0; }
+.nuage-dialogue-titre { margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--indigo-700); }
+.nuage-outils { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.nuage-outil {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--trait);
+  border-radius: 999px;
+  background: var(--fond);
+  color: var(--encre);
+  font-family: var(--police-interface);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color var(--duree), background-color var(--duree);
+}
+.nuage-outil:not(.nuage-outil-texte) { padding: 0; font-size: 1.2rem; line-height: 1; }
+/* Petits écrans : barre compacte, « Retour à la page » réduit à sa croix */
+@media (max-width: 39.99em) {
+  .nuage-barre { padding-block: 0.5rem; }
+  .nuage-dialogue-titre { font-size: 1rem; }
+  .nuage-outils { gap: 0.3rem; }
+  .nuage-outil { min-width: 2.25rem; min-height: 2.25rem; padding: 0.2rem 0.6rem; font-size: 0.78rem; }
+  .nuage-fermer-texte { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .nuage-pied { padding-block: 0.5rem; }
+  .nuage-pied .nuage-puce { font-size: 0.72rem; padding: 0.15rem 0.6rem 0.15rem 0.4rem; }
+  .nuage-info { font-size: 0.8rem; flex-basis: 100%; }
+}
+.nuage-outil:hover { border-color: var(--bleu-400); }
+.nuage-outil[aria-pressed="true"] { background: var(--turquoise-100); border-color: var(--turquoise-200); }
+.nuage-fermer { background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150)); border-color: var(--turquoise-200); color: var(--bleu-700); }
+.nuage-scene {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  background: radial-gradient(ellipse at 50% 45%, var(--carte) 35%, var(--gris-100));
+}
+.nuage-scene.glisse { cursor: grabbing; }
+.nuage-scene .nuage-svg { position: absolute; inset: 0; }
+.nuage-scene :is(.n, .etq) { cursor: pointer; }
+.nuage-info { flex: 1 1 18rem; margin: 0; font-size: 0.9rem; color: var(--encre-douce); min-height: 2.6em; }
+.nuage-info strong { color: var(--encre); }
+
+@media (min-width: 48em) {
+  .nuage { grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); }
+  .nuage-dialogue {
+    width: min(94vw, 90rem);
+    height: min(92dvh, 62rem);
+    margin: auto;
+    border-radius: var(--rayon);
+    box-shadow: var(--ombre-survol);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nuage-apercu:hover, .nuage-puce:not(:disabled):hover { transform: none; }
 }
 
 /* ---------- 7. Frise chronologique ---------- */

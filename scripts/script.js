@@ -7,6 +7,7 @@
    5. Filtres et tri de la page Projets
    6. Calendrier au survol d'une date (accueil)
    7. Thème clair / sombre (bouton de la barre du haut)
+   8. Nuage de compétences (page Compétences : aperçu animé, vue agrandie)
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -645,5 +646,250 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
 
   systeme.addEventListener('change', (e) => {
     if (!['clair', 'sombre'].includes(choixMemorise())) appliquer(e.matches ? 'sombre' : 'clair', true);
+  });
+})();
+
+/* ---------- 8. Nuage de compétences (page Compétences) ---------- */
+// Aperçu : le graphe se dessine quand il arrive à l'écran (liens tracés, points éclos du centre vers les bords).
+// Clic sur l'aperçu, sur « Agrandir » ou sur une couleur de la légende → vue agrandie dans un <dialog>
+// (copie du SVG de l'aperçu) : zoom à la molette, au pincement ou avec + / − ; déplacement au glisser
+// ou aux flèches du clavier ; survol ou toucher d'un point = ses voisins mis en évidence ;
+// clic sur une couleur = sa communauté seule. Échap, clic hors du cadre ou « Retour à la page » : fermeture.
+// Sans JavaScript, l'aperçu est un simple lien vers l'image seule (medias/nuage-competences.svg).
+(() => {
+  const figure = document.querySelector('.nuage');
+  const dialogue = document.querySelector('.nuage-dialogue');
+  if (!figure || !dialogue || typeof dialogue.showModal !== 'function') return;
+
+  const apercu = figure.querySelector('.nuage-svg');
+  const scene = dialogue.querySelector('.nuage-scene');
+  const info = dialogue.querySelector('.nuage-info');
+  const infoDefaut = info.textContent;
+  const pucesDialogue = dialogue.querySelector('.nuage-puces');
+  const boutonEtiquettes = dialogue.querySelector('[data-nuage="etiquettes"]');
+  const TYPES = {
+    but: t('compétence du BUT', 'BUT competency'),
+    notion: t('notion du programme', 'syllabus topic'),
+    projet: t('projet ou expérience', 'project or experience'),
+    outil: t('outil', 'tool'),
+  };
+  const ORDRE_TYPES = ['but', 'notion', 'projet', 'outil'];
+
+  // --- Données lues dans le SVG : voisins, noms, familles, communautés ---
+  const voisins = new Map();
+  const ajouter = (a, b) => { if (!voisins.has(a)) voisins.set(a, new Set()); voisins.get(a).add(b); };
+  apercu.querySelectorAll('.l').forEach(({ dataset: { a, b } }) => { ajouter(a, b); ajouter(b, a); });
+  const noms = new Map(), familles = new Map(), communautes = new Map();
+  apercu.querySelectorAll('.etq').forEach((e) => {
+    noms.set(e.dataset.id, e.textContent);
+    communautes.set(e.dataset.id, [...e.classList].find((c) => /^k\d$/.test(c)));
+  });
+  apercu.querySelectorAll('.n[data-t]').forEach((e) => familles.set(e.dataset.id, e.dataset.t));
+  const nomsCommunautes = new Map([...figure.querySelectorAll('.nuage-puce')]
+    .map((p) => [p.dataset.communaute, p.textContent.trim()]));
+
+  // --- 1. Apparition de l'aperçu quand il entre dans l'écran ---
+  function animer(svg) {
+    svg.classList.remove('anime');
+    void svg.getBoundingClientRect();       // relance l'animation
+    svg.classList.add('anime');
+  }
+  if (!mouvementReduit.matches && 'IntersectionObserver' in window) {
+    apercu.classList.add('en-attente');
+    const veilleur = new IntersectionObserver((entrees) => {
+      if (!entrees.some((e) => e.isIntersecting)) return;
+      apercu.classList.remove('en-attente');
+      animer(apercu);
+      veilleur.disconnect();
+    }, { threshold: 0.3 });
+    veilleur.observe(apercu);
+  }
+
+  // --- 2. Ouverture et fermeture de la vue agrandie ---
+  let svg = null;         // copie du nuage dans le dialogue
+  let depart = null;      // cadrage d'origine (viewBox)
+  let vue = null;         // cadrage courant
+  let verrou = null;      // point ou communauté sélectionné au clic
+
+  pucesDialogue.innerHTML = figure.querySelector('.nuage-puces').innerHTML;
+  document.querySelectorAll('.nuage-puce').forEach((p) => { p.disabled = false; });
+  document.querySelectorAll('button[data-nuage-ouvrir]').forEach((b) => { b.hidden = false; });
+
+  function ouvrir(communaute) {
+    svg = apercu.cloneNode(true);
+    svg.classList.remove('en-attente', 'anime');
+    scene.replaceChildren(svg);
+    const { x, y, width, height } = svg.viewBox.baseVal;
+    depart = { x, y, w: width, h: height };
+    vue = { ...depart };
+    cadrer();
+    svg.classList.remove('etiquettes-reduites');
+    boutonEtiquettes.setAttribute('aria-pressed', 'true');
+    dialogue.showModal();
+    if (!mouvementReduit.matches) animer(svg);
+    if (communaute) filtrer(communaute, true); else effacer();
+  }
+  document.querySelectorAll('[data-nuage-ouvrir]').forEach((el) => el.addEventListener('click', (e) => {
+    e.preventDefault();
+    ouvrir();
+  }));
+  figure.querySelectorAll('.nuage-puce').forEach((p) => p.addEventListener('click', () => ouvrir(p.dataset.communaute)));
+  dialogue.addEventListener('close', () => { scene.replaceChildren(); svg = null; });
+  let appuiSurVoile = false;    // clic sur le voile, autour du cadre (pas la fin d'un glisser)
+  dialogue.addEventListener('pointerdown', (e) => { appuiSurVoile = e.target === dialogue; });
+  dialogue.addEventListener('click', (e) => { if (appuiSurVoile && e.target === dialogue) dialogue.close(); });
+
+  // --- 3. Zoom et déplacement (on change le viewBox du SVG) ---
+  function cadrer() { svg.setAttribute('viewBox', `${vue.x} ${vue.y} ${vue.w} ${vue.h}`); }
+  function versSvg(xEcran, yEcran) { return new DOMPoint(xEcran, yEcran).matrixTransform(svg.getScreenCTM().inverse()); }
+  function centre() { return { x: vue.x + vue.w / 2, y: vue.y + vue.h / 2 }; }
+  /** facteur < 1 : on s'approche ; le point p reste immobile à l'écran. */
+  function zoomer(facteur, p = centre()) {
+    const f = Math.min(Math.max(facteur, depart.w / 10 / vue.w), (depart.w * 1.6) / vue.w);
+    vue.x = p.x - (p.x - vue.x) * f;
+    vue.y = p.y - (p.y - vue.y) * f;
+    vue.w *= f;
+    vue.h *= f;
+    cadrer();
+  }
+  function deplacer(dxEcran, dyEcran) {
+    const echelle = 1 / svg.getScreenCTM().a;
+    vue.x -= dxEcran * echelle;
+    vue.y -= dyEcran * echelle;
+    cadrer();
+  }
+
+  scene.addEventListener('wheel', (e) => {
+    if (!svg) return;
+    e.preventDefault();
+    zoomer(Math.exp(e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015)), versSvg(e.clientX, e.clientY));
+  }, { passive: false });
+
+  // Glisser à un doigt (ou à la souris), pincer à deux doigts ; un appui sans bouger = un clic
+  const pointeurs = new Map();
+  let parcours = 0;
+  let ecartPrecedent = 0;
+  let cibleAppui = null;  // élément touché à l'appui (ensuite, la capture redirige tout vers la scène)
+  scene.addEventListener('pointerdown', (e) => {
+    if (!svg) return;
+    cibleAppui = e.target;
+    scene.setPointerCapture(e.pointerId);
+    pointeurs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointeurs.size === 1) parcours = 0;
+    if (pointeurs.size === 2) ecartPrecedent = ecart();
+  });
+  function ecart() {
+    const [a, b] = [...pointeurs.values()];
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+  scene.addEventListener('pointermove', (e) => {
+    const avant = pointeurs.get(e.pointerId);
+    if (!avant) {                                   // simple survol à la souris
+      if (e.pointerType === 'mouse' && !verrou) survoler(e.target);
+      return;
+    }
+    const dx = e.clientX - avant.x, dy = e.clientY - avant.y;
+    pointeurs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    parcours += Math.hypot(dx, dy);
+    if (pointeurs.size === 1) {
+      if (parcours > 6) { scene.classList.add('glisse'); deplacer(dx, dy); }
+    } else if (pointeurs.size === 2) {
+      const [a, b] = [...pointeurs.values()];
+      const nouvelEcart = ecart();
+      if (ecartPrecedent > 0) zoomer(ecartPrecedent / nouvelEcart, versSvg((a.x + b.x) / 2, (a.y + b.y) / 2));
+      ecartPrecedent = nouvelEcart;
+      parcours = Infinity;                          // un pincement n'est jamais un clic
+    }
+  });
+  function relacher(e) {
+    if (!pointeurs.delete(e.pointerId)) return;
+    if (pointeurs.size === 0) {
+      scene.classList.remove('glisse');
+      if (parcours <= 6 && e.type === 'pointerup') cliquer(cibleAppui);
+    }
+  }
+  scene.addEventListener('pointerup', relacher);
+  scene.addEventListener('pointercancel', relacher);
+  scene.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !verrou && pointeurs.size === 0) effacer(); });
+
+  // --- 4. Mise en évidence d'un point, d'une communauté ---
+  function marquer(ensemble, lienActif) {
+    svg.classList.add('a-selection');
+    svg.querySelectorAll('[data-id]').forEach((e) => e.classList.toggle('actif', ensemble.has(e.dataset.id)));
+    svg.querySelectorAll('.l').forEach((l) => l.classList.toggle('actif', lienActif(l)));
+  }
+  function effacer() {
+    verrou = null;
+    if (svg) {
+      svg.classList.remove('a-selection');
+      svg.querySelectorAll('.actif').forEach((e) => e.classList.remove('actif'));
+    }
+    pucesDialogue.querySelectorAll('.nuage-puce').forEach((p) => p.setAttribute('aria-pressed', 'false'));
+    info.textContent = infoDefaut;
+  }
+  function decrire(id) {
+    const liste = [...(voisins.get(id) || [])]
+      .sort((a, b) => ORDRE_TYPES.indexOf(familles.get(a)) - ORDRE_TYPES.indexOf(familles.get(b))
+        || noms.get(a).localeCompare(noms.get(b), LOCALE));
+    const nom = document.createElement('strong');
+    nom.textContent = noms.get(id);
+    const famille = familles.get(id);
+    const precision = famille === 'but' ? TYPES.but : `${TYPES[famille]}, ${nomsCommunautes.get(communautes.get(id))}`;
+    info.replaceChildren(nom, ` (${precision}) — `
+      + t(`${liste.length} lien${liste.length > 1 ? 's' : ''} : `, `${liste.length} link${liste.length > 1 ? 's' : ''}: `)
+      + liste.map((v) => noms.get(v)).join(', '));
+  }
+  function choisirPoint(id) {
+    const proches = new Set([id, ...(voisins.get(id) || [])]);
+    marquer(proches, (l) => l.dataset.a === id || l.dataset.b === id);
+    decrire(id);
+  }
+  function filtrer(k, verrouiller) {
+    const membres = new Set([...communautes].filter(([, c]) => c === k).map(([id]) => id));
+    marquer(membres, (l) => membres.has(l.dataset.a) && membres.has(l.dataset.b));
+    pucesDialogue.querySelectorAll('.nuage-puce').forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.communaute === k)));
+    const nom = document.createElement('strong');
+    nom.textContent = nomsCommunautes.get(k);
+    info.replaceChildren(nom, t(` : ${membres.size} éléments, `, `: ${membres.size} items, `)
+      + [...membres].sort((a, b) => noms.get(a).localeCompare(noms.get(b), LOCALE)).map((m) => noms.get(m)).join(', '));
+    if (verrouiller) verrou = `communauté:${k}`;
+  }
+  const idSous = (cible) => cible.closest?.('[data-id]')?.dataset.id;
+  function survoler(cible) {
+    const id = idSous(cible);
+    if (id) choisirPoint(id); else if (svg?.classList.contains('a-selection')) effacer();
+  }
+  function cliquer(cible) {
+    const id = idSous(cible);
+    if (id && verrou !== id) { verrou = id; choisirPoint(id); } else effacer();
+  }
+  pucesDialogue.addEventListener('click', (e) => {
+    const puce = e.target.closest('.nuage-puce');
+    if (!puce) return;
+    if (puce.getAttribute('aria-pressed') === 'true') effacer(); else filtrer(puce.dataset.communaute, true);
+  });
+
+  // --- 5. Boutons et clavier ---
+  const actions = {
+    plus: () => zoomer(1 / 1.4),
+    moins: () => zoomer(1.4),
+    recentrer: () => { vue = { ...depart }; cadrer(); },
+    tout: () => effacer(),
+    etiquettes: () => {
+      const toutes = svg.classList.toggle('etiquettes-reduites');
+      boutonEtiquettes.setAttribute('aria-pressed', String(!toutes));
+    },
+    fermer: () => dialogue.close(),
+  };
+  dialogue.querySelectorAll('[data-nuage]').forEach((b) => b.addEventListener('click', () => svg && actions[b.dataset.nuage]()));
+  dialogue.addEventListener('keydown', (e) => {
+    if (!svg || e.altKey || e.ctrlKey || e.metaKey) return;
+    const pas = Math.min(scene.clientWidth, scene.clientHeight) * 0.12;
+    const touches = {
+      '+': actions.plus, '=': actions.plus, '-': actions.moins, '0': actions.recentrer,
+      ArrowLeft: () => deplacer(pas, 0), ArrowRight: () => deplacer(-pas, 0),
+      ArrowUp: () => deplacer(0, pas), ArrowDown: () => deplacer(0, -pas),
+    };
+    if (touches[e.key]) { e.preventDefault(); touches[e.key](); }
   });
 })();

@@ -1,1 +1,5 @@
 .project
+
+# Nuage de compétences : fichier intermédiaire (régénéré par outils/nuage-competences/construire.sh)
+outils/nuage-competences/entree.gexf
+outils/nuage-competences/__pycache__/
