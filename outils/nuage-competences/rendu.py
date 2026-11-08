@@ -6,7 +6,9 @@ puis ajoute une petite passe « ajustement des étiquettes » (comme le Label Ad
 pour que les noms ne se chevauchent pas.
 """
 import html
+import json
 import math
+import random
 import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
@@ -16,14 +18,14 @@ from nuage import GEPHI, IMAGE, PAGES, degres, graphe, rayon
 
 NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
 
-# Teinte de chaque communauté, choisie d'après la compétence du BUT qu'elle contient
-# (mêmes familles de couleurs que les cartes de la page) ; k1…k7 sont définies dans style.css.
-TEINTE_PAR_PIVOT = {"c6": "k1", "c2": "k2", "c4": "k3", "c1": "k5", "c5": "k6", "c3": "k7"}
+# Teintes des communautés : un dégradé à trois couleurs (orange foncé → framboise → violet),
+# k1…k7 définies dans style.css. Les communautés sont rangées de gauche à droite du graphe,
+# si bien que le dégradé traverse le nuage d'un bord à l'autre.
 TEINTES = ["k1", "k2", "k3", "k4", "k5", "k6", "k7"]
-# Couleurs figées pour l'image seule (thème clair), reprises de style.css
+# Couleurs figées pour l'image seule (thème clair), proches de celles calculées par style.css
 COULEURS_IMAGE = {
-    "k1": "hsl(25 72% 62%)", "k2": "hsl(85 42% 48%)", "k3": "hsl(170 40% 44%)", "k4": "hsl(203 62% 56%)",
-    "k5": "hsl(235 42% 62%)", "k6": "hsl(268 38% 64%)", "k7": "hsl(330 50% 63%)",
+    "k1": "hsl(24 88% 44%)", "k2": "hsl(11 76% 46%)", "k3": "hsl(353 64% 47%)", "k4": "hsl(338 58% 47%)",
+    "k5": "hsl(318 46% 46%)", "k6": "hsl(292 40% 45%)", "k7": "hsl(268 42% 44%)",
 }
 
 # Mots étrangers à la langue de la page, mis en italique dans la version texte (charte éditoriale)
@@ -109,6 +111,34 @@ def ajuster_etiquettes(pos, boites, iterations=600):
             break
 
 
+def profondeur(noeuds, liens, pos, classe):
+    """Troisième dimension (z) pour la vue 3D : Gephi donne x et y, on ajoute une profondeur.
+    Le nuage prend la forme d'une boule : plus un nœud est près du centre, plus il peut s'enfoncer ;
+    chaque communauté reçoit sa propre profondeur, puis on lisse le long des liens
+    pour que des nœuds reliés restent proches, comme des neurones voisins."""
+    alea = random.Random(2026)
+    ids = list(noeuds)
+    cx = sum(pos[i][0] for i in ids) / len(ids)
+    cy = sum(pos[i][1] for i in ids) / len(ids)
+    rmax = max(math.hypot(pos[i][0] - cx, pos[i][1] - cy) for i in ids)
+    comms = sorted(set(classe.values()))
+    decalage = {c: math.cos(n * 2.4) * 0.7 for n, c in enumerate(comms)}
+    u = {i: decalage[classe[i]] + alea.uniform(-0.6, 0.6) for i in ids}
+    voisins = defaultdict(list)
+    for a, b in liens:
+        voisins[a].append(b)
+        voisins[b].append(a)
+    for _ in range(6):
+        u = {i: 0.55 * u[i] + 0.45 * sum(u[v] for v in voisins[i]) / max(1, len(voisins[i])) for i in ids}
+    m = max(abs(v) for v in u.values())
+    z = {}
+    for i in ids:
+        d = math.hypot(pos[i][0] - cx, pos[i][1] - cy) / rmax
+        enveloppe = math.sqrt(max(1 - d * d, 0.12)) * rmax * 0.8
+        z[i] = u[i] / m * enveloppe
+    return z
+
+
 def forme(i, t, x, y, r):
     """Disque (outil), carré arrondi (projet), anneau (notion), disque cerclé (compétence du BUT)."""
     if t == "projet":
@@ -135,15 +165,16 @@ def construire(langue):
     membres = defaultdict(list)
     for i in noeuds:
         membres[classe[i]].append(i)
-    teinte, nom, libres = {}, {}, [k for k in TEINTES if k not in TEINTE_PAR_PIVOT.values()]
-    for c, ms in sorted(membres.items(), key=lambda kv: -len(kv[1])):
+    teinte, nom = {}, {}
+    de_gauche_a_droite = sorted(membres, key=lambda c: sum(pos[m][0] for m in membres[c]) / len(membres[c]))
+    for rang_c, c in enumerate(de_gauche_a_droite):
+        teinte[c] = TEINTES[round(rang_c * (len(TEINTES) - 1) / max(1, len(membres) - 1))]
+    for c, ms in membres.items():
         pivots = [m for m in ms if noeuds[m][2] == "but"]
         if pivots:
             p = max(pivots, key=lambda m: deg[m])
-            teinte[c] = TEINTE_PAR_PIVOT[p]
         else:
             p = max((m for m in ms if noeuds[m][2] == "notion"), key=lambda m: deg[m], default=max(ms, key=lambda m: deg[m]))
-            teinte[c] = libres.pop(0)
         nom[c] = lib[p]
     k = {i: teinte[classe[i]] for i in noeuds}
 
@@ -222,12 +253,21 @@ def construire(langue):
             parties.append(f'<em>{titres_familles[fam][1 if en else 0]}</em>{" :" if not en else ":"} {noms}')
         lignes.append(f'<li><strong class="nuage-texte-nom {teinte[c]}">{html.escape(nom[c])}</strong> — ' + ("; " if en else " ; ").join(parties) + "</li>")
     texte = "\n".join(lignes)
-    return svg, legende, texte, vb
+    # Données de la vue 3D (scripts/script.js, section 8)
+    z = profondeur(noeuds, liens, pos, classe)
+    index = {i: n for n, i in enumerate(noeuds)}
+    donnees = {
+        "noeuds": [{"id": i, "nom": lib[i], "t": noeuds[i][2], "k": k[i], "x": round(pos[i][0], 1),
+                    "y": round(pos[i][1], 1), "z": round(z[i], 1), "r": round(r[i], 2)} for i in noeuds],
+        "liens": [[index[a], index[b], w] for (a, b), w in liens.items()],
+    }
+    json_donnees = json.dumps(donnees, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    return svg, legende, texte, vb, json_donnees
 
 
 def image_seule():
     """medias/nuage-competences.svg : l'image autonome (thème clair), pour la consulter sans JavaScript."""
-    svg, _, _, vb = construire("fr")
+    svg, _, _, vb, _ = construire("fr")
     x, y, w, h = vb.split()
     fond = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#fdfcf9"/>'
 
@@ -258,10 +298,11 @@ def injecter(chemin, marqueur, contenu):
 
 def rendre():
     for langue, chemin in PAGES.items():
-        svg, legende, texte, _ = construire(langue)
+        svg, legende, texte, _, json_donnees = construire(langue)
         injecter(chemin, "nuage-svg", svg)
         injecter(chemin, "nuage-legende", legende)
         injecter(chemin, "nuage-texte", texte)
+        injecter(chemin, "nuage-donnees", '<script type="application/json" id="nuage-donnees">' + json_donnees + "</script>")
         print(f"{chemin.relative_to(chemin.parents[1])} : nuage injecté")
     image_seule()
     print(f"{IMAGE.name} écrit")

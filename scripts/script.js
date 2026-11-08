@@ -7,7 +7,7 @@
    5. Filtres et tri de la page Projets
    6. Calendrier au survol d'une date (accueil)
    7. Thème clair / sombre (bouton de la barre du haut)
-   8. Nuage de compétences (page Compétences : aperçu animé, vue agrandie)
+   8. Nuage de compétences en 3D (page Compétences : aperçu animé, vue agrandie)
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -649,24 +649,29 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   });
 })();
 
-/* ---------- 8. Nuage de compétences (page Compétences) ---------- */
-// Aperçu : le graphe se dessine quand il arrive à l'écran (liens tracés, points éclos du centre vers les bords).
-// Clic sur l'aperçu, sur « Agrandir » ou sur une couleur de la légende → vue agrandie dans un <dialog>
-// (copie du SVG de l'aperçu) : zoom à la molette, au pincement ou avec + / − ; déplacement au glisser
-// ou aux flèches du clavier ; survol ou toucher d'un point = ses voisins mis en évidence ;
-// clic sur une couleur = sa communauté seule. Échap, clic hors du cadre ou « Retour à la page » : fermeture.
-// Sans JavaScript, l'aperçu est un simple lien vers l'image seule (medias/nuage-competences.svg).
+/* ---------- 8. Nuage de compétences en 3D (page Compétences) ---------- */
+// Le graphe de Gephi (#nuage-donnees : x, y de ForceAtlas2, z ajouté pour la profondeur) est dessiné
+// dans un <canvas>, en perspective, comme un réseau de neurones : il tourne lentement sur lui-même,
+// les nœuds brillent et des influx courent le long des liens, d'un neurone à l'autre.
+//  · Aperçu : petit, tourne tant qu'il est à l'écran ; clic = vue agrandie. Bouton Pause sous la légende.
+//  · Vue agrandie (<dialog>) : glisser = faire tourner ; molette, pincement, + / − = zoom ;
+//    survol ou toucher d'un point = ses voisins ; couleur de la légende = sa communauté ;
+//    Pause, Recentrer, étiquettes réduites, Tout afficher, Retour à la page (ou Échap).
+//  · Mouvement réduit demandé par l'appareil : ni rotation automatique ni influx.
+// Sans JavaScript, le SVG à plat et l'image seule (medias/nuage-competences.svg) prennent le relais.
 (() => {
   const figure = document.querySelector('.nuage');
   const dialogue = document.querySelector('.nuage-dialogue');
-  if (!figure || !dialogue || typeof dialogue.showModal !== 'function') return;
+  const source = document.getElementById('nuage-donnees');
+  if (!figure || !dialogue || !source || typeof dialogue.showModal !== 'function') return;
+  if (!document.createElement('canvas').getContext) return;
 
-  const apercu = figure.querySelector('.nuage-svg');
+  const donnees = JSON.parse(source.textContent);
+  const N = donnees.noeuds.length;
   const scene = dialogue.querySelector('.nuage-scene');
   const info = dialogue.querySelector('.nuage-info');
   const infoDefaut = info.textContent;
   const pucesDialogue = dialogue.querySelector('.nuage-puces');
-  const boutonEtiquettes = dialogue.querySelector('[data-nuage="etiquettes"]');
   const TYPES = {
     but: t('compétence du BUT', 'BUT competency'),
     notion: t('notion du programme', 'syllabus topic'),
@@ -674,221 +679,557 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     outil: t('outil', 'tool'),
   };
   const ORDRE_TYPES = ['but', 'notion', 'projet', 'outil'];
+  const POLICE = { but: 15, notion: 11.5, projet: 10.5, outil: 10.5 };   // px CSS, au premier plan
 
-  // --- Données lues dans le SVG : voisins, noms, familles, communautés ---
-  const voisins = new Map();
-  const ajouter = (a, b) => { if (!voisins.has(a)) voisins.set(a, new Set()); voisins.get(a).add(b); };
-  apercu.querySelectorAll('.l').forEach(({ dataset: { a, b } }) => { ajouter(a, b); ajouter(b, a); });
-  const noms = new Map(), familles = new Map(), communautes = new Map();
-  apercu.querySelectorAll('.etq').forEach((e) => {
-    noms.set(e.dataset.id, e.textContent);
-    communautes.set(e.dataset.id, [...e.classList].find((c) => /^k\d$/.test(c)));
+  // --- Données : centrées, ramenées dans une boule de rayon 1 ---
+  const moy = (cle) => donnees.noeuds.reduce((s, n) => s + n[cle], 0) / N;
+  const [mx, my, mz] = [moy('x'), moy('y'), moy('z')];
+  const rayonMax = Math.max(...donnees.noeuds.map((n) => Math.hypot(n.x - mx, n.y - my, n.z - mz)));
+  const noeuds = donnees.noeuds.map((n) => ({
+    ...n,
+    x: (n.x - mx) / rayonMax, y: (n.y - my) / rayonMax, z: (n.z - mz) / rayonMax, r: n.r / rayonMax,
+  }));
+  const liens = donnees.liens.map(([a, b, w]) => ({ a, b, w }));
+  const voisins = noeuds.map(() => new Set());
+  const liensDe = noeuds.map(() => []);
+  liens.forEach((l, i) => {
+    voisins[l.a].add(l.b); voisins[l.b].add(l.a);
+    liensDe[l.a].push(i); liensDe[l.b].push(i);
   });
-  apercu.querySelectorAll('.n[data-t]').forEach((e) => familles.set(e.dataset.id, e.dataset.t));
+  const distanceCentre = noeuds.map((n) => Math.hypot(n.x, n.y, n.z));
   const nomsCommunautes = new Map([...figure.querySelectorAll('.nuage-puce')]
     .map((p) => [p.dataset.communaute, p.textContent.trim()]));
 
-  // --- 1. Apparition de l'aperçu quand il entre dans l'écran ---
-  function animer(svg) {
-    svg.classList.remove('anime');
-    void svg.getBoundingClientRect();       // relance l'animation
-    svg.classList.add('anime');
+  // --- Couleurs lues dans la feuille de styles (suivent le thème clair / sombre) ---
+  let palette = null;
+  const sprites = new Map();
+  // Toute couleur CSS (hsl, oklch, color-mix…) ramenée en rgb(), que tous les canvas comprennent
+  const pixel = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  function enRgb(couleur) {
+    pixel.clearRect(0, 0, 1, 1);
+    pixel.fillStyle = '#808080';
+    pixel.fillStyle = couleur;
+    pixel.fillRect(0, 0, 1, 1);
+    const [r, v, b] = pixel.getImageData(0, 0, 1, 1).data;
+    return `rgb(${r}, ${v}, ${b})`;
   }
-  if (!mouvementReduit.matches && 'IntersectionObserver' in window) {
-    apercu.classList.add('en-attente');
-    const veilleur = new IntersectionObserver((entrees) => {
-      if (!entrees.some((e) => e.isIntersecting)) return;
-      apercu.classList.remove('en-attente');
-      animer(apercu);
-      veilleur.disconnect();
-    }, { threshold: 0.3 });
-    veilleur.observe(apercu);
+  function lirePalette() {
+    const sonde = document.createElement('span');
+    sonde.hidden = true;
+    figure.append(sonde);
+    const couleur = (classe) => { sonde.className = classe; sonde.style.color = 'var(--k, currentColor)'; return enRgb(getComputedStyle(sonde).color); };
+    const k = {};
+    for (let i = 1; i <= 7; i++) k[`k${i}`] = couleur(`k${i}`);
+    sonde.className = '';
+    const style = getComputedStyle(document.documentElement);
+    palette = {
+      k,
+      encre: enRgb(style.getPropertyValue('--encre').trim()),
+      carte: enRgb(style.getPropertyValue('--carte').trim()),
+      sombre: document.documentElement.dataset.theme === 'sombre',
+    };
+    sonde.remove();
+    sprites.clear();
   }
 
-  // --- 2. Ouverture et fermeture de la vue agrandie ---
-  let svg = null;         // copie du nuage dans le dialogue
-  let depart = null;      // cadrage d'origine (viewBox)
-  let vue = null;         // cadrage courant
-  let verrou = null;      // point ou communauté sélectionné au clic
+  // Sprites pré-dessinés (une image par teinte et par famille) : halo lumineux + corps en relief
+  const S = 128, B = 26;                       // taille de l'image, rayon du corps dans l'image
+  function sprite(k, famille) {
+    const cle = `${k}|${famille}`;
+    if (sprites.has(cle)) return sprites.get(cle);
+    const c = document.createElement('canvas');
+    c.width = c.height = S;
+    const g = c.getContext('2d');
+    const couleur = palette.k[k];
+    // halo : masque radial, puis colorié
+    const masque = g.createRadialGradient(S / 2, S / 2, B * 0.6, S / 2, S / 2, S / 2);
+    masque.addColorStop(0, `rgba(0,0,0,${palette.sombre ? 0.75 : 0.42})`);
+    masque.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = masque;
+    g.fillRect(0, 0, S, S);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = couleur;
+    g.fillRect(0, 0, S, S);
+    if (famille === 'halo') { sprites.set(cle, c); return c; }
+    g.globalCompositeOperation = 'source-over';
+    const m = S / 2;
+    const reflet = () => {                     // éclat de lumière en haut à gauche : effet de sphère
+      const l = g.createRadialGradient(m - B * 0.35, m - B * 0.4, 0, m - B * 0.2, m - B * 0.2, B * 1.1);
+      l.addColorStop(0, 'rgba(255,255,255,0.75)');
+      l.addColorStop(0.35, 'rgba(255,255,255,0.12)');
+      l.addColorStop(1, 'rgba(0,0,0,0.22)');
+      return l;
+    };
+    g.fillStyle = couleur;
+    g.beginPath();
+    if (famille === 'projet') g.roundRect(m - B * 0.9, m - B * 0.9, B * 1.8, B * 1.8, B * 0.4);
+    else g.arc(m, m, famille === 'notion' ? B * 0.95 : B, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = reflet();
+    g.fill();
+    if (famille === 'notion') {                // anneau : cœur clair
+      g.fillStyle = palette.carte;
+      g.beginPath();
+      g.arc(m, m, B * 0.55, 0, Math.PI * 2);
+      g.fill();
+    }
+    if (famille === 'but') {                   // compétence du BUT : cerclée
+      g.strokeStyle = couleur;
+      g.globalAlpha = 0.7;
+      g.lineWidth = 3;
+      g.beginPath();
+      g.arc(m, m, B + 6, 0, Math.PI * 2);
+      g.stroke();
+      g.globalAlpha = 1;
+    }
+    sprites.set(cle, c);
+    return c;
+  }
 
+  // --- Une vue = un canvas qui dessine le réseau ---
+  const RAPPEL = !mouvementReduit.matches;     // animations permises ?
+  class Vue {
+    constructor(conteneur, apercu) {
+      this.apercu = apercu;
+      this.toile = document.createElement('canvas');
+      this.toile.className = 'nuage-toile';
+      if (apercu) this.toile.setAttribute('aria-hidden', 'true');
+      else {
+        this.toile.setAttribute('role', 'img');
+        this.toile.setAttribute('aria-label', t('Réseau de compétences en 3D (version texte sur la page)', '3D skills network (text version on the page)'));
+      }
+      conteneur.append(this.toile);
+      this.g = this.toile.getContext('2d');
+      this.p = noeuds.map(() => ({ x: 0, y: 0, s: 1, z: 0 }));
+      this.ordre = noeuds.map((_, i) => i);
+      this.eclats = new Float32Array(N);
+      this.impulsions = [];
+      this.prochaine = 0;
+      this.recentrer();
+      this.enPause = false;
+      this.selection = null;                   // Set d'indices mis en évidence
+      this.liensActifs = null;
+      this.etiquettesReduites = false;
+      this.apparition = RAPPEL ? 0 : 1;
+      this.sale = true;
+      this.redimensionner();
+      this.observateur = new ResizeObserver(() => { this.redimensionner(); this.sale = true; });
+      this.observateur.observe(conteneur);
+    }
+    recentrer() {
+      this.theta = -0.5; this.phi = 0.22; this.zoom = 1;
+      this.vTheta = 0; this.vPhi = 0;
+      this.repos = 0;                          // ms avant la reprise de la rotation automatique
+      this.sale = true;
+    }
+    redimensionner() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.dpr = dpr;
+      this.toile.width = Math.max(1, Math.round(this.toile.clientWidth * dpr));
+      this.toile.height = Math.max(1, Math.round(this.toile.clientHeight * dpr));
+    }
+    detruire() { this.observateur.disconnect(); this.toile.remove(); }
+    get anime() { return RAPPEL && !this.enPause; }
+
+    // Projection en perspective (rotation autour de la verticale, puis de l'horizontale)
+    projeter() {
+      const { width: w, height: h } = this.toile;
+      const echelle = (this.apercu ? Math.min(w, h) * 0.5 : Math.min(w * 0.42, h * 0.56)) * this.zoom;   // portrait : plus étroit
+      const ct = Math.cos(this.theta), st = Math.sin(this.theta);
+      const cp = Math.cos(this.phi), sp = Math.sin(this.phi);
+      const D = 3.4;                           // distance de la caméra
+      noeuds.forEach((n, i) => {
+        const x1 = n.x * ct + n.z * st;
+        const z1 = -n.x * st + n.z * ct;
+        const y2 = n.y * cp - z1 * sp;
+        const z2 = n.y * sp + z1 * cp;
+        const pers = D / (D - z2);
+        const q = this.p[i];
+        q.x = w / 2 + x1 * pers * echelle;
+        q.y = h / 2 + y2 * pers * echelle;
+        q.s = pers * echelle;
+        q.z = z2;                              // > 0 : vers le spectateur
+      });
+      this.ordre.sort((a, b) => this.p[a].z - this.p[b].z);
+    }
+    profondeur(z) { return Math.min(1, Math.max(0, (z + 1) / 2)); }       // 0 au fond, 1 devant
+    eclosion(i) {                              // apparition du centre vers les bords
+      if (this.apparition >= 1) return 1;
+      const v = (this.apparition * 1.6 - distanceCentre[i] * 0.6) / 0.4;
+      return Math.min(1, Math.max(0, v));
+    }
+
+    // Influx : un signal part d'un nœud, file le long d'un lien et fait briller le nœud d'arrivée,
+    // qui le relaie parfois à son tour (réaction en chaîne).
+    lancer(depuis) {
+      const choix = this.selection ? [...this.selection] : null;
+      let a = depuis ?? (choix ? choix[Math.floor(Math.random() * choix.length)] : Math.floor(Math.random() * N));
+      const possibles = liensDe[a].filter((li) => !this.liensActifs || this.liensActifs.has(li));
+      if (!possibles.length) return;
+      const l = liens[possibles[Math.floor(Math.random() * possibles.length)]];
+      const b = l.a === a ? l.b : l.a;
+      this.impulsions.push({ a, b, t: 0, duree: 650 + Math.random() * 650 });
+      this.eclats[a] = Math.max(this.eclats[a], 0.6);
+    }
+    avancer(dt) {
+      if (this.apparition < 1) { this.apparition = Math.min(1, this.apparition + dt / 1800); this.sale = true; }
+      // rotation : automatique, ou élan après un glisser
+      if (Math.abs(this.vTheta) > 1e-5 || Math.abs(this.vPhi) > 1e-5) {
+        this.theta += this.vTheta * dt;
+        this.phi = Math.max(-1.3, Math.min(1.3, this.phi + this.vPhi * dt));
+        const frein = Math.exp(-dt / 280);
+        this.vTheta *= frein; this.vPhi *= frein;
+        this.sale = true;
+      } else if (this.anime && !this.glisse) {
+        if (this.repos > 0) this.repos -= dt;
+        else { this.theta += dt * (this.apercu ? 0.00016 : (this.selection ? 0.00004 : 0.0001)); this.sale = true; }
+      }
+      if (!this.anime) { this.impulsions.length = 0; this.eclats.fill(0); return; }
+      this.prochaine -= dt;
+      if (this.prochaine <= 0 && this.apparition >= 1) {
+        this.lancer();
+        this.prochaine = (this.apercu ? 300 : 160) * (0.5 + Math.random());
+      }
+      for (let i = this.impulsions.length - 1; i >= 0; i--) {
+        const im = this.impulsions[i];
+        im.t += dt / im.duree;
+        if (im.t >= 1) {
+          this.impulsions.splice(i, 1);
+          this.eclats[im.b] = 1;
+          if (Math.random() < 0.5 && this.impulsions.length < (this.apercu ? 14 : 28)) this.lancer(im.b);
+        }
+      }
+      const extinction = Math.exp(-dt / 420);
+      for (let i = 0; i < N; i++) this.eclats[i] *= extinction;
+      this.sale = true;
+    }
+
+    dessiner() {
+      if (!palette) lirePalette();
+      this.projeter();
+      const g = this.g, dpr = this.dpr, P = this.p;
+      g.clearRect(0, 0, this.toile.width, this.toile.height);
+      const sel = this.selection;
+
+      // 1. Liens (synapses) : dégradé d'une extrémité à l'autre, estompés au fond
+      g.lineCap = 'round';
+      liens.forEach((l, i) => {
+        const a = P[l.a], b = P[l.b];
+        const e = Math.min(this.eclosion(l.a), this.eclosion(l.b));
+        if (e <= 0) return;
+        const prof = (this.profondeur(a.z) + this.profondeur(b.z)) / 2;
+        let alpha = (palette.sombre ? 0.2 : 0.24) + 0.32 * prof;
+        if (sel) alpha = this.liensActifs.has(i) ? 0.95 : 0.035;
+        const degrade = g.createLinearGradient(a.x, a.y, b.x, b.y);
+        degrade.addColorStop(0, palette.k[noeuds[l.a].k]);
+        degrade.addColorStop(1, palette.k[noeuds[l.b].k]);
+        g.strokeStyle = degrade;
+        g.globalAlpha = alpha * e;
+        g.lineWidth = (0.45 + 0.4 * l.w) * dpr * (0.6 + 0.6 * prof) * (sel && this.liensActifs.has(i) ? 1.8 : 1);
+        g.beginPath();
+        g.moveTo(a.x, a.y);
+        if (e < 1) g.lineTo(a.x + (b.x - a.x) * e, a.y + (b.y - a.y) * e); else g.lineTo(b.x, b.y);
+        g.stroke();
+      });
+
+      // 2. Influx en vol : une étincelle qui file le long du lien
+      g.globalCompositeOperation = palette.sombre ? 'lighter' : 'source-over';
+      this.impulsions.forEach((im) => {
+        const a = P[im.a], b = P[im.b];
+        const x = a.x + (b.x - a.x) * im.t, y = a.y + (b.y - a.y) * im.t;
+        const taille = (6 + 6 * this.profondeur((a.z + b.z) / 2)) * dpr;
+        g.globalAlpha = 0.95;
+        g.drawImage(sprite(noeuds[im.b].k, 'halo'), x - taille, y - taille, taille * 2, taille * 2);
+        g.fillStyle = palette.sombre ? '#fff' : palette.k[noeuds[im.b].k];
+        g.beginPath();
+        g.arc(x, y, 1.6 * dpr, 0, Math.PI * 2);
+        g.fill();
+      });
+      g.globalCompositeOperation = 'source-over';
+
+      // 3. Nœuds, du fond vers l'avant
+      this.ordre.forEach((i) => {
+        const n = noeuds[i], q = P[i];
+        const e = this.eclosion(i);
+        if (e <= 0) return;
+        const prof = this.profondeur(q.z);
+        const rayon = Math.max(1.2 * dpr, n.r * q.s * (this.apercu ? 1.15 : 1)) * e;
+        const tailleImg = rayon * S / B;
+        let alpha = 0.45 + 0.55 * prof;
+        if (sel) alpha = sel.has(i) ? 1 : 0.12;
+        if (this.eclats[i] > 0.02) {           // neurone qui s'allume
+          g.globalCompositeOperation = palette.sombre ? 'lighter' : 'source-over';
+          g.globalAlpha = Math.min(1, this.eclats[i]) * (sel && !sel.has(i) ? 0.2 : 0.9);
+          const t2 = tailleImg * (1.3 + 0.5 * this.eclats[i]);
+          g.drawImage(sprite(n.k, 'halo'), q.x - t2 / 2, q.y - t2 / 2, t2, t2);
+          g.globalCompositeOperation = 'source-over';
+        }
+        g.globalAlpha = alpha;
+        g.drawImage(sprite(n.k, n.t), q.x - tailleImg / 2, q.y - tailleImg / 2, tailleImg, tailleImg);
+      });
+
+      // 4. Noms sous les nœuds : les compétences seulement dans l'aperçu ; dans la vue agrandie,
+      //    du plus important au moins important, en sautant ceux qui en chevaucheraient un autre
+      g.textAlign = 'center';
+      g.textBaseline = 'top';
+      g.lineJoin = 'round';
+      const RANG = { but: 0, notion: 1, projet: 2, outil: 2 };
+      const candidats = this.ordre.filter((i) => {
+        if (this.eclosion(i) < 1) return false;
+        const n = noeuds[i];
+        if (this.apercu) return n.t === 'but';
+        if (sel) return sel.has(i);
+        if (this.etiquettesReduites) return n.t === 'but' || n.t === 'notion';
+        return true;
+      }).sort((a, b) => RANG[noeuds[a].t] - RANG[noeuds[b].t] || P[b].z - P[a].z);
+      const places = [];
+      const marge = 2 * dpr;
+      candidats.forEach((i) => {
+        const n = noeuds[i], q = P[i];
+        const prof = this.profondeur(q.z);
+        const taille = (this.apercu ? 12.5 : POLICE[n.t] * Math.sqrt(this.zoom)) * dpr * (0.75 + 0.35 * prof);
+        g.font = `${n.t === 'but' || n.t === 'notion' ? 700 : 400} ${taille.toFixed(1)}px "Atkinson Hyperlegible", Verdana, sans-serif`;
+        const rayon = n.r * q.s * (this.apercu ? 1.15 : 1);
+        const y = q.y + rayon + 2 * dpr;
+        const l = g.measureText(n.nom).width;
+        const boite = { x0: q.x - l / 2 - marge, x1: q.x + l / 2 + marge, y0: y - marge, y1: y + taille + marge };
+        if (!sel && places.some((o) => boite.x0 < o.x1 && boite.x1 > o.x0 && boite.y0 < o.y1 && boite.y1 > o.y0)) return;
+        places.push(boite);
+        g.globalAlpha = sel ? 1 : (n.t === 'but' ? 1 : 0.55 + 0.45 * prof);
+        g.strokeStyle = palette.carte;
+        g.lineWidth = 3.5 * dpr;
+        g.strokeText(n.nom, q.x, y);
+        g.fillStyle = n.t === 'but' || n.t === 'notion' ? palette.k[n.k] : palette.encre;
+        g.fillText(n.nom, q.x, y);
+      });
+      g.globalAlpha = 1;
+    }
+    image(dt) {
+      this.avancer(dt);
+      if (!this.sale) return;
+      this.sale = false;
+      this.dessiner();
+    }
+
+    // Point sous le pointeur (le plus proche du spectateur en cas de chevauchement)
+    pointSous(xEcran, yEcran) {
+      const r = this.toile.getBoundingClientRect();
+      const x = (xEcran - r.left) * this.dpr, y = (yEcran - r.top) * this.dpr;
+      let meilleur = -1, zMeilleur = -Infinity;
+      noeuds.forEach((n, i) => {
+        const q = this.p[i];
+        const rayon = n.r * q.s + 6 * this.dpr;
+        if (Math.hypot(q.x - x, q.y - y) <= rayon && q.z > zMeilleur) { meilleur = i; zMeilleur = q.z; }
+      });
+      return meilleur;
+    }
+    zoomer(f) { this.zoom = Math.min(6, Math.max(0.5, this.zoom * f)); this.sale = true; }
+    mettreEnEvidence(ensemble, liensActifs) {
+      this.selection = ensemble; this.liensActifs = liensActifs;
+      this.impulsions.length = 0; this.sale = true;
+    }
+  }
+
+  // --- Boucle d'animation commune ---
+  const vues = new Set();
+  let precedent = 0;
+  function boucle(instant) {
+    const dt = precedent ? Math.min(64, instant - precedent) : 16;
+    precedent = instant;
+    vues.forEach((v) => v.image(dt));
+    if (vues.size) requestAnimationFrame(boucle); else precedent = 0;
+  }
+  function animer(v) {
+    v.sale = true;
+    if (!vues.size) requestAnimationFrame(boucle);
+    vues.add(v);
+  }
+  const suspendre = (v) => vues.delete(v);
+
+  // --- Aperçu ---
+  lirePalette();
+  figure.classList.add('nuage-3d');
+  const apercu = new Vue(figure.querySelector('.nuage-apercu'), true);
+  const boutonPause = figure.querySelector('[data-nuage-pause]');
+  new IntersectionObserver((entrees) => {
+    if (entrees.some((e) => e.isIntersecting)) animer(apercu); else suspendre(apercu);
+  }, { threshold: 0.05 }).observe(apercu.toile);
+  if (RAPPEL) {
+    boutonPause.hidden = false;
+    boutonPause.addEventListener('click', () => {
+      apercu.enPause = !apercu.enPause;
+      boutonPause.setAttribute('aria-pressed', String(apercu.enPause));
+      apercu.sale = true;
+    });
+  }
+  // Thème changé : nouvelles couleurs
+  new MutationObserver(() => {
+    lirePalette();
+    vues.forEach((v) => { v.sale = true; });
+    apercu.sale = true;
+    if (vue) vue.sale = true;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  // --- Vue agrandie ---
+  let vue = null;
+  let verrou = null;
   pucesDialogue.innerHTML = figure.querySelector('.nuage-puces').innerHTML;
   document.querySelectorAll('.nuage-puce').forEach((p) => { p.disabled = false; });
   document.querySelectorAll('button[data-nuage-ouvrir]').forEach((b) => { b.hidden = false; });
+  const boutonEtiquettes = dialogue.querySelector('[data-nuage="etiquettes"]');
+  const boutonPauseDialogue = dialogue.querySelector('[data-nuage="pause"]');
+  if (!RAPPEL) boutonPauseDialogue.hidden = true;
 
   function ouvrir(communaute) {
-    svg = apercu.cloneNode(true);
-    svg.classList.remove('en-attente', 'anime');
-    scene.replaceChildren(svg);
-    const { x, y, width, height } = svg.viewBox.baseVal;
-    depart = { x, y, w: width, h: height };
-    vue = { ...depart };
-    cadrer();
-    svg.classList.remove('etiquettes-reduites');
-    boutonEtiquettes.setAttribute('aria-pressed', 'true');
     dialogue.showModal();
-    if (!mouvementReduit.matches) animer(svg);
-    if (communaute) filtrer(communaute, true); else effacer();
+    vue = new Vue(scene, false);
+    vue.theta = apercu.theta;                  // on reprend l'angle de l'aperçu : continuité
+    vue.enPause = apercu.enPause;
+    boutonPauseDialogue.setAttribute('aria-pressed', String(vue.enPause));
+    boutonEtiquettes.setAttribute('aria-pressed', 'true');
+    animer(vue);
+    if (communaute) filtrer(communaute); else effacer();
   }
   document.querySelectorAll('[data-nuage-ouvrir]').forEach((el) => el.addEventListener('click', (e) => {
     e.preventDefault();
     ouvrir();
   }));
   figure.querySelectorAll('.nuage-puce').forEach((p) => p.addEventListener('click', () => ouvrir(p.dataset.communaute)));
-  dialogue.addEventListener('close', () => { scene.replaceChildren(); svg = null; });
+  dialogue.addEventListener('close', () => {
+    if (!vue) return;
+    suspendre(vue);
+    vue.detruire();
+    vue = null;
+    verrou = null;
+  });
   let appuiSurVoile = false;    // clic sur le voile, autour du cadre (pas la fin d'un glisser)
   dialogue.addEventListener('pointerdown', (e) => { appuiSurVoile = e.target === dialogue; });
   dialogue.addEventListener('click', (e) => { if (appuiSurVoile && e.target === dialogue) dialogue.close(); });
 
-  // --- 3. Zoom et déplacement (on change le viewBox du SVG) ---
-  function cadrer() { svg.setAttribute('viewBox', `${vue.x} ${vue.y} ${vue.w} ${vue.h}`); }
-  function versSvg(xEcran, yEcran) { return new DOMPoint(xEcran, yEcran).matrixTransform(svg.getScreenCTM().inverse()); }
-  function centre() { return { x: vue.x + vue.w / 2, y: vue.y + vue.h / 2 }; }
-  /** facteur < 1 : on s'approche ; le point p reste immobile à l'écran. */
-  function zoomer(facteur, p = centre()) {
-    const f = Math.min(Math.max(facteur, depart.w / 10 / vue.w), (depart.w * 1.6) / vue.w);
-    vue.x = p.x - (p.x - vue.x) * f;
-    vue.y = p.y - (p.y - vue.y) * f;
-    vue.w *= f;
-    vue.h *= f;
-    cadrer();
+  // Mise en évidence : un point et ses voisins, ou une communauté
+  function effacer() {
+    verrou = null;
+    vue?.mettreEnEvidence(null, null);
+    pucesDialogue.querySelectorAll('.nuage-puce').forEach((p) => p.setAttribute('aria-pressed', 'false'));
+    info.textContent = infoDefaut;
   }
-  function deplacer(dxEcran, dyEcran) {
-    const echelle = 1 / svg.getScreenCTM().a;
-    vue.x -= dxEcran * echelle;
-    vue.y -= dyEcran * echelle;
-    cadrer();
+  function choisirPoint(i) {
+    vue.mettreEnEvidence(new Set([i, ...voisins[i]]), new Set(liensDe[i]));
+    const n = noeuds[i];
+    const liste = [...voisins[i]].sort((a, b) => ORDRE_TYPES.indexOf(noeuds[a].t) - ORDRE_TYPES.indexOf(noeuds[b].t)
+      || noeuds[a].nom.localeCompare(noeuds[b].nom, LOCALE));
+    const nom = document.createElement('strong');
+    nom.textContent = n.nom;
+    const precision = n.t === 'but' ? TYPES.but : `${TYPES[n.t]}, ${nomsCommunautes.get(n.k)}`;
+    info.replaceChildren(nom, ` (${precision}) — `
+      + t(`${liste.length} lien${liste.length > 1 ? 's' : ''} : `, `${liste.length} link${liste.length > 1 ? 's' : ''}: `)
+      + liste.map((v) => noeuds[v].nom).join(', '));
   }
-
-  scene.addEventListener('wheel', (e) => {
-    if (!svg) return;
-    e.preventDefault();
-    zoomer(Math.exp(e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015)), versSvg(e.clientX, e.clientY));
-  }, { passive: false });
-
-  // Glisser à un doigt (ou à la souris), pincer à deux doigts ; un appui sans bouger = un clic
-  const pointeurs = new Map();
-  let parcours = 0;
-  let ecartPrecedent = 0;
-  let cibleAppui = null;  // élément touché à l'appui (ensuite, la capture redirige tout vers la scène)
-  scene.addEventListener('pointerdown', (e) => {
-    if (!svg) return;
-    cibleAppui = e.target;
-    scene.setPointerCapture(e.pointerId);
-    pointeurs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pointeurs.size === 1) parcours = 0;
-    if (pointeurs.size === 2) ecartPrecedent = ecart();
+  function filtrer(k) {
+    const membres = new Set(noeuds.flatMap((n, i) => (n.k === k ? [i] : [])));
+    const actifs = new Set(liens.flatMap((l, i) => (membres.has(l.a) && membres.has(l.b) ? [i] : [])));
+    vue.mettreEnEvidence(membres, actifs);
+    verrou = `communauté:${k}`;
+    pucesDialogue.querySelectorAll('.nuage-puce').forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.communaute === k)));
+    const nom = document.createElement('strong');
+    nom.textContent = nomsCommunautes.get(k);
+    info.replaceChildren(nom, t(` : ${membres.size} éléments, `, `: ${membres.size} items, `)
+      + [...membres].map((m) => noeuds[m].nom).sort((a, b) => a.localeCompare(b, LOCALE)).join(', '));
+  }
+  pucesDialogue.addEventListener('click', (e) => {
+    const puce = e.target.closest('.nuage-puce');
+    if (!puce || !vue) return;
+    if (puce.getAttribute('aria-pressed') === 'true') effacer(); else filtrer(puce.dataset.communaute);
   });
-  function ecart() {
-    const [a, b] = [...pointeurs.values()];
-    return Math.hypot(a.x - b.x, a.y - b.y);
-  }
+
+  // Glisser = tourner (avec élan), pincer = zoomer, appui sans bouger = choisir un point
+  const pointeurs = new Map();
+  let parcours = 0, ecartPrecedent = 0;
+  const ecart = () => { const [a, b] = [...pointeurs.values()]; return Math.hypot(a.x - b.x, a.y - b.y); };
+  scene.addEventListener('pointerdown', (e) => {
+    if (!vue) return;
+    scene.setPointerCapture(e.pointerId);
+    pointeurs.set(e.pointerId, { x: e.clientX, y: e.clientY, t: e.timeStamp });
+    if (pointeurs.size === 1) { parcours = 0; vue.vTheta = vue.vPhi = 0; }
+    if (pointeurs.size === 2) ecartPrecedent = ecart();
+    vue.glisse = true;
+  });
   scene.addEventListener('pointermove', (e) => {
+    if (!vue) return;
     const avant = pointeurs.get(e.pointerId);
     if (!avant) {                                   // simple survol à la souris
-      if (e.pointerType === 'mouse' && !verrou) survoler(e.target);
+      if (e.pointerType === 'mouse' && !verrou) {
+        const i = vue.pointSous(e.clientX, e.clientY);
+        if (i >= 0) choisirPoint(i); else if (vue.selection) effacer();
+      }
       return;
     }
     const dx = e.clientX - avant.x, dy = e.clientY - avant.y;
-    pointeurs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const dt = Math.max(1, e.timeStamp - avant.t);
+    pointeurs.set(e.pointerId, { x: e.clientX, y: e.clientY, t: e.timeStamp });
     parcours += Math.hypot(dx, dy);
-    if (pointeurs.size === 1) {
-      if (parcours > 6) { scene.classList.add('glisse'); deplacer(dx, dy); }
+    if (pointeurs.size === 1 && parcours > 6) {
+      scene.classList.add('glisse');
+      const k = 0.0085;
+      vue.theta += dx * k;
+      vue.phi = Math.max(-1.3, Math.min(1.3, vue.phi + dy * k));
+      vue.vTheta = (dx * k) / dt * 0.8;
+      vue.vPhi = (dy * k) / dt * 0.8;
+      vue.sale = true;
     } else if (pointeurs.size === 2) {
-      const [a, b] = [...pointeurs.values()];
       const nouvelEcart = ecart();
-      if (ecartPrecedent > 0) zoomer(ecartPrecedent / nouvelEcart, versSvg((a.x + b.x) / 2, (a.y + b.y) / 2));
+      if (ecartPrecedent > 0) vue.zoomer(nouvelEcart / ecartPrecedent);
       ecartPrecedent = nouvelEcart;
       parcours = Infinity;                          // un pincement n'est jamais un clic
     }
   });
   function relacher(e) {
-    if (!pointeurs.delete(e.pointerId)) return;
-    if (pointeurs.size === 0) {
-      scene.classList.remove('glisse');
-      if (parcours <= 6 && e.type === 'pointerup') cliquer(cibleAppui);
+    if (!pointeurs.delete(e.pointerId) || !vue) return;
+    if (pointeurs.size) return;
+    scene.classList.remove('glisse');
+    vue.glisse = false;
+    vue.repos = 2500;                               // la rotation automatique reprend un peu plus tard
+    if (parcours <= 6 && e.type === 'pointerup') {
+      const i = vue.pointSous(e.clientX, e.clientY);
+      if (i >= 0 && verrou !== i) { verrou = i; choisirPoint(i); } else effacer();
     }
   }
   scene.addEventListener('pointerup', relacher);
   scene.addEventListener('pointercancel', relacher);
-  scene.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !verrou && pointeurs.size === 0) effacer(); });
+  scene.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !verrou && !pointeurs.size && vue?.selection) effacer(); });
+  scene.addEventListener('wheel', (e) => {
+    if (!vue) return;
+    e.preventDefault();
+    vue.zoomer(Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015)));
+  }, { passive: false });
 
-  // --- 4. Mise en évidence d'un point, d'une communauté ---
-  function marquer(ensemble, lienActif) {
-    svg.classList.add('a-selection');
-    svg.querySelectorAll('[data-id]').forEach((e) => e.classList.toggle('actif', ensemble.has(e.dataset.id)));
-    svg.querySelectorAll('.l').forEach((l) => l.classList.toggle('actif', lienActif(l)));
-  }
-  function effacer() {
-    verrou = null;
-    if (svg) {
-      svg.classList.remove('a-selection');
-      svg.querySelectorAll('.actif').forEach((e) => e.classList.remove('actif'));
-    }
-    pucesDialogue.querySelectorAll('.nuage-puce').forEach((p) => p.setAttribute('aria-pressed', 'false'));
-    info.textContent = infoDefaut;
-  }
-  function decrire(id) {
-    const liste = [...(voisins.get(id) || [])]
-      .sort((a, b) => ORDRE_TYPES.indexOf(familles.get(a)) - ORDRE_TYPES.indexOf(familles.get(b))
-        || noms.get(a).localeCompare(noms.get(b), LOCALE));
-    const nom = document.createElement('strong');
-    nom.textContent = noms.get(id);
-    const famille = familles.get(id);
-    const precision = famille === 'but' ? TYPES.but : `${TYPES[famille]}, ${nomsCommunautes.get(communautes.get(id))}`;
-    info.replaceChildren(nom, ` (${precision}) — `
-      + t(`${liste.length} lien${liste.length > 1 ? 's' : ''} : `, `${liste.length} link${liste.length > 1 ? 's' : ''}: `)
-      + liste.map((v) => noms.get(v)).join(', '));
-  }
-  function choisirPoint(id) {
-    const proches = new Set([id, ...(voisins.get(id) || [])]);
-    marquer(proches, (l) => l.dataset.a === id || l.dataset.b === id);
-    decrire(id);
-  }
-  function filtrer(k, verrouiller) {
-    const membres = new Set([...communautes].filter(([, c]) => c === k).map(([id]) => id));
-    marquer(membres, (l) => membres.has(l.dataset.a) && membres.has(l.dataset.b));
-    pucesDialogue.querySelectorAll('.nuage-puce').forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.communaute === k)));
-    const nom = document.createElement('strong');
-    nom.textContent = nomsCommunautes.get(k);
-    info.replaceChildren(nom, t(` : ${membres.size} éléments, `, `: ${membres.size} items, `)
-      + [...membres].sort((a, b) => noms.get(a).localeCompare(noms.get(b), LOCALE)).map((m) => noms.get(m)).join(', '));
-    if (verrouiller) verrou = `communauté:${k}`;
-  }
-  const idSous = (cible) => cible.closest?.('[data-id]')?.dataset.id;
-  function survoler(cible) {
-    const id = idSous(cible);
-    if (id) choisirPoint(id); else if (svg?.classList.contains('a-selection')) effacer();
-  }
-  function cliquer(cible) {
-    const id = idSous(cible);
-    if (id && verrou !== id) { verrou = id; choisirPoint(id); } else effacer();
-  }
-  pucesDialogue.addEventListener('click', (e) => {
-    const puce = e.target.closest('.nuage-puce');
-    if (!puce) return;
-    if (puce.getAttribute('aria-pressed') === 'true') effacer(); else filtrer(puce.dataset.communaute, true);
-  });
-
-  // --- 5. Boutons et clavier ---
+  // Boutons et clavier
+  const tourner = (dt, dp) => { vue.theta += dt; vue.phi = Math.max(-1.3, Math.min(1.3, vue.phi + dp)); vue.repos = 2500; vue.sale = true; };
   const actions = {
-    plus: () => zoomer(1 / 1.4),
-    moins: () => zoomer(1.4),
-    recentrer: () => { vue = { ...depart }; cadrer(); },
+    plus: () => vue.zoomer(1.3),
+    moins: () => vue.zoomer(1 / 1.3),
+    recentrer: () => vue.recentrer(),
     tout: () => effacer(),
+    pause: () => {
+      vue.enPause = !vue.enPause;
+      boutonPauseDialogue.setAttribute('aria-pressed', String(vue.enPause));
+      vue.sale = true;
+    },
     etiquettes: () => {
-      const toutes = svg.classList.toggle('etiquettes-reduites');
-      boutonEtiquettes.setAttribute('aria-pressed', String(!toutes));
+      vue.etiquettesReduites = !vue.etiquettesReduites;
+      boutonEtiquettes.setAttribute('aria-pressed', String(!vue.etiquettesReduites));
+      vue.sale = true;
     },
     fermer: () => dialogue.close(),
   };
-  dialogue.querySelectorAll('[data-nuage]').forEach((b) => b.addEventListener('click', () => svg && actions[b.dataset.nuage]()));
+  dialogue.querySelectorAll('[data-nuage]').forEach((b) => b.addEventListener('click', () => vue && actions[b.dataset.nuage]()));
   dialogue.addEventListener('keydown', (e) => {
-    if (!svg || e.altKey || e.ctrlKey || e.metaKey) return;
-    const pas = Math.min(scene.clientWidth, scene.clientHeight) * 0.12;
+    if (!vue || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === ' ' && e.target.closest('button')) return;   // la barre d'espace garde son rôle sur un bouton
     const touches = {
-      '+': actions.plus, '=': actions.plus, '-': actions.moins, '0': actions.recentrer,
-      ArrowLeft: () => deplacer(pas, 0), ArrowRight: () => deplacer(-pas, 0),
-      ArrowUp: () => deplacer(0, pas), ArrowDown: () => deplacer(0, -pas),
+      '+': actions.plus, '=': actions.plus, '-': actions.moins, '0': actions.recentrer, ' ': actions.pause,
+      ArrowLeft: () => tourner(-0.15, 0), ArrowRight: () => tourner(0.15, 0),
+      ArrowUp: () => tourner(0, -0.12), ArrowDown: () => tourner(0, 0.12),
     };
     if (touches[e.key]) { e.preventDefault(); touches[e.key](); }
   });
