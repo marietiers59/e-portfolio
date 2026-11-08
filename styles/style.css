@@ -332,10 +332,11 @@ abbr[title] { text-decoration: none; cursor: help; }
   border-radius: 999px;
   text-decoration: none;
 }
-.langue-drapeau {
+.langue-drapeau {                     /* les deux drapeaux au même format 3:2 (l'Union Jack, en 2:1, est recadré) */
   display: block;
+  width: 1.5rem;
   height: 1rem;
-  width: auto;
+  object-fit: cover;
   border-radius: 0.2rem;
   box-shadow: 0 0 0 1px hsl(var(--ombre-teinte) / 0.15);
   opacity: 0.45;
