@@ -456,7 +456,7 @@ if (outilsProjets) {
 // Sur <time datetime="2027-04-26" data-calendrier>…</time> : au survol ou au focus, le mois s'affiche
 // avec le jour de début mis en valeur et la période de stage colorée, sur tous les mois concernés :
 //  · durée minimale (8 semaines) : du jour de début au samedi de la 8e semaine (dimanche exclu) ;
-//  · prolongation possible (semaines 9 et 10), dans un ton plus clair : jusqu'au samedi de la 10e semaine.
+//  · prolongation possible, dans un ton plus clair : du dimanche qui suit la 8e semaine au samedi de la 10e semaine.
 //    Durées réglables avec data-semaines="8-10" sur la balise <time> (8 et 10 par défaut).
 //  · une petite colonne à gauche numérote les semaines de stage (1 → 10).
 //  · Il reste ouvert tant que le curseur est sur la date OU sur le calendrier, et disparaît
@@ -478,7 +478,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   const finMin = samediSemaine(semMin);
   const finMax = samediSemaine(semMax || semMin);
   const lundiDebut = new Date(annee, mois - 1, jour - jourSemaineCible);   // lundi de la 1re semaine de stage
-  const debutProlongation = new Date(finMin.getFullYear(), finMin.getMonth(), finMin.getDate() + 2);   // lundi suivant (dimanche exclu)
+  const debutProlongation = new Date(finMin.getFullYear(), finMin.getMonth(), finMin.getDate() + 1);   // dimanche suivant : il ouvre la prolongation
   const finCourte = (d) => d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'long' });
 
   const bulle = document.createElement('div');
