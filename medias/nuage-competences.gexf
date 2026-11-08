@@ -1,0 +1,1201 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<gexf xmlns="http://gexf.net/1.3" version="1.3" xmlns:viz="http://gexf.net/1.3/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://gexf.net/1.3 http://gexf.net/1.3/gexf.xsd">
+  <meta lastmodifieddate="2026-11-09">
+    <creator>Apache NetBeans Platform Dev (Build {0})</creator>
+    <title></title>
+    <description></description>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static">
+    <attributes class="node" mode="static">
+      <attribute id="type" title="type" type="string"/>
+      <attribute id="label_en" title="label_en" type="string"/>
+      <attribute id="modularity_class" title="Modularity Class" type="integer">
+        <default>0</default>
+      </attribute>
+    </attributes>
+    <nodes>
+      <node id="c1" label="Réaliser">
+        <attvalues>
+          <attvalue for="type" value="but"/>
+          <attvalue for="label_en" value="Develop"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="99.99999"/>
+        <viz:position x="-2.6822615" y="0.39770415"/>
+      </node>
+      <node id="c6" label="Collaborer">
+        <attvalues>
+          <attvalue for="type" value="but"/>
+          <attvalue for="label_en" value="Collaborate"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="80.452484"/>
+        <viz:position x="319.86435" y="-156.31856"/>
+      </node>
+      <node id="c2" label="Optimiser">
+        <attvalues>
+          <attvalue for="type" value="but"/>
+          <attvalue for="label_en" value="Optimise"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="65.596375"/>
+        <viz:position x="-37.904747" y="233.11441"/>
+      </node>
+      <node id="c3" label="Administrer">
+        <attvalues>
+          <attvalue for="type" value="but"/>
+          <attvalue for="label_en" value="Administer"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="65.596375"/>
+        <viz:position x="-263.29126" y="271.81906"/>
+      </node>
+      <node id="c4" label="Gérer les données">
+        <attvalues>
+          <attvalue for="type" value="but"/>
+          <attvalue for="label_en" value="Manage data"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="58.73303"/>
+        <viz:position x="-262.84625" y="-80.65031"/>
+      </node>
+      <node id="afpa-test" label="AFPA test logiciel">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="AFPA software testing"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="51.60905"/>
+        <viz:position x="229.98764" y="262.81702"/>
+      </node>
+      <node id="c5" label="Conduire un projet">
+        <attvalues>
+          <attvalue for="type" value="but"/>
+          <attvalue for="label_en" value="Lead a project"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="51.0009"/>
+        <viz:position x="249.71954" y="-23.804363"/>
+      </node>
+      <node id="qualite" label="Qualité et tests">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Quality and testing"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="49.263348"/>
+        <viz:position x="98.40349" y="249.97826"/>
+      </node>
+      <node id="afpa-dev" label="AFPA développement">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="AFPA development"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="46.83077"/>
+        <viz:position x="-186.96779" y="-245.31992"/>
+      </node>
+      <node id="byclowatt" label="BycloWatt">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="BycloWatt"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="44.224434"/>
+        <viz:position x="116.773506" y="-259.18503"/>
+      </node>
+      <node id="web" label="Développement web">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Web development"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="38.75113"/>
+        <viz:position x="-97.824265" y="-177.52931"/>
+      </node>
+      <node id="fractalens" label="FractaLens">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="FractaLens"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="38.75113"/>
+        <viz:position x="218.06577" y="82.27314"/>
+      </node>
+      <node id="otaku" label="Otaku List">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Otaku List"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="35.79728"/>
+        <viz:position x="138.19373" y="-141.19278"/>
+      </node>
+      <node id="ceportfolio" label="Ce portfolio">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="This portfolio"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="35.79728"/>
+        <viz:position x="61.1433" y="-171.75215"/>
+      </node>
+      <node id="bdd" label="Bases de données">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Databases"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="32.5828"/>
+        <viz:position x="-309.97598" y="-188.54248"/>
+      </node>
+      <node id="com" label="Communication">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Communication"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="32.5828"/>
+        <viz:position x="230.6388" y="-255.0537"/>
+      </node>
+      <node id="java" label="Java">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Java"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="32.5828"/>
+        <viz:position x="150.90308" y="-2.257607"/>
+      </node>
+      <node id="python" label="Python">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Python"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="32.5828"/>
+        <viz:position x="-124.66904" y="102.66629"/>
+      </node>
+      <node id="caisse" label="Caisse de food-truck">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Food-truck till"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="32.5828"/>
+        <viz:position x="-284.76495" y="40.276527"/>
+      </node>
+      <node id="ihm" label="Interfaces (IHM)">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="User interfaces"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="29.194574"/>
+        <viz:position x="-139.48384" y="-68.69252"/>
+      </node>
+      <node id="gestion" label="Gestion de projet">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Project management"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="29.194574"/>
+        <viz:position x="347.92032" y="88.25504"/>
+      </node>
+      <node id="html" label="HTML">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="HTML"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="29.194574"/>
+        <viz:position x="16.887728" y="-261.3109"/>
+      </node>
+      <node id="space" label="Space Invaders">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Space Invaders"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="29.194574"/>
+        <viz:position x="137.8654" y="68.255646"/>
+      </node>
+      <node id="os" label="Systèmes d'exploitation">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Operating systems"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="-314.14655" y="407.74918"/>
+      </node>
+      <node id="css" label="CSS">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="CSS"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="-44.69317" y="-296.4742"/>
+      </node>
+      <node id="git" label="Git">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Git"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="188.34421" y="-84.52253"/>
+      </node>
+      <node id="toutpetits" label="Carte des tout-petits">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Toddler Map"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="-180.67017" y="-152.31223"/>
+      </node>
+      <node id="geocodage" label="Géocodage Flask">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Geocoding with Flask"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="-190.87476" y="72.525314"/>
+      </node>
+      <node id="netsim" label="Labo netsim">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="netsim lab"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="-361.7301" y="359.19156"/>
+      </node>
+      <node id="sante" label="Centre Santé Bien-Être">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Centre Santé Bien-Être"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="129.6256" y="-67.75755"/>
+      </node>
+      <node id="basedonnees" label="Base de données">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Database"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="-382.71103" y="-64.02719"/>
+      </node>
+      <node id="worldline" label="Mission Worldline">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Worldline assignment"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="25.458824"/>
+        <viz:position x="340.83463" y="-1.9933187"/>
+      </node>
+      <node id="algo" label="Algorithmique">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Algorithms"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-63.807373" y="133.067"/>
+      </node>
+      <node id="poo" label="Programmation objet">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Object-oriented programming"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-44.19596" y="-129.14807"/>
+      </node>
+      <node id="js" label="JavaScript">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="JavaScript"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-43.584633" y="-240.24237"/>
+      </node>
+      <node id="php" label="PHP">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="PHP"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-96.88124" y="-251.8375"/>
+      </node>
+      <node id="javafx" label="JavaFX">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="JavaFX"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-142.13144" y="37.209663"/>
+      </node>
+      <node id="gradle" label="Gradle">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Gradle"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="132.96736" y="139.78966"/>
+      </node>
+      <node id="jupyter" label="Jupyter">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Jupyter"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-236.4266" y="112.311066"/>
+      </node>
+      <node id="voix" label="Voix en image">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Voice to Image"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="73.6297" y="121.20481"/>
+      </node>
+      <node id="buxton" label="Les Amis de Buxton">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Les Amis de Buxton"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="2.8444562" y="-202.09285"/>
+      </node>
+      <node id="scripts" label="Scripts réseau">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Network scripts"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-421.921" y="362.44867"/>
+      </node>
+      <node id="sae102" label="SAÉ 1.02 algorithmes">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Project 1.02 algorithms"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="21.375565"/>
+        <viz:position x="-117.817444" y="166.681"/>
+      </node>
+      <node id="archi" label="Architecture">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Computer architecture"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-150.52786" y="269.25684"/>
+      </node>
+      <node id="bash" label="Bash">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Bash"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-365.2067" y="430.28534"/>
+      </node>
+      <node id="sql" label="SQL">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="SQL"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-366.97574" y="-208.44446"/>
+      </node>
+      <node id="laravel" label="Laravel">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Laravel"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-0.23768082" y="-148.03534"/>
+      </node>
+      <node id="react" label="React">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="React"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-102.78812" y="-112.762566"/>
+      </node>
+      <node id="flask" label="Flask">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Flask"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-185.70268" y="3.0507374"/>
+      </node>
+      <node id="postgresql" label="PostgreSQL">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="PostgreSQL"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-355.13266" y="-110.69626"/>
+      </node>
+      <node id="api" label="API REST">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="REST API"/>
+          <attvalue for="modularity_class" value="4"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-185.76213" y="-37.660847"/>
+      </node>
+      <node id="gitlab" label="GitLab">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="GitLab"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="207.32906" y="-130.87529"/>
+      </node>
+      <node id="cicd" label="CI/CD">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="CI/CD"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="10.381601" y="320.9474"/>
+      </node>
+      <node id="linux" label="Linux">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Linux"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-399.9862" y="407.3733"/>
+      </node>
+      <node id="tcpip" label="TCP/IP">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="TCP/IP"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-402.71637" y="313.8919"/>
+      </node>
+      <node id="junit" label="JUnit">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="JUnit"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="183.93234" y="182.27899"/>
+      </node>
+      <node id="jira" label="Jira">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Jira"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="321.70306" y="141.60199"/>
+      </node>
+      <node id="merise" label="Merise">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Merise"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-362.97357" y="-158.68005"/>
+      </node>
+      <node id="uml" label="UML">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="UML"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-31.04319" y="-171.40517"/>
+      </node>
+      <node id="mvc" label="MVC">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="MVC"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-141.2998" y="-121.72392"/>
+      </node>
+      <node id="audiovideo" label="Audio, vidéo">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Audio, video"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="174.91469" y="-195.29492"/>
+      </node>
+      <node id="todolist" label="ToDoList+">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="ToDoList+"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="28.955036" y="140.72617"/>
+      </node>
+      <node id="resumecv" label="resumeCV">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="resumeCV"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-145.09619" y="-12.422566"/>
+      </node>
+      <node id="pacman" label="Pac-Man">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Pac-Man"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-12.393966" y="134.482"/>
+      </node>
+      <node id="graphes-p" label="Graphes (SAÉ)">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Graphs (project)"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-171.43903" y="165.38087"/>
+      </node>
+      <node id="stats-p" label="Statistiques (SAÉ)">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Statistics (project)"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-223.5132" y="32.946724"/>
+      </node>
+      <node id="sae101" label="SAÉ 1.01 notes">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Project 1.01 grades"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="81.672646" y="-109.39831"/>
+      </node>
+      <node id="robot" label="Robot Arduino">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="Arduino robot"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="16.684162"/>
+        <viz:position x="-156.64621" y="213.9393"/>
+      </node>
+      <node id="maths" label="Mathématiques">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Mathematics"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-178.1802" y="116.276695"/>
+      </node>
+      <node id="stats" label="Statistiques">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Statistics"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-247.64813" y="2.1627934"/>
+      </node>
+      <node id="reseau" label="Réseaux">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Networking"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-357.21826" y="294.0825"/>
+      </node>
+      <node id="android" label="Android">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Android"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-218.33392" y="-8.758958"/>
+      </node>
+      <node id="mysql" label="MySQL">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="MySQL"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-292.62387" y="-254.20645"/>
+      </node>
+      <node id="mongodb" label="MongoDB">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="MongoDB"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-269.42725" y="-233.75343"/>
+      </node>
+      <node id="github" label="GitHub">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="GitHub"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="207.72142" y="-177.6786"/>
+      </node>
+      <node id="docker" label="Docker">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Docker"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-333.0799" y="142.30638"/>
+      </node>
+      <node id="kvm" label="KVM">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="KVM"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-313.2653" y="350.70053"/>
+      </node>
+      <node id="arduino" label="Arduino">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Arduino"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-154.31035" y="304.78128"/>
+      </node>
+      <node id="mockito" label="Mockito">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Mockito"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="170.2455" y="314.3722"/>
+      </node>
+      <node id="phpunit" label="PHPUnit">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="PHPUnit"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="164.57996" y="342.0701"/>
+      </node>
+      <node id="selenium" label="Selenium">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Selenium"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="192.26964" y="334.02084"/>
+      </node>
+      <node id="cypress" label="Cypress">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Cypress"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="158.94426" y="289.3056"/>
+      </node>
+      <node id="postman" label="Postman">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Postman"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="136.62228" y="341.0364"/>
+      </node>
+      <node id="xray" label="Xray">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Xray"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="142.14592" y="312.4399"/>
+      </node>
+      <node id="squash" label="Squash">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Squash"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="165.68932" y="216.85706"/>
+      </node>
+      <node id="tdd" label="TDD">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="TDD"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="113.76841" y="324.44348"/>
+      </node>
+      <node id="confluence" label="Confluence">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Confluence"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="395.2921" y="-69.4939"/>
+      </node>
+      <node id="scrum" label="Scrum">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Scrum"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="294.95908" y="97.70187"/>
+      </node>
+      <node id="cyclev" label="Cycle en V">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="V-model"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="323.4318" y="182.27812"/>
+      </node>
+      <node id="figma" label="Figma">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Figma"/>
+          <attvalue for="modularity_class" value="0"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-40.63767" y="-202.05722"/>
+      </node>
+      <node id="photoshop" label="Photoshop">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Photoshop"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="211.12967" y="-311.13885"/>
+      </node>
+      <node id="indesign" label="InDesign">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="InDesign"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="179.97102" y="-318.15457"/>
+      </node>
+      <node id="illustrator" label="Illustrator">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Illustrator"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="185.59006" y="-288.63544"/>
+      </node>
+      <node id="markdown" label="Markdown">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Markdown"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="290.49445" y="-297.2073"/>
+      </node>
+      <node id="osm" label="OpenStreetMap">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="OpenStreetMap"/>
+          <attvalue for="modularity_class" value="5"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="-252.38644" y="-184.1741"/>
+      </node>
+      <node id="anglais" label="Anglais">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="English"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="367.58344" y="-52.605473"/>
+      </node>
+      <node id="portfolio1" label="Portfolio BUT 1">
+        <attvalues>
+          <attvalue for="type" value="projet"/>
+          <attvalue for="label_en" value="BUT 1 portfolio"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="11.210863"/>
+        <viz:position x="335.0993" y="-278.40546"/>
+      </node>
+      <node id="graphes" label="Graphes">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Graph theory"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="-54.90958" y="314.191"/>
+      </node>
+      <node id="eco" label="Économie durable">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Sustainable economy"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="313.74426" y="-34.027874"/>
+      </node>
+      <node id="ppp" label="Projet professionnel">
+        <attvalues>
+          <attvalue for="type" value="notion"/>
+          <attvalue for="label_en" value="Career planning"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="235.4487" y="-204.59322"/>
+      </node>
+      <node id="cobol" label="COBOL">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="COBOL"/>
+          <attvalue for="modularity_class" value="6"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="-86.169205" y="156.09508"/>
+      </node>
+      <node id="unix" label="Unix">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Unix"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="-327.8181" y="448.8952"/>
+      </node>
+      <node id="windows" label="Windows">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Windows"/>
+          <attvalue for="modularity_class" value="3"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="-309.88977" y="450.31943"/>
+      </node>
+      <node id="trello" label="Trello">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Trello"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="395.8471" y="91.55867"/>
+      </node>
+      <node id="kanban" label="Kanban">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Kanban"/>
+          <attvalue for="modularity_class" value="2"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="390.69574" y="110.23328"/>
+      </node>
+      <node id="espagnol" label="Espagnol">
+        <attvalues>
+          <attvalue for="type" value="outil"/>
+          <attvalue for="label_en" value="Spanish"/>
+          <attvalue for="modularity_class" value="1"/>
+        </attvalues>
+        <viz:size value="4.0"/>
+        <viz:position x="412.7244" y="-200.21284"/>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="algo" target="c1" weight="2.0"/>
+      <edge id="1" source="algo" target="c2" weight="2.0"/>
+      <edge id="2" source="c1" target="poo" weight="2.0"/>
+      <edge id="3" source="c1" target="web" weight="2.0"/>
+      <edge id="4" source="c1" target="ihm" weight="2.0"/>
+      <edge id="5" source="c1" target="qualite" weight="2.0"/>
+      <edge id="6" source="c2" target="qualite" weight="2.0"/>
+      <edge id="7" source="c2" target="graphes" weight="2.0"/>
+      <edge id="8" source="c2" target="maths" weight="2.0"/>
+      <edge id="9" source="c4" target="maths" weight="2.0"/>
+      <edge id="10" source="c4" target="stats" weight="2.0"/>
+      <edge id="11" source="bdd" target="c4" weight="2.0"/>
+      <edge id="12" source="archi" target="c2" weight="2.0"/>
+      <edge id="13" source="archi" target="c3" weight="2.0"/>
+      <edge id="14" source="c3" target="os" weight="2.0"/>
+      <edge id="15" source="c3" target="reseau" weight="2.0"/>
+      <edge id="16" source="c5" target="gestion" weight="2.0"/>
+      <edge id="17" source="c5" target="eco" weight="2.0"/>
+      <edge id="18" source="c5" target="com" weight="2.0"/>
+      <edge id="19" source="c6" target="com" weight="2.0"/>
+      <edge id="20" source="c6" target="ppp" weight="2.0"/>
+      <edge id="21" source="java" target="poo" weight="1.5"/>
+      <edge id="22" source="algo" target="python" weight="1.5"/>
+      <edge id="23" source="bash" target="os" weight="1.5"/>
+      <edge id="24" source="html" target="web" weight="1.5"/>
+      <edge id="25" source="css" target="web" weight="1.5"/>
+      <edge id="26" source="js" target="web" weight="1.5"/>
+      <edge id="27" source="php" target="web" weight="1.5"/>
+      <edge id="28" source="bdd" target="sql" weight="1.5"/>
+      <edge id="29" source="algo" target="cobol" weight="1.5"/>
+      <edge id="30" source="laravel" target="web" weight="1.5"/>
+      <edge id="31" source="react" target="web" weight="1.5"/>
+      <edge id="32" source="ihm" target="react" weight="1.5"/>
+      <edge id="33" source="flask" target="web" weight="1.5"/>
+      <edge id="34" source="ihm" target="javafx" weight="1.5"/>
+      <edge id="35" source="android" target="ihm" weight="1.5"/>
+      <edge id="36" source="bdd" target="mysql" weight="1.5"/>
+      <edge id="37" source="bdd" target="postgresql" weight="1.5"/>
+      <edge id="38" source="bdd" target="mongodb" weight="1.5"/>
+      <edge id="39" source="api" target="web" weight="1.5"/>
+      <edge id="40" source="c6" target="git" weight="1.5"/>
+      <edge id="41" source="c6" target="github" weight="1.5"/>
+      <edge id="42" source="c6" target="gitlab" weight="1.5"/>
+      <edge id="43" source="c3" target="docker" weight="1.5"/>
+      <edge id="44" source="cicd" target="qualite" weight="1.5"/>
+      <edge id="45" source="c3" target="cicd" weight="1.5"/>
+      <edge id="46" source="gradle" target="qualite" weight="1.5"/>
+      <edge id="47" source="c3" target="kvm" weight="1.5"/>
+      <edge id="48" source="linux" target="os" weight="1.5"/>
+      <edge id="49" source="os" target="unix" weight="1.5"/>
+      <edge id="50" source="os" target="windows" weight="1.5"/>
+      <edge id="51" source="reseau" target="tcpip" weight="1.5"/>
+      <edge id="52" source="archi" target="arduino" weight="1.5"/>
+      <edge id="53" source="jupyter" target="stats" weight="1.5"/>
+      <edge id="54" source="junit" target="qualite" weight="1.5"/>
+      <edge id="55" source="mockito" target="qualite" weight="1.5"/>
+      <edge id="56" source="phpunit" target="qualite" weight="1.5"/>
+      <edge id="57" source="qualite" target="selenium" weight="1.5"/>
+      <edge id="58" source="cypress" target="qualite" weight="1.5"/>
+      <edge id="59" source="postman" target="qualite" weight="1.5"/>
+      <edge id="60" source="qualite" target="xray" weight="1.5"/>
+      <edge id="61" source="qualite" target="squash" weight="1.5"/>
+      <edge id="62" source="qualite" target="tdd" weight="1.5"/>
+      <edge id="63" source="gestion" target="jira" weight="1.5"/>
+      <edge id="64" source="c6" target="confluence" weight="1.5"/>
+      <edge id="65" source="gestion" target="trello" weight="1.5"/>
+      <edge id="66" source="gestion" target="scrum" weight="1.5"/>
+      <edge id="67" source="gestion" target="kanban" weight="1.5"/>
+      <edge id="68" source="cyclev" target="gestion" weight="1.5"/>
+      <edge id="69" source="bdd" target="merise" weight="1.5"/>
+      <edge id="70" source="poo" target="uml" weight="1.5"/>
+      <edge id="71" source="mvc" target="poo" weight="1.5"/>
+      <edge id="72" source="ihm" target="mvc" weight="1.5"/>
+      <edge id="73" source="figma" target="ihm" weight="1.5"/>
+      <edge id="74" source="com" target="photoshop" weight="1.5"/>
+      <edge id="75" source="com" target="indesign" weight="1.5"/>
+      <edge id="76" source="com" target="illustrator" weight="1.5"/>
+      <edge id="77" source="audiovideo" target="com" weight="1.5"/>
+      <edge id="78" source="com" target="markdown" weight="1.5"/>
+      <edge id="79" source="bdd" target="osm" weight="1.5"/>
+      <edge id="80" source="anglais" target="c6" weight="1.5"/>
+      <edge id="81" source="c6" target="espagnol" weight="1.5"/>
+      <edge id="82" source="laravel" target="otaku"/>
+      <edge id="83" source="otaku" target="php"/>
+      <edge id="84" source="gitlab" target="otaku"/>
+      <edge id="85" source="git" target="otaku"/>
+      <edge id="86" source="c1" target="otaku"/>
+      <edge id="87" source="c4" target="otaku"/>
+      <edge id="88" source="c5" target="otaku"/>
+      <edge id="89" source="c6" target="otaku"/>
+      <edge id="90" source="java" target="space"/>
+      <edge id="91" source="gitlab" target="space"/>
+      <edge id="92" source="git" target="space"/>
+      <edge id="93" source="c1" target="space"/>
+      <edge id="94" source="c2" target="space"/>
+      <edge id="95" source="c6" target="space"/>
+      <edge id="96" source="python" target="voix"/>
+      <edge id="97" source="audiovideo" target="voix"/>
+      <edge id="98" source="c1" target="voix"/>
+      <edge id="99" source="c2" target="voix"/>
+      <edge id="100" source="laravel" target="toutpetits"/>
+      <edge id="101" source="php" target="toutpetits"/>
+      <edge id="102" source="osm" target="toutpetits"/>
+      <edge id="103" source="c1" target="toutpetits"/>
+      <edge id="104" source="c4" target="toutpetits"/>
+      <edge id="105" source="fractalens" target="java"/>
+      <edge id="106" source="fractalens" target="gradle"/>
+      <edge id="107" source="fractalens" target="junit"/>
+      <edge id="108" source="fractalens" target="scrum"/>
+      <edge id="109" source="fractalens" target="git"/>
+      <edge id="110" source="c1" target="fractalens"/>
+      <edge id="111" source="c2" target="fractalens"/>
+      <edge id="112" source="c5" target="fractalens"/>
+      <edge id="113" source="c6" target="fractalens"/>
+      <edge id="114" source="geocodage" target="python"/>
+      <edge id="115" source="flask" target="geocodage"/>
+      <edge id="116" source="api" target="geocodage"/>
+      <edge id="117" source="c1" target="geocodage"/>
+      <edge id="118" source="c3" target="geocodage"/>
+      <edge id="119" source="android" target="caisse"/>
+      <edge id="120" source="caisse" target="flask"/>
+      <edge id="121" source="caisse" target="postgresql"/>
+      <edge id="122" source="api" target="caisse"/>
+      <edge id="123" source="c1" target="caisse"/>
+      <edge id="124" source="c3" target="caisse"/>
+      <edge id="125" source="c4" target="caisse"/>
+      <edge id="126" source="buxton" target="html"/>
+      <edge id="127" source="buxton" target="css"/>
+      <edge id="128" source="buxton" target="c1"/>
+      <edge id="129" source="buxton" target="c5"/>
+      <edge id="130" source="kvm" target="netsim"/>
+      <edge id="131" source="linux" target="netsim"/>
+      <edge id="132" source="netsim" target="tcpip"/>
+      <edge id="133" source="bash" target="netsim"/>
+      <edge id="134" source="c3" target="netsim"/>
+      <edge id="135" source="java" target="sante"/>
+      <edge id="136" source="gradle" target="sante"/>
+      <edge id="137" source="sante" target="uml"/>
+      <edge id="138" source="c1" target="sante"/>
+      <edge id="139" source="c6" target="sante"/>
+      <edge id="140" source="javafx" target="todolist"/>
+      <edge id="141" source="gradle" target="todolist"/>
+      <edge id="142" source="c1" target="todolist"/>
+      <edge id="143" source="javafx" target="resumecv"/>
+      <edge id="144" source="mvc" target="resumecv"/>
+      <edge id="145" source="c1" target="resumecv"/>
+      <edge id="146" source="javafx" target="pacman"/>
+      <edge id="147" source="java" target="pacman"/>
+      <edge id="148" source="c1" target="pacman"/>
+      <edge id="149" source="basedonnees" target="postgresql"/>
+      <edge id="150" source="basedonnees" target="sql"/>
+      <edge id="151" source="basedonnees" target="merise"/>
+      <edge id="152" source="basedonnees" target="docker"/>
+      <edge id="153" source="basedonnees" target="c4"/>
+      <edge id="154" source="bash" target="scripts"/>
+      <edge id="155" source="scripts" target="tcpip"/>
+      <edge id="156" source="linux" target="scripts"/>
+      <edge id="157" source="c3" target="scripts"/>
+      <edge id="158" source="graphes-p" target="python"/>
+      <edge id="159" source="graphes-p" target="jupyter"/>
+      <edge id="160" source="c2" target="graphes-p"/>
+      <edge id="161" source="python" target="stats-p"/>
+      <edge id="162" source="jupyter" target="stats-p"/>
+      <edge id="163" source="c4" target="stats-p"/>
+      <edge id="164" source="markdown" target="portfolio1"/>
+      <edge id="165" source="c6" target="portfolio1"/>
+      <edge id="166" source="java" target="sae102"/>
+      <edge id="167" source="python" target="sae102"/>
+      <edge id="168" source="jupyter" target="sae102"/>
+      <edge id="169" source="c2" target="sae102"/>
+      <edge id="170" source="java" target="sae101"/>
+      <edge id="171" source="html" target="sae101"/>
+      <edge id="172" source="c1" target="sae101"/>
+      <edge id="173" source="byclowatt" target="html"/>
+      <edge id="174" source="byclowatt" target="css"/>
+      <edge id="175" source="byclowatt" target="js"/>
+      <edge id="176" source="byclowatt" target="figma"/>
+      <edge id="177" source="byclowatt" target="photoshop"/>
+      <edge id="178" source="byclowatt" target="indesign"/>
+      <edge id="179" source="byclowatt" target="illustrator"/>
+      <edge id="180" source="audiovideo" target="byclowatt"/>
+      <edge id="181" source="byclowatt" target="c1"/>
+      <edge id="182" source="byclowatt" target="c5"/>
+      <edge id="183" source="byclowatt" target="c6"/>
+      <edge id="184" source="ceportfolio" target="html"/>
+      <edge id="185" source="ceportfolio" target="css"/>
+      <edge id="186" source="ceportfolio" target="js"/>
+      <edge id="187" source="ceportfolio" target="git"/>
+      <edge id="188" source="ceportfolio" target="github"/>
+      <edge id="189" source="ceportfolio" target="python"/>
+      <edge id="190" source="c1" target="ceportfolio"/>
+      <edge id="191" source="c6" target="ceportfolio"/>
+      <edge id="192" source="afpa-dev" target="html"/>
+      <edge id="193" source="afpa-dev" target="css"/>
+      <edge id="194" source="afpa-dev" target="js"/>
+      <edge id="195" source="afpa-dev" target="php"/>
+      <edge id="196" source="afpa-dev" target="react"/>
+      <edge id="197" source="afpa-dev" target="mysql"/>
+      <edge id="198" source="afpa-dev" target="mongodb"/>
+      <edge id="199" source="afpa-dev" target="sql"/>
+      <edge id="200" source="afpa-dev" target="uml"/>
+      <edge id="201" source="afpa-dev" target="merise"/>
+      <edge id="202" source="afpa-dev" target="c1"/>
+      <edge id="203" source="afpa-dev" target="c4"/>
+      <edge id="204" source="afpa-test" target="selenium"/>
+      <edge id="205" source="afpa-test" target="cypress"/>
+      <edge id="206" source="afpa-test" target="postman"/>
+      <edge id="207" source="afpa-test" target="junit"/>
+      <edge id="208" source="afpa-test" target="mockito"/>
+      <edge id="209" source="afpa-test" target="phpunit"/>
+      <edge id="210" source="afpa-test" target="jira"/>
+      <edge id="211" source="afpa-test" target="xray"/>
+      <edge id="212" source="afpa-test" target="squash"/>
+      <edge id="213" source="afpa-test" target="tdd"/>
+      <edge id="214" source="afpa-test" target="cyclev"/>
+      <edge id="215" source="afpa-test" target="cicd"/>
+      <edge id="216" source="afpa-test" target="c1"/>
+      <edge id="217" source="afpa-test" target="c2"/>
+      <edge id="218" source="jira" target="worldline"/>
+      <edge id="219" source="confluence" target="worldline"/>
+      <edge id="220" source="anglais" target="worldline"/>
+      <edge id="221" source="c1" target="worldline"/>
+      <edge id="222" source="c6" target="worldline"/>
+      <edge id="223" source="arduino" target="robot"/>
+      <edge id="224" source="c1" target="robot"/>
+      <edge id="225" source="c3" target="robot"/>
+    </edges>
+  </graph>
+</gexf>

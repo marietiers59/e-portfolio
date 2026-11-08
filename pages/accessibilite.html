@@ -18,9 +18,9 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=12">
+  <link rel="stylesheet" href="../styles/style.css?v=13">
   <script src="../scripts/rideau.js?v=2" defer></script>
-  <script src="../scripts/script.js?v=11" defer></script>
+  <script src="../scripts/script.js?v=12" defer></script>
 </head>
 
 <body id="haut">
@@ -76,7 +76,7 @@
           <section class="declaration-bloc" aria-labelledby="a11y-resultats">
             <h2 id="a11y-resultats">Résultats au 8 novembre 2026</h2>
             <ul class="chiffres">
-              <li><span class="chiffre">98,5 %</span><span class="chiffre-legende">des critères RGAA applicables respectés (64 sur 65)</span></li>
+              <li><span class="chiffre">98,5 %</span><span class="chiffre-legende">des critères RGAA applicables respectés (66 sur 67)</span></li>
               <li><span class="chiffre">0 erreur</span><span class="chiffre-legende">aux tests automatiques WCAG 2.2 A et AA (axe-core)</span></li>
               <li><span class="chiffre">100 / 100</span><span class="chiffre-legende">au score d'accessibilité Lighthouse, sur chaque page</span></li>
             </ul>
@@ -113,7 +113,7 @@
               <caption>Résultats par thématique RGAA</caption>
               <thead><tr><th scope="col">Thématique</th><th scope="col" class="nombre">Conformes</th><th scope="col" class="nombre">Non conformes</th><th scope="col" class="nombre">Non applicables</th></tr></thead>
               <tbody>
-<tr><th scope="row">1. Images</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">6</td></tr>
+<tr><th scope="row">1. Images</th><td class="nombre">5</td><td class="nombre">0</td><td class="nombre">4</td></tr>
 <tr><th scope="row">2. Cadres</th><td class="nombre">0</td><td class="nombre">0</td><td class="nombre">2</td></tr>
 <tr><th scope="row">3. Couleurs</th><td class="nombre">3</td><td class="nombre">0</td><td class="nombre">0</td></tr>
 <tr><th scope="row">4. Multimédia</th><td class="nombre">0</td><td class="nombre">0</td><td class="nombre">13</td></tr>
@@ -126,7 +126,7 @@
 <tr><th scope="row">11. Formulaires</th><td class="nombre">8</td><td class="nombre">0</td><td class="nombre">5</td></tr>
 <tr><th scope="row">12. Navigation</th><td class="nombre">6</td><td class="nombre">0</td><td class="nombre">5</td></tr>
 <tr><th scope="row">13. Consultation</th><td class="nombre">8</td><td class="nombre">1</td><td class="nombre">3</td></tr>
-<tr><th scope="row">Total</th><td class="nombre">64</td><td class="nombre">1</td><td class="nombre">41</td></tr>
+<tr><th scope="row">Total</th><td class="nombre">66</td><td class="nombre">1</td><td class="nombre">39</td></tr>
               </tbody>
             </table></div>
             <details>
@@ -135,13 +135,13 @@
                 <caption>Les 106 critères du RGAA 4.1.2</caption>
                 <thead><tr><th scope="col">Critère</th><th scope="col">Statut</th><th scope="col">Remarque</th></tr></thead>
                 <tbody>
-<tr><th scope="row">1.1</th><td class="statut-c">conforme</td><td>Le portrait a une alternative ; les autres images sont décoratives.</td></tr>
+<tr><th scope="row">1.1</th><td class="statut-c">conforme</td><td>Portrait et nuage de compétences ont une alternative ; les autres images sont décoratives.</td></tr>
 <tr><th scope="row">1.2</th><td class="statut-c">conforme</td><td>Images décoratives : alt vide ; icônes SVG : aria-hidden.</td></tr>
-<tr><th scope="row">1.3</th><td class="statut-c">conforme</td><td>« Portrait de Marie Tiers, souriante ».</td></tr>
+<tr><th scope="row">1.3</th><td class="statut-c">conforme</td><td>« Portrait de Marie Tiers, souriante » ; nuage décrit par son intitulé.</td></tr>
 <tr><th scope="row">1.4</th><td class="statut-na">non applicable</td><td>Aucun CAPTCHA image.</td></tr>
 <tr><th scope="row">1.5</th><td class="statut-na">non applicable</td><td>Aucun CAPTCHA actif à la date de l&#x27;audit.</td></tr>
-<tr><th scope="row">1.6</th><td class="statut-na">non applicable</td><td>Aucune image ne nécessite de description détaillée.</td></tr>
-<tr><th scope="row">1.7</th><td class="statut-na">non applicable</td><td>Idem 1.6.</td></tr>
+<tr><th scope="row">1.6</th><td class="statut-c">conforme</td><td>Nuage de compétences : version texte dépliable juste en dessous.</td></tr>
+<tr><th scope="row">1.7</th><td class="statut-c">conforme</td><td>La version texte reprend chaque groupe et ses éléments.</td></tr>
 <tr><th scope="row">1.8</th><td class="statut-na">non applicable</td><td>Aucune image texte porteuse d&#x27;information.</td></tr>
 <tr><th scope="row">1.9</th><td class="statut-na">non applicable</td><td>Aucune légende d&#x27;image.</td></tr>
 <tr><th scope="row">2.1</th><td class="statut-na">non applicable</td><td>Aucun cadre (iframe).</td></tr>
