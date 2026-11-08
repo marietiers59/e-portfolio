@@ -18,7 +18,7 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=13">
+  <link rel="stylesheet" href="../styles/style.css?v=15">
   <script src="../scripts/rideau.js?v=2" defer></script>
   <script src="../scripts/script.js?v=12" defer></script>
 </head>
@@ -449,8 +449,8 @@
               <div class="carte-deploiement">
                 <div class="carte-deploiement-interieur">
                   <div class="carte-texte">
-                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">PostgreSQL</li><li class="tag tag-techno">Merise</li><li class="tag tag-techno">Docker</li></ul>
-                    <p class="carte-resume">Base <strong class="kw">PostgreSQL</strong> sur l'emploi modélisée en Merise, normalisée en 3FN puis interrogée en SQL depuis un conteneur Docker.</p>
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">PostgreSQL</li><li class="tag tag-techno">Merise</li><li class="tag tag-techno masque">Docker</li></ul>
+                    <p class="carte-resume">Base <strong class="kw">PostgreSQL</strong> sur l'emploi modélisée en Merise, normalisée en 3FN puis interrogée en SQL<span class="masque"> depuis un conteneur Docker</span>.</p>
                   </div>
                 </div>
               </div>

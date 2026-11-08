@@ -11,7 +11,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from donnees import BUT_LONG, NOTIONS
+from donnees import BUT_LONG, MASQUES, NOTIONS
 from nuage import GEPHI, IMAGE, PAGES, degres, graphe, rayon
 
 NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
@@ -175,7 +175,8 @@ def construire(langue):
         mx, my = (xa + xb) / 2, (ya + yb) / 2
         dx, dy = xb - xa, yb - ya
         qx, qy = mx - dy * 0.18, my + dx * 0.18
-        aretes.append(f'<path class="l {k[b]}" data-a="{a}" data-b="{b}" pathLength="1" stroke-width="{0.5 + 0.55 * w:.2f}" '
+        cache = " masque" if a in MASQUES or b in MASQUES else ""
+        aretes.append(f'<path class="l {k[b]}{cache}" data-a="{a}" data-b="{b}" pathLength="1" stroke-width="{0.5 + 0.55 * w:.2f}" '
                       f'd="M{xa:.1f} {ya:.1f}Q{qx:.1f} {qy:.1f} {xb:.1f} {yb:.1f}"/>')
 
     # Nœuds du centre vers l'extérieur (ordre d'apparition de l'animation), petits dessous, gros dessus
@@ -187,8 +188,8 @@ def construire(langue):
         x, y = pos[i]
         f = taille_police(r[i] / GROSSI, t)
         formes.append(forme(i, t, x, y, r[i]).replace(f'data-id="{i}"', f'data-id="{i}" data-t="{t}" style="--i:{rang[i]}"', 1)
-                      .replace('class="n', f'class="{k[i]} n', 1))
-        etiquettes.append(f'<text class="etq etq-{t} {k[i]}" data-id="{i}" x="{x:.1f}" y="{y + r[i] + ECART:.1f}" dy=".85em" '
+                      .replace('class="n', f'class="{k[i]}{" masque" if i in MASQUES else ""} n', 1))
+        etiquettes.append(f'<text class="etq etq-{t} {k[i]}{" masque" if i in MASQUES else ""}" data-id="{i}" x="{x:.1f}" y="{y + r[i] + ECART:.1f}" dy=".85em" '
                           f'font-size="{f:.1f}" style="--i:{rang[i]}">{html.escape(lib[i])}</text>')
 
     titre = ("Nuage de compétences : projets, outils et compétences du BUT informatique, regroupés en communautés"
@@ -218,7 +219,12 @@ def construire(langue):
             ms = sorted((m for m in membres[c] if noeuds[m][2] == fam), key=lambda m: (-deg[m], lib[m].lower()))
             if not ms:
                 continue
-            noms = ", ".join(marquer(BUT_LONG[m][1 if en else 0] if fam == "but" else lib[m], langue) for m in ms)
+            visibles = [m for m in ms if m not in MASQUES]
+            if not visibles:
+                continue
+            noms = ", ".join(marquer(BUT_LONG[m][1 if en else 0] if fam == "but" else lib[m], langue) for m in visibles)
+            # éléments masqués : en fin de liste, virgule comprise, pour que le texte affiché reste correct
+            noms += "".join(f'<span class="masque">, {marquer(lib[m], langue)}</span>' for m in ms if m in MASQUES)
             parties.append(f'<em>{titres_familles[fam][1 if en else 0]}</em>{" :" if not en else ":"} {noms}')
         lignes.append(f'<li><strong class="nuage-texte-nom {teinte[c]}">{html.escape(nom[c])}</strong> — ' + ("; " if en else " ; ").join(parties) + "</li>")
     texte = "\n".join(lignes)
@@ -238,7 +244,7 @@ def image_seule():
              ".l{fill:none;opacity:.45}.n{stroke:#fff;stroke-width:1.2}"
              ".n-anneau{fill:#fff!important}.n-halo{fill:none;stroke-width:2;opacity:.6}" + regles +
              "text{text-anchor:middle;fill:#2a2f3a;paint-order:stroke;stroke:#fdfcf9;stroke-width:3px;stroke-linejoin:round}"
-             ".etq-but,.etq-notion{font-weight:700}</style>")
+             ".etq-but,.etq-notion{font-weight:700}.masque{display:none}</style>")
     svg = svg.replace('class="nuage-svg"', 'xmlns:xlink="http://www.w3.org/1999/xlink"', 1)
     svg = svg.replace('preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">',
                       'preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="1600">' + style + fond, 1)

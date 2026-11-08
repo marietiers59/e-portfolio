@@ -1491,9 +1491,10 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-size: 0.95rem;
   font-weight: 700;
 }
-.competence-drapeau {
+.competence-drapeau {                 /* tous les drapeaux au même format 3:2 (l'Union Jack, en 2:1, est recadré) */
   width: 2.25rem;
-  height: auto;
+  height: 1.5rem;
+  object-fit: cover;
   margin-block: 0.25rem;
   border-radius: 0.2rem;
   box-shadow: 0 0 0 1px hsl(var(--ombre-teinte) / 0.15);
@@ -2203,3 +2204,9 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
     animation-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Éléments masqués pour l'instant ----------
+   Compétences, outils ou mentions gardés dans le code mais pas affichés (MongoDB, Docker, React, MySQL).
+   Pour réafficher l'un d'eux : retirer la classe « masque » de l'élément ;
+   pour le nuage de compétences : outils/nuage-competences/donnees.py, liste MASQUES. */
+.masque { display: none !important; }

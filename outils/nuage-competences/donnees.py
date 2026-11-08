@@ -142,3 +142,8 @@ PROJETS = {
     "worldline":   ("Mission Worldline", "Worldline assignment", ["jira", "confluence", "anglais"], ["c1", "c6"]),
     "robot":       ("Robot Arduino", "Arduino robot", ["arduino"], ["c1", "c3"]),
 }
+
+# Outils masqués pour l'instant : ils restent dans le graphe (et dans le fichier .gexf),
+# mais ne s'affichent ni sur le nuage ni dans sa version texte (classe CSS « masque »).
+# Pour en réafficher un, le retirer de cette liste puis relancer « python3 nuage.py rendu ».
+MASQUES = {"mongodb", "docker", "react", "mysql"}
