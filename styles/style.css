@@ -2170,6 +2170,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 }
 .rideau p { margin: 0; }
 .rideau-texte { font-size: 0.95rem; }
+.rideau-texte a { font-weight: 700; }   /* lien repérable autrement que par la couleur (RGAA 10.6) */
 .rideau-ligne { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 .rideau-ligne input {
   flex: 1 1 12rem;
@@ -2333,3 +2334,40 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
    Pour réafficher l'un d'eux : retirer la classe « masque » de l'élément ;
    pour le nuage de compétences : outils/nuage-competences/donnees.py, liste MASQUES. */
 .masque { display: none !important; }
+
+/* ---------- Smartphone : balayage gauche / droite entre les pages du menu (scripts/balayage.js) ---------- */
+.balayage-points { display: inline-flex; align-items: center; gap: 0.4rem; }
+.balayage-points span {
+  width: 0.45rem; height: 0.45rem;
+  border-radius: 999px;
+  background: var(--bleu-200);
+  transition: width var(--duree);
+}
+.balayage-points .actif { width: 1.1rem; background: var(--bleu-700); }
+.balayage-indice {                       /* nom de la page voisine, qui glisse depuis le bord pendant le geste */
+  position: fixed;
+  top: 50%;
+  z-index: 90;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--bleu-700);
+  font-family: var(--police-interface);
+  font-weight: 700;
+  box-shadow: var(--ombre-repos);
+  opacity: 0;
+  pointer-events: none;
+}
+.balayage-indice-gauche { left: 0.5rem;  transform: translateX(-100%); }
+.balayage-indice-droite { right: 0.5rem; transform: translateX(100%); }
+@media (pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem) {
+  body { overflow-x: clip; }             /* pas de barre de défilement horizontale pendant le glissement */
+}
+/* Arrivée après un balayage : la nouvelle page entre par le côté (attribut posé en tête de page) */
+html[data-arrivee] body > :is(header, main, footer) { animation: arrivee-droite 260ms ease-out both; }
+html[data-arrivee="gauche"] body > :is(header, main, footer) { animation-name: arrivee-gauche; }
+@keyframes arrivee-droite { from { transform: translateX(35%); opacity: 0; } }
+@keyframes arrivee-gauche { from { transform: translateX(-35%); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-arrivee] body > :is(header, main, footer) { animation: none; }
+}
