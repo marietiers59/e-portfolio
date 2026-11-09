@@ -18,7 +18,7 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=21">
+  <link rel="stylesheet" href="../styles/style.css?v=22">
   <script src="../scripts/rideau.js?v=3" defer></script>
   <script src="../scripts/script.js?v=17" defer></script>
   <script src="../scripts/contact-eggs.js?v=2" defer></script>
@@ -77,7 +77,7 @@
           <section class="declaration-bloc" aria-labelledby="a11y-resultats">
             <h2 id="a11y-resultats">Résultats au 8 novembre 2026</h2>
             <ul class="chiffres">
-              <li><span class="chiffre">98,5 %</span><span class="chiffre-legende">des critères RGAA applicables respectés (66 sur 67)</span></li>
+              <li><span class="chiffre">98,5 %</span><span class="chiffre-legende">des critères RGAA applicables respectés (67 sur 68)</span></li>
               <li><span class="chiffre">0 erreur</span><span class="chiffre-legende">aux tests automatiques WCAG 2.2 A et AA (axe-core)</span></li>
               <li><span class="chiffre">100 / 100</span><span class="chiffre-legende">au score d'accessibilité Lighthouse, sur chaque page</span></li>
             </ul>
@@ -126,8 +126,8 @@
 <tr><th scope="row">10. Présentation de l’information</th><td class="nombre">14</td><td class="nombre">0</td><td class="nombre">0</td></tr>
 <tr><th scope="row">11. Formulaires</th><td class="nombre">8</td><td class="nombre">0</td><td class="nombre">5</td></tr>
 <tr><th scope="row">12. Navigation</th><td class="nombre">6</td><td class="nombre">0</td><td class="nombre">5</td></tr>
-<tr><th scope="row">13. Consultation</th><td class="nombre">8</td><td class="nombre">1</td><td class="nombre">3</td></tr>
-<tr><th scope="row">Total</th><td class="nombre">66</td><td class="nombre">1</td><td class="nombre">39</td></tr>
+<tr><th scope="row">13. Consultation</th><td class="nombre">9</td><td class="nombre">1</td><td class="nombre">2</td></tr>
+<tr><th scope="row">Total</th><td class="nombre">67</td><td class="nombre">1</td><td class="nombre">38</td></tr>
               </tbody>
             </table></div>
             <details>
@@ -239,7 +239,7 @@
 <tr><th scope="row">13.7</th><td class="statut-c">conforme</td><td>Aucun flash.</td></tr>
 <tr><th scope="row">13.8</th><td class="statut-c">conforme</td><td>GIF animé seulement au survol ou au focus (5 s sur écran tactile) ; image fixe avec « animations réduites ».</td></tr>
 <tr><th scope="row">13.9</th><td class="statut-c">conforme</td><td>Portrait et paysage.</td></tr>
-<tr><th scope="row">13.10</th><td class="statut-na">non applicable</td><td>Aucun geste complexe.</td></tr>
+<tr><th scope="row">13.10</th><td class="statut-c">conforme</td><td>Balayage entre les pages sur smartphone : le menu offre la même navigation d'un simple appui.</td></tr>
 <tr><th scope="row">13.11</th><td class="statut-c">conforme</td><td>Actions déclenchées au relâchement.</td></tr>
 <tr><th scope="row">13.12</th><td class="statut-na">non applicable</td><td>Aucun mouvement de l&#x27;appareil.</td></tr>
                 </tbody>
