@@ -18,9 +18,9 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=20">
+  <link rel="stylesheet" href="../styles/style.css?v=21">
   <script src="../scripts/rideau.js?v=3" defer></script>
-  <script src="../scripts/script.js?v=16" defer></script>
+  <script src="../scripts/script.js?v=17" defer></script>
   <script src="../scripts/contact-eggs.js?v=2" defer></script>
 </head>
 
@@ -598,6 +598,8 @@
         <!-- nuage-donnees:fin -->
 
         <div class="competences">
+        <!-- Encarts rangés par hauteur décroissante : sur ordinateur (3 colonnes) comme sur tablette (2),
+             chaque rangée réunit des encarts de hauteur voisine (pas d'effet « dents de scie »). -->
         <section class="competences-categorie accent-indigo" aria-labelledby="cat-test">
           <h2 class="competences-titre" id="cat-test">Test et qualité</h2>
           <p class="competences-texte">Certifiée <strong class="kw">ISTQB Foundation</strong> (CTFL v4.0) : tests <strong>unitaires</strong>, <strong>d'intégration</strong>, <strong>fonctionnels</strong> et <strong>automatisés</strong>, non-régression, tests d'API et audits d'<strong>accessibilité</strong> selon les référentiels WCAG et RGAA.</p>
@@ -628,18 +630,6 @@
               <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#sql"/></svg><span class="competence-nom">SQL</span></li>
               <li class="competence"><svg class="competence-logo" style="--logo: #4169E1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#postgresql"/></svg><span class="competence-nom">PL/pgSQL</span></li>
               <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Cb</span><span class="competence-nom">COBOL</span><span class="competence-note">en cours</span></li>
-          </ul>
-        </section>
-
-        <section class="competences-categorie accent-turquoise" aria-labelledby="cat-frameworks">
-          <h2 class="competences-titre" id="cat-frameworks"><i lang="en">Frameworks</i> et bases de données</h2>
-          <p class="competences-texte">Applications <strong class="kw">Laravel</strong><span class="masque">, interfaces en <strong class="kw">React</strong></span>, bases de données relationnelles (<span class="masque"><strong>MySQL</strong>, </span><strong>PostgreSQL</strong>)<span class="masque"> et NoSQL (<strong>MongoDB</strong>)</span>.</p>
-          <ul class="competences-grille" role="list">
-              <li class="competence masque"><svg class="competence-logo" style="--logo: #61DAFB" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#react"/></svg><span class="competence-nom">React</span></li>
-              <li class="competence"><svg class="competence-logo" style="--logo: #FF2D20" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#laravel"/></svg><span class="competence-nom">Laravel</span></li>
-              <li class="competence masque"><svg class="competence-logo" style="--logo: #4479A1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mysql"/></svg><span class="competence-nom">MySQL</span></li>
-              <li class="competence"><svg class="competence-logo" style="--logo: #4169E1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#postgresql"/></svg><span class="competence-nom">PostgreSQL</span></li>
-              <li class="competence masque"><svg class="competence-logo" style="--logo: #47A248" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mongodb"/></svg><span class="competence-nom">MongoDB</span></li>
           </ul>
         </section>
 
@@ -686,16 +676,6 @@
           </ul>
         </section>
 
-        <section class="competences-categorie accent-anis" aria-labelledby="cat-creation">
-          <h2 class="competences-titre" id="cat-creation">Création graphique et multimédia</h2>
-          <p class="competences-texte">Publication assistée par ordinateur (PAO) et retouche d'images avec Photoshop et InDesign, montage audio et vidéo.</p>
-          <ul class="competences-grille" role="list">
-              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Ps</span><span class="competence-nom">Photoshop</span></li>
-              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Id</span><span class="competence-nom">InDesign</span></li>
-              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#montage"/></svg><span class="competence-nom">Audio, vidéo</span></li>
-          </ul>
-        </section>
-
         <section class="competences-categorie accent-bleu" aria-labelledby="cat-langues">
           <h2 class="competences-titre" id="cat-langues">Langues</h2>
           <p class="competences-texte"><strong>Français</strong> langue maternelle, <strong>anglais</strong> professionnel et technique (réunions quotidiennes avec les États-Unis, les Pays-Bas, la Bulgarie et l'Inde), <strong>espagnol</strong> courant, <strong>néerlandais</strong> de niveau conversationnel de base.</p>
@@ -704,6 +684,28 @@
               <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-gb.svg" alt="" width="30" height="20"><span class="competence-nom">Anglais</span></li>
               <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-es.svg" alt="" width="30" height="20"><span class="competence-nom">Espagnol</span></li>
               <li class="competence"><img class="competence-logo competence-drapeau" src="../medias/drapeau-nl.svg" alt="" width="30" height="20"><span class="competence-nom">Néerlandais</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-turquoise" aria-labelledby="cat-frameworks">
+          <h2 class="competences-titre" id="cat-frameworks"><i lang="en">Frameworks</i> et bases de données</h2>
+          <p class="competences-texte">Applications <strong class="kw">Laravel</strong><span class="masque">, interfaces en <strong class="kw">React</strong></span>, bases de données relationnelles (<span class="masque"><strong>MySQL</strong>, </span><strong>PostgreSQL</strong>)<span class="masque"> et NoSQL (<strong>MongoDB</strong>)</span>.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #61DAFB" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#react"/></svg><span class="competence-nom">React</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #FF2D20" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#laravel"/></svg><span class="competence-nom">Laravel</span></li>
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #4479A1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mysql"/></svg><span class="competence-nom">MySQL</span></li>
+              <li class="competence"><svg class="competence-logo" style="--logo: #4169E1" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#postgresql"/></svg><span class="competence-nom">PostgreSQL</span></li>
+              <li class="competence masque"><svg class="competence-logo" style="--logo: #47A248" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#mongodb"/></svg><span class="competence-nom">MongoDB</span></li>
+          </ul>
+        </section>
+
+        <section class="competences-categorie accent-anis" aria-labelledby="cat-creation">
+          <h2 class="competences-titre" id="cat-creation">Création graphique et multimédia</h2>
+          <p class="competences-texte">Publication assistée par ordinateur (PAO) et retouche d'images avec Photoshop et InDesign, montage audio et vidéo.</p>
+          <ul class="competences-grille" role="list">
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Ps</span><span class="competence-nom">Photoshop</span></li>
+              <li class="competence"><span class="competence-logo competence-mono" aria-hidden="true">Id</span><span class="competence-nom">InDesign</span></li>
+              <li class="competence"><svg class="competence-logo competence-picto" aria-hidden="true" focusable="false"><use href="../medias/logos.svg?v=2#montage"/></svg><span class="competence-nom">Audio, vidéo</span></li>
           </ul>
         </section>
         </div>

@@ -10,6 +10,7 @@
    8. Cartes déployées : la touche Échap les replie
    9. Images animées (GIF) : en mouvement seulement à la demande
   10. Nuage de compétences en 3D (page Compétences : aperçu animé, vue agrandie)
+  11. Vignettes de compétences : rangées équilibrées et centrées
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -1261,8 +1262,15 @@ document.querySelectorAll('.carte picture').forEach((image) => {
   const boutonPauseDialogue = dialogue.querySelector('[data-nuage="pause"]');
   if (!RAPPEL) boutonPauseDialogue.hidden = true;
 
+  // Bouton ou geste « retour » du navigateur / du téléphone : il doit refermer la vue agrandie,
+  // pas quitter la page. On ajoute donc une étape à l'historique à l'ouverture ; « retour » la retire
+  // (popstate → fermeture), et toute autre fermeture (bouton, Échap, voile) la retire aussi.
+  if (history.state?.nuage) history.replaceState(null, '');   // étape restée après un rechargement
+  window.addEventListener('popstate', () => { if (dialogue.open) dialogue.close(); });
+
   function ouvrir(communaute) {
     dialogue.showModal();
+    if (!history.state?.nuage) history.pushState({ nuage: true }, '');
     vue = new Vue(scene, false);
     vue.theta = apercu.theta;                  // on reprend l'angle de l'aperçu : continuité
     vue.enPause = apercu.enPause;
@@ -1277,6 +1285,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
   }));
   figure.querySelectorAll('.nuage-puce').forEach((p) => p.addEventListener('click', () => ouvrir(p.dataset.communaute)));
   dialogue.addEventListener('close', () => {
+    if (history.state?.nuage) history.back();  // fermée autrement que par « retour » : on retire l'étape
     if (!vue) return;
     suspendre(vue);
     vue.detruire();
@@ -1413,5 +1422,59 @@ document.querySelectorAll('.carte picture').forEach((image) => {
       ArrowUp: () => tourner(0, -0.12), ArrowDown: () => tourner(0, 0.12),
     };
     if (touches[e.key]) { e.preventDefault(); touches[e.key](); }
+  });
+})();
+
+/* ---------- 11. Vignettes de compétences : rangées équilibrées et centrées ---------- */
+// Pour chaque grille de vignettes (page Compétences, aperçu de l'accueil) : combien en tiennent sur
+// une ligne ? On répartit ensuite les vignettes en rangées aussi égales que possible, les plus
+// longues d'abord, chacune centrée dans la carte : 4 vignettes pour 3 places → 2 + 2 ;
+// 3 pour 2 places → 2 + 1 ; 10 pour 4 places → 4 + 3 + 3.
+// Grille en demi-colonnes (voir style.css) : la première vignette d'une rangée plus courte
+// commence une demi-colonne plus loin par vignette manquante, ce qui centre la rangée.
+// Toutes les vignettes d'une carte gardent la largeur qu'elles auraient sur une ligne pleine.
+(() => {
+  const grilles = document.querySelectorAll('.competences-grille');
+  if (!grilles.length || !('ResizeObserver' in window)) return;
+  const LARGEUR_MIN = 5.25;                    // rem : largeur minimale d'une vignette
+  const APERCU_MAX = 56;                       // rem : largeur maximale de l'aperçu de l'accueil
+
+  function equilibrer(grille) {
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const parent = grille.parentElement;
+    const styleParent = getComputedStyle(parent);
+    let dispo = parent.clientWidth - parseFloat(styleParent.paddingLeft) - parseFloat(styleParent.paddingRight);
+    if (grille.classList.contains('apercu-grille')) dispo = Math.min(dispo, APERCU_MAX * rem);
+    const ecart = 0.6 * rem;                   // même valeur que « gap » dans style.css
+    const vignettes = [...grille.children].filter((li) => getComputedStyle(li).display !== 'none');
+    const n = vignettes.length;
+    if (!n || dispo <= 0) return;
+
+    const places = Math.max(1, Math.floor((dispo + ecart) / (LARGEUR_MIN * rem + ecart)));
+    const tuile = Math.floor(((dispo - (places - 1) * ecart) / places) * 10) / 10;
+    const rangees = Math.ceil(n / places);
+    const base = Math.floor(n / rangees);
+    const enPlus = n % rangees;               // les premières rangées ont une vignette de plus
+    const parRangee = base + (enPlus ? 1 : 0);
+
+    grille.style.setProperty('--tuile', `${tuile}px`);
+    grille.style.setProperty('--colonnes', String(parRangee * 2));
+    let i = 0;
+    for (let r = 0; r < rangees; r++) {
+      const k = base + (r < enPlus ? 1 : 0);
+      vignettes.forEach((v, j) => {
+        if (j >= i && j < i + k) v.style.gridColumnStart = j === i ? String(parRangee - k + 1) : '';
+      });
+      i += k;
+    }
+    grille.classList.add('equilibree');
+  }
+
+  const observateur = new ResizeObserver((entrees) => {
+    entrees.forEach((e) => e.target.querySelectorAll(':scope > .competences-grille').forEach(equilibrer));
+  });
+  grilles.forEach((g) => {
+    equilibrer(g);
+    observateur.observe(g.parentElement);
   });
 })();

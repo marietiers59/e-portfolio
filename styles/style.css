@@ -1431,12 +1431,13 @@ abbr[title] { text-decoration: none; cursor: help; }
 
 .section-competences { background: var(--grain), var(--gris-100); }
 
-/* Cartes : une colonne sur mobile, deux sur tablette, trois sur ordinateur et TV */
+/* Cartes : une colonne sur mobile, deux sur tablette, trois sur ordinateur et TV ;
+   dans une même rangée, toutes les cartes prennent la hauteur de la plus haute */
 .competences {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 2rem);
-  align-items: start;
+  align-items: stretch;
 }
 .competences-categorie {
   padding: clamp(1.1rem, 3vw, 1.5rem);
@@ -1455,15 +1456,30 @@ abbr[title] { text-decoration: none; cursor: help; }
 .competences-texte { margin: 0 0 1rem; font-size: 0.95rem; color: var(--encre-douce); }
 .competences-texte strong:not(.kw) { color: var(--encre); }
 
-/* Vignettes : autant de colonnes que la largeur le permet */
+/* Vignettes : rangées centrées et équilibrées.
+   Sans script : rangées centrées, vignettes de largeur fixe.
+   Avec scripts/script.js (section 11) : les vignettes sont réparties en rangées aussi égales que
+   possible (4 pour 3 places → 2 + 2 ; 3 pour 2 places → 2 + 1 ; 10 pour 4 places → 4 + 3 + 3),
+   chaque rangée centrée. Grille en demi-colonnes : une vignette en occupe deux, une rangée plus
+   courte commence une demi-colonne plus loin par vignette manquante.
+   --tuile = largeur d'une vignette, --colonnes = nombre de demi-colonnes. */
 .competences-grille {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.6rem;
 }
+.competences-grille > .competence { flex: 0 0 5.6rem; min-width: 0; }
+.competences-grille.equilibree {
+  display: grid;
+  grid-template-columns: repeat(var(--colonnes), calc((var(--tuile) - 0.6rem) / 2));
+  justify-content: center;
+}
+.competences-grille.equilibree > .competence { grid-column-end: span 2; }
+.competence { flex: 0 0 var(--tuile, 5.6rem); min-width: 0; }
 .competence {
   display: flex;
   flex-direction: column;
@@ -1529,14 +1545,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 :root[data-theme="sombre"] .competence-logo.logo-fonce { color: var(--encre); }
 
 /* Aperçu de l'accueil : une seule grille centrée, puis le lien vers la page complète */
-.apercu-grille {                 /* rangées centrées : la dernière, incomplète, reste au milieu */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 56rem;
-  margin-inline: auto;
-}
-.apercu-grille .competence { width: 5.6rem; }
+.apercu-grille { max-width: 56rem; margin-inline: auto; }   /* aperçu de l'accueil : pas plus de 56rem de large */
 .apercu-pied {
   display: flex;
   flex-wrap: wrap;
@@ -1545,11 +1554,17 @@ abbr[title] { text-decoration: none; cursor: help; }
   margin: 2rem 0 0;
 }
 
+/* Grille en demi-colonnes (une carte = 2 pistes) pour centrer une dernière rangée incomplète */
 @media (min-width: 40em) {
-  .competences { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .competences { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .competences > * { grid-column: span 2; }
+  .competences > :last-child:nth-child(odd) { grid-column: 2 / span 2; }              /* 1 seule carte */
 }
 @media (min-width: 64em) {
-  .competences { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .competences { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .competences > :last-child:nth-child(odd) { grid-column: span 2; }
+  .competences > :nth-last-child(2):nth-child(3n + 1) { grid-column: 2 / span 2; }   /* 2 cartes */
+  .competences > :last-child:nth-child(3n + 1) { grid-column: 3 / span 2; }          /* 1 carte */
 }
 @media (prefers-reduced-motion: reduce) {
   .competence:hover { transform: none; }
