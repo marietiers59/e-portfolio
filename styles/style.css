@@ -2364,10 +2364,19 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   body { overflow-x: clip; }             /* pas de barre de défilement horizontale pendant le glissement */
 }
 /* Arrivée après un balayage : la nouvelle page entre par le côté (attribut posé en tête de page) */
-html[data-arrivee] body > :is(header, main, footer) { animation: arrivee-droite 260ms ease-out both; }
-html[data-arrivee="gauche"] body > :is(header, main, footer) { animation-name: arrivee-gauche; }
+html[data-arrivee] :is(body > header > :not(.entete-nav), body > main, body > footer) { animation: arrivee-droite 260ms ease-out both; }
+html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav), body > main, body > footer) { animation-name: arrivee-gauche; }
 @keyframes arrivee-droite { from { transform: translateX(35%); opacity: 0; } }
 @keyframes arrivee-gauche { from { transform: translateX(-35%); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  html[data-arrivee] body > :is(header, main, footer) { animation: none; }
+  html[data-arrivee] :is(body > header > :not(.entete-nav), body > main, body > footer) { animation: none; }
+}
+/* Changement de page sur smartphone sans clignotement : les barres fixes (Menu, Contact) restent
+   à l'écran d'une page à l'autre, et l'ancienne page cède la place sans fondu (navigateurs récents) */
+@media (pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem) {
+  @view-transition { navigation: auto; }
+  .barre-haut { view-transition-name: barre-haut; }
+  .barre-bas  { view-transition-name: barre-bas; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  ::view-transition-group(barre-haut), ::view-transition-group(barre-bas) { animation-duration: 0s; }
 }
