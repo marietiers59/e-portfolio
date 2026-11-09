@@ -372,10 +372,13 @@ abbr[title] { text-decoration: none; cursor: help; }
   transition: transform 220ms ease;
 }
 .langue[data-actif="en"] .langue-interrupteur::before { transform: translateX(0.95rem); }
-/* Survol : la pastille esquisse le passage ; clic : elle bascule */
-.langue:hover .langue-interrupteur { background: var(--bleu-200); }
-.langue[data-actif="fr"]:hover .langue-interrupteur::before { transform: translateX(0.3rem); }
-.langue[data-actif="en"]:hover .langue-interrupteur::before { transform: translateX(0.65rem); }
+/* Survol (souris seulement) : la pastille esquisse le passage ; clic : elle bascule.
+   Sur écran tactile, pas d'esquisse : le « survol » y reste collé après un toucher. */
+@media (hover: hover) {
+  .langue:hover .langue-interrupteur { background: var(--bleu-200); }
+  .langue[data-actif="fr"]:hover .langue-interrupteur::before { transform: translateX(0.3rem); }
+  .langue[data-actif="en"]:hover .langue-interrupteur::before { transform: translateX(0.65rem); }
+}
 .langue[data-actif="fr"]:active .langue-interrupteur::before { transform: translateX(0.95rem); }
 .langue[data-actif="en"]:active .langue-interrupteur::before { transform: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -417,9 +420,13 @@ abbr[title] { text-decoration: none; cursor: help; }
 .theme:hover .theme-soleil { transform: rotate(30deg); }
 .theme:hover .theme-lune   { transform: rotate(-15deg); }
 .theme[aria-pressed="true"] .langue-interrupteur::before { transform: translateX(0.95rem); }
-.theme:hover .langue-interrupteur { background: var(--bleu-200); }
-.theme[aria-pressed="false"]:hover .langue-interrupteur::before { transform: translateX(0.3rem); }
-.theme[aria-pressed="true"]:hover  .langue-interrupteur::before { transform: translateX(0.65rem); }
+/* Esquisse au survol, comme pour la langue ; mais juste après un clic (classe posée par script.js),
+   la pastille reste en bout de course tant que la souris n'est pas ressortie */
+@media (hover: hover) {
+  .theme:hover .langue-interrupteur { background: var(--bleu-200); }
+  .theme[aria-pressed="false"]:not(.vient-de-basculer):hover .langue-interrupteur::before { transform: translateX(0.3rem); }
+  .theme[aria-pressed="true"]:not(.vient-de-basculer):hover  .langue-interrupteur::before { transform: translateX(0.65rem); }
+}
 
 /* Transition douce de toutes les couleurs au moment de la bascule (classe posée brièvement par script.js) */
 .theme-bascule, .theme-bascule *, .theme-bascule *::before, .theme-bascule *::after {

@@ -760,7 +760,11 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       const suivant = racine.dataset.theme === 'sombre' ? 'clair' : 'sombre';
       appliquer(suivant, true);
       try { localStorage.setItem('theme', suivant); } catch { /* stockage bloqué : le choix vaut pour cette page seulement */ }
+      // Juste après le clic, la pastille va jusqu'au bout de l'interrupteur, même si la souris est encore dessus
+      bouton.classList.add('vient-de-basculer');
     });
+    bouton.addEventListener('pointerleave', () => bouton.classList.remove('vient-de-basculer'));
+    bouton.addEventListener('blur', () => bouton.classList.remove('vient-de-basculer'));
   }
 
   systeme.addEventListener('change', (e) => {
