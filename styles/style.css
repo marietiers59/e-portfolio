@@ -2178,6 +2178,130 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .rideau-aide:empty { display: none; }
 .rideau-aide[data-etat="erreur"] { color: var(--erreur); }
 
+/* Sous-menu « CV » de la navigation : télécharger ou ouvrir (scripts/rideau.js) */
+.nav-cv { position: relative; }
+.nav-cv-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--encre);
+  font: inherit;
+  font-family: var(--police-interface);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, color var(--duree);
+}
+.nav-cv-bouton:hover,
+.nav-cv.ouvert .nav-cv-bouton { transform: translate(-1px, -2px); box-shadow: var(--ombre-repos); color: var(--indigo-700); }
+.nav-cv-fleche { font-size: 0.8em; transition: transform var(--duree) ease; }
+.nav-cv.ouvert .nav-cv-fleche { transform: rotate(180deg); }
+.sous-menu-cv {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.85rem);
+  left: 0;
+  z-index: 150;
+  width: max-content;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  background: var(--carte);
+  border: 1px solid var(--indigo-200);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-survol);
+}
+.sous-menu-cv::before {          /* pont invisible : le survol ne se perd pas entre le bouton et le menu */
+  content: "";
+  position: absolute;
+  inset: -0.9rem 0 auto;
+  height: 0.9rem;
+}
+.sous-menu-cv::after {           /* queue de la bulle, pointée vers le bouton « CV » (position calculée par rideau.js) */
+  content: "";
+  position: absolute;
+  top: calc(-0.55rem - 1px);
+  left: var(--queue-x, 2rem);
+  width: 1.1rem;
+  height: 1.1rem;
+  background: var(--carte);
+  border-top: 1px solid var(--indigo-200);
+  border-left: 1px solid var(--indigo-200);
+  border-radius: 0.25rem 0 0 0;
+  transform: translateX(-50%) rotate(45deg);
+}
+.nav-cv.ouvert .sous-menu-cv { display: block; }
+@media (hover: hover) and (pointer: fine) {
+  .nav-cv:hover .sous-menu-cv { display: block; }
+  .nav-cv:hover .nav-cv-fleche { transform: rotate(180deg); }
+}
+.navigation-liste .sous-menu-cv a {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.6rem;
+  background: none;
+  box-shadow: none;
+  white-space: nowrap;
+}
+.navigation-liste .sous-menu-cv a:hover,
+.navigation-liste .sous-menu-cv a:focus-visible { transform: none; box-shadow: none; background: var(--indigo-100); color: var(--indigo-700); }
+
+/* Notice « Recruteur ? » sous le menu (tant que le rideau est baissé) */
+.notice-recruteur {
+  margin: 0.5rem 0 0;
+  max-width: 34rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--encre-douce);
+}
+.notice-recruteur strong { color: var(--indigo-700); }
+@media (min-width: 48em) { .notice-recruteur { margin-left: auto; text-align: right; } }
+
+/* Fenêtre de remerciement au déblocage : apparaît, puis disparaît seule */
+.rideau-merci {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--barre-h) + 1rem);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: max-content;
+  max-width: min(30rem, calc(100vw - 2rem));
+  padding: 0.75rem 0.75rem 0.75rem 1.1rem;
+  background: var(--anis-100);
+  border: 1px solid var(--anis-200);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-survol);
+  color: var(--anis-700);
+  font-family: var(--police-interface);
+  font-size: 0.95rem;
+  font-weight: 700;
+  opacity: 0;
+  transform: translate(-50%, 0.75rem);
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+.rideau-merci.visible { opacity: 1; transform: translate(-50%, 0); }
+.rideau-merci p { margin: 0; }
+.rideau-merci-fermer {
+  flex: none;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--carte);
+  color: var(--anis-700);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--ombre-legere);
+}
+.rideau-merci-fermer:hover { background: var(--gris-100); }
+
 /* ---------- 9. Écrans larges, TV, mouvement réduit ---------- */
 @media (min-width: 100em) { html { font-size: 112.5%; } }
 @media (min-width: 140em) { html { font-size: 137.5%; } }

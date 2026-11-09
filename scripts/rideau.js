@@ -2,7 +2,7 @@
    rideau.js — coordonnées réservées aux recruteurs
    ---------------------------------------------------------------------
    Un « rideau » cache l'e-mail, le téléphone et le CV complet.
-   Il se lève tout seul avec un laissez-passer :
+   Il se lève tout seul avec un laissez-passer (jusqu'à la fermeture du navigateur) :
      1. code QR remis en main propre (?cle=…) ;
      2. lien marqué que Marie diffuse (?via=linkedin, ?via=annonce…) ;
      3. arrivée depuis LinkedIn, France Travail ou un site d'annonces ;
@@ -23,8 +23,15 @@
   /* ---------- 1. Réglages ---------- */
   // Nom du fichier téléchargé par le visiteur (à ton choix), pour chaque langue
   const NOM_CV = t('CV_TIERS_MARIE_BUT_IT.pdf', 'CV_TIERS_MARIE_BUT_IT_EN.pdf');
-  const DUREE_JOURS = 30;                         // le rideau reste levé 30 jours sur l'appareil
+  // Le rideau reste levé jusqu'à la fermeture du navigateur (cookie de session), sauf sur l'appareil
+  // de Marie, reconnu par la case « ne pas me compter » de son espace personnel : toujours levé.
   const CLE_STOCKAGE = 'portfolio-rideau';
+  const CLE_APPAREIL_MARIE = 'portfolio-ne-pas-me-compter';
+  const MESSAGE_MERCI = t('Merci de votre intérêt ! Mes coordonnées et mon CV complet sont maintenant disponibles.',
+                          'Thank you for your interest! My contact details and full CV are now available.');
+  const DUREE_MERCI = 6000;                       // la fenêtre de remerciement disparaît après 6 s
+  const LINKEDIN = document.querySelector('.coordonnees a[href*="linkedin.com"]')?.href
+    || 'https://www.linkedin.com/in/marie-tiers-1991-59-France';
   const VIA_ACCEPTES = ['linkedin', 'annonce', 'francetravail', 'candidature'];
 
   // Sites d'origine qui lèvent le rideau (le domaine ou un sous-domaine)
@@ -61,6 +68,9 @@
     'choopa', 'vultr', '\\bm247', 'datacamp', 'zscaler', 'hostinger', 'gandi', 'o2switch', 'netcup',
     'telecom', 'télécom', 'mobile', 'broadband', '\\bcable', 'fibre', 'fiber', 'hosting', 'cloud', 'data ?cent',
     'server', '\\bvpn', 'internet service', '\\bisp\\b',
+    // écoles et universités : les camarades de Marie ne lèvent pas le rideau depuis le campus
+    'renater', 'univ', '\\biut\\b', 'école', 'ecole', 'school', 'college', 'lycée', 'lycee', 'academ', 'éducation',
+    'education', 'campus', 'crous',
   ].join('|') + ')', 'i');
 
   // Données brouillées (générées par le script de préparation, ne pas modifier à la main)
@@ -92,16 +102,17 @@
     return [...new Uint8Array(tampon)].map((o) => o.toString(16).padStart(2, '0')).join('');
   }
 
+  const appareilDeMarie = () => { try { return localStorage.getItem(CLE_APPAREIL_MARIE) === '1'; } catch { return false; } };
+  try { localStorage.removeItem(CLE_STOCKAGE); } catch { /* ancienne mémorisation de 30 jours : effacée */ }
+
+  const RACINE_SITE = new URL('../', document.currentScript.src).pathname;   // /e-portfolio/ en ligne
   function lireStockage() {
-    try {
-      const memo = JSON.parse(localStorage.getItem(CLE_STOCKAGE) || 'null');
-      return memo && memo.expire > Date.now() ? memo.passe : null;
-    } catch { return null; }
+    const morceau = document.cookie.split('; ').find((c) => c.startsWith(`${CLE_STOCKAGE}=`));
+    return morceau ? decodeURIComponent(morceau.split('=')[1]) : null;
   }
   function ecrireStockage(passe) {
-    try {
-      localStorage.setItem(CLE_STOCKAGE, JSON.stringify({ passe, expire: Date.now() + DUREE_JOURS * 864e5 }));
-    } catch { /* stockage bloqué : le rideau se relèvera à la prochaine visite */ }
+    // Sans date d'expiration : le cookie disparaît à la fermeture du navigateur
+    document.cookie = `${CLE_STOCKAGE}=${encodeURIComponent(passe)}; path=${RACINE_SITE}; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
   }
 
   /** Signale à GoatCounter quel laissez-passer a servi (si le compteur est chargé). */
@@ -187,9 +198,55 @@
   const lignesEmail = document.querySelectorAll('[data-rideau="email"]');
   const lignesTel = document.querySelectorAll('[data-rideau="tel"]');
   const formulaire = document.getElementById('formulaire-contact');
-  const liensCv = document.querySelectorAll('a[href$="cv-marie-tiers.pdf"], a[href$="cv-marie-tiers-en.pdf"]');
-  // Le CV (public ou complet) se télécharge toujours sous le nom choisi
-  liensCv.forEach((a) => { a.download = NOM_CV; });
+  const SELECTEUR_CV = 'a[href$="cv-marie-tiers.pdf"], a[href$="cv-marie-tiers-en.pdf"]';
+
+  /* Sous-menu « CV » de la barre de navigation : télécharger le PDF ou l'ouvrir dans un nouvel onglet.
+     Il s'ouvre au survol (souris) ou au clic (doigt, clavier) ; Échap ou un clic ailleurs le referme. */
+  function construireSousMenuCv() {
+    const lienNav = document.querySelector(`.navigation-liste ${SELECTEUR_CV.split(', ').join(', .navigation-liste ')}`);
+    const li = lienNav?.closest('li');
+    if (!li) return;
+    const pdf = lienNav.getAttribute('href');
+    li.classList.add('nav-cv');
+    li.innerHTML = `
+      <button type="button" class="nav-cv-bouton" aria-expanded="false" aria-controls="sous-menu-cv">
+        CV <span class="nav-cv-fleche" aria-hidden="true">▾</span></button>
+      <ul class="sous-menu-cv" id="sous-menu-cv">
+        <li><a href="${pdf}" type="application/pdf" data-cv="telecharger">${t('Télécharger le PDF', 'Download the PDF')}</a></li>
+        <li><a href="${pdf}" type="application/pdf" data-cv="ouvrir" target="_blank" rel="noopener">${t('Ouvrir dans un nouvel onglet', 'Open in a new tab')}</a></li>
+      </ul>`;
+    const bouton = li.querySelector('button');
+    const menu = li.querySelector('.sous-menu-cv');
+    // Garde le sous-menu dans l'écran, quel que soit l'emplacement du bouton CV (menu sur deux lignes sur mobile)
+    const ajuster = () => requestAnimationFrame(() => {
+      menu.style.left = ''; menu.style.right = '';
+      const cadre = menu.getBoundingClientRect();
+      if (!cadre.width) return;
+      if (cadre.right > innerWidth - 8) { menu.style.left = 'auto'; menu.style.right = '0'; }
+      if (menu.getBoundingClientRect().left < 8) { menu.style.left = `${8 - li.getBoundingClientRect().left}px`; menu.style.right = 'auto'; }
+      // La queue de la bulle pointe vers le milieu du bouton « CV », où que soit le menu
+      const b = bouton.getBoundingClientRect();
+      menu.style.setProperty('--queue-x', `${b.left + b.width / 2 - menu.getBoundingClientRect().left}px`);
+    });
+    const basculer = (ouvert) => {
+      li.classList.toggle('ouvert', ouvert);
+      bouton.setAttribute('aria-expanded', String(ouvert));
+      if (ouvert) ajuster();
+    };
+    li.addEventListener('mouseenter', ajuster);
+    bouton.addEventListener('click', () => basculer(!li.classList.contains('ouvert')));
+    li.querySelectorAll('.sous-menu-cv a').forEach((a) => a.addEventListener('click', () => basculer(false)));
+    document.addEventListener('click', (evt) => { if (!li.contains(evt.target)) basculer(false); });
+    li.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape' && li.classList.contains('ouvert')) { basculer(false); bouton.focus(); }
+    });
+    li.addEventListener('focusout', (evt) => { if (!li.contains(evt.relatedTarget)) basculer(false); });
+  }
+  construireSousMenuCv();
+
+  const liensCv = document.querySelectorAll(SELECTEUR_CV);
+  // Le CV (public ou complet) se télécharge toujours sous le nom choisi ; le lien « ouvrir » l'affiche dans un onglet
+  liensCv.forEach((a) => { if (a.dataset.cv !== 'ouvrir') a.download = NOM_CV; });
   let leve = false;
   let blocRideau = null;
 
@@ -225,6 +282,52 @@
     } catch { /* le CV public reste en place */ }
   }
 
+  /** Notice « Recruteur ? » sous le menu, visible seulement tant que le rideau est baissé. */
+  let notice = null;
+  function afficherNotice() {
+    const navigation = document.querySelector('.navigation');
+    if (!navigation) return;
+    notice = document.createElement('p');
+    notice.className = 'notice-recruteur';
+    notice.innerHTML = t(
+      `<strong>Recruteur ?</strong> Mon CV complet et mes coordonnées s’affichent avec votre
+       <a href="#rideau-email">e-mail professionnel</a>, ou écrivez-moi sur <a href="${LINKEDIN}">LinkedIn</a>.`,
+      `<strong>Recruiter?</strong> My full CV and contact details appear once you enter your
+       <a href="#rideau-email">work email</a>, or message me on <a href="${LINKEDIN}">LinkedIn</a>.`);
+    notice.querySelector('a[href="#rideau-email"]').addEventListener('click', (evt) => {
+      const champ = document.getElementById('rideau-email');
+      if (!champ) return;
+      evt.preventDefault();
+      champ.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      champ.focus({ preventScroll: true });
+    });
+    navigation.append(notice);
+  }
+
+  /** Petite fenêtre de remerciement, qui disparaît seule (pause au survol ou au clavier). */
+  function remercier() {
+    const fenetre = document.createElement('div');
+    fenetre.className = 'rideau-merci';
+    fenetre.setAttribute('role', 'status');
+    fenetre.innerHTML = `<p>${MESSAGE_MERCI}</p>
+      <button type="button" class="rideau-merci-fermer" aria-label="${t('Fermer ce message', 'Close this message')}">×</button>`;
+    document.body.append(fenetre);
+    requestAnimationFrame(() => fenetre.classList.add('visible'));
+    let minuteur;
+    const fermer = () => {
+      clearTimeout(minuteur);
+      fenetre.classList.remove('visible');
+      setTimeout(() => fenetre.remove(), 400);
+    };
+    const lancer = () => { clearTimeout(minuteur); minuteur = setTimeout(fermer, DUREE_MERCI); };
+    fenetre.querySelector('button').addEventListener('click', fermer);
+    fenetre.addEventListener('mouseenter', () => clearTimeout(minuteur));
+    fenetre.addEventListener('mouseleave', lancer);
+    fenetre.addEventListener('focusin', () => clearTimeout(minuteur));
+    fenetre.addEventListener('focusout', lancer);
+    lancer();
+  }
+
   function lever(passe, nouveau = true) {
     if (leve) return;
     leve = true;
@@ -236,14 +339,16 @@
       formulaire.classList.remove('rideau-ferme');
     }
     blocRideau?.remove();
+    notice?.remove();
     brancherCvComplet();
-    if (nouveau) { ecrireStockage(passe); compter(passe); }
+    if (nouveau) { ecrireStockage(passe); compter(passe); remercier(); }
   }
 
   function afficherRideau() {
     lignesEmail.forEach((li) => remplirLigne(li, '✉︎', null, t('adresse e-mail masquée', 'email address hidden')));
     lignesTel.forEach((li) => remplirLigne(li, '☎︎', null, t('numéro masqué', 'phone number hidden')));
     formulaire?.classList.add('rideau-ferme');
+    afficherNotice();
 
     const liste = lignesEmail[0]?.closest('ul');
     if (!liste) return;
@@ -252,14 +357,16 @@
     blocRideau.noValidate = true;
     blocRideau.innerHTML = t(`
       <p class="rideau-texte">Mon <strong>e-mail</strong> et mon <strong>téléphone</strong> sont réservés aux recruteurs :
-        indiquez votre <strong class="kw">e-mail professionnel</strong> pour les afficher.</p>
+        indiquez votre <strong class="kw">e-mail professionnel</strong> pour les afficher,
+        ou écrivez-moi sur <a href="${LINKEDIN}">LinkedIn</a>.</p>
       <p class="rideau-ligne">
         <label class="sr" for="rideau-email">E-mail professionnel</label>
         <input id="rideau-email" type="email" autocomplete="email" placeholder="prenom.nom@entreprise.fr" required>
         <button class="bouton bouton-second" type="submit">Afficher</button>
       </p>`, `
       <p class="rideau-texte">My <strong>email address</strong> and <strong>phone number</strong> are for recruiters only:
-        enter your <strong class="kw">work email</strong> to reveal them.</p>
+        enter your <strong class="kw">work email</strong> to reveal them,
+        or message me on <a href="${LINKEDIN}">LinkedIn</a>.</p>
       <p class="rideau-ligne">
         <label class="sr" for="rideau-email">Work email</label>
         <input id="rideau-email" type="email" autocomplete="email" placeholder="firstname.lastname@company.co.uk" required>
@@ -305,7 +412,7 @@
   }, true);
 
   /* ---------- 6. Démarrage ---------- */
-  const dejaLeve = lireStockage();
+  const dejaLeve = appareilDeMarie() ? 'appareil-de-marie' : lireStockage();
   const provenance = passeProvenance();
   if (dejaLeve) lever(dejaLeve, false);
   else if (provenance) lever(provenance);
