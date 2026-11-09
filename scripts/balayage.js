@@ -8,6 +8,8 @@
   · Pas de balayage quand le geste part d'un champ de formulaire, d'un tableau qui défile en largeur,
     du nuage de compétences, d'une vue agrandie, ou des bords de l'écran (gestes du navigateur).
   · Avec « animations réduites », la page change sans glissement.
+  · Zoom à deux doigts toujours possible : un pincement n'est jamais pris pour un balayage,
+    et une page agrandie se parcourt au doigt sans changer de page.
   · Arrivée animée et retour à l'accueil quand on actualise : petit script en tête de chaque page.
 */
 (() => {
@@ -110,9 +112,17 @@
     setTimeout(() => { location.href = cible; }, 190);
   }
 
+  // Page agrandie au pincement : le doigt sert à se déplacer dans la page, pas à changer de page
+  const pageAgrandie = () => (window.visualViewport ? window.visualViewport.scale > 1.01 : false);
+
   document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 1) {                         // deuxième doigt : c'est un pincement (zoom), on laisse faire
+      if (etat === 'horizontal') suivre(0, 'transform 180ms ease-out');
+      etat = null;
+      return;
+    }
     etat = null;
-    if (!telephone.matches || e.touches.length !== 1) return;
+    if (!telephone.matches || pageAgrandie()) return;
     if (document.querySelector('dialog[open]')) return;
     const t = e.touches[0];
     if (t.clientX < 18 || t.clientX > window.innerWidth - 18) return;
@@ -123,6 +133,11 @@
 
   document.addEventListener('touchmove', (e) => {
     if (!etat) return;
+    if (e.touches.length > 1) {                         // pincement commencé en cours de geste : annulé
+      if (etat === 'horizontal') suivre(0, 'transform 180ms ease-out');
+      etat = null;
+      return;
+    }
     const t = e.touches[0];
     const ddx = t.clientX - x0, ddy = t.clientY - y0;
     if (etat === 'attente') {
