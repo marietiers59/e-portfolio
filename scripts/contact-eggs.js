@@ -3,7 +3,7 @@
       devient « 42 », la réponse calculée par Pensée profonde (Douglas Adams).
    2. Un message réduit à « askew », un synonyme ou une traduction française
       fait pencher la page, comme la recherche « askew » sur Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=1" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=2" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -84,9 +84,7 @@
   const style = document.createElement('style');
   style.textContent = `
     html.de-travers, html.de-travers body { overflow-x: hidden; }
-    .penchable { transition: rotate 0.8s ease-in-out; }
-    html.de-travers .penchable { rotate: var(--angle-travers, ${ANGLE}); }
-    @media (prefers-reduced-motion: reduce) { .penchable { transition: none; } }`;
+    html.de-travers .penchable { rotate: var(--angle-travers, ${ANGLE}); }`; // net et instantané, sans fondu
   document.head.appendChild(style);
 
   const blocs = [...document.querySelectorAll('body > header, body > main, body > footer')];
