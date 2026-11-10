@@ -7,10 +7,13 @@
       un tour complet à la page, comme sur Google : 360° en 4 s, une seule fois.
    4. Un message réduit à « 67 » (ou « 6-7 », « six seven », « six-sept ») fait tanguer
       la page en bascule, comme sur Google, au rythme du mème « 6-7 ».
-   5. Un message réduit à « stranger things » fait apparaître un dé à 20 faces, comme sur Google.
+   5. Un message réduit à « stranger things » fait apparaître un dé à 20 faces, comme sur Google
+      (une seule fois par chargement de page ; il s'en va dès que le texte change).
       Lancé, il tombe sur 1 : fissure rouge, éclair, la page s'assombrit sous les cendres et passe
       tête en bas (le Monde à l'envers). Une croix rouge en bas (ou Échap) ramène la page à l'endroit.
-   Intégration : <script src="scripts/contact-eggs.js?v=9" defer></script> dans le <head>.
+   6. Un message réduit à « zerg rush » lâche des aliens façon Space Invaders qui grignotent la page,
+      comme les « o » de Google. Trois clics abattent un alien. Quand tout est dévoré, ils écrivent « GG ».
+   Intégration : <script src="scripts/contact-eggs.js?v=10" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -208,6 +211,7 @@
     minuteurAnimation = setTimeout(() => {
       const message = simplifier(champ.value);
       verifierStranger(message);
+      verifierZerg(message);
       for (const anim of ANIMATIONS) {
         const demande = anim.phrases.includes(message);
         if (demande && demandes.get(anim) !== message) animerPage(anim); // nouvelle phrase, ou retapée
@@ -278,12 +282,14 @@
   retour.setAttribute('aria-label', ANGLAIS ? 'Come back from the Upside Down' : 'Revenir du Monde à l’envers');
   document.body.append(de, retour);
 
-  let deLance = false, mondeEnvers = false, cendres = null, voiles = [];
+  let deLance = false, deUtilise = false, messageDe = null, mondeEnvers = false, cendres = null, voiles = [];
   const pause = (ms) => new Promise((ok) => setTimeout(ok, ms));
 
   const montrerDe = (oui) => {
+    if (oui && deUtilise) return;                  // un seul lancer par chargement de page
     if (mondeEnvers || deLance || oui === !de.hidden) return;
     de.hidden = !oui;
+    messageDe = oui ? champ.value : null;          // le texte exact qui a fait venir le dé
     if (oui) {
       chiffre.textContent = '20';
       de.classList.remove('st-arrivee'); void de.offsetWidth; de.classList.add('st-arrivee');
@@ -318,8 +324,9 @@
   };
 
   const lancerDe = async () => {
-    if (deLance || mondeEnvers) return;
+    if (deLance || mondeEnvers || deUtilise) return;
     deLance = true;
+    deUtilise = true;
     const reduit = mouvementReduit.matches;
     if (!reduit) {
       // Le dé roule : il tourne, rebondit, ses faces défilent… et tombe sur 1, l'échec critique.
@@ -388,14 +395,276 @@
     retour.hidden = true;
     champ.focus({ preventScroll: true });
     annoncer('Retour à l’endroit.', 'Back to the right way up.');
-    verifierStranger(simplifier(champ.value));     // le dé revient si le message le demande toujours
   };
 
   const verifierStranger = (message) => montrerDe(STRANGER.includes(message));
 
   de.addEventListener('click', lancerDe);
   retour.addEventListener('click', revenir);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') revenir(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); } });
+
+  /* ---------- 6. Zerg rush, version Space Invaders ---------- */
+  const ZERG = ['zerg rush', 'zergrush', 'zerg-rush', 'zerg'];
+  const PIXEL = 3;                                  // taille d'un pixel d'alien, en px
+  const COULEURS_ALIENS = ['#2f8f4e', '#4f55c8', '#1d7f86'];
+  // Les trois aliens du jeu original, chacun sur deux images, et l'explosion.
+  const SPRITES = [
+    [['...##...', '..####..', '.######.', '##.##.##', '########', '..#..#..', '.#.##.#.', '#.#..#.#'],
+     ['...##...', '..####..', '.######.', '##.##.##', '########', '.#.##.#.', '#......#', '.#....#.']],
+    [['..#.....#..', '...#...#...', '..#######..', '.##.###.##.', '###########', '#.#######.#', '#.#.....#.#', '...##.##...'],
+     ['..#.....#..', '#..#...#..#', '#.#######.#', '###.###.###', '###########', '.#########.', '..#.....#..', '.#.......#.']],
+    [['....####....', '.##########.', '############', '###..##..###', '############', '...##..##...', '..##.##.##..', '##........##'],
+     ['....####....', '.##########.', '############', '###..##..###', '############', '..###..###..', '.##..##..##.', '..##....##..']],
+  ];
+  const EXPLOSION = ['....#...#....', '.#...#.#...#.', '..#.......#..', '...#.....#...', '##.........##', '...#.....#...', '..#..#.#..#..', '.#..#...#..#.'];
+  const LETTRE_G = ['.###.', '#...#', '#....', '#.###', '#...#', '#...#', '.###.'];
+
+  const pixels = (motif, classe = '') => {
+    let r = '';
+    motif.forEach((ligne, y) => [...ligne].forEach((c, x) => { if (c === '#') r += `<rect x="${x}" y="${y}" width="1.02" height="1.02"/>`; }));
+    return `<g class="${classe}">${r}</g>`;
+  };
+
+  const styleZR = document.createElement('style');
+  styleZR.textContent = `
+    .zr-zone { position: fixed; inset: 0; z-index: 64; pointer-events: none; overflow: hidden; }
+    .zr-alien { position: absolute; left: 0; top: 0; pointer-events: auto; cursor: crosshair; touch-action: manipulation; }
+    .zr-alien svg { display: block; width: 100%; height: 100%; shape-rendering: crispEdges; }
+    .zr-zone.zr-pas2 .zr-i1, .zr-zone:not(.zr-pas2) .zr-i2 { display: none; }
+    .zr-touche { filter: brightness(1.8); }
+    .zr-mort { pointer-events: none; }
+    .zr-panneau { position: fixed; z-index: 65; top: calc(var(--barre-h, 3rem) + 0.5rem); right: 0.75rem;
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.4rem 0.5rem 0.4rem 0.9rem; border-radius: 999px;
+      background: #14161c; color: #e8ecf2; font: 0.9rem/1.2 "Trebuchet MS", sans-serif;
+      box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.3); }
+    .zr-panneau strong { color: #7ee2a0; }
+    .zr-panneau button { all: unset; cursor: pointer; padding: 0.3rem 0.75rem; border-radius: 999px;
+      background: #e8ecf2; color: #14161c; font-weight: 700; }
+    .zr-panneau button:focus-visible { outline: 3px solid #7ee2a0; outline-offset: 2px; }`;
+  document.head.appendChild(styleZR);
+
+  let zerg = null;                                  // l'état de la partie, ou null
+
+  const choisirCibles = () => {
+    const haut = document.querySelector('.barre-haut')?.getBoundingClientRect().bottom ?? 0;
+    const bas = document.querySelector('.barre-bas')?.getBoundingClientRect().top ?? innerHeight;
+    const selecteur = 'h1,h2,h3,h4,p,li,label,input,select,textarea,button,img,svg,blockquote,figure,time,a,.tag';
+    // Visible, à l'écran, et pas un champ caché (le piège à robots du formulaire est hors de l'écran).
+    const atteignable = (el, r) => r.width * r.height >= 300 && r.bottom > haut && r.top < bas
+      && r.right > 0 && r.left < innerWidth && getComputedStyle(el).visibility !== 'hidden'
+      && !el.closest('[aria-hidden="true"], [hidden], [inert]');
+    const choisies = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll(selecteur).forEach((el) => {
+      if (choisies.some((c) => c.contains(el))) return;          // déjà mangé avec son parent
+      const r = el.getBoundingClientRect();
+      if (!atteignable(el, r)) return;
+      choisies.push(el);
+    }));
+    // Les cadres (cartes, encadrés) passent au menu une fois leur contenu dévoré.
+    const cadres = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll('*').forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.width > innerWidth * 0.94 || !atteignable(el, r)) return;
+      if (choisies.includes(el) || choisies.some((c) => c.contains(el))) return;
+      const st = getComputedStyle(el);
+      const fond = st.backgroundColor !== 'rgba(0, 0, 0, 0)' && st.backgroundColor !== 'transparent';
+      const bord = parseFloat(st.borderTopWidth) > 0 || st.boxShadow !== 'none';
+      if (fond || bord) cadres.push(el);
+    }));
+    const cible = (el, max) => {
+      const r = el.getBoundingClientRect();
+      return { el, morsures: [], vie: Math.min(max, Math.max(2, Math.ceil((r.width * r.height) / 6000))), mangee: false, apres: [] };
+    };
+    const cibles = choisies.slice(0, 45).map((el) => cible(el, 7));
+    cadres.slice(0, 15).forEach((el) => {
+      const c = cible(el, 5);
+      c.apres = cibles.filter((d) => el.contains(d.el));   // ce qu'il faut avoir mangé avant
+      cibles.push(c);
+    });
+    return cibles;
+  };
+
+  const nouvelAlien = (x, y) => {
+    const n = Math.floor(Math.random() * SPRITES.length);
+    const [i1, i2] = SPRITES[n];
+    const l = i1[0].length, h = i1.length;
+    const el = document.createElement('div');
+    el.className = 'zr-alien';
+    el.setAttribute('aria-hidden', 'true');
+    el.style.width = `${l * PIXEL}px`; el.style.height = `${h * PIXEL}px`;
+    el.innerHTML = `<svg viewBox="0 0 ${l} ${h}" fill="${COULEURS_ALIENS[n]}">${pixels(i1, 'zr-i1')}${pixels(i2, 'zr-i2')}</svg>`;
+    const alien = { el, x, y, l: l * PIXEL, h: h * PIXEL, coups: 0, cible: null, ox: 0, oy: 0, etat: 'va', prochaineMorsure: 0, place: null };
+    el.addEventListener('pointerdown', (e) => { e.preventDefault(); toucher(alien); });
+    zerg.zone.append(el);
+    zerg.aliens.push(alien);
+    return alien;
+  };
+
+  const apparaitre = () => {
+    const depuisCote = Math.random() < 0.3;
+    const x = depuisCote ? (Math.random() < 0.5 ? -40 : innerWidth + 10) : Math.random() * innerWidth;
+    const y = depuisCote ? Math.random() * innerHeight * 0.6 : -30;
+    return nouvelAlien(x, y);
+  };
+
+  const toucher = (alien) => {
+    if (!zerg || alien.etat === 'mort' || zerg.phase !== 'jeu') return;
+    zerg.clics++;
+    alien.coups++;
+    alien.el.classList.add('zr-touche');
+    setTimeout(() => alien.el.classList.remove('zr-touche'), 90);
+    if (alien.coups < 3) return;
+    alien.etat = 'mort';
+    zerg.abattus++;
+    alien.el.classList.add('zr-mort');
+    const couleur = alien.el.querySelector('svg').getAttribute('fill');
+    alien.el.style.width = `${EXPLOSION[0].length * PIXEL}px`;
+    alien.el.innerHTML = `<svg viewBox="0 0 ${EXPLOSION[0].length} ${EXPLOSION.length}" fill="${couleur}">${pixels(EXPLOSION)}</svg>`;
+    setTimeout(() => { alien.el.remove(); zerg && (zerg.aliens = zerg.aliens.filter((a) => a !== alien)); }, 280);
+    majPanneau();
+  };
+
+  const majPanneau = () => {
+    if (!zerg) return;
+    const minutes = (performance.now() - zerg.debut) / 60000;
+    const apm = minutes > 0.02 ? Math.round(zerg.clics / minutes) : 0;
+    zerg.score.innerHTML = zerg.phase === 'gg'
+      ? `<strong>GG !</strong> ${ANGLAIS ? 'Page digested' : 'Page digérée'} · ${ANGLAIS ? 'aliens shot' : 'aliens abattus'} : <strong>${zerg.abattus}</strong>`
+      : `${ANGLAIS ? 'Aliens shot' : 'Aliens abattus'} : <strong>${zerg.abattus}</strong> · APM : <strong>${apm}</strong>`;
+  };
+
+  const mordre = (alien, cible, r) => {
+    const x = alien.x + alien.l / 2 - r.left, y = alien.y + alien.h / 2 - r.top;
+    cible.morsures.push(`radial-gradient(circle at ${x.toFixed(0)}px ${y.toFixed(0)}px, transparent ${10 + Math.random() * 8}px, #000 0)`);
+    cible.el.style.maskImage = cible.morsures.join(',');
+    cible.el.style.webkitMaskImage = cible.el.style.maskImage;
+    cible.el.style.maskComposite = 'intersect';
+    cible.el.style.webkitMaskComposite = 'source-in';
+    if (--cible.vie <= 0) {
+      cible.mangee = true;
+      cible.el.style.visibility = 'hidden';               // digéré ; la mise en page ne bouge pas
+    }
+    alien.ox = Math.random(); alien.oy = Math.random();    // la bouchée suivante, ailleurs sur l'élément
+  };
+
+  const choisirCible = (alien) => {
+    // Garde-fou : une cible devenue invisible ou sortie de la page compte comme mangée.
+    zerg.cibles.forEach((c) => {
+      const r = c.el.getBoundingClientRect();
+      if (!c.mangee && (!c.el.isConnected || r.width * r.height === 0 || r.right < -200 || r.left > innerWidth + 200)) c.mangee = true;
+    });
+    const restantes = zerg.cibles.filter((c) => !c.mangee && c.apres.every((d) => d.mangee));
+    if (!restantes.length) return null;
+    const charge = (c) => zerg.aliens.filter((a) => a.cible === c).length;
+    restantes.sort((a, b) => charge(a) - charge(b) || Math.random() - 0.5);
+    return restantes[0];
+  };
+
+  const formerGG = () => {
+    zerg.phase = 'gg';
+    clearInterval(zerg.renforts);
+    const places = [];
+    const cellule = Math.min(42, (innerWidth - 32) / 12);
+    const x0 = innerWidth / 2 - cellule * 5.5, y0 = innerHeight / 2 - cellule * 3.5;
+    [0, 6].forEach((dx) => LETTRE_G.forEach((ligne, y) => [...ligne].forEach((c, x) => {
+      if (c === '#') places.push([x0 + (x + dx) * cellule, y0 + y * cellule]);
+    })));
+    const vivants = zerg.aliens.filter((a) => a.etat !== 'mort');
+    while (vivants.length < places.length) vivants.push(apparaitre());
+    vivants.forEach((a, i) => {
+      if (i < places.length) { a.place = places[i]; a.etat = 'gg'; a.cible = null; }
+      else { a.etat = 'part'; }                             // les aliens en trop s'en vont
+    });
+    majPanneau();
+    zerg.bouton.textContent = ANGLAIS ? 'Restore the page' : 'Remettre la page';
+    annoncer('GG ! Les aliens ont digéré la page. Échap ou « Remettre la page » pour la retrouver.',
+             'GG! The aliens have digested the page. Press Escape or “Restore the page” to get it back.');
+  };
+
+  const boucle = (t) => {
+    if (!zerg) return;
+    const dt = Math.min(0.05, (t - (zerg.t || t)) / 1000); zerg.t = t;
+    let enPlace = 0;
+    for (const a of zerg.aliens) {
+      if (a.etat === 'mort') continue;
+      let cx, cy, vitesse = 110;
+      if (a.etat === 'gg') { [cx, cy] = a.place; vitesse = 650; }
+      else if (a.etat === 'part') { cx = a.x; cy = -80; vitesse = 260; }
+      else {
+        if (!a.cible || a.cible.mangee) { a.cible = choisirCible(a); a.ox = Math.random(); a.oy = Math.random(); a.etat = 'va'; }
+        if (!a.cible) continue;
+        const r = a.cible.el.getBoundingClientRect();
+        cx = r.left + a.ox * r.width - a.l / 2; cy = r.top + a.oy * r.height - a.h / 2;
+        if (a.etat === 'mange' && t >= a.prochaineMorsure) {
+          mordre(a, a.cible, r);
+          a.prochaineMorsure = t + 300 + Math.random() * 150;
+        }
+      }
+      const dx = cx - a.x, dy = cy - a.y, d = Math.hypot(dx, dy);
+      if (d <= vitesse * dt || d < 1) {
+        a.x = cx; a.y = cy;
+        if (a.etat === 'va') { a.etat = 'mange'; a.prochaineMorsure = t; }
+        if (a.etat === 'gg') enPlace++;
+      } else {
+        a.x += (dx / d) * vitesse * dt; a.y += (dy / d) * vitesse * dt;
+        if (a.etat === 'mange') a.etat = 'va';
+      }
+      a.el.style.transform = `translate(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px)`;
+    }
+    if (zerg.phase === 'jeu' && zerg.cibles.every((c) => c.mangee)) formerGG();
+    zerg.aliens = zerg.aliens.filter((a) => !(a.etat === 'part' && a.y < -60 && (a.el.remove(), true)));
+    if (zerg.phase === 'gg' && enPlace && !zerg.ggAnnonce) { zerg.ggAnnonce = true; compter('easter-egg-zerg-rush-gg', 'Zerg rush : GG'); }
+    zerg.raf = requestAnimationFrame(boucle);
+  };
+
+  const lancerZerg = () => {
+    if (zerg || mondeEnvers || enMouvement) return;
+    compter('easter-egg-zerg-rush', 'Zerg rush');
+    if (mouvementReduit.matches) {
+      annoncer('Zerg rush ! (Animation désactivée : votre appareil demande moins de mouvements.)',
+               'Zerg rush! (Animation skipped: your device asks for reduced motion.)');
+      return;
+    }
+    const zone = document.createElement('div');
+    zone.className = 'zr-zone';
+    zone.setAttribute('aria-hidden', 'true');
+    const panneau = document.createElement('div');
+    panneau.className = 'zr-panneau';
+    panneau.innerHTML = '<span class="zr-score"></span><button type="button"></button>';
+    document.body.append(zone, panneau);
+    zerg = { zone, panneau, score: panneau.querySelector('.zr-score'), bouton: panneau.querySelector('button'),
+      aliens: [], cibles: choisirCibles(), abattus: 0, clics: 0, debut: performance.now(), phase: 'jeu' };
+    zerg.bouton.textContent = ANGLAIS ? 'Stop' : 'Arrêter';
+    zerg.bouton.setAttribute('aria-label', ANGLAIS ? 'Stop the Zerg rush and restore the page' : 'Arrêter le Zerg rush et remettre la page');
+    zerg.bouton.addEventListener('click', arreterZerg);
+    for (let i = 0; i < 4; i++) apparaitre();
+    zerg.renforts = setInterval(() => { if (zerg.aliens.filter((a) => a.etat !== 'mort').length < 18) apparaitre(); }, 800);
+    zerg.pas = setInterval(() => zone.classList.toggle('zr-pas2'), 320);   // les pattes bougent, comme dans le jeu
+    zerg.chrono = setInterval(majPanneau, 1000);
+    majPanneau();
+    zerg.raf = requestAnimationFrame(boucle);
+    annoncer('Zerg rush ! Des aliens dévorent la page. Trois clics abattent un alien. Échap pour arrêter.',
+             'Zerg rush! Aliens are eating the page. Three clicks shoot one down. Press Escape to stop.');
+  };
+
+  function arreterZerg() {
+    if (!zerg) return;
+    cancelAnimationFrame(zerg.raf);
+    [zerg.renforts, zerg.pas, zerg.chrono].forEach(clearInterval);
+    zerg.cibles.forEach(({ el }) => {
+      ['maskImage', 'webkitMaskImage', 'maskComposite', 'webkitMaskComposite', 'visibility'].forEach((p) => { el.style[p] = ''; });
+    });
+    zerg.zone.remove(); zerg.panneau.remove();
+    zerg = null;
+    annoncer('La page est revenue.', 'The page is back.');
+  }
+
+  let derniereZerg = null;
+  const verifierZerg = (message) => {
+    const demande = ZERG.includes(message);
+    if (demande && derniereZerg !== message) lancerZerg();
+    derniereZerg = demande ? message : null;
+  };
 
   // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
   // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
@@ -406,9 +675,12 @@
     minuteur42 = setTimeout(() => { minuteur42 = null; remplacer(); }, DELAI_42);
   };
 
-  champ.addEventListener('input', () => { planifier42(); verifierTravers(); verifierAnimations(); });
+  champ.addEventListener('input', () => {
+    if (!deLance && !de.hidden && champ.value !== messageDe) montrerDe(false); // texte modifié ou effacé : le dé s'en va tout de suite
+    planifier42(); verifierTravers(); verifierAnimations();
+  });
   champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
   champ.form?.addEventListener('reset', () => setTimeout(() => { verifierTravers(); verifierAnimations(); })); // après l'envoi, la page se redresse
 
-  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things » ou « Grande Question sur la vie, l’Univers et le reste ».');
+  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush » ou « Grande Question sur la vie, l’Univers et le reste ».');
 })();
