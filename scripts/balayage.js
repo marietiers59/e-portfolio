@@ -75,8 +75,8 @@
   telephone.addEventListener('change', () => (telephone.matches ? installer() : retirer()));
 
   /* ----- Suivi du doigt ----- */
-  // L'en-tête (logo, menu) et les barres fixes ne bougent pas : seul le contenu glisse
-  const mobiles = () => [...document.querySelectorAll('body > header > :not(.entete-nav), body > main, body > footer')];
+  // L'en-tête (logo, menu, notice « Recruteur ? ») et les barres fixes ne bougent pas : seul le contenu glisse
+  const mobiles = () => [...document.querySelectorAll('body > header > :not(.entete-nav, .notice-recruteur), body > main, body > footer')];
   const EXCLUS = 'input, textarea, select, button, canvas, dialog, .nuage, .tableau-defilant, .calendrier, [data-pas-de-balayage]';
   let x0 = 0, y0 = 0, t0 = 0, dx = 0, etat = null;     // etat : null | 'attente' | 'horizontal'
 

@@ -203,6 +203,24 @@
   /* Sous-menu « CV » de la barre de navigation : télécharger le PDF ou l'ouvrir dans un nouvel onglet.
      Il s'ouvre au survol (souris) ou au clic (doigt, clavier) ; Échap ou un clic ailleurs le referme. */
   let entrerSurvolCv = () => {}, quitterSurvolCv = () => {};
+
+  /* La notice « Recruteur ? » se place à gauche du sous-menu « CV », jamais derrière lui.
+     Écran trop étroit pour les mettre côte à côte (smartphone) : elle se place sous le sous-menu. */
+  function placerNotice(m) {
+    const n = document.querySelector('.notice-recruteur');
+    const texte = n?.querySelector('p');
+    if (!texte) return;
+    const c = n.getBoundingClientRect();
+    if (m.left - c.left - 16 >= 240) {
+      n.dataset.place = 'gauche';
+      texte.style.marginRight = `${Math.max(0, c.right - m.left + 16)}px`;
+      texte.style.paddingTop = '';
+    } else {
+      n.dataset.place = 'dessous';
+      texte.style.marginRight = '';
+      texte.style.paddingTop = `${Math.max(8, m.bottom - c.top + 10)}px`;
+    }
+  }
   function construireSousMenuCv() {
     const lienNav = document.querySelector(`.navigation-liste ${SELECTEUR_CV.split(', ').join(', .navigation-liste ')}`);
     const li = lienNav?.closest('li');
@@ -220,19 +238,19 @@
     const menu = li.querySelector('.sous-menu-cv');
     // Garde le sous-menu dans l'écran, quel que soit l'emplacement du bouton CV (menu sur deux lignes sur mobile)
     const ajuster = () => requestAnimationFrame(() => {
+      // Sous-menu fermé (simple focus) : on le mesure quand même, invisible, pour placer la notice à côté
+      const cache = getComputedStyle(menu).display === 'none';
+      if (cache) { menu.style.visibility = 'hidden'; menu.style.display = 'block'; }
       menu.style.left = ''; menu.style.right = '';
-      // La notice « Recruteur ? » apparaît sous les boutons : le sous-menu s'ouvre sous elle, jamais par-dessus
-      const n = document.querySelector('.notice-recruteur');
-      menu.style.top = n && n.offsetHeight
-        ? `${n.getBoundingClientRect().bottom - li.getBoundingClientRect().top + 14}px` : '';
-      const cadre = menu.getBoundingClientRect();
-      if (!cadre.width) return;
-      if (cadre.right > innerWidth - 8) { menu.style.left = 'auto'; menu.style.right = '0'; }
+      if (menu.getBoundingClientRect().right > innerWidth - 8) { menu.style.left = 'auto'; menu.style.right = '0'; }
       if (menu.getBoundingClientRect().left < 8) { menu.style.left = `${8 - li.getBoundingClientRect().left}px`; menu.style.right = 'auto'; }
       // La queue de la bulle pointe vers le milieu du bouton « CV », où que soit le menu
       const b = bouton.getBoundingClientRect();
       menu.style.setProperty('--queue-x', `${b.left + b.width / 2 - menu.getBoundingClientRect().left}px`);
+      placerNotice(menu.getBoundingClientRect());
+      if (cache) { menu.style.display = ''; menu.style.visibility = ''; }
     });
+    addEventListener('resize', ajuster);
     const basculer = (ouvert) => {
       li.classList.toggle('ouvert', ouvert);
       bouton.setAttribute('aria-expanded', String(ouvert));
@@ -320,10 +338,12 @@
   function afficherNotice() {
     const navigation = document.querySelector('.navigation');
     if (!navigation) return;
-    notice = document.createElement('p');
-    notice.className = 'notice-recruteur';
+    // Volet : conteneur (hauteur animée) > cadre qui rogne > texte qui glisse
+    notice = document.createElement('div');
+    notice.className = 'conteneur notice-recruteur';
     notice.id = 'notice-recruteur';
-    notice.innerHTML = t(
+    notice.innerHTML = '<div class="notice-volet"><p></p></div>';
+    notice.querySelector('p').innerHTML = t(
       `<strong>Recruteur ?</strong> Mon CV complet et mes coordonnées s’affichent avec votre
        <a href="#rideau-email">e-mail professionnel</a>, ou écrivez-moi sur <a href="${LINKEDIN}">LinkedIn</a>.`,
       `<strong>Recruiter?</strong> My full CV and contact details appear once you enter your
@@ -335,7 +355,7 @@
       champ.scrollIntoView({ block: 'center', behavior: 'smooth' });
       champ.focus({ preventScroll: true });
     });
-    navigation.append(notice);
+    (navigation.closest('.entete-nav') || navigation).after(notice);   // sous la ligne « nom + boutons », sans la déranger
     // Cachée tant qu'on ne survole pas « CV » ; le bouton la décrit aux lecteurs d'écran
     notice.addEventListener('pointerenter', entrerSurvolCv);
     notice.addEventListener('pointerleave', quitterSurvolCv);
