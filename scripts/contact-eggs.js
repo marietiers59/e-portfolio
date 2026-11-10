@@ -22,7 +22,7 @@
       physique ; on attrape et on lance les morceaux. « floating google » (ou « apesanteur ») : même chose
       en gravité zéro, les morceaux flottent et rebondissent. Moteur Matter.js (MIT), chargé à la demande
       depuis scripts/vendor/.
-   Intégration : <script src="scripts/contact-eggs.js?v=12" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=13" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const DOSSIER_SCRIPTS = document.currentScript ? new URL('.', document.currentScript.src) : new URL('scripts/', location.href);
@@ -258,7 +258,7 @@
     @keyframes st-flotte { to { transform: translate(var(--dx), -110vh); } }
     .st-retour { all: unset; position: fixed; z-index: 63; left: 50%; bottom: calc(var(--barre-h, 3rem) + 1rem);
       translate: -50% 0; width: 3.25rem; height: 3.25rem; border-radius: 50%; background: ${ROUGE}; color: #fff;
-      display: grid; place-items: center; font: 700 1.75rem/1 "Trebuchet MS", sans-serif; cursor: pointer;
+      display: grid; place-items: center; font: 400 2.1rem/1 "Trebuchet MS", sans-serif; cursor: pointer;
       box-shadow: 0 0 1.25rem rgb(225 29 46 / 0.6); }
     @media (prefers-reduced-motion: reduce) { .st-cendres { display: none; } .st-arrivee { animation: none; } }`;
   document.head.appendChild(styleST);
@@ -290,7 +290,7 @@
   retour.type = 'button';
   retour.className = 'st-retour';
   retour.hidden = true;
-  retour.textContent = '✕';
+  retour.textContent = '×';
   retour.setAttribute('aria-label', ANGLAIS ? 'Come back from the Upside Down' : 'Revenir du Monde à l’envers');
   document.body.append(de, retour);
 
@@ -594,7 +594,7 @@
       else { a.etat = 'part'; }                             // les aliens en trop s'en vont
     });
     majPanneau();
-    zerg.bouton.textContent = ANGLAIS ? 'Restore the page' : 'Remettre la page';
+    zerg.bouton.textContent = ANGLAIS ? '× Restore the page' : '× Remettre la page';
     annoncer('GG ! Les aliens ont digéré la page. Échap ou « Remettre la page » pour la retrouver.',
              'GG! The aliens have digested the page. Press Escape or “Restore the page” to get it back.');
   };
@@ -652,7 +652,7 @@
     document.body.append(zone, panneau);
     zerg = { zone, panneau, score: panneau.querySelector('.zr-score'), bouton: panneau.querySelector('button'),
       aliens: [], cibles: choisirCibles(), abattus: 0, clics: 0, debut: performance.now(), phase: 'jeu' };
-    zerg.bouton.textContent = ANGLAIS ? 'Stop' : 'Arrêter';
+    zerg.bouton.textContent = ANGLAIS ? '× Stop' : '× Arrêter';
     zerg.bouton.setAttribute('aria-label', ANGLAIS ? 'Stop the Zerg rush and restore the page' : 'Arrêter le Zerg rush et remettre la page');
     zerg.bouton.addEventListener('click', arreterZerg);
     for (let i = 0; i < 4; i++) apparaitre();
@@ -696,7 +696,7 @@
     @keyframes mg-pulse { 40% { scale: 1.15; box-shadow: 0 0 1.5rem 0.5rem var(--mg-halo); } }
     .mg-fermer { all: unset; position: fixed; z-index: 63; left: 50%; bottom: calc(var(--barre-h, 3rem) + 1rem);
       translate: -50% 0; width: 3.25rem; height: 3.25rem; border-radius: 50%; display: grid; place-items: center;
-      background: #14161c; color: #fff; font: 700 1.6rem/1 "Trebuchet MS", sans-serif; cursor: pointer;
+      background: #14161c; color: #fff; font: 400 2rem/1 "Trebuchet MS", sans-serif; cursor: pointer;
       box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.35); }
     .mg-zone { position: fixed; inset: 0; z-index: 61; pointer-events: none; overflow: hidden; }
     .mg-fumee, .mg-bulle { position: absolute; border-radius: 50%; animation: mg-monte var(--duree) ease-out var(--delai) forwards; opacity: 0; }
@@ -753,7 +753,7 @@
   fermer.type = 'button';
   fermer.className = 'mg-fermer';
   fermer.hidden = true;
-  fermer.textContent = '✕';
+  fermer.textContent = '×';
   fermer.setAttribute('aria-label', ANGLAIS ? 'Put the page back' : 'Remettre la page en place');
   document.body.append(fermer);
 
@@ -958,7 +958,7 @@
     const fermerGV = document.createElement('button');
     fermerGV.type = 'button';
     fermerGV.className = 'gv-fermer';
-    fermerGV.textContent = ANGLAIS ? '✕ Put the page back' : '✕ Remettre la page';
+    fermerGV.textContent = ANGLAIS ? '× Put the page back' : '× Remettre la page';
     fermerGV.addEventListener('click', arreterGravite);
     document.body.append(zone, fermerGV);
     document.documentElement.classList.add('gv-actif');
