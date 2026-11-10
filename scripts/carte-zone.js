@@ -1,6 +1,7 @@
 /*
   Carte de la zone de recherche de stage, au survol (ou au focus, ou au toucher) de « Lille, Lens, Douai, Arras »
-  dans le pied de page — même principe que le calendrier de la date de stage.
+  dans le pied de page, et de « Lille, Lens, Douai et Arras » dans la vignette « Mobile » de la bannière
+  — même principe que le calendrier de la date de stage.
 
   · Souris : apparaît au survol ; on peut passer sur la carte sans qu'elle se ferme.
   · Clavier : le lieu reçoit le focus (Tab) ; la carte s'ouvre, Échap la ferme (RGAA 10.13).
@@ -10,8 +11,10 @@
     fabriquées par outils/carte-zone/composer.py.
 */
 (() => {
-  const lieu = document.querySelector('[data-carte-zone]');
-  if (!lieu) return;
+  // Plusieurs déclencheurs possibles (bannière « Mobile » et pied de page) : une seule carte, partagée
+  const lieux = [...document.querySelectorAll('[data-carte-zone]')];
+  if (!lieux.length) return;
+  let lieu = lieux[0];                                  // déclencheur actif
   const ceScript = document.currentScript || document.querySelector('script[src*="carte-zone.js"]');
   const racine = new URL('../', ceScript.src);
   const anglais = document.documentElement.lang.toLowerCase().startsWith('en');
@@ -30,9 +33,32 @@
       '<strong>Internship search area</strong>: the Lille metropolitan area (Ilévia metro, tram and buses, A1 motorway), Lens-Liévin, Arras, Douai and the area around Libercourt. The boundaries are flexible.'
     )} <span class="carte-zone-source">${t('Fond de carte', 'Base map')} © <a href="https://www.openstreetmap.org/copyright" hreflang="en">${t('contributeurs OpenStreetMap', 'OpenStreetMap contributors')}</a></span></figcaption>`;
   document.body.append(bulle);
-  lieu.setAttribute('aria-describedby', 'carte-zone-legende');
-  lieu.setAttribute('aria-controls', 'carte-zone');
-  lieu.setAttribute('aria-expanded', 'false');
+  lieux.forEach((el) => {
+    el.setAttribute('aria-describedby', 'carte-zone-legende');
+    el.setAttribute('aria-controls', 'carte-zone');
+    el.setAttribute('aria-expanded', 'false');
+  });
+
+  // La carte doit tenir d'un côté du lieu sans le recouvrir (petits écrans : elle est plus haute que la place libre).
+  // · Toucher, clavier : la page défile pour laisser la place sous le lieu.
+  // · Souris : la page ne bouge pas (le pointeur quitterait le lieu) ; la carte se réduit à la place libre.
+  function faireDeLaPlace(souris) {
+    const marge = 56, vh = window.innerHeight;
+    bulle.style.width = '';
+    const libre = () => {
+      const r = lieu.getBoundingClientRect();
+      return Math.max(r.top - marge - 16, vh - marge - r.bottom - 16);
+    };
+    if (bulle.offsetHeight <= libre()) return;
+    if (!souris) {
+      const r = lieu.getBoundingClientRect();
+      window.scrollBy({ top: r.top - marge - 8, behavior: 'instant' });   // lieu en haut, carte dessous
+      if (bulle.offsetHeight <= libre()) return;
+    }
+    for (let i = 0; i < 3 && bulle.offsetHeight > libre(); i++) {           // la légende se réagence : on affine
+      bulle.style.width = `${Math.max(200, Math.floor(bulle.offsetWidth * libre() / bulle.offsetHeight))}px`;
+    }
+  }
 
   function placer() {
     const r = lieu.getBoundingClientRect();
@@ -59,12 +85,18 @@
     bulle.style.top = `${y + window.scrollY}px`;
   }
   let minuteur, ouverteA = 0;
-  function montrer() {
+  function montrer(el = lieu, souris = false) {
     clearTimeout(minuteur);
+    if (el !== lieu) {                                  // autre déclencheur : la carte le rejoint
+      lieu.setAttribute('aria-expanded', 'false');
+      lieu = el;
+      if (!bulle.hidden) { lieu.setAttribute('aria-expanded', 'true'); faireDeLaPlace(souris); placer(); return; }
+    }
     if (!bulle.hidden) return;
     ouverteA = performance.now();
     bulle.hidden = false;
     lieu.setAttribute('aria-expanded', 'true');
+    faireDeLaPlace(souris);
     placer();
   }
   function cacher() {
@@ -74,23 +106,28 @@
   }
   const cacherBientot = () => { clearTimeout(minuteur); minuteur = setTimeout(cacher, 250); };
 
-  lieu.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') montrer(); });
-  lieu.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') cacherBientot(); });
+  // Dernier type de pointeur utilisé : un toucher donne aussi le focus (et l'état :hover) au lieu
+  let dernierPointeur = 'mouse';
+  document.addEventListener('pointerdown', (e) => { dernierPointeur = e.pointerType; }, true);
+  lieux.forEach((el) => {
+    el.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') montrer(el, true); });
+    el.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') cacherBientot(); });
+    el.addEventListener('focus', () => montrer(el, dernierPointeur === 'mouse' && el.matches(':hover')));
+    el.addEventListener('blur', () => { if (!bulle.matches(':hover')) cacherBientot(); });
+    el.addEventListener('click', (e) => {               // toucher (et clic) : ouvre ou ferme
+      e.preventDefault();
+      if (bulle.hidden || el !== lieu) montrer(el);
+      else if (performance.now() - ouverteA > 400) cacher();   // pas juste après l'ouverture par le focus ou le survol
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (bulle.hidden || el !== lieu) montrer(el); else cacher(); }
+    });
+  });
   bulle.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') clearTimeout(minuteur); });
   bulle.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') cacherBientot(); });
-  lieu.addEventListener('focus', montrer);
-  lieu.addEventListener('blur', () => { if (!bulle.matches(':hover')) cacherBientot(); });
-  lieu.addEventListener('click', (e) => {               // toucher (et clic) : ouvre ou ferme
-    e.preventDefault();
-    if (bulle.hidden) montrer();
-    else if (performance.now() - ouverteA > 400) cacher();   // pas juste après l'ouverture par le focus ou le survol
-  });
-  lieu.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (bulle.hidden) montrer(); else cacher(); }
-  });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !bulle.hidden) cacher(); });
   document.addEventListener('pointerdown', (e) => {
-    if (!bulle.hidden && !bulle.contains(e.target) && !lieu.contains(e.target)) cacher();
+    if (!bulle.hidden && !bulle.contains(e.target) && !lieux.some((el) => el.contains(e.target))) cacher();
   });
   window.addEventListener('resize', () => { if (!bulle.hidden) placer(); });
 })();
