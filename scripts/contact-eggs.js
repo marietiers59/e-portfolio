@@ -3,7 +3,7 @@
       devient « 42 », la réponse calculée par Pensée profonde (Douglas Adams).
    2. Un message réduit à « askew », un synonyme ou une traduction française
       fait pencher la page, comme la recherche « askew » sur Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=2" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=3" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -14,6 +14,7 @@
 
   /* ---------- Réglages ---------- */
   const ANGLE = '1deg';                  // l'inclinaison de Google
+  const DELAI_42 = 600;                  // ms entre la fin de la phrase et l'apparition de « 42 » (au moins 0,5 s)
 
   // Les phrases remplacées par « 42 » : majuscules, apostrophes, virgules et espaces indifférents.
   const APOS = "['’ʼ‘`´]";
@@ -110,7 +111,17 @@
 
   const verifierTravers = () => pencher(DE_TRAVERS.includes(simplifier(champ.value)));
 
-  champ.addEventListener('input', () => { remplacer(); verifierTravers(); });
+  // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
+  // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
+  let minuteur42 = null;
+  const contientQuestion = () => GRANDE_QUESTION.some((motif) => { motif.lastIndex = 0; return motif.test(champ.value); });
+  const planifier42 = () => {
+    if (minuteur42 || !contientQuestion()) return;
+    minuteur42 = setTimeout(() => { minuteur42 = null; remplacer(); }, DELAI_42);
+  };
+
+  champ.addEventListener('input', () => { planifier42(); verifierTravers(); });
+  champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
   champ.form?.addEventListener('reset', () => setTimeout(verifierTravers)); // après l'envoi, la page se redresse
 
   if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew » ou « Grande Question sur la vie, l’Univers et le reste ».');
