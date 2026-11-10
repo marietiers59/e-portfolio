@@ -2246,6 +2246,9 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   inset: -0.9rem 0 auto;
   height: 0.9rem;
 }
+/* Queues de bulle (sous-menu CV, carte de la zone) : carré tourné dont on ne garde que la moitié extérieure,
+   plus 1,5 px pour couvrir le trait de la bulle ; sinon l'autre moitié mordrait sur le contenu (surbrillance, image) */
+:root { --queue-coupe: polygon(0 0, 100% 0, 100% 2px, 2px 100%, 0 100%); }
 .sous-menu-cv::after {           /* queue de la bulle, pointée vers le bouton « CV » (position calculée par rideau.js) */
   content: "";
   position: absolute;
@@ -2258,6 +2261,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   border-left: 1px solid var(--indigo-200);
   border-radius: 0.25rem 0 0 0;
   transform: translateX(-50%) rotate(45deg);
+  clip-path: var(--queue-coupe);
 }
 .nav-cv:is(.ouvert, .survol):not(.replie) .sous-menu-cv { display: block; }
 .nav-cv.survol:not(.replie) .nav-cv-fleche { transform: rotate(180deg); }
@@ -2458,6 +2462,7 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
 /* Queue de la bulle, pointée vers l'icône de localisation (position calculée par carte-zone.js) */
 .carte-zone::after {
   content: "";
+  clip-path: var(--queue-coupe);
   position: absolute;
   width: 1.1rem;
   height: 1.1rem;
