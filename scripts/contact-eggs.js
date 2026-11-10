@@ -3,7 +3,7 @@
       (the ultimate question of) life, the universe and everything » devient « 42 » (Douglas Adams).
    2. Un message réduit à « askew », un synonyme ou une traduction française
       fait pencher la page, comme la recherche « askew » sur Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=5" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=6" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -14,7 +14,7 @@
 
   /* ---------- Réglages ---------- */
   const ANGLE = '1deg';                  // l'inclinaison de Google
-  const DELAI_42 = 1200;                 // ms entre la fin de la phrase et l’apparition de « 42 » (au moins 1 s)
+  const DELAI_42 = 1000;                 // ms entre la fin de la phrase et l’apparition de « 42 » (1 s ; le navigateur ne déclenche jamais en avance)
 
   // Les phrases remplacées par « 42 » : majuscules, apostrophes, virgules et espaces indifférents.
   const APOS = "['’ʼ‘`´]";
