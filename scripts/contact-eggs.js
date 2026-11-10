@@ -22,7 +22,10 @@
       physique ; on attrape et on lance les morceaux. « floating google » (ou « apesanteur ») : même chose
       en gravité zéro, les morceaux flottent et rebondissent. Moteur Matter.js (MIT), chargé à la demande
       depuis scripts/vendor/.
-   Intégration : <script src="scripts/contact-eggs.js?v=13" defer></script> dans le <head>.
+  10. « let it snow » (ou « neige », « qu'il neige ») : la neige tombe et le givre gagne l'écran, comme sur
+      Google ; on l'essuie à la souris ou au doigt, « Dégivrer » le retire. En plus : des stalactites poussent
+      sous les cartes, boutons et titres, et une couche de neige se pose sur leur bord supérieur.
+   Intégration : <script src="scripts/contact-eggs.js?v=14" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const DOSSIER_SCRIPTS = document.currentScript ? new URL('.', document.currentScript.src) : new URL('scripts/', location.href);
@@ -224,6 +227,7 @@
       verifierZerg(message);
       verifierMagies(message);
       verifierGravite(message);
+      verifierNeige(message);
       for (const anim of ANIMATIONS) {
         const demande = anim.phrases.includes(message);
         if (demande && demandes.get(anim) !== message) animerPage(anim); // nouvelle phrase, ou retapée
@@ -413,7 +417,7 @@
 
   de.addEventListener('click', lancerDe);
   retour.addEventListener('click', revenir);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); fermerMagies(); arreterGravite(); } });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); fermerMagies(); arreterGravite(); arreterNeige(); } });
 
   /* ---------- 6. Zerg rush, version Space Invaders ---------- */
   const ZERG = [
@@ -1007,6 +1011,195 @@
     derniereGravite = demande ? message : null;
   };
 
+  /* ---------- 10. Let it snow : neige, givre, stalactites ---------- */
+  const NEIGE = ['let it snow', 'let it snow let it snow let it snow', 'neige', 'il neige', 'qu\'il neige', 'qu’il neige',
+    'laisse neiger', 'laissez neiger', 'flocons'];
+
+  const styleNG = document.createElement('style');
+  styleNG.textContent = `
+    .ng-canevas { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; }
+    .ng-flocons { z-index: 67; }
+    .ng-givre { z-index: 66; opacity: 0; transition: opacity 22s linear; }
+    .ng-givre.ng-pris { opacity: 0.82; }
+    .ng-calque { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 59; pointer-events: none; }
+    .ng-glace { position: absolute; overflow: visible; }
+    .ng-stalactites { transform-origin: top; scale: 1 0; animation: ng-pousse var(--duree) ease-out var(--delai) forwards; }
+    .ng-chapeau { transform-origin: bottom; scale: 1 0; animation: ng-pousse 4s ease-out var(--delai) forwards; }
+    @keyframes ng-pousse { to { scale: 1 1; } }
+    .ng-panneau { position: fixed; z-index: 68; top: calc(var(--barre-h, 3rem) + 0.5rem); right: 0.75rem; display: flex; gap: 0.5rem; }
+    .ng-panneau button { all: unset; cursor: pointer; padding: 0.45rem 0.9rem; border-radius: 999px; background: #14161c; color: #fff;
+      font: 700 0.9rem/1.2 "Trebuchet MS", sans-serif; box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.3); }
+    .ng-panneau button:first-child { background: #e8f4ff; color: #0c3b5e; }
+    .ng-panneau button:focus-visible { outline: 3px solid #6fb7ff; outline-offset: 2px; }
+    html.ng-actif { user-select: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .ng-givre { transition: none; } .ng-stalactites, .ng-chapeau { animation: none; scale: 1 1; }
+    }`;
+  document.head.appendChild(styleNG);
+
+  let neige = null;
+
+  // Une rangée de stalactites (pointes de glace de longueurs variées) et une couche de neige en vagues.
+  const svgStalactites = (largeur) => {
+    let x = 2 + Math.random() * 6, d = '', reflets = '', bas = 0;
+    while (x < largeur - 6) {
+      const l = 3 + Math.random() * 6, h = 6 + Math.random() ** 2 * 30;
+      d += `M${x.toFixed(1)} 0 L${(x + l / 2).toFixed(1)} ${h.toFixed(1)} L${(x + l).toFixed(1)} 0 Z `;
+      reflets += `M${(x + l * 0.3).toFixed(1)} 1 L${(x + l * 0.45).toFixed(1)} ${(h * 0.7).toFixed(1)} `;
+      bas = Math.max(bas, h);
+      x += l + Math.random() * 12;
+    }
+    return { hauteur: Math.ceil(bas) + 2, svg: `<defs><linearGradient id="ng-glace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4fbff" stop-opacity="0.95"/><stop offset="1" stop-color="#9fd3f5" stop-opacity="0.55"/></linearGradient></defs>
+      <path d="${d}" fill="url(#ng-glace)" stroke="#bfe3fb" stroke-width="0.6"/><path d="${reflets}" stroke="#fff" stroke-width="0.8" opacity="0.8"/>` };
+  };
+  const svgChapeau = (largeur) => {
+    let d = `M0 10 `;
+    for (let x = 0; x <= largeur; x += 10 + Math.random() * 14) d += `Q${(x + 6).toFixed(1)} ${(1 + Math.random() * 4).toFixed(1)} ${(x + 12).toFixed(1)} ${(4 + Math.random() * 3).toFixed(1)} `;
+    return `<path d="${d} L${largeur} 10 Z" fill="#fdfeff" stroke="#d9ecf8" stroke-width="0.8"/>`;
+  };
+
+  const poserGlace = (calque) => {
+    const haut = document.querySelector('.barre-haut')?.getBoundingClientRect().bottom ?? 0;
+    const bas = innerHeight;
+    const elements = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll('*').forEach((el) => {
+      if (elements.length >= 30) return;
+      const r = el.getBoundingClientRect(), st = getComputedStyle(el);
+      if (r.width < 40 || r.height < 18 || r.width > innerWidth * 0.94 || r.bottom < haut - innerHeight || r.top > bas + innerHeight) return;
+      if (st.visibility === 'hidden' || st.display === 'inline' || el.closest('[aria-hidden="true"], [hidden], [inert]')) return;
+      const fond = st.backgroundColor !== 'rgba(0, 0, 0, 0)' && st.backgroundColor !== 'transparent';
+      const cadre = fond || parseFloat(st.borderBottomWidth) > 0 || st.boxShadow !== 'none';
+      if (!cadre && !el.matches('h1, h2, button, .bouton')) return;
+      if (elements.some((e) => e.contains(el) && e.getBoundingClientRect().bottom - r.bottom < 6)) return; // même bord du bas
+      elements.push(el);
+    }));
+    elements.forEach((el, i) => {
+      const r = el.getBoundingClientRect(), x = r.left + scrollX, y = r.top + scrollY;
+      const { hauteur, svg } = svgStalactites(r.width);
+      const glace = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      glace.setAttribute('class', 'ng-glace ng-stalactites');
+      glace.setAttribute('width', r.width); glace.setAttribute('height', hauteur);
+      glace.style.cssText = `left:${x}px;top:${y + r.height - 1}px;--duree:${8 + Math.random() * 8}s;--delai:${2 + i * 0.3 + Math.random() * 3}s`;
+      glace.innerHTML = svg;
+      const chapeau = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      chapeau.setAttribute('class', 'ng-glace ng-chapeau');
+      chapeau.setAttribute('width', r.width); chapeau.setAttribute('height', 10);
+      chapeau.setAttribute('viewBox', `0 0 ${r.width} 10`);
+      chapeau.style.cssText = `left:${x}px;top:${y - 8}px;--delai:${1 + Math.random() * 4}s`;
+      chapeau.innerHTML = svgChapeau(r.width);
+      calque.append(glace, chapeau);
+    });
+  };
+
+  const dessinerGivre = (cv) => {
+    const ctx = cv.getContext('2d'), w = cv.width, h = cv.height;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.clearRect(0, 0, w, h);
+    const fond = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.2, w / 2, h / 2, Math.max(w, h) * 0.75);
+    fond.addColorStop(0, 'rgba(232, 242, 250, 0.55)'); fond.addColorStop(1, 'rgba(240, 248, 255, 0.95)');
+    ctx.fillStyle = fond; ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < (w * h) / 900; i++) {   // grain du givre
+      ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5})`;
+      ctx.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2, 1 + Math.random() * 2);
+    }
+  };
+
+  const lancerNeige = () => {
+    if (neige) return;
+    compter('easter-egg-let-it-snow', 'Let it snow');
+    const reduit = mouvementReduit.matches;
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const creerCanevas = (classe) => {
+      const cv = document.createElement('canvas');
+      cv.className = `ng-canevas ${classe}`;
+      cv.setAttribute('aria-hidden', 'true');
+      cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+      document.body.append(cv);
+      return cv;
+    };
+    const givre = creerCanevas('ng-givre');
+    dessinerGivre(givre);
+    const flocons = reduit ? null : creerCanevas('ng-flocons');
+
+    const calque = document.createElement('div');
+    calque.className = 'ng-calque';
+    calque.setAttribute('aria-hidden', 'true');
+    document.body.append(calque);
+    poserGlace(calque);
+
+    const panneau = document.createElement('div');
+    panneau.className = 'ng-panneau';
+    const degivrer = Object.assign(document.createElement('button'), { type: 'button', textContent: ANGLAIS ? 'Defrost' : 'Dégivrer' });
+    const stop = Object.assign(document.createElement('button'), { type: 'button', textContent: ANGLAIS ? '× Stop the snow' : '× Arrêter la neige' });
+    panneau.append(degivrer, stop);
+    document.body.append(panneau);
+    document.documentElement.classList.add('ng-actif');
+
+    requestAnimationFrame(() => requestAnimationFrame(() => givre.classList.add('ng-pris')));   // le givre gagne l'écran peu à peu
+    degivrer.addEventListener('click', () => {
+      givre.style.transition = 'none'; givre.classList.remove('ng-pris'); dessinerGivre(givre);
+      requestAnimationFrame(() => { givre.style.transition = ''; requestAnimationFrame(() => givre.classList.add('ng-pris')); });
+    });
+    stop.addEventListener('click', arreterNeige);
+
+    // Essuyer le givre : bouton de souris enfoncé, ou doigt qui glisse.
+    const essuyer = (e) => {
+      if (e.pointerType === 'mouse' && !(e.buttons & 1)) return;
+      const ctx = givre.getContext('2d'), x = e.clientX * dpr, y = e.clientY * dpr, r = 34 * dpr;
+      const g = ctx.createRadialGradient(x, y, r * 0.3, x, y, r);
+      g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    };
+    addEventListener('pointermove', essuyer, { passive: true });
+
+    let raf = null;
+    if (flocons) {
+      const ctx = flocons.getContext('2d');
+      const liste = Array.from({ length: Math.round(innerWidth / 8) }, () => ({
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight, r: 1 + Math.random() * 3,
+        v: 25 + Math.random() * 55, phase: Math.random() * 6.3, o: 0.5 + Math.random() * 0.5,
+      }));
+      let avant = performance.now();
+      const tomber = (t) => {
+        const dt = Math.min(0.05, (t - avant) / 1000); avant = t;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        for (const f of liste) {
+          f.y += f.v * dt * (0.6 + f.r / 4); f.x += Math.sin(t / 900 + f.phase) * 12 * dt;
+          if (f.y > innerHeight + 5) { f.y = -5; f.x = Math.random() * innerWidth; }
+          ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${f.o})`; ctx.shadowColor = 'rgba(70, 115, 160, 0.85)'; ctx.shadowBlur = 3;
+          ctx.fill();
+        }
+        raf = requestAnimationFrame(tomber);
+      };
+      raf = requestAnimationFrame(tomber);
+    }
+
+    neige = { givre, flocons, calque, panneau, essuyer, arreter: () => raf && cancelAnimationFrame(raf) };
+    annoncer('Il neige ! Le givre gagne l’écran : essuyez-le en glissant le doigt ou la souris, bouton enfoncé. « Dégivrer » le retire, Échap arrête la neige.',
+             'Let it snow! Frost is creeping over the screen: wipe it by dragging your finger or the mouse with the button held. “Defrost” clears it, Escape stops the snow.');
+  };
+
+  function arreterNeige() {
+    if (!neige) return;
+    neige.arreter();
+    removeEventListener('pointermove', neige.essuyer);
+    [neige.givre, neige.flocons, neige.calque, neige.panneau].forEach((el) => el?.remove());
+    document.documentElement.classList.remove('ng-actif');
+    neige = null;
+    annoncer('La neige s’est arrêtée.', 'The snow has stopped.');
+  }
+
+  let derniereNeige = null;
+  const verifierNeige = (message) => {
+    const demande = NEIGE.includes(message);
+    if (demande && derniereNeige !== message) lancerNeige();
+    derniereNeige = demande ? message : null;
+  };
+
   // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
   // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
   let minuteur42 = null;
@@ -1024,5 +1217,5 @@
   champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
   champ.form?.addEventListener('reset', () => setTimeout(() => { verifierTravers(); verifierAnimations(); })); // après l'envoi, la page se redresse
 
-  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush », « wicked », « grogu », « google gravity », « floating google », « fight aliens » ou « Grande Question sur la vie, l’Univers et le reste ».');
+  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush », « wicked », « grogu », « google gravity », « floating google », « fight aliens », « let it snow » ou « Grande Question sur la vie, l’Univers et le reste ».');
 })();
