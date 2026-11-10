@@ -79,9 +79,6 @@
 
   /* Nuances de détail, isolées pour que le thème sombre puisse les remplacer */
   --turquoise-150: hsl(197 58% 86%);    /* bas du dégradé des boutons */
-  --jalon-haut:  hsl(197 70% 93%);      /* macarons de la frise : bleu-cyan, comme les boutons */
-  --jalon-bas:   hsl(197 58% 81%);
-  --jalon-trait: hsl(197 50% 74%);
   --cyan-trait:  hsl(197 50% 50%);      /* traits sous les titres, ligne et points de la frise */
   --encre-forte: hsl(220 16% 27%);      /* texte posé sur la bannière de la une */
   --erreur:       hsl(355 40% 40%);
@@ -175,9 +172,6 @@
   --sapin-400: hsl(165 34% 54%);
   --sapin-700: hsl(165 42% 76%);
 
-  --jalon-haut:  hsl(197 32% 27%);
-  --jalon-bas:   hsl(197 34% 20%);
-  --jalon-trait: hsl(197 30% 36%);
   --cyan-trait:  hsl(197 48% 58%);
   --erreur:       hsl(355 70% 78%);
   --erreur-trait: hsl(355 50% 60%);
@@ -1912,16 +1906,16 @@ abbr[title] { text-decoration: none; cursor: help; }
   width: 4.25rem;
   margin: 0 0 0.6rem;
   padding: 0.25rem 0;
-  border: 1px solid var(--jalon-trait);
+  border: 1px solid var(--turquoise-200);      /* même habillage que le bouton « Envoyer » (.bouton) */
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--jalon-haut), var(--jalon-bas));
+  background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150));
   color: var(--bleu-700);
   font-family: var(--police-interface);
   font-size: 0.9rem;
   font-weight: 700;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  box-shadow: inset 0 1px 0 hsl(var(--clair) / 0.7), var(--ombre-legere);
+  box-shadow: var(--ombre-repos);
 }
 
 .frise-boite {
@@ -1984,9 +1978,7 @@ abbr[title] { text-decoration: none; cursor: help; }
     z-index: 1;
     margin: 0;
     /* fin liseré couleur de fond : il « coupe » la ligne sans faire de bordure blanche épaisse */
-    box-shadow: 0 0 0 2px var(--fond-local, var(--fond)),
-                inset 0 1px 0 hsl(var(--clair) / 0.7),
-                var(--ombre-legere);
+    box-shadow: 0 0 0 2px var(--fond-local, var(--fond)), var(--ombre-repos);
   }
   .frise-projet .frise-boite    { grid-column: 1; grid-row: 1; }
   .frise-formation .frise-boite { grid-column: 3; grid-row: 1; }
