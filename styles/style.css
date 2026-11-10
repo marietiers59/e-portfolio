@@ -79,9 +79,10 @@
 
   /* Nuances de détail, isolées pour que le thème sombre puisse les remplacer */
   --turquoise-150: hsl(197 58% 86%);    /* bas du dégradé des boutons */
-  --jalon-haut:  hsl(205 80% 93%);      /* macarons de la frise */
-  --jalon-bas:   hsl(205 64% 81%);
-  --jalon-trait: hsl(205 55% 76%);
+  --jalon-haut:  hsl(197 70% 93%);      /* macarons de la frise : bleu-cyan, comme les boutons */
+  --jalon-bas:   hsl(197 58% 81%);
+  --jalon-trait: hsl(197 50% 74%);
+  --cyan-trait:  hsl(197 50% 50%);      /* traits sous les titres, ligne et points de la frise */
   --encre-forte: hsl(220 16% 27%);      /* texte posé sur la bannière de la une */
   --erreur:       hsl(355 40% 40%);
   --erreur-trait: hsl(355 40% 60%);
@@ -174,9 +175,10 @@
   --sapin-400: hsl(165 34% 54%);
   --sapin-700: hsl(165 42% 76%);
 
-  --jalon-haut:  hsl(206 30% 27%);
-  --jalon-bas:   hsl(206 32% 20%);
-  --jalon-trait: hsl(206 28% 36%);
+  --jalon-haut:  hsl(197 32% 27%);
+  --jalon-bas:   hsl(197 34% 20%);
+  --jalon-trait: hsl(197 30% 36%);
+  --cyan-trait:  hsl(197 48% 58%);
   --erreur:       hsl(355 70% 78%);
   --erreur-trait: hsl(355 50% 60%);
   --clair: 228 16% 15%;              /* les voiles « blancs » deviennent bleu nuit */
@@ -668,7 +670,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   width: 3rem; height: 0.3rem;
   margin-top: 0.5rem;
   border-radius: 999px;
-  background: var(--sapin-400);
+  background: var(--cyan-trait);
 }
 .section-entete .section-titre::after { margin-inline: auto; }
 .section-intro { max-width: 46rem; margin: 0 auto 2.5rem; color: var(--encre-douce); }
@@ -1889,7 +1891,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   width: 3px;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: var(--bleu-400);
+  background: var(--cyan-trait);
 }
 .frise-etape { position: relative; padding-left: calc(var(--ligne-x) + 1.5rem); }
 .frise-etape::before {           /* point sur la ligne (mobile) */
@@ -1901,7 +1903,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   transform: translateX(-50%);
   border-radius: 50%;
   background: var(--carte);
-  border: 3px solid var(--bleu-400);
+  border: 3px solid var(--cyan-trait);
 }
 
 /* Le macaron : taille fixe, léger dégradé et reflet en haut pour le relief */
