@@ -11,15 +11,21 @@
       (une seule fois par chargement de page ; il s'en va dès que le texte change).
       Lancé, il tombe sur 1 : fissure rouge, éclair, la page s'assombrit sous les cendres et passe
       tête en bas (le Monde à l'envers). Une croix rouge en bas (ou Échap) ramène la page à l'endroit.
-   6. Un message réduit à « zerg rush » lâche des aliens façon Space Invaders qui grignotent la page,
+   6. Un message réduit à « zerg rush » (ou « play space invaders », « fight aliens », « jouer à Space Invaders »,
+      « combattre les aliens ») lâche des aliens façon Space Invaders qui grignotent la page,
       comme les « o » de Google. Trois clics abattent un alien. Quand tout est dévoré, ils écrivent « GG ».
    7. « wicked » (ou « elphaba », « glinda », « defying gravity ») : un chapeau de sorcière apparaît ;
       au clic, la page défie la gravité dans la fumée verte et les bulles roses, comme sur Google.
    8. « grogu » (ou « baby yoda », « la force », « the force ») : une main lumineuse apparaît ;
       chaque clic soulève un élément par la Force, qui retombe de travers, comme l'effet de Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=11" defer></script> dans le <head>.
+   9. « google gravity » (ou « gravité ») : la page s'effondre en tas au bas de l'écran, avec une vraie
+      physique ; on attrape et on lance les morceaux. « floating google » (ou « apesanteur ») : même chose
+      en gravité zéro, les morceaux flottent et rebondissent. Moteur Matter.js (MIT), chargé à la demande
+      depuis scripts/vendor/.
+   Intégration : <script src="scripts/contact-eggs.js?v=12" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
+  const DOSSIER_SCRIPTS = document.currentScript ? new URL('.', document.currentScript.src) : new URL('scripts/', location.href);
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
   if (!champ) return;
 
@@ -217,6 +223,7 @@
       verifierStranger(message);
       verifierZerg(message);
       verifierMagies(message);
+      verifierGravite(message);
       for (const anim of ANIMATIONS) {
         const demande = anim.phrases.includes(message);
         if (demande && demandes.get(anim) !== message) animerPage(anim); // nouvelle phrase, ou retapée
@@ -406,10 +413,16 @@
 
   de.addEventListener('click', lancerDe);
   retour.addEventListener('click', revenir);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); fermerMagies(); } });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); fermerMagies(); arreterGravite(); } });
 
   /* ---------- 6. Zerg rush, version Space Invaders ---------- */
-  const ZERG = ['zerg rush', 'zergrush', 'zerg-rush', 'zerg'];
+  const ZERG = [
+    'zerg rush', 'zergrush', 'zerg-rush', 'zerg',
+    'play space invaders', 'play space invader', 'lets play space invaders', 'fight aliens', 'fight the aliens', 'fight alien',
+    'jouer a space invaders', 'joue a space invaders', 'jouons a space invaders', 'jouer aux space invaders',
+    'combattre les aliens', 'combats les aliens', 'combattons les aliens', 'combattre des aliens',
+    'affronter les aliens', 'affronte les aliens', 'battre les aliens',
+  ];
   const PIXEL = 3;                                  // taille d'un pixel d'alien, en px
   const COULEURS_ALIENS = ['#2f8f4e', '#4f55c8', '#1d7f86'];
   // Les trois aliens du jeu original, chacun sur deux images, et l'explosion.
@@ -721,7 +734,7 @@
       compteur: ['easter-egg-wicked', 'Wicked : défier la gravité'],
     },
     {
-      nom: 'force', phrases: ['grogu', 'baby yoda', 'la force', 'the force', 'que la force soit avec toi', 'may the force be with you'],
+      nom: 'force', phrases: ['grogu', 'baby yoda', 'mandalorian', 'the mandalorian', 'le mandalorien', 'mandalorien', 'la force', 'the force', 'que la force soit avec toi', 'may the force be with you'],
       halo: 'rgb(110 220 255 / 0.7)',
       label: ANGLAIS ? 'Glowing hand: use the Force' : 'Main lumineuse : utiliser la Force',
       // Une main ouverte, lumineuse, sur un disque bleu nuit.
@@ -844,6 +857,156 @@
   }
   fermer.addEventListener('click', fermerMagies);
 
+  /* ---------- 9. Google Gravity et Floating Google ---------- */
+  const GRAVITE = ['google gravity', 'gravity', 'gravite', 'la gravite', 'gravitation', 'chute libre'];
+  const FLOTTANT = ['floating google', 'google floating', 'zero gravity', 'gravite zero', 'apesanteur', 'en apesanteur', 'floating'];
+
+  const styleGV = document.createElement('style');
+  styleGV.textContent = `
+    .gv-zone { position: fixed; inset: 0; z-index: 64; cursor: grab; touch-action: none; }
+    .gv-zone:active { cursor: grabbing; }
+    .gv-fermer { all: unset; position: fixed; z-index: 66; top: calc(var(--barre-h, 3rem) + 0.5rem); right: 0.75rem;
+      padding: 0.45rem 0.9rem; border-radius: 999px; background: #14161c; color: #fff; cursor: pointer;
+      font: 700 0.9rem/1.2 "Trebuchet MS", sans-serif; box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.3); }
+    .gv-fermer:focus-visible { outline: 3px solid #4f8cff; outline-offset: 2px; }
+    html.gv-actif, html.gv-actif body { overflow: hidden; }`;
+  document.head.appendChild(styleGV);
+
+  let matter = null, gravite = null;
+  const chargerMatter = () => matter ??= new Promise((ok, ko) => {
+    if (window.Matter) return ok(window.Matter);
+    const sc = document.createElement('script');
+    sc.src = new URL('vendor/matter-0.20.0.min.js', DOSSIER_SCRIPTS).href;
+    sc.onload = () => ok(window.Matter);
+    sc.onerror = () => { matter = null; ko(new Error('Matter.js introuvable')); };
+    document.head.append(sc);
+  });
+
+  // Les morceaux : les cadres (cartes, formulaire) tombent d'un bloc, avec leur contenu ;
+  // hors des cadres, chaque titre, paragraphe, élément de liste ou bouton tombe seul.
+  const morceaux = (haut, bas) => {
+    const visible = (el) => {
+      const r = el.getBoundingClientRect(), st = getComputedStyle(el);
+      return r.width * r.height >= 300 && r.bottom > haut && r.top < bas && r.right > 0 && r.left < innerWidth
+        && st.display !== 'inline' && st.visibility !== 'hidden' && !el.closest('[aria-hidden="true"], [hidden], [inert]');
+    };
+    const cadres = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll('*').forEach((el) => {
+      if (cadres.some((c) => c.contains(el)) || !visible(el)) return;
+      const r = el.getBoundingClientRect(), st = getComputedStyle(el);
+      if (r.width > innerWidth * 0.94 || r.height > (bas - haut) * 0.85) return;
+      const fond = st.backgroundColor !== 'rgba(0, 0, 0, 0)' && st.backgroundColor !== 'transparent';
+      if (fond || parseFloat(st.borderTopWidth) > 0 || st.boxShadow !== 'none') cadres.push(el);
+    }));
+    const seuls = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll('h1,h2,h3,h4,p,li,label,input,select,textarea,button,img,figure,blockquote,.tag').forEach((el) => {
+      if (cadres.some((c) => c.contains(el)) || seuls.some((c) => c.contains(el)) || !visible(el)) return;
+      seuls.push(el);
+    }));
+    return [...cadres, ...seuls].slice(0, 45);
+  };
+
+  const lancerGravite = async (flottant) => {
+    if (gravite || zerg || mondeEnvers || enMouvement) return;
+    compter(flottant ? 'easter-egg-floating-google' : 'easter-egg-google-gravity', flottant ? 'Floating Google' : 'Google Gravity');
+    if (mouvementReduit.matches) {
+      annoncer(`${flottant ? 'Apesanteur !' : 'Gravité !'} (Animation désactivée : votre appareil demande moins de mouvements.)`,
+               `${flottant ? 'Zero gravity!' : 'Gravity!'} (Animation skipped: your device asks for reduced motion.)`);
+      return;
+    }
+    gravite = { chargement: true };
+    let M;
+    try { M = await chargerMatter(); } catch { gravite = null; return; }
+    if (!gravite) return;                           // arrêté pendant le chargement
+
+    const haut = document.querySelector('.barre-haut')?.getBoundingClientRect().bottom ?? 0;
+    const bas = document.querySelector('.barre-bas')?.getBoundingClientRect().top ?? innerHeight;
+    const L = document.documentElement.clientWidth;
+    const engine = M.Engine.create();
+    engine.gravity.y = flottant ? 0 : 1;
+
+    const pieces = morceaux(haut, bas).map((el) => {
+      const r = el.getBoundingClientRect();
+      const corps = M.Bodies.rectangle(r.left + r.width / 2, r.top + r.height / 2, r.width, r.height, {
+        restitution: flottant ? 0.9 : 0.25, friction: flottant ? 0.01 : 0.4,
+        frictionAir: flottant ? 0.004 : 0.01, chamfer: { radius: 4 },
+      });
+      if (flottant) {
+        M.Body.setVelocity(corps, { x: (Math.random() - 0.5) * 3, y: (Math.random() - 0.5) * 3 });
+        M.Body.setAngularVelocity(corps, (Math.random() - 0.5) * 0.02);
+      } else {                                      // une pichenette : les morceaux basculent en tombant
+        M.Body.setVelocity(corps, { x: (Math.random() - 0.5) * 4, y: -1 - Math.random() * 3 });
+        M.Body.setAngularVelocity(corps, (Math.random() - 0.5) * 0.06);
+      }
+      el.style.transformOrigin = 'center';
+      el.style.willChange = 'translate, rotate';
+      return { el, corps, x0: corps.position.x, y0: corps.position.y };
+    });
+
+    const epaisseur = 200, H = bas - haut;          // sol, plafond et murs, juste hors de vue
+    M.Composite.add(engine.world, [
+      ...pieces.map((p) => p.corps),
+      M.Bodies.rectangle(L / 2, bas + epaisseur / 2, L * 3, epaisseur, { isStatic: true }),
+      M.Bodies.rectangle(L / 2, haut - epaisseur / 2, L * 3, epaisseur, { isStatic: true }),
+      M.Bodies.rectangle(-epaisseur / 2, haut + H / 2, epaisseur, H * 3, { isStatic: true }),
+      M.Bodies.rectangle(L + epaisseur / 2, haut + H / 2, epaisseur, H * 3, { isStatic: true }),
+    ]);
+
+    const zone = document.createElement('div');
+    zone.className = 'gv-zone';
+    zone.setAttribute('aria-hidden', 'true');
+    const fermerGV = document.createElement('button');
+    fermerGV.type = 'button';
+    fermerGV.className = 'gv-fermer';
+    fermerGV.textContent = ANGLAIS ? '✕ Put the page back' : '✕ Remettre la page';
+    fermerGV.addEventListener('click', arreterGravite);
+    document.body.append(zone, fermerGV);
+    document.documentElement.classList.add('gv-actif');
+
+    const souris = M.Mouse.create(zone);            // attraper, traîner et lancer les morceaux
+    const prise = M.MouseConstraint.create(engine, { mouse: souris, constraint: { stiffness: 0.2, render: { visible: false } } });
+    M.Composite.add(engine.world, prise);
+
+    let raf, avant = performance.now();
+    const pas = (t) => {
+      M.Engine.update(engine, Math.min(1000 / 30, Math.max(1, t - avant))); avant = t;
+      for (const p of pieces) {
+        p.el.style.translate = `${(p.corps.position.x - p.x0).toFixed(1)}px ${(p.corps.position.y - p.y0).toFixed(1)}px`;
+        p.el.style.rotate = `${p.corps.angle.toFixed(4)}rad`;
+      }
+      raf = requestAnimationFrame(pas);
+    };
+    raf = requestAnimationFrame(pas);
+    gravite = { engine, pieces, zone, fermerGV, souris, arreter: () => cancelAnimationFrame(raf) };
+    fermerGV.focus({ preventScroll: true });
+    annoncer(flottant ? 'Apesanteur ! Les morceaux de la page flottent ; attrapez-les et lancez-les. Échap pour tout remettre.'
+                      : 'Gravité ! La page s’effondre ; attrapez les morceaux et lancez-les. Échap pour tout remettre.',
+             flottant ? 'Zero gravity! The page floats apart; grab and throw the pieces. Press Escape to put it back.'
+                      : 'Gravity! The page collapses; grab and throw the pieces. Press Escape to put it back.');
+  };
+
+  function arreterGravite() {
+    if (!gravite) return;
+    if (gravite.chargement) { gravite = null; return; }
+    const { engine, pieces, zone, fermerGV, souris, arreter } = gravite;
+    arreter();
+    window.Matter.Mouse.clearSourceEvents?.(souris);
+    window.Matter.Engine.clear(engine);
+    pieces.forEach(({ el }) => { ['translate', 'rotate', 'transformOrigin', 'willChange'].forEach((p) => { el.style[p] = ''; }); });
+    zone.remove(); fermerGV.remove();
+    document.documentElement.classList.remove('gv-actif');
+    gravite = null;
+    champ.focus({ preventScroll: true });
+    annoncer('La page est revenue en place.', 'The page is back in place.');
+  }
+
+  let derniereGravite = null;
+  const verifierGravite = (message) => {
+    const demande = GRAVITE.includes(message) || FLOTTANT.includes(message);
+    if (demande && derniereGravite !== message) lancerGravite(FLOTTANT.includes(message));
+    derniereGravite = demande ? message : null;
+  };
+
   // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
   // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
   let minuteur42 = null;
@@ -861,5 +1024,5 @@
   champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
   champ.form?.addEventListener('reset', () => setTimeout(() => { verifierTravers(); verifierAnimations(); })); // après l'envoi, la page se redresse
 
-  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush », « wicked », « grogu » ou « Grande Question sur la vie, l’Univers et le reste ».');
+  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush », « wicked », « grogu », « google gravity », « floating google », « fight aliens » ou « Grande Question sur la vie, l’Univers et le reste ».');
 })();
