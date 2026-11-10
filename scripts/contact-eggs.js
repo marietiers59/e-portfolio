@@ -7,7 +7,10 @@
       un tour complet à la page, comme sur Google : 360° en 4 s, une seule fois.
    4. Un message réduit à « 67 » (ou « 6-7 », « six seven », « six-sept ») fait tanguer
       la page en bascule, comme sur Google, au rythme du mème « 6-7 ».
-   Intégration : <script src="scripts/contact-eggs.js?v=8" defer></script> dans le <head>.
+   5. Un message réduit à « stranger things » fait apparaître un dé à 20 faces, comme sur Google.
+      Lancé, il tombe sur 1 : fissure rouge, éclair, la page s'assombrit sous les cendres et passe
+      tête en bas (le Monde à l'envers). Une croix rouge en bas (ou Échap) ramène la page à l'endroit.
+   Intégration : <script src="scripts/contact-eggs.js?v=9" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -63,6 +66,12 @@
   const SIX_SEPT = [
     '67', '6 7', '6-7', '6 - 7', '6–7', '6—7', '6/7', 'six seven', 'six-seven', 'sixseven',
     'six sept', 'six-sept', 'sixsept',
+  ];
+
+  // Les messages qui font apparaître le dé de Stranger Things.
+  const STRANGER = [
+    'stranger things', 'strangerthings', 'stranger thing', 'upside down', 'the upside down',
+    'monde a l\'envers', 'le monde a l\'envers', 'monde a l’envers', 'le monde a l’envers',
   ];
 
   /* ---------- Outils ---------- */
@@ -198,6 +207,7 @@
     clearTimeout(minuteurAnimation);
     minuteurAnimation = setTimeout(() => {
       const message = simplifier(champ.value);
+      verifierStranger(message);
       for (const anim of ANIMATIONS) {
         const demande = anim.phrases.includes(message);
         if (demande && demandes.get(anim) !== message) animerPage(anim); // nouvelle phrase, ou retapée
@@ -205,6 +215,187 @@
       }
     }, PAUSE_ANIMATION);
   };
+
+  /* ---------- 5. Stranger Things : le dé et le Monde à l'envers ---------- */
+  const ROUGE = '#e11d2e';
+  const styleST = document.createElement('style');
+  styleST.textContent = `
+    .st-de { all: unset; position: fixed; z-index: 60; right: 1rem; bottom: calc(var(--barre-h, 3rem) + 1rem);
+      width: 4.5rem; height: 4.5rem; cursor: pointer; filter: drop-shadow(0 0.25rem 0.6rem rgb(0 0 0 / 0.35)); }
+    .st-de[hidden], .st-retour[hidden] { display: none; }
+    .st-de svg { display: block; width: 100%; height: 100%; }
+    .st-de:focus-visible, .st-retour:focus-visible { outline: 3px solid ${ROUGE}; outline-offset: 4px; border-radius: 50%; }
+    .st-arrivee { animation: st-arrivee 0.5s cubic-bezier(0.3, 1.6, 0.5, 1); }
+    @keyframes st-arrivee { from { transform: translateY(2.5rem) scale(0.6); opacity: 0; } }
+    .st-voile { position: fixed; inset: 0; z-index: 62; pointer-events: none; }
+    .st-fissure svg { display: block; width: 100%; height: 100%; }
+    .st-fissure path { fill: none; stroke: ${ROUGE}; stroke-width: 4; stroke-linejoin: bevel; stroke-linecap: round;
+      filter: drop-shadow(0 0 0.4rem #ff3347); }
+    .st-fissure path + path { stroke-width: 2.5; }
+    .st-flash { background: ${ROUGE}; opacity: 0; }
+    html.monde-envers, html.monde-envers body { overflow-x: hidden; }
+    html.monde-envers body { background: #15171c; }
+    html.monde-envers .penchable { rotate: 180deg; filter: grayscale(0.8) brightness(0.42) contrast(1.2); }
+    .st-cendres { position: fixed; inset: 0; z-index: 59; pointer-events: none; overflow: hidden; }
+    .st-cendre { position: absolute; bottom: -1rem; border-radius: 50%; background: rgb(214 214 220 / 0.75);
+      animation: st-flotte linear infinite; }
+    @keyframes st-flotte { to { transform: translate(var(--dx), -110vh); } }
+    .st-retour { all: unset; position: fixed; z-index: 63; left: 50%; bottom: calc(var(--barre-h, 3rem) + 1rem);
+      translate: -50% 0; width: 3.25rem; height: 3.25rem; border-radius: 50%; background: ${ROUGE}; color: #fff;
+      display: grid; place-items: center; font: 700 1.75rem/1 "Trebuchet MS", sans-serif; cursor: pointer;
+      box-shadow: 0 0 1.25rem rgb(225 29 46 / 0.6); }
+    @media (prefers-reduced-motion: reduce) { .st-cendres { display: none; } .st-arrivee { animation: none; } }`;
+  document.head.appendChild(styleST);
+
+  // Le dé à 20 faces vu de face : un hexagone, une face centrale qui porte le chiffre, et ses voisines.
+  const svgDe = `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+    <g stroke="#3b0710" stroke-width="1.6" stroke-linejoin="round">
+      <polygon points="50,4 90,27 90,73 50,96 10,73 10,27" fill="#8f1022"/>
+      <polygon points="50,4 90,27 50,26" fill="#b0182d"/><polygon points="50,4 10,27 50,26" fill="#a3152a"/>
+      <polygon points="90,27 90,73 78,68" fill="#7c0d1d"/><polygon points="10,27 10,73 22,68" fill="#86101f"/>
+      <polygon points="90,73 50,96 78,68" fill="#6e0a18"/><polygon points="10,73 50,96 22,68" fill="#760c1b"/>
+      <polygon points="50,96 78,68 22,68" fill="#9a1326"/>
+      <polygon points="90,27 50,26 78,68" fill="#a8162b"/><polygon points="10,27 50,26 22,68" fill="#9e1428"/>
+      <polygon points="50,26 78,68 22,68" fill="#d4243a"/>
+    </g>
+    <text class="st-chiffre" x="50" y="59" text-anchor="middle" fill="#fff"
+      font-family="Trebuchet MS, sans-serif" font-weight="700" font-size="20">20</text>
+  </svg>`;
+
+  const de = document.createElement('button');
+  de.type = 'button';
+  de.className = 'st-de';
+  de.hidden = true;
+  de.setAttribute('aria-label', ANGLAIS ? 'Twenty-sided die: roll it' : 'Dé à vingt faces : le lancer');
+  de.innerHTML = svgDe;
+  const chiffre = de.querySelector('.st-chiffre');
+
+  const retour = document.createElement('button');
+  retour.type = 'button';
+  retour.className = 'st-retour';
+  retour.hidden = true;
+  retour.textContent = '✕';
+  retour.setAttribute('aria-label', ANGLAIS ? 'Come back from the Upside Down' : 'Revenir du Monde à l’envers');
+  document.body.append(de, retour);
+
+  let deLance = false, mondeEnvers = false, cendres = null, voiles = [];
+  const pause = (ms) => new Promise((ok) => setTimeout(ok, ms));
+
+  const montrerDe = (oui) => {
+    if (mondeEnvers || deLance || oui === !de.hidden) return;
+    de.hidden = !oui;
+    if (oui) {
+      chiffre.textContent = '20';
+      de.classList.remove('st-arrivee'); void de.offsetWidth; de.classList.add('st-arrivee');
+      annoncer('Un dé à vingt faces est apparu en bas à droite.', 'A twenty-sided die has appeared at the bottom right.');
+    }
+  };
+
+  const voile = (classe, html = '') => {
+    const v = document.createElement('div');
+    v.className = `st-voile ${classe}`;
+    v.setAttribute('aria-hidden', 'true');
+    v.innerHTML = html;
+    document.body.append(v);
+    voiles.push(v);
+    return v;
+  };
+
+  const semerCendres = () => {
+    cendres = document.createElement('div');
+    cendres.className = 'st-cendres';
+    cendres.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 45; i++) {
+      const c = document.createElement('span');
+      const taille = 2 + Math.random() * 4;
+      c.className = 'st-cendre';
+      c.style.cssText = `left:${Math.random() * 100}%;width:${taille}px;height:${taille}px;`
+        + `--dx:${(Math.random() - 0.5) * 30}vw;animation-duration:${9 + Math.random() * 10}s;`
+        + `animation-delay:${-Math.random() * 18}s;opacity:${0.35 + Math.random() * 0.6}`;
+      cendres.append(c);
+    }
+    document.body.append(cendres);
+  };
+
+  const lancerDe = async () => {
+    if (deLance || mondeEnvers) return;
+    deLance = true;
+    const reduit = mouvementReduit.matches;
+    if (!reduit) {
+      // Le dé roule : il tourne, rebondit, ses faces défilent… et tombe sur 1, l'échec critique.
+      const roule = de.animate(
+        [{ rotate: '0deg', scale: 1 }, { rotate: '540deg', scale: 1.25, offset: 0.45 }, { rotate: '1080deg', scale: 1 }],
+        { duration: 1300, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' });
+      const defile = setInterval(() => { chiffre.textContent = String(2 + Math.floor(Math.random() * 19)); }, 70);
+      await roule.finished.catch(() => {});
+      clearInterval(defile);
+    }
+    chiffre.textContent = '1';
+    annoncer('Le dé tombe sur 1 : échec critique !', 'The die lands on 1: critical fail!');
+    await pause(reduit ? 300 : 600);
+
+    if (!reduit) {
+      // La fissure rouge se dessine en travers de l'écran, puis un éclair rouge.
+      // Tracée en pixels d'écran, en zigzag, avec deux éclats qui partent du trait principal.
+      const L = innerWidth, H = innerHeight, pas = Math.max(L / 14, 28);
+      const zigzag = (x, y, longueur, pente) => {
+        let d = `M ${x.toFixed(0)} ${y.toFixed(0)}`; const points = [];
+        for (let fait = 0; fait < longueur; fait += pas * (0.5 + Math.random())) {
+          x += pas * (0.5 + Math.random()); y += pente * pas + (Math.random() - 0.5) * pas * 0.9;
+          d += ` L ${x.toFixed(0)} ${y.toFixed(0)}`; points.push([x, y]);
+        }
+        return { d, points };
+      };
+      const tronc = zigzag(-10, H * (0.25 + Math.random() * 0.2), L + 20, 0.25);
+      const eclats = [0.35, 0.65].map((t) => {
+        const [x, y] = tronc.points[Math.floor(tronc.points.length * t)];
+        return zigzag(x, y, L * 0.12, Math.random() < 0.5 ? -0.9 : 0.9).d;
+      });
+      const fissure = voile('st-fissure', `<svg viewBox="0 0 ${L} ${H}">`
+        + [tronc.d, ...eclats].map((d) => `<path d="${d}"/>`).join('') + '</svg>');
+      await Promise.all([...fissure.querySelectorAll('path')].map((chemin, i) => {
+        const long = chemin.getTotalLength();
+        chemin.style.strokeDasharray = `${long}`;
+        return chemin.animate([{ strokeDashoffset: long }, { strokeDashoffset: 0 }],
+          { duration: i ? 200 : 450, delay: i ? 300 : 0, easing: 'ease-in', fill: 'both' }).finished;
+      }));
+      const flash = voile('st-flash');
+      await flash.animate([{ opacity: 0 }, { opacity: 0.8, offset: 0.25 }, { opacity: 0 }],
+        { duration: 500, easing: 'ease-out' }).finished;   // un seul éclair, bref
+      voiles.forEach((v) => v.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 400, fill: 'forwards' }));
+      setTimeout(() => { voiles.forEach((v) => v.remove()); voiles = []; }, 450);
+    }
+
+    // Bienvenue dans le Monde à l'envers.
+    alignerOrigines();
+    document.documentElement.classList.add('monde-envers');
+    mondeEnvers = true;
+    de.hidden = true;
+    deLance = false;
+    if (!reduit) semerCendres();
+    retour.hidden = false;
+    retour.focus({ preventScroll: true });
+    annoncer('Bienvenue dans le Monde à l’envers. La croix rouge en bas, ou Échap, ramène la page à l’endroit.',
+             'Welcome to the Upside Down. The red cross at the bottom, or Escape, brings the page back.');
+    compter('easter-egg-stranger-things', 'Stranger Things : Monde à l’envers');
+  };
+
+  const revenir = () => {
+    if (!mondeEnvers) return;
+    mondeEnvers = false;
+    document.documentElement.classList.remove('monde-envers');
+    cendres?.remove(); cendres = null;
+    retour.hidden = true;
+    champ.focus({ preventScroll: true });
+    annoncer('Retour à l’endroit.', 'Back to the right way up.');
+    verifierStranger(simplifier(champ.value));     // le dé revient si le message le demande toujours
+  };
+
+  const verifierStranger = (message) => montrerDe(STRANGER.includes(message));
+
+  de.addEventListener('click', lancerDe);
+  retour.addEventListener('click', revenir);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') revenir(); });
 
   // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
   // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
@@ -219,5 +410,5 @@
   champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
   champ.form?.addEventListener('reset', () => setTimeout(() => { verifierTravers(); verifierAnimations(); })); // après l'envoi, la page se redresse
 
-  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 » ou « Grande Question sur la vie, l’Univers et le reste ».');
+  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things » ou « Grande Question sur la vie, l’Univers et le reste ».');
 })();
