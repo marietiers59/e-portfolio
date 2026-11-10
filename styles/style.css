@@ -640,6 +640,29 @@ abbr[title] { text-decoration: none; cursor: help; }
   .une-corps  { align-self: start; }
   .une-portrait { justify-self: end; width: min(100% - 1.5rem, 17rem); margin: 0.9rem; }
   .une-portrait::before { inset: -0.75rem; }
+
+  /* Les trois brèves restent au-dessus de la ligne de flottaison : les espacements de la une
+     se resserrent avec la hauteur de la fenêtre (vh), sans toucher aux grands écrans */
+  .une { padding-top: clamp(1rem, 7vh - 2.5rem, 4.5rem); }
+  .une-grille { row-gap: clamp(0.5rem, 2vh - 0.25rem, 1.25rem); }
+  .une-titre { font-size: min(var(--taille-titre-une), 5.2vh); }
+  .une-corps p { margin-bottom: clamp(0.4rem, 1.6vh - 0.2rem, 0.85rem); }
+  .une-actions { margin-top: clamp(0.5rem, 2.6vh - 0.6rem, 1.4rem) !important; }
+  .breves { margin-top: clamp(0.75rem, 5vh - 1.75rem, 3rem); }
+  .breve { padding-block: clamp(0.5rem, 1.5vh, 0.85rem); }
+}
+/* Fenêtres basses (portables 13-14 pouces, navigateur non plein écran) : texte de la une un peu plus serré */
+@media (min-width: 48em) and (max-height: 50rem) {
+  .une-corps { font-size: 0.95rem; line-height: 1.5; }
+  .une-surtitre { margin-bottom: 0.2rem; }
+  .une-portrait { width: min(100% - 1.5rem, 15rem); }
+}
+@media (min-width: 48em) and (max-height: 42rem) {
+  .entete-nav { padding-block: 0.5rem; }
+  .une-corps { font-size: 0.9rem; line-height: 1.45; }
+  .une-actions .bouton { padding: 0.45rem 1.25rem; }
+  .breve { font-size: 0.9rem; }
+  .breve .lien-a-venir { margin-top: 0.25rem; }
 }
 
 /* ---------- 5. Sections ---------- */
