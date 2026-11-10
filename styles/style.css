@@ -623,9 +623,7 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 
 @media (min-width: 48em) {
-  /* Logo calé sur la rangée de boutons : il ne bouge pas quand la notice « Recruteur ? » apparaît dessous */
-  .entete-nav { flex-direction: row; justify-content: space-between; align-items: flex-start; }
-  .navigation-liste { min-height: calc(var(--taille-titre-une) * 1.2); align-content: center; }
+  .entete-nav { flex-direction: row; justify-content: space-between; align-items: center; }
   .une-grille {
     /* texte à gauche, photo à droite */
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -2274,27 +2272,39 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .navigation-liste .sous-menu-cv a:hover,
 .navigation-liste .sous-menu-cv a:focus-visible { transform: none; box-shadow: none; background: var(--indigo-100); color: var(--indigo-700); }
 
-/* Notice « Recruteur ? » sous le menu (tant que le rideau est baissé) :
-   cachée, sauf au survol, au focus ou à l'ouverture de « CV » ; la barre grandit alors de sa hauteur */
+/* Notice « Recruteur ? » sous la barre (tant que le rideau est baissé) :
+   repliée, sauf au survol, au focus ou à l'ouverture de « CV ». Elle se déroule comme un volet qu'on tire
+   (la barre grandit de sa hauteur) et se rabat de même. Placement à côté du sous-menu : rideau.js. */
 .notice-recruteur {
-  display: none;
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;           /* repliée : ses liens ne reçoivent pas le focus */
+  transition: grid-template-rows 320ms ease, margin-top 320ms ease, visibility 0s linear 320ms;
+}
+.notice-volet { min-height: 0; overflow: hidden; }
+.notice-recruteur p {
   margin: 0;
-  padding-top: 0.5rem;          /* marge intérieure : la souris passe des boutons à la notice sans « trou » */
+  padding-bottom: 1rem;
   max-width: 34rem;
   font-size: 0.85rem;
   line-height: 1.4;
   color: var(--encre-douce);
+  transform: translateY(-100%);
+  transition: transform 320ms ease;
 }
-.navigation:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) .notice-recruteur {
-  display: block;
-  animation: notice-apparait 160ms ease-out;
+.entete-nav:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) + .notice-recruteur {
+  grid-template-rows: 1fr;
+  margin-top: -0.5rem;          /* collée sous les boutons */
+  visibility: visible;
+  transition: grid-template-rows 320ms ease, margin-top 320ms ease, visibility 0s;
 }
-@keyframes notice-apparait { from { opacity: 0; } }
+.entete-nav:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) + .notice-recruteur p { transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .navigation:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) .notice-recruteur { animation: none; }
+  .notice-recruteur, .notice-recruteur p,
+  .entete-nav:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) + .notice-recruteur { transition: none; }
 }
 .notice-recruteur strong { color: var(--indigo-700); }
-@media (min-width: 48em) { .notice-recruteur { margin-left: auto; text-align: right; } }
+@media (min-width: 48em) { .notice-recruteur[data-place="gauche"] p { margin-left: auto; text-align: right; } }
 
 /* Fenêtre de remerciement au déblocage : apparaît, puis disparaît seule */
 .rideau-merci {
@@ -2383,12 +2393,12 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   body { overflow-x: clip; }             /* pas de barre de défilement horizontale pendant le glissement */
 }
 /* Arrivée après un balayage : la nouvelle page entre par le côté (attribut posé en tête de page) */
-html[data-arrivee] :is(body > header > :not(.entete-nav), body > main, body > footer) { animation: arrivee-droite 260ms ease-out both; }
-html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav), body > main, body > footer) { animation-name: arrivee-gauche; }
+html[data-arrivee] :is(body > header > :not(.entete-nav, .notice-recruteur), body > main, body > footer) { animation: arrivee-droite 260ms ease-out both; }
+html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recruteur), body > main, body > footer) { animation-name: arrivee-gauche; }
 @keyframes arrivee-droite { from { transform: translateX(35%); opacity: 0; } }
 @keyframes arrivee-gauche { from { transform: translateX(-35%); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  html[data-arrivee] :is(body > header > :not(.entete-nav), body > main, body > footer) { animation: none; }
+  html[data-arrivee] :is(body > header > :not(.entete-nav, .notice-recruteur), body > main, body > footer) { animation: none; }
 }
 /* Changement de page sur smartphone sans clignotement : les barres fixes (Menu, Contact) restent
    à l'écran d'une page à l'autre, et l'ancienne page cède la place sans fondu (navigateurs récents) */
