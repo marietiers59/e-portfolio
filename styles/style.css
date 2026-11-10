@@ -2273,6 +2273,27 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .navigation-liste .sous-menu-cv a:hover,
 .navigation-liste .sous-menu-cv a:focus-visible { transform: none; box-shadow: none; background: var(--indigo-100); color: var(--indigo-700); }
 
+/* Même choix « télécharger / ouvrir » sur les autres boutons CV des pages (« Mon CV », « Lire mon CV »…) */
+.choix-cv { position: relative; display: inline-block; }
+.choix-cv-bouton { line-height: inherit; }
+.choix-cv-bouton.bouton-second:hover { background: var(--gris-100); }
+.choix-cv-bouton .nav-cv-fleche { display: inline-block; margin-left: 0.15rem; }
+.choix-cv:is(.ouvert, .survol):not(.replie) .sous-menu-cv { display: block; }
+.choix-cv:is(.ouvert, .survol):not(.replie) .nav-cv-fleche { transform: rotate(180deg); }
+.choix-cv .sous-menu-cv { text-align: left; }
+.choix-cv .sous-menu-cv a {
+  display: block;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.6rem;
+  color: var(--encre);
+  font-family: var(--police-interface);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.choix-cv .sous-menu-cv a:hover,
+.choix-cv .sous-menu-cv a:focus-visible { background: var(--indigo-100); color: var(--indigo-700); }
+
 /* Notice « Recruteur ? » sous la barre (tant que le rideau est baissé) :
    repliée, sauf au survol, au focus ou à l'ouverture de « CV ». Elle se déroule comme un volet qu'on tire
    (la barre grandit de sa hauteur) et se rabat de même. Placement à côté du sous-menu : rideau.js. */
