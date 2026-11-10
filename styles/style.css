@@ -45,8 +45,8 @@
   --bleu-700: hsl(205 60% 30%);
 
   /* Turquoise clair : boutons et pastilles d'action */
-  --turquoise-100: hsl(180 45% 92%);
-  --turquoise-200: hsl(180 36% 82%);
+  --turquoise-100: hsl(197 66% 92%);   /* boutons et interrupteurs : bleu-cyan, accordé au bleu des fonds (205°) */
+  --turquoise-200: hsl(197 52% 82%);
 
   /* Indigo très clair → indigo soutenu : mots-clés, accents de texte */
   --indigo-100: hsl(235 55% 96%);
@@ -78,7 +78,7 @@
   --sapin-200: hsl(165 26% 78%);
 
   /* Nuances de détail, isolées pour que le thème sombre puisse les remplacer */
-  --turquoise-150: hsl(180 38% 86%);    /* bas du dégradé des boutons */
+  --turquoise-150: hsl(197 58% 86%);    /* bas du dégradé des boutons */
   --jalon-haut:  hsl(205 80% 93%);      /* macarons de la frise */
   --jalon-bas:   hsl(205 64% 81%);
   --jalon-trait: hsl(205 55% 76%);
@@ -146,9 +146,9 @@
   --bleu-400: hsl(205 50% 60%);
   --bleu-700: hsl(205 72% 80%);
 
-  --turquoise-100: hsl(182 24% 22%);
-  --turquoise-150: hsl(182 24% 18%);
-  --turquoise-200: hsl(182 24% 33%);
+  --turquoise-100: hsl(197 28% 22%);
+  --turquoise-150: hsl(197 28% 18%);
+  --turquoise-200: hsl(197 28% 33%);
 
   --indigo-100: hsl(235 22% 20%);
   --indigo-200: hsl(235 20% 33%);
@@ -1427,7 +1427,9 @@ abbr[title] { text-decoration: none; cursor: help; }
 .accent-rose      { --accent-100: var(--rose-100);      --accent-400: var(--rose-400);      --accent-700: var(--rose-700); }
 .accent-anis      { --accent-100: var(--anis-100);      --accent-400: var(--anis-400);      --accent-700: var(--anis-700); }
 .accent-sapin     { --accent-100: var(--sapin-100);     --accent-400: var(--sapin-400);     --accent-700: var(--sapin-700); }
-.accent-turquoise { --accent-100: var(--turquoise-100); --accent-400: var(--turquoise-200); --accent-700: var(--sapin-700); }
+/* Catégorie « turquoise » des compétences : garde sa teinte propre (180°), distincte de la catégorie bleue */
+.accent-turquoise { --accent-100: hsl(180 45% 92%); --accent-400: hsl(180 36% 82%); --accent-700: var(--sapin-700); }
+:root[data-theme="sombre"] .accent-turquoise { --accent-100: hsl(182 24% 22%); --accent-400: hsl(182 24% 33%); }
 
 .section-competences { background: var(--grain), var(--gris-100); }
 
