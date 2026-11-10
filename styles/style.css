@@ -2126,6 +2126,15 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
     gap: clamp(2rem, 5vw, 4rem);
   }
+  /* Le formulaire descend jusqu'au bas de la colonne de gauche (encart en pointillés compris) :
+     même haut qu'avant, et c'est le champ Message qui s'allonge */
+  .formulaire {
+    align-self: stretch;
+    margin-top: 2.8rem;
+    grid-template-rows: auto auto 1fr;
+  }
+  .champ:has(textarea) { grid-template-rows: auto 1fr; }
+  .champ textarea { height: 100%; }
 }
 
 /* Lien discret du pied de page */
@@ -2380,3 +2389,49 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav), body > main, 
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
   ::view-transition-group(barre-haut), ::view-transition-group(barre-bas) { animation-duration: 0s; }
 }
+
+/* ---------- Carte de la zone de recherche de stage (pied de page, scripts/carte-zone.js) ---------- */
+.lieu-carte {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--indigo-700);
+  font-weight: 700;
+  cursor: help;
+  border-radius: 0.3rem;
+}
+.lieu-carte::after {                    /* petite icône de carte pliée, dessinée en CSS */
+  content: "";
+  width: 0.9em; height: 0.9em;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z'/%3E%3Cpath d='M9 4v14M15 6v14'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z'/%3E%3Cpath d='M9 4v14M15 6v14'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0.8;
+}
+.carte-zone {
+  position: absolute;
+  z-index: 300;
+  width: min(20rem, calc(100vw - 1rem));
+  margin: 0;
+  padding: 0.5rem 0.5rem 0.65rem;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-radius: 1rem;
+  box-shadow: var(--ombre-survol);
+  font-family: var(--police-interface);
+  font-size: 0.82rem;
+  color: var(--encre);
+}
+.carte-zone[hidden] { display: none; }
+.carte-zone img { display: block; width: 100%; height: auto; border-radius: 0.65rem; }
+.carte-zone-sombre { display: none !important; }
+:root[data-theme="sombre"] .carte-zone-clair { display: none !important; }
+:root[data-theme="sombre"] .carte-zone-sombre { display: block !important; }
+.carte-zone figcaption { margin: 0.5rem 0.3rem 0; line-height: 1.4; }
+.carte-zone-source { display: block; margin-top: 0.3rem; font-size: 0.75rem; color: var(--encre-douce); }
+.carte-zone-source a { font-weight: 700; }
+/* « Pont » invisible entre le lieu et la carte : la souris passe de l'un à l'autre sans la fermer */
+.carte-zone::before { content: ""; position: absolute; left: 0; right: 0; height: 12px; }
+.carte-zone[data-cote="dessus"]::before { top: 100%; }
+.carte-zone[data-cote="dessous"]::before { bottom: 100%; }
+.carte-zone[data-cote="droite"]::before { right: 100%; left: auto; top: 0; bottom: 0; width: 14px; height: auto; }
