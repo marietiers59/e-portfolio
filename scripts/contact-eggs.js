@@ -3,7 +3,7 @@
       devient « 42 », la réponse calculée par Pensée profonde (Douglas Adams).
    2. Un message réduit à « askew », un synonyme ou une traduction française
       fait pencher la page, comme la recherche « askew » sur Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=3" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=4" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -14,7 +14,7 @@
 
   /* ---------- Réglages ---------- */
   const ANGLE = '1deg';                  // l'inclinaison de Google
-  const DELAI_42 = 600;                  // ms entre la fin de la phrase et l'apparition de « 42 » (au moins 0,5 s)
+  const DELAI_42 = 1200;                 // ms entre la fin de la phrase et l’apparition de « 42 » (au moins 1 s)
 
   // Les phrases remplacées par « 42 » : majuscules, apostrophes, virgules et espaces indifférents.
   const APOS = "['’ʼ‘`´]";
