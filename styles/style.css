@@ -15,6 +15,7 @@
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
+   10. Visite guidée et info-bulles
    ========================================================= */
 
 /* ---------- 1. Variables ---------- */
@@ -2505,3 +2506,192 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
   border-right: 0; border-bottom: 0;
   transform: translateY(-50%) rotate(-45deg);
 }
+
+/* ---------- 10. Visite guidée et info-bulles ---------- */
+/*
+  Info-bulle au survol (après un court délai) ou au focus clavier : data-infobulle="texte".
+  Au-dessus par défaut ; data-bulle="bas" la place dessous, "debut" / "fin" l'aligne sur le bord
+  gauche / droit (boutons en bout de rangée, pour qu'elle ne sorte pas de l'écran).
+*/
+[data-infobulle] { position: relative; }
+[data-infobulle]::after {
+  content: attr(data-infobulle);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.5rem);
+  z-index: 10;
+  translate: -50% 0;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+  background: var(--encre);
+  color: var(--fond);
+  font: 700 0.8rem/1.2 var(--police-interface);
+  white-space: nowrap;
+  box-shadow: var(--ombre-legere);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(0.25rem);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+[data-infobulle]:hover::after { opacity: 1; transform: none; transition-delay: 350ms; }
+[data-infobulle]:is(:focus-visible, :has(:focus-visible))::after { opacity: 1; transform: none; }
+[data-bulle="bas"]::after,
+.visite-en-haut [data-infobulle]::after { bottom: auto; top: calc(100% + 0.5rem); transform: translateY(-0.25rem); }
+[data-bulle="debut"]::after { left: 0; translate: 0 0; }
+[data-bulle="fin"]::after   { left: auto; right: 0; translate: 0 0; }
+
+/* Boutons de lancement : icône dans la barre du haut, bouton sous la présentation */
+.visite-lancer[hidden] { display: none; }
+.visite-lancer-barre {
+  display: inline-grid;
+  place-items: center;
+  margin-inline-start: 0.35rem;
+  padding: 0.3rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--bleu-700);
+  cursor: pointer;
+  transition: background-color var(--duree), transform var(--duree);
+}
+.visite-lancer-barre:hover { background: var(--bleu-100); }
+.visite-lancer-barre:active { transform: translateY(1px); }
+.visite-lancer-une { display: inline-flex; align-items: center; gap: 0.45rem; }
+
+.visite-icone {
+  width: 1.2rem; height: 1.2rem;
+  flex: none;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;              /* triangles aux coins arrondis */
+}
+.visite-icone .contour { fill: none; stroke-width: 1.8; }
+
+/* Le voile : noir translucide, troué d'un disque aux bords flous (position et taille posées par visite.js) */
+.visite { --visite-fondu: 420ms; --voile-teinte: 230 30% 5%; --voile-alpha: 0.72; }
+:root[data-theme="sombre"] .visite { --voile-alpha: 0.8; }
+.visite[hidden] { display: none; }
+.visite-voile {
+  --x: 50%; --y: 50%; --r: 0px; --f: 60px;
+  position: fixed;
+  inset: 0;
+  z-index: 250;                        /* au-dessus des barres ; sous le calendrier et la carte, qui restent lisibles */
+  pointer-events: none;                /* la page reste cliquable pendant la visite */
+  background: radial-gradient(circle at var(--x) var(--y),
+    transparent var(--r),
+    hsl(var(--voile-teinte) / calc(var(--voile-alpha) * 0.5)) calc(var(--r) + var(--f) * 0.45),
+    hsl(var(--voile-teinte) / var(--voile-alpha)) calc(var(--r) + var(--f)));
+  transition: opacity var(--visite-fondu) ease;
+}
+/* Entre deux haltes, le voile s'estompe : la page redevient normale le temps du défilement */
+.visite:is(.en-transit, .en-fermeture) .visite-voile { opacity: 0; }
+
+/* Le panneau : texte de la halte et commandes, en bas (ou en haut s'il cacherait la halte) */
+.visite-panneau {
+  position: fixed;
+  z-index: 500;
+  left: 50%;
+  bottom: calc(var(--barre-h) + 0.5rem);
+  width: min(34rem, 100% - 1rem);
+  translate: -50% 0;
+  padding: 0.7rem 0.9rem 0.8rem;
+  border: 1px solid var(--trait);
+  border-radius: var(--rayon);
+  background: var(--carte);
+  color: var(--encre);
+  box-shadow: var(--ombre-survol);
+  transition: opacity var(--visite-fondu) ease, transform var(--visite-fondu) ease;
+}
+.visite-panneau.visite-en-haut { bottom: auto; top: calc(var(--barre-h) + 0.5rem); }
+.visite.en-fermeture .visite-panneau { opacity: 0; transform: translateY(0.75rem); }
+
+.visite-tete { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; }
+.visite-compteur {
+  margin: 0;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--bleu-100);
+  color: var(--bleu-700);
+  font: 700 0.85rem/1.5 var(--police-interface);
+  font-variant-numeric: tabular-nums;
+}
+.visite-message { transition: opacity calc(var(--visite-fondu) * 0.6) ease; }
+.visite.en-transit .visite-message { opacity: 0; }
+.visite-titre {
+  margin: 0.35rem 0 0.15rem;
+  font-family: var(--police-titre);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--indigo-700);
+}
+.visite-texte { margin: 0 0 0.65rem; min-height: 2.9em; line-height: 1.45; }
+
+/* Avancement de la halte en cours */
+.visite-progression {
+  height: 0.25rem;
+  margin-bottom: 0.7rem;
+  border-radius: 999px;
+  background: var(--gris-100);
+  overflow: hidden;
+}
+.visite-progression > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan-trait), var(--indigo-400));
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+
+/* Commandes : lecture d'un côté, vitesse de l'autre ; les deux groupes s'empilent sur petit écran */
+.visite-commandes { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+.visite-groupe { display: flex; align-items: center; gap: 0.35rem; }
+.visite-bouton {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem; height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150));
+  color: var(--bleu-700);
+  cursor: pointer;
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease, opacity var(--duree);
+}
+.visite-bouton:hover  { transform: translateY(-1px); box-shadow: var(--ombre-repos); }
+.visite-bouton:active { transform: translateY(1px); box-shadow: var(--ombre-appui); transition-duration: 60ms; }
+.visite-bouton[aria-disabled="true"] { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+.visite-lecture { width: 3rem; height: 3rem; }           /* bouton principal, un peu plus grand */
+.visite-lecture .visite-icone { width: 1.4rem; height: 1.4rem; }
+.visite-fermer {
+  width: 2.25rem; height: 2.25rem;
+  border-color: var(--trait);
+  background: var(--carte);
+  color: var(--encre-douce);
+  font: 400 1.5rem/1 var(--police-interface);
+  box-shadow: none;
+}
+.visite-vitesse select {
+  height: 2.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--bord-champ);
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--bleu-700);
+  font: 700 0.95rem var(--police-interface);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+@media (max-width: 23.99em) {                              /* très petits écrans : un peu plus serré */
+  .visite-commandes { justify-content: center; }
+  .visite-bouton { width: 2.3rem; height: 2.3rem; }
+  .visite-lecture { width: 2.75rem; height: 2.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .visite-panneau { transition: opacity 120ms linear; }
+  .visite.en-fermeture .visite-panneau { transform: none; }
+  [data-infobulle]::after { transition: opacity 120ms linear; transform: none !important; }
+}
+@media print { .visite, .visite-lancer { display: none !important; } }
