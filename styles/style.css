@@ -623,7 +623,9 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 
 @media (min-width: 48em) {
-  .entete-nav { flex-direction: row; justify-content: space-between; align-items: center; }
+  /* Logo calé sur la rangée de boutons : il ne bouge pas quand la notice « Recruteur ? » apparaît dessous */
+  .entete-nav { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .navigation-liste { min-height: calc(var(--taille-titre-une) * 1.2); align-content: center; }
   .une-grille {
     /* texte à gauche, photo à droite */
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -2222,7 +2224,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   transition: transform var(--duree) ease, box-shadow var(--duree) ease, color var(--duree);
 }
 .nav-cv-bouton:hover,
-.nav-cv.ouvert .nav-cv-bouton { transform: translate(-1px, -2px); box-shadow: var(--ombre-repos); color: var(--indigo-700); }
+.nav-cv:is(.ouvert, .survol):not(.replie) .nav-cv-bouton { transform: translate(-1px, -2px); box-shadow: var(--ombre-repos); color: var(--indigo-700); }
 .nav-cv-fleche { font-size: 0.8em; transition: transform var(--duree) ease; }
 .nav-cv.ouvert .nav-cv-fleche { transform: rotate(180deg); }
 .sous-menu-cv {
@@ -2259,11 +2261,8 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   border-radius: 0.25rem 0 0 0;
   transform: translateX(-50%) rotate(45deg);
 }
-.nav-cv.ouvert .sous-menu-cv { display: block; }
-@media (hover: hover) and (pointer: fine) {
-  .nav-cv:hover .sous-menu-cv { display: block; }
-  .nav-cv:hover .nav-cv-fleche { transform: rotate(180deg); }
-}
+.nav-cv:is(.ouvert, .survol):not(.replie) .sous-menu-cv { display: block; }
+.nav-cv.survol:not(.replie) .nav-cv-fleche { transform: rotate(180deg); }
 .navigation-liste .sous-menu-cv a {
   display: block;
   padding: 0.5rem 0.9rem;
@@ -2275,13 +2274,24 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .navigation-liste .sous-menu-cv a:hover,
 .navigation-liste .sous-menu-cv a:focus-visible { transform: none; box-shadow: none; background: var(--indigo-100); color: var(--indigo-700); }
 
-/* Notice « Recruteur ? » sous le menu (tant que le rideau est baissé) */
+/* Notice « Recruteur ? » sous le menu (tant que le rideau est baissé) :
+   cachée, sauf au survol, au focus ou à l'ouverture de « CV » ; la barre grandit alors de sa hauteur */
 .notice-recruteur {
-  margin: 0.5rem 0 0;
+  display: none;
+  margin: 0;
+  padding-top: 0.5rem;          /* marge intérieure : la souris passe des boutons à la notice sans « trou » */
   max-width: 34rem;
   font-size: 0.85rem;
   line-height: 1.4;
   color: var(--encre-douce);
+}
+.navigation:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) .notice-recruteur {
+  display: block;
+  animation: notice-apparait 160ms ease-out;
+}
+@keyframes notice-apparait { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .navigation:has(.nav-cv:not(.replie):is(.ouvert, .survol, :focus-within)) .notice-recruteur { animation: none; }
 }
 .notice-recruteur strong { color: var(--indigo-700); }
 @media (min-width: 48em) { .notice-recruteur { margin-left: auto; text-align: right; } }

@@ -202,6 +202,7 @@
 
   /* Sous-menu « CV » de la barre de navigation : télécharger le PDF ou l'ouvrir dans un nouvel onglet.
      Il s'ouvre au survol (souris) ou au clic (doigt, clavier) ; Échap ou un clic ailleurs le referme. */
+  let entrerSurvolCv = () => {}, quitterSurvolCv = () => {};
   function construireSousMenuCv() {
     const lienNav = document.querySelector(`.navigation-liste ${SELECTEUR_CV.split(', ').join(', .navigation-liste ')}`);
     const li = lienNav?.closest('li');
@@ -220,6 +221,10 @@
     // Garde le sous-menu dans l'écran, quel que soit l'emplacement du bouton CV (menu sur deux lignes sur mobile)
     const ajuster = () => requestAnimationFrame(() => {
       menu.style.left = ''; menu.style.right = '';
+      // La notice « Recruteur ? » apparaît sous les boutons : le sous-menu s'ouvre sous elle, jamais par-dessus
+      const n = document.querySelector('.notice-recruteur');
+      menu.style.top = n && n.offsetHeight
+        ? `${n.getBoundingClientRect().bottom - li.getBoundingClientRect().top + 14}px` : '';
       const cadre = menu.getBoundingClientRect();
       if (!cadre.width) return;
       if (cadre.right > innerWidth - 8) { menu.style.left = 'auto'; menu.style.right = '0'; }
@@ -231,16 +236,44 @@
     const basculer = (ouvert) => {
       li.classList.toggle('ouvert', ouvert);
       bouton.setAttribute('aria-expanded', String(ouvert));
-      if (ouvert) ajuster();
+      if (ouvert) { li.classList.remove('replie'); ajuster(); }
     };
-    li.addEventListener('mouseenter', ajuster);
+    // Souris : le survol du bouton « CV » ouvre le sous-menu et fait apparaître la notice « Recruteur ? » ;
+    // un court délai laisse le temps de passer sur la notice (ses liens restent cliquables) ou sur le menu.
+    let minuteurSurvol;
+    entrerSurvolCv = (evt) => {
+      if (evt.pointerType !== 'mouse') return;
+      clearTimeout(minuteurSurvol);
+      li.classList.remove('replie');                    // nouveau survol après Échap : on réaffiche
+      if (!li.classList.contains('survol')) { li.classList.add('survol'); ajuster(); }
+    };
+    quitterSurvolCv = (evt) => {
+      if (evt.pointerType !== 'mouse') return;
+      clearTimeout(minuteurSurvol);
+      minuteurSurvol = setTimeout(() => li.classList.remove('survol'), 300);
+    };
+    li.addEventListener('pointerenter', entrerSurvolCv);
+    li.addEventListener('pointerleave', quitterSurvolCv);
+    bouton.addEventListener('focus', ajuster);
     bouton.addEventListener('click', () => basculer(!li.classList.contains('ouvert')));
     li.querySelectorAll('.sous-menu-cv a').forEach((a) => a.addEventListener('click', () => basculer(false)));
     document.addEventListener('click', (evt) => { if (!li.contains(evt.target)) basculer(false); });
-    li.addEventListener('keydown', (evt) => {
-      if (evt.key === 'Escape' && li.classList.contains('ouvert')) { basculer(false); bouton.focus(); }
+    // Échap referme tout ce qui est apparu (sous-menu, notice), même au simple survol (RGAA 10.13)
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key !== 'Escape') return;
+      const actif = li.classList.contains('ouvert') || li.classList.contains('survol') || li.contains(document.activeElement);
+      if (!actif) return;
+      const avaitFocus = li.contains(document.activeElement) && li.classList.contains('ouvert');
+      clearTimeout(minuteurSurvol);
+      li.classList.remove('survol');
+      basculer(false);
+      li.classList.add('replie');
+      if (avaitFocus) bouton.focus();
     });
-    li.addEventListener('focusout', (evt) => { if (!li.contains(evt.relatedTarget)) basculer(false); });
+    li.addEventListener('focusout', (evt) => {
+      if (!li.contains(evt.relatedTarget)) { basculer(false); li.classList.remove('replie'); }
+    });
+    li.addEventListener('focusin', (evt) => { if (!li.contains(evt.relatedTarget)) li.classList.remove('replie'); });
   }
   construireSousMenuCv();
 
@@ -289,6 +322,7 @@
     if (!navigation) return;
     notice = document.createElement('p');
     notice.className = 'notice-recruteur';
+    notice.id = 'notice-recruteur';
     notice.innerHTML = t(
       `<strong>Recruteur ?</strong> Mon CV complet et mes coordonnées s’affichent avec votre
        <a href="#rideau-email">e-mail professionnel</a>, ou écrivez-moi sur <a href="${LINKEDIN}">LinkedIn</a>.`,
@@ -302,6 +336,10 @@
       champ.focus({ preventScroll: true });
     });
     navigation.append(notice);
+    // Cachée tant qu'on ne survole pas « CV » ; le bouton la décrit aux lecteurs d'écran
+    notice.addEventListener('pointerenter', entrerSurvolCv);
+    notice.addEventListener('pointerleave', quitterSurvolCv);
+    document.querySelector('.nav-cv-bouton')?.setAttribute('aria-describedby', 'notice-recruteur');
   }
 
   /** Petite fenêtre de remerciement, qui disparaît seule (pause au survol ou au clavier). */
@@ -340,6 +378,7 @@
     }
     blocRideau?.remove();
     notice?.remove();
+    document.querySelector('.nav-cv-bouton')?.removeAttribute('aria-describedby');
     brancherCvComplet();
     if (nouveau) { ecrireStockage(passe); compter(passe); remercier(); }
   }
