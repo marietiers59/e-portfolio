@@ -13,7 +13,11 @@
       tête en bas (le Monde à l'envers). Une croix rouge en bas (ou Échap) ramène la page à l'endroit.
    6. Un message réduit à « zerg rush » lâche des aliens façon Space Invaders qui grignotent la page,
       comme les « o » de Google. Trois clics abattent un alien. Quand tout est dévoré, ils écrivent « GG ».
-   Intégration : <script src="scripts/contact-eggs.js?v=10" defer></script> dans le <head>.
+   7. « wicked » (ou « elphaba », « glinda », « defying gravity ») : un chapeau de sorcière apparaît ;
+      au clic, la page défie la gravité dans la fumée verte et les bulles roses, comme sur Google.
+   8. « grogu » (ou « baby yoda », « la force », « the force ») : une main lumineuse apparaît ;
+      chaque clic soulève un élément par la Force, qui retombe de travers, comme l'effet de Google.
+   Intégration : <script src="scripts/contact-eggs.js?v=11" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -212,6 +216,7 @@
       const message = simplifier(champ.value);
       verifierStranger(message);
       verifierZerg(message);
+      verifierMagies(message);
       for (const anim of ANIMATIONS) {
         const demande = anim.phrases.includes(message);
         if (demande && demandes.get(anim) !== message) animerPage(anim); // nouvelle phrase, ou retapée
@@ -401,7 +406,7 @@
 
   de.addEventListener('click', lancerDe);
   retour.addEventListener('click', revenir);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); } });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { revenir(); arreterZerg(); fermerMagies(); } });
 
   /* ---------- 6. Zerg rush, version Space Invaders ---------- */
   const ZERG = ['zerg rush', 'zergrush', 'zerg-rush', 'zerg'];
@@ -666,6 +671,179 @@
     derniereZerg = demande ? message : null;
   };
 
+  /* ---------- 7 et 8. Wicked et la Force : un bouton au bord de l'écran, puis la page s'envole ---------- */
+  const styleMG = document.createElement('style');
+  styleMG.textContent = `
+    .mg-bouton { all: unset; position: fixed; z-index: 60; right: 1rem; bottom: calc(var(--barre-h, 3rem) + 1rem);
+      width: 4rem; height: 4rem; border-radius: 50%; cursor: pointer; box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.3); }
+    .mg-bouton svg { display: block; width: 100%; height: 100%; }
+    .mg-bouton[hidden], .mg-fermer[hidden] { display: none; }
+    .mg-bouton:focus-visible, .mg-fermer:focus-visible { outline: 3px solid #2e8b4e; outline-offset: 4px; }
+    .mg-pulse { animation: mg-pulse 0.6s ease-out; }
+    @keyframes mg-pulse { 40% { scale: 1.15; box-shadow: 0 0 1.5rem 0.5rem var(--mg-halo); } }
+    .mg-fermer { all: unset; position: fixed; z-index: 63; left: 50%; bottom: calc(var(--barre-h, 3rem) + 1rem);
+      translate: -50% 0; width: 3.25rem; height: 3.25rem; border-radius: 50%; display: grid; place-items: center;
+      background: #14161c; color: #fff; font: 700 1.6rem/1 "Trebuchet MS", sans-serif; cursor: pointer;
+      box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.35); }
+    .mg-zone { position: fixed; inset: 0; z-index: 61; pointer-events: none; overflow: hidden; }
+    .mg-fumee, .mg-bulle { position: absolute; border-radius: 50%; animation: mg-monte var(--duree) ease-out var(--delai) forwards; opacity: 0; }
+    .mg-fumee { background: radial-gradient(circle, rgb(46 160 67 / 0.55), rgb(46 160 67 / 0) 70%); filter: blur(6px); }
+    .mg-bulle { border: 2px solid rgb(255 140 196 / 0.85);
+      background: radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.85), rgb(255 170 210 / 0.25) 35%, rgb(255 120 190 / 0.12)); }
+    @keyframes mg-monte { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--dx), -115vh) scale(var(--s)); } }`;
+  document.head.appendChild(styleMG);
+
+  // Les éléments qu'on peut voir bouger : visibles à l'écran, pas en ligne dans le texte, ni cachés.
+  const elementsVisibles = () => {
+    const haut = document.querySelector('.barre-haut')?.getBoundingClientRect().bottom ?? 0;
+    const bas = document.querySelector('.barre-bas')?.getBoundingClientRect().top ?? innerHeight;
+    const liste = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll('h1,h2,h3,h4,p,li,label,input,select,textarea,button,img,figure,blockquote,.tag').forEach((el) => {
+      if (liste.some((c) => c.contains(el))) return;
+      const r = el.getBoundingClientRect(), st = getComputedStyle(el);
+      if (r.width * r.height < 300 || r.bottom < haut || r.top > bas || r.right < 0 || r.left > innerWidth) return;
+      if (st.display === 'inline' || st.visibility === 'hidden' || el.closest('[aria-hidden="true"], [hidden], [inert]')) return;
+      liste.push(el);
+    }));
+    return liste.slice(0, 40);
+  };
+
+  const MAGIES = [
+    {
+      nom: 'wicked', phrases: ['wicked', 'elphaba', 'glinda', 'defying gravity', 'wicked defying gravity'],
+      halo: 'rgb(46 160 67 / 0.6)',
+      label: ANGLAIS ? 'Witch’s hat: cast the spell' : 'Chapeau de sorcière : lancer le sort',
+      // Un chapeau pointu noir sur un disque vert.
+      svg: `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="32" fill="#2e8b4e"/>
+        <path d="M33 9 L22 40 H43 Z" fill="#141414"/><path d="M33 9 Q40 14 45 13 Q39 18 37 21 Z" fill="#141414"/>
+        <rect x="23" y="34" width="19.5" height="4" fill="#ff9ccc"/><ellipse cx="32.5" cy="42" rx="20" ry="5" fill="#141414"/></svg>`,
+      annonce: ['Le sort est lancé : la page défie la gravité !', 'The spell is cast: the page is defying gravity!'],
+      compteur: ['easter-egg-wicked', 'Wicked : défier la gravité'],
+    },
+    {
+      nom: 'force', phrases: ['grogu', 'baby yoda', 'la force', 'the force', 'que la force soit avec toi', 'may the force be with you'],
+      halo: 'rgb(110 220 255 / 0.7)',
+      label: ANGLAIS ? 'Glowing hand: use the Force' : 'Main lumineuse : utiliser la Force',
+      // Une main ouverte, lumineuse, sur un disque bleu nuit.
+      svg: `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="32" r="32" fill="#0f3b4c"/>
+        <g fill="#c9f6ff" style="filter: drop-shadow(0 0 3px #6edcff)">
+          <rect x="21" y="27" width="22" height="20" rx="8"/><rect x="21.5" y="15" width="5" height="17" rx="2.5"/>
+          <rect x="27.5" y="12" width="5" height="18" rx="2.5"/><rect x="33.5" y="13" width="5" height="18" rx="2.5"/>
+          <rect x="39" y="17" width="4.6" height="15" rx="2.3"/><rect x="12" y="30" width="5" height="15" rx="2.5" transform="rotate(-38 14.5 37.5)"/>
+        </g></svg>`,
+      annonce: ['La Force soulève un élément de la page.', 'The Force lifts a piece of the page.'],
+      compteur: ['easter-egg-force', 'La Force'],
+    },
+  ];
+
+  const fermer = document.createElement('button');
+  fermer.type = 'button';
+  fermer.className = 'mg-fermer';
+  fermer.hidden = true;
+  fermer.textContent = '✕';
+  fermer.setAttribute('aria-label', ANGLAIS ? 'Put the page back' : 'Remettre la page en place');
+  document.body.append(fermer);
+
+  let animsMagie = [], zoneMagie = null;
+
+  MAGIES.forEach((m) => {
+    m.bouton = document.createElement('button');
+    m.bouton.type = 'button';
+    m.bouton.className = 'mg-bouton';
+    m.bouton.hidden = true;
+    m.bouton.style.setProperty('--mg-halo', m.halo);
+    m.bouton.setAttribute('aria-label', m.label);
+    m.bouton.innerHTML = m.svg;
+    m.bouton.addEventListener('click', () => lancerMagie(m));
+    document.body.append(m.bouton);
+  });
+
+  const montrerMagie = (m, oui) => {
+    if (oui === !m.bouton.hidden) return;
+    m.bouton.hidden = !oui;
+    m.message = oui ? champ.value : null;
+    if (oui) {
+      m.bouton.animate([{ scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1 }], { duration: 450, easing: 'cubic-bezier(0.3, 1.6, 0.5, 1)' });
+      annoncer('Un bouton est apparu en bas à droite.', 'A button has appeared at the bottom right.');
+    }
+  };
+
+  const verifierMagies = (message) => MAGIES.forEach((m) => {
+    if (m.phrases.includes(message)) montrerMagie(m, true);
+  });
+
+  const rafale = () => {                          // fumée verte et bulles roses qui montent
+    zoneMagie ??= Object.assign(document.createElement('div'), { className: 'mg-zone' });
+    zoneMagie.setAttribute('aria-hidden', 'true');
+    document.body.append(zoneMagie);
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('span');
+      const fumee = i % 2 === 0, taille = fumee ? 8 + Math.random() * 12 : 1 + Math.random() * 2.5;
+      p.className = fumee ? 'mg-fumee' : 'mg-bulle';
+      p.style.cssText = `left:${Math.random() * 100}%;bottom:-${taille}${fumee ? 'vmin' : 'rem'};`
+        + `width:${taille}${fumee ? 'vmin' : 'rem'};height:${taille}${fumee ? 'vmin' : 'rem'};`
+        + `--dx:${(Math.random() - 0.5) * 30}vw;--s:${fumee ? 1.6 : 1};--duree:${3 + Math.random() * 3}s;--delai:${Math.random() * 1.2}s`;
+      p.addEventListener('animationend', () => p.remove());
+      zoneMagie.append(p);
+    }
+  };
+
+  const lancerMagie = (m) => {
+    m.bouton.classList.remove('mg-pulse'); void m.bouton.offsetWidth; m.bouton.classList.add('mg-pulse');
+    if (mouvementReduit.matches) {
+      annoncer(`${m.annonce[0]} (Animation désactivée : votre appareil demande moins de mouvements.)`,
+               `${m.annonce[1]} (Animation skipped: your device asks for reduced motion.)`);
+      return;
+    }
+    if (!m.actif) compter(...m.compteur);
+    annoncer(...m.annonce);
+    fermer.hidden = false;
+
+    if (m.nom === 'wicked') {
+      rafale();                                    // un nouveau clic relance la fumée et les bulles
+      if (m.actif) return;
+      m.actif = true;
+      elementsVisibles().forEach((el, i) => {
+        const h = 40 + Math.random() * 90, monte = `0 ${-h}px`;
+        const envol = el.animate([{ translate: '0 0' }, { translate: monte }],
+          { duration: 1600, delay: i * 45, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'forwards' });
+        animsMagie.push(envol);
+        envol.finished.then(() => {                // puis il flotte doucement
+          if (!m.actif) return;
+          animsMagie.push(el.animate([{ translate: monte }, { translate: `0 ${-h - 10}px` }],
+            { duration: 1400 + Math.random() * 900, direction: 'alternate', iterations: Infinity, easing: 'ease-in-out', fill: 'forwards' }));
+        }).catch(() => {});
+      });
+    } else {
+      m.actif = true;
+      // Chaque clic : un élément pas encore déplacé monte, hésite, puis retombe de travers.
+      const libres = elementsVisibles().filter((el) => !el.dataset.mgForce);
+      const el = libres[Math.floor(Math.random() * libres.length)];
+      if (!el) return;
+      el.dataset.mgForce = '1';
+      const dx = (Math.random() - 0.5) * 80, dy = 10 + Math.random() * 25, r = (Math.random() < 0.5 ? -1 : 1) * (4 + Math.random() * 8);
+      animsMagie.push(el.animate([
+        { translate: '0 0', rotate: '0deg', easing: 'cubic-bezier(0.2, 0.8, 0.3, 1)' },
+        { translate: '0 -90px', rotate: '-2deg', offset: 0.4, easing: 'ease-in-out' },
+        { translate: '0 -100px', rotate: '2deg', offset: 0.62, easing: 'cubic-bezier(0.55, 0, 0.85, 0.35)' },
+        { translate: `${dx}px ${dy}px`, rotate: `${r}deg`, offset: 0.92, easing: 'ease-out' },
+        { translate: `${dx}px ${dy - 6}px`, rotate: `${r}deg` },
+      ], { duration: 1900, fill: 'forwards' }));
+    }
+  };
+
+  function fermerMagies() {
+    if (!MAGIES.some((m) => m.actif) && fermer.hidden) return;
+    animsMagie.forEach((a) => a.cancel()); animsMagie = [];
+    document.querySelectorAll('[data-mg-force]').forEach((el) => delete el.dataset.mgForce);
+    zoneMagie?.remove(); zoneMagie = null;
+    MAGIES.forEach((m) => { m.actif = false; });
+    fermer.hidden = true;
+    annoncer('La page est revenue à sa place.', 'The page is back in place.');
+    MAGIES.forEach((m) => { if (champ.value !== m.message) montrerMagie(m, false); });
+  }
+  fermer.addEventListener('click', fermerMagies);
+
   // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
   // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
   let minuteur42 = null;
@@ -677,10 +855,11 @@
 
   champ.addEventListener('input', () => {
     if (!deLance && !de.hidden && champ.value !== messageDe) montrerDe(false); // texte modifié ou effacé : le dé s'en va tout de suite
+    MAGIES.forEach((m) => { if (!m.actif && !m.bouton.hidden && champ.value !== m.message) montrerMagie(m, false); });
     planifier42(); verifierTravers(); verifierAnimations();
   });
   champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
   champ.form?.addEventListener('reset', () => setTimeout(() => { verifierTravers(); verifierAnimations(); })); // après l'envoi, la page se redresse
 
-  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush » ou « Grande Question sur la vie, l’Univers et le reste ».');
+  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll », « 67 », « stranger things », « zerg rush », « wicked », « grogu » ou « Grande Question sur la vie, l’Univers et le reste ».');
 })();
