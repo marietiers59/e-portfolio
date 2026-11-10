@@ -3,7 +3,9 @@
       (the ultimate question of) life, the universe and everything » devient « 42 » (Douglas Adams).
    2. Un message réduit à « askew », un synonyme ou une traduction française
       fait pencher la page, comme la recherche « askew » sur Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=6" defer></script> dans le <head>.
+   3. Un message réduit à « do a barrel roll » (ou « fais un tonneau ») fait faire
+      un tour complet à la page, comme sur Google : 360° en 4 s, une seule fois.
+   Intégration : <script src="scripts/contact-eggs.js?v=7" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -14,6 +16,7 @@
 
   /* ---------- Réglages ---------- */
   const ANGLE = '1deg';                  // l'inclinaison de Google
+  const DUREE_TONNEAU = 4000;            // ms : la durée du tonneau de Google
   const DELAI_42 = 1000;                 // ms entre la fin de la phrase et l’apparition de « 42 » (1 s ; le navigateur ne déclenche jamais en avance)
 
   // Les phrases remplacées par « 42 » : majuscules, apostrophes, virgules et espaces indifférents.
@@ -44,6 +47,12 @@
     'de travers', 'en travers', 'de guingois', 'de traviole', 'en biais', 'de biais', 'pas droit',
     'penche', 'penchee', 'penches', 'penchees', 'incline', 'inclinee', 'inclines', 'inclinees',
     'bancal', 'bancale', 'tordu', 'tordue', 'tors', 'torse', 'oblique', 'biscornu',
+  ];
+
+  // Les messages qui font faire un tonneau à la page (comparés sans majuscules ni accents).
+  const TONNEAU = [
+    'do a barrel roll', 'do a barrel-roll', 'barrel roll', 'z or r twice',
+    'fais un tonneau', 'fait un tonneau', 'faire un tonneau', 'fais une vrille', 'z ou r deux fois',
   ];
 
   /* ---------- Outils ---------- */
@@ -96,7 +105,7 @@
   // Le contenu qui défile penche ; les barres fixes du haut et du bas restent droites.
   const style = document.createElement('style');
   style.textContent = `
-    html.de-travers, html.de-travers body { overflow-x: hidden; }
+    html.de-travers, html.de-travers body, html.en-tonneau, html.en-tonneau body { overflow-x: hidden; }
     html.de-travers .penchable { rotate: var(--angle-travers, ${ANGLE}); }`; // net et instantané, sans fondu
   document.head.appendChild(style);
 
@@ -104,17 +113,21 @@
   blocs.forEach((bloc) => bloc.classList.add('penchable'));
   let penchee = false;
 
+  // Tous les blocs tournent autour du même point (le centre de l'écran), comme une seule feuille.
+  const alignerOrigines = () => {
+    const cx = document.documentElement.clientWidth / 2;
+    const cy = innerHeight / 2;
+    blocs.forEach((bloc) => {
+      const r = bloc.getBoundingClientRect();
+      bloc.style.transformOrigin = `${cx - r.left}px ${cy - r.top}px`;
+    });
+  };
+
   const pencher = (oui) => {
     if (oui === penchee) return;
     penchee = oui;
     if (oui) {
-      // Tous les blocs tournent autour du même point (le centre de l'écran), comme une seule feuille.
-      const cx = document.documentElement.clientWidth / 2;
-      const cy = innerHeight / 2;
-      blocs.forEach((bloc) => {
-        const r = bloc.getBoundingClientRect();
-        bloc.style.transformOrigin = `${cx - r.left}px ${cy - r.top}px`;
-      });
+      alignerOrigines();
       annoncer('La page penche… comme demandé.', 'The page is now askew… as requested.');
       compter('easter-egg-askew', 'Page de travers');
     }
@@ -122,6 +135,39 @@
   };
 
   const verifierTravers = () => pencher(DE_TRAVERS.includes(simplifier(champ.value)));
+
+  /* ---------- 3. Le tonneau ---------- */
+  // Un tour complet quand le message devient « do a barrel roll » ; pour recommencer, il faut le retaper.
+  const mouvementReduit = matchMedia('(prefers-reduced-motion: reduce)');
+  let tonneauDemande = false, enTonneau = false;
+
+  const faireTonneau = () => {
+    compter('easter-egg-barrel-roll', 'Do a barrel roll');
+    if (mouvementReduit.matches) { // pas de rotation si l'appareil demande moins d'animations
+      annoncer('Tonneau ! (Animation désactivée : votre appareil demande moins de mouvements.)',
+               'Barrel roll! (Animation skipped: your device asks for reduced motion.)');
+      return;
+    }
+    if (enTonneau) return;
+    annoncer('Tonneau ! La page fait un tour complet.', 'Barrel roll! The page spins all the way round.');
+    enTonneau = true;
+    alignerOrigines();
+    document.documentElement.classList.add('en-tonneau');
+    const tours = blocs.map((bloc) => bloc.animate(
+      [{ rotate: '0deg' }, { rotate: '360deg' }],
+      { duration: DUREE_TONNEAU, easing: 'ease', iterations: 1 },  // comme Google : 360°, 4 s, une fois
+    ));
+    Promise.all(tours.map((t) => t.finished)).finally(() => {
+      enTonneau = false;
+      document.documentElement.classList.remove('en-tonneau');
+    });
+  };
+
+  const verifierTonneau = () => {
+    const demande = TONNEAU.includes(simplifier(champ.value));
+    if (demande && !tonneauDemande) faireTonneau();
+    tonneauDemande = demande;
+  };
 
   // « 42 » apparaît après un temps de réflexion : la phrase reste lisible un instant.
   // Le minuteur part dès que la phrase est complète et n'est pas relancé par la frappe suivante.
@@ -132,9 +178,9 @@
     minuteur42 = setTimeout(() => { minuteur42 = null; remplacer(); }, DELAI_42);
   };
 
-  champ.addEventListener('input', () => { planifier42(); verifierTravers(); });
+  champ.addEventListener('input', () => { planifier42(); verifierTravers(); verifierTonneau(); });
   champ.form?.addEventListener('submit', () => { clearTimeout(minuteur42); minuteur42 = null; remplacer(); }, true); // envoi immédiat : remplacé avant le départ
-  champ.form?.addEventListener('reset', () => setTimeout(verifierTravers)); // après l'envoi, la page se redresse
+  champ.form?.addEventListener('reset', () => setTimeout(() => { verifierTravers(); verifierTonneau(); })); // après l'envoi, la page se redresse
 
-  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew » ou « Grande Question sur la vie, l’Univers et le reste ».');
+  if (MODE_TEST) console.info('[contact-eggs] Prêt : essayez « askew », « do a barrel roll » ou « Grande Question sur la vie, l’Univers et le reste ».');
 })();
