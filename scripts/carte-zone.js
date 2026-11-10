@@ -41,15 +41,19 @@
     const marge = 56;                                   // place des barres fixes Menu / Contact
     const caler = (y) => Math.max(marge, Math.min(y, vh - hauteur - marge));
     let x, y, cote;
-    if (vw - r.right >= largeur + 24) {                 // grand écran : à droite du lieu, centrée sur lui
+    if (vw - r.right >= largeur + 30) {                 // grand écran : à droite du lieu, centrée sur lui
       cote = 'droite';
-      x = r.right + 12;
+      x = r.right + 18;
       y = caler(r.top + r.height / 2 - hauteur / 2);
     } else {                                            // sinon : au-dessus ou au-dessous, du côté le plus dégagé
       cote = r.top > vh - r.bottom ? 'dessus' : 'dessous';
       x = Math.max(8, Math.min(r.left + r.width / 2 - largeur / 2, vw - largeur - 8));
-      y = caler(cote === 'dessus' ? r.top - hauteur - 10 : r.bottom + 10);
+      y = caler(cote === 'dessus' ? r.top - hauteur - 16 : r.bottom + 16);
     }
+    // Queue de la bulle, pointée vers l'icône de localisation (même dessin que le menu « CV »)
+    const i = (lieu.parentElement.querySelector('.coordonnees-icone') || lieu).getBoundingClientRect();
+    if (cote === 'droite') bulle.style.setProperty('--queue-y', `${Math.max(18, Math.min(i.top + i.height / 2 - y, hauteur - 18))}px`);
+    else bulle.style.setProperty('--queue-x', `${Math.max(18, Math.min(i.left + i.width / 2 - x, largeur - 18))}px`);
     bulle.dataset.cote = cote;
     bulle.style.left = `${x + window.scrollX}px`;
     bulle.style.top = `${y + window.scrollY}px`;
