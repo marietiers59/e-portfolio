@@ -587,13 +587,13 @@ abbr[title] { text-decoration: none; cursor: help; }
   font-size: 0.95rem;
 }
 .breve strong { display: block; }
-.breve strong::before {          /* petite pastille vert sapin devant l'intitulé */
+.breve strong::before {          /* petite pastille bleu-cyan devant l'intitulé */
   content: "";
   display: inline-block;
   width: 0.5rem; height: 0.5rem;
   margin-right: 0.5rem;
   border-radius: 50%;
-  background: var(--sapin-400);
+  background: var(--cyan-trait);
   vertical-align: 0.1em;
 }
 
