@@ -1,9 +1,9 @@
 /* Easter eggs du champ « Message » du formulaire de contact
-   1. « Grande Question sur la vie, l'Univers et le reste » (ou sa version anglaise)
-      devient « 42 », la réponse calculée par Pensée profonde (Douglas Adams).
+   1. « (La) réponse à la (grande) question sur la vie, l'univers et le reste » ou « (The) answer to
+      (the ultimate question of) life, the universe and everything » devient « 42 » (Douglas Adams).
    2. Un message réduit à « askew », un synonyme ou une traduction française
       fait pencher la page, comme la recherche « askew » sur Google.
-   Intégration : <script src="scripts/contact-eggs.js?v=4" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=5" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const champ = document.querySelector('#formulaire-contact textarea[name="message"]');
@@ -18,9 +18,21 @@
 
   // Les phrases remplacées par « 42 » : majuscules, apostrophes, virgules et espaces indifférents.
   const APOS = "['’ʼ‘`´]";
+  // Toute la phrase disparaît, depuis « (la) réponse » / « (the) answer » s'il y en a un.
+  // Il faut au moins « réponse » ou « question » (« answer » ou « question ») ; « grande » / « ultimate » sont facultatifs.
+  const S = '\\s+', V = '\\s*,?\\s*';                       // espace ; virgule facultative
+  const DEBUT = '(?<![\\p{L}\\p{N}])', FIN = '(?![\\p{L}\\p{N}])'; // mots entiers seulement
+  const QUESTION_FR = `(?:grande${S})?question${S}(?:sur|de)${S}`;
+  const QUESTION_EN = `(?:(?:ultimate|great)${S})?question${S}of${S}`;
   const GRANDE_QUESTION = [
-    new RegExp(`grande\\s+question\\s+sur\\s+la\\s+vie\\s*,?\\s*l\\s*${APOS}?\\s*univers\\s*,?\\s*(?:et|&)\\s+(?:tout\\s+)?le\\s+reste(?![\\p{L}\\p{N}])`, 'giu'),
-    new RegExp(`ultimate\\s+question\\s+of\\s+life\\s*,?\\s*the\\s+universe\\s*,?\\s*(?:and|&)\\s+everything(?![\\p{L}\\p{N}])`, 'giu'),
+    // « (la) réponse à (la) (grande) question sur la vie, l'univers et (tout) le reste », « (la) (grande) question sur la vie… »,
+    // « (la) réponse à la vie, l'univers et le reste »
+    new RegExp(`${DEBUT}(?:(?:la${S})?r[eé]ponse${S}[aà]${S}(?:la${S})?(?:${QUESTION_FR})?|(?:la${S})?${QUESTION_FR})`
+      + `la${S}vie${V}(?:de${S})?l\\s*${APOS}?\\s*univers${V}(?:et|&)${S}(?:(?:de${S})?tout${S})?(?:(?:le|du)${S})?reste${FIN}`, 'giu'),
+    // « (the) answer to (the) (ultimate) question of life, the universe(,) and everything », « (the) (ultimate) question of life… »,
+    // « (the) answer to life, the universe and everything »
+    new RegExp(`${DEBUT}(?:(?:the${S})?answer${S}to${S}(?:the${S})?(?:${QUESTION_EN})?|(?:the${S})?${QUESTION_EN})`
+      + `life${V}(?:the${S})?universe${V}(?:and|&)${S}everything${FIN}`, 'giu'),
   ];
 
   // Les messages qui font pencher la page (comparés sans majuscules ni accents).
