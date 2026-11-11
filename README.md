@@ -35,6 +35,7 @@ pages/espace.html     espace personnel (réglage du compteur de visites)
 styles/style.css      feuille de styles commune
 scripts/script.js     défilement, formulaire, filtres, calendrier, compteur
 scripts/apparition.js fondu des blocs au défilement (entrée en montant, sortie en descendant)
+scripts/zoom.js       bascule de zoom de la page (barre du bas) : loupe − / loupe +, crête = taille réelle
 scripts/bug-egg.js    une petite surprise dans la frise chronologique
 medias/               images
 ```
