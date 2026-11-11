@@ -25,7 +25,7 @@
   10. « let it snow » (ou « neige », « qu'il neige ») : la neige tombe et le givre gagne l'écran, comme sur
       Google ; on l'essuie à la souris ou au doigt, « Dégivrer » le retire. En plus : des stalactites poussent
       sous les cartes, boutons et titres, et une couche de neige se pose sur leur bord supérieur.
-   Intégration : <script src="scripts/contact-eggs.js?v=14" defer></script> dans le <head>.
+   Intégration : <script src="scripts/contact-eggs.js?v=15" defer></script> dans le <head>.
    Mode test : ajouter ?bug-test à l'adresse (rien n'est compté dans GoatCounter). */
 (() => {
   const DOSSIER_SCRIPTS = document.currentScript ? new URL('.', document.currentScript.src) : new URL('scripts/', location.href);
@@ -256,6 +256,8 @@
     html.monde-envers, html.monde-envers body { overflow-x: hidden; }
     html.monde-envers body { background: #15171c; }
     html.monde-envers .penchable { rotate: 180deg; filter: grayscale(0.8) brightness(0.42) contrast(1.2); }
+    html.monde-envers[data-theme="sombre"] .penchable { filter: grayscale(0.85) brightness(0.8) contrast(1.1); } /* déjà sombre : on désature sans éteindre */
+    html.monde-envers[data-theme="sombre"] body { background: #0d0e12; }
     .st-cendres { position: fixed; inset: 0; z-index: 59; pointer-events: none; overflow: hidden; }
     .st-cendre { position: absolute; bottom: -1rem; border-radius: 50%; background: rgb(214 214 220 / 0.75);
       animation: st-flotte linear infinite; }
@@ -429,6 +431,7 @@
   ];
   const PIXEL = 3;                                  // taille d'un pixel d'alien, en px
   const COULEURS_ALIENS = ['#2f8f4e', '#4f55c8', '#1d7f86'];
+  const COULEURS_ALIENS_SOMBRE = ['#6fe08f', '#9ea3ff', '#5fd6de'];   // plus clairs sur le thème sombre
   // Les trois aliens du jeu original, chacun sur deux images, et l'explosion.
   const SPRITES = [
     [['...##...', '..####..', '.######.', '##.##.##', '########', '..#..#..', '.#.##.#.', '#.#..#.#'],
@@ -514,7 +517,7 @@
     el.className = 'zr-alien';
     el.setAttribute('aria-hidden', 'true');
     el.style.width = `${l * PIXEL}px`; el.style.height = `${h * PIXEL}px`;
-    el.innerHTML = `<svg viewBox="0 0 ${l} ${h}" fill="${COULEURS_ALIENS[n]}">${pixels(i1, 'zr-i1')}${pixels(i2, 'zr-i2')}</svg>`;
+    el.innerHTML = `<svg viewBox="0 0 ${l} ${h}" fill="${(document.documentElement.dataset.theme === 'sombre' ? COULEURS_ALIENS_SOMBRE : COULEURS_ALIENS)[n]}">${pixels(i1, 'zr-i1')}${pixels(i2, 'zr-i2')}</svg>`;
     const alien = { el, x, y, l: l * PIXEL, h: h * PIXEL, coups: 0, cible: null, ox: 0, oy: 0, etat: 'va', prochaineMorsure: 0, place: null };
     el.addEventListener('pointerdown', (e) => { e.preventDefault(); toucher(alien); });
     zerg.zone.append(el);
@@ -873,7 +876,8 @@
       padding: 0.45rem 0.9rem; border-radius: 999px; background: #14161c; color: #fff; cursor: pointer;
       font: 700 0.9rem/1.2 "Trebuchet MS", sans-serif; box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 0.3); }
     .gv-fermer:focus-visible { outline: 3px solid #4f8cff; outline-offset: 2px; }
-    html.gv-actif, html.gv-actif body { overflow: hidden; }`;
+    html.gv-actif, html.gv-actif body { overflow: hidden; }
+    .gv-vide { background: none !important; border-color: transparent !important; box-shadow: none !important; }`;
   document.head.appendChild(styleGV);
 
   let matter = null, gravite = null;
@@ -886,28 +890,30 @@
     document.head.append(sc);
   });
 
-  // Les morceaux : les cadres (cartes, formulaire) tombent d'un bloc, avec leur contenu ;
-  // hors des cadres, chaque titre, paragraphe, élément de liste ou bouton tombe seul.
+  // Les morceaux : chaque titre, paragraphe, champ, bouton ou élément de liste tombe seul, comme sur Google.
+  // Les cadres qui les contenaient (cartes, formulaire) s'effacent le temps de l'effet, sinon ils resteraient vides.
   const morceaux = (haut, bas) => {
     const visible = (el) => {
       const r = el.getBoundingClientRect(), st = getComputedStyle(el);
-      return r.width * r.height >= 300 && r.bottom > haut && r.top < bas && r.right > 0 && r.left < innerWidth
-        && st.display !== 'inline' && st.visibility !== 'hidden' && !el.closest('[aria-hidden="true"], [hidden], [inert]');
+      return r.width * r.height >= 300 && r.width <= innerWidth * 0.96 && r.bottom > haut && r.top < bas
+        && r.right > 0 && r.left < innerWidth && st.display !== 'inline' && st.visibility !== 'hidden'
+        && !el.closest('[aria-hidden="true"], [hidden], [inert]');
     };
-    const cadres = [];
-    blocs.forEach((bloc) => bloc.querySelectorAll('*').forEach((el) => {
-      if (cadres.some((c) => c.contains(el)) || !visible(el)) return;
-      const r = el.getBoundingClientRect(), st = getComputedStyle(el);
-      if (r.width > innerWidth * 0.94 || r.height > (bas - haut) * 0.85) return;
-      const fond = st.backgroundColor !== 'rgba(0, 0, 0, 0)' && st.backgroundColor !== 'transparent';
-      if (fond || parseFloat(st.borderTopWidth) > 0 || st.boxShadow !== 'none') cadres.push(el);
-    }));
-    const seuls = [];
-    blocs.forEach((bloc) => bloc.querySelectorAll('h1,h2,h3,h4,p,li,label,input,select,textarea,button,img,figure,blockquote,.tag').forEach((el) => {
-      if (cadres.some((c) => c.contains(el)) || seuls.some((c) => c.contains(el)) || !visible(el)) return;
-      seuls.push(el);
-    }));
-    return [...cadres, ...seuls].slice(0, 45);
+    const pieces = [];
+    blocs.forEach((bloc) => bloc.querySelectorAll('h1,h2,h3,h4,p,li,label,input,select,textarea,button,img,svg,figure,blockquote,.tag,.bouton')
+      .forEach((el) => {
+        if (pieces.length >= 60 || pieces.some((c) => c.contains(el)) || !visible(el)) return;
+        pieces.push(el);
+      }));
+    const cadres = new Set();
+    pieces.forEach((el) => {
+      for (let a = el.parentElement; a && !blocs.includes(a); a = a.parentElement) {
+        const st = getComputedStyle(a);
+        const fond = st.backgroundColor !== 'rgba(0, 0, 0, 0)' && st.backgroundColor !== 'transparent';
+        if (fond || parseFloat(st.borderTopWidth) > 0 || st.boxShadow !== 'none') cadres.add(a);
+      }
+    });
+    return { pieces, cadres: [...cadres] };
   };
 
   const lancerGravite = async (flottant) => {
@@ -929,7 +935,9 @@
     const engine = M.Engine.create();
     engine.gravity.y = flottant ? 0 : 1;
 
-    const pieces = morceaux(haut, bas).map((el) => {
+    const choix = morceaux(haut, bas);
+    choix.cadres.forEach((c) => c.classList.add('gv-vide'));
+    const pieces = choix.pieces.map((el) => {
       const r = el.getBoundingClientRect();
       const corps = M.Bodies.rectangle(r.left + r.width / 2, r.top + r.height / 2, r.width, r.height, {
         restitution: flottant ? 0.9 : 0.25, friction: flottant ? 0.01 : 0.4,
@@ -981,7 +989,7 @@
       raf = requestAnimationFrame(pas);
     };
     raf = requestAnimationFrame(pas);
-    gravite = { engine, pieces, zone, fermerGV, souris, arreter: () => cancelAnimationFrame(raf) };
+    gravite = { engine, pieces, cadres: choix.cadres, zone, fermerGV, souris, arreter: () => cancelAnimationFrame(raf) };
     fermerGV.focus({ preventScroll: true });
     annoncer(flottant ? 'Apesanteur ! Les morceaux de la page flottent ; attrapez-les et lancez-les. Échap pour tout remettre.'
                       : 'Gravité ! La page s’effondre ; attrapez les morceaux et lancez-les. Échap pour tout remettre.',
@@ -992,7 +1000,8 @@
   function arreterGravite() {
     if (!gravite) return;
     if (gravite.chargement) { gravite = null; return; }
-    const { engine, pieces, zone, fermerGV, souris, arreter } = gravite;
+    const { engine, pieces, cadres, zone, fermerGV, souris, arreter } = gravite;
+    cadres.forEach((c) => c.classList.remove('gv-vide'));
     arreter();
     window.Matter.Mouse.clearSourceEvents?.(souris);
     window.Matter.Engine.clear(engine);
