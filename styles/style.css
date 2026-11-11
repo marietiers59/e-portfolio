@@ -399,6 +399,13 @@ abbr[title] { text-decoration: none; cursor: help; }
   cursor: pointer;
 }
 .theme[hidden] { display: none; }
+/* Teintes propres à chaque icône, pour équilibrer leur poids visuel :
+   le soleil (traits fins) un peu plus clair, la lune (forme pleine) un peu plus foncée.
+   --theme-soleil sert aussi aux icônes ▶ de la visite guidée. */
+:root { --theme-soleil: hsl(205 60% 42%); --theme-lune: hsl(205 70% 22%); }
+:root[data-theme="sombre"] { --theme-soleil: hsl(205 85% 88%); --theme-lune: hsl(205 55% 70%); }
+.theme-soleil { color: var(--theme-soleil); }
+.theme-lune   { color: var(--theme-lune); }
 .theme-icone {
   width: 1.05rem; height: 1.05rem;
   fill: none;
@@ -2590,13 +2597,14 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
   border: 0;
   border-radius: 999px;
   background: none;
-  color: var(--bleu-700);
+  color: var(--theme-soleil);           /* même teinte que le soleil de l'interrupteur de thème voisin */
   cursor: pointer;
   transition: background-color var(--duree), transform var(--duree);
 }
 .visite-lancer-barre:hover { background: var(--bleu-100); }
 .visite-lancer-barre:active { transform: translateY(1px); }
 .visite-lancer-une { display: inline-flex; align-items: center; gap: 0.45rem; }
+.visite-lancer-une .visite-icone { color: var(--theme-soleil); }   /* l'icône seule ; le texte du bouton garde sa couleur */
 
 .visite-icone {
   width: 1.2rem; height: 1.2rem;
