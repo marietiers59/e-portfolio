@@ -20,7 +20,7 @@
   <script>(function(){try{var L=[.8,.9,1,1.1,1.2,1.3,1.5,1.75,2],i=parseInt(localStorage.getItem('zoom-page'),10)+2;if(!(i>=0&&i<9)||i===2)return;while(i>2&&innerWidth/L[i]<288)i--;if(i!==2)document.documentElement.style.setProperty('--zoom-page',String(L[i]))}catch(e){}})();</script>
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=54">
+  <link rel="stylesheet" href="../styles/style.css?v=55">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -30,7 +30,7 @@
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=5" defer></script>
   <script src="../scripts/contact-eggs.js?v=15" defer></script>
-  <script src="../scripts/visite.js?v=2" defer></script>
+  <script src="../scripts/visite.js?v=3" defer></script>
 </head>
 
 <body id="haut">
