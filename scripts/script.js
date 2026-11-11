@@ -860,7 +860,8 @@ document.querySelectorAll('.carte picture').forEach((image) => {
 //  · Vue agrandie (<dialog>) : glisser = faire tourner ; molette, pincement, + / − = zoom ;
 //    survol ou toucher d'un point = ses voisins ; couleur de la légende = sa communauté ;
 //    Pause, Recentrer, étiquettes réduites, Tout afficher, Retour à la page (ou Échap).
-//  · Mouvement réduit demandé par l'appareil : ni rotation automatique ni influx.
+//  · Animations réduites demandées par l'appareil : le réseau démarre à l'arrêt ;
+//    le bouton Lecture le fait tourner à la demande (rotation et influx).
 // Sans JavaScript, le SVG à plat et l'image seule (medias/nuage-competences.svg) prennent le relais.
 (() => {
   const figure = document.querySelector('.nuage');
@@ -982,7 +983,9 @@ document.querySelectorAll('.carte picture').forEach((image) => {
   }
 
   // --- Une vue = un canvas qui dessine le réseau ---
-  const RAPPEL = !mouvementReduit.matches;     // animations permises ?
+  // Animations permises par l'appareil ? Sinon le réseau démarre à l'arrêt (sans rotation ni influx)
+  // et le bouton Lecture permet de le lancer à la demande.
+  const RAPPEL = !mouvementReduit.matches;
   class Vue {
     constructor(conteneur, apercu) {
       this.apercu = apercu;
@@ -1001,7 +1004,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
       this.impulsions = [];
       this.prochaine = 0;
       this.recentrer();
-      this.enPause = false;
+      this.enPause = !RAPPEL;
       this.selection = null;                   // Set d'indices mis en évidence
       this.liensActifs = null;
       this.etiquettesReduites = false;
@@ -1024,7 +1027,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
       this.toile.height = Math.max(1, Math.round(this.toile.clientHeight * dpr));
     }
     detruire() { this.observateur.disconnect(); this.toile.remove(); }
-    get anime() { return RAPPEL && !this.enPause; }
+    get anime() { return !this.enPause; }
 
     // Projection en perspective (rotation autour de la verticale, puis de l'horizontale)
     projeter() {
@@ -1277,14 +1280,23 @@ document.querySelectorAll('.carte picture').forEach((image) => {
   new IntersectionObserver((entrees) => {
     if (entrees.some((e) => e.isIntersecting)) animer(apercu); else suspendre(apercu);
   }, { threshold: 0.05 }).observe(apercu.toile);
-  if (RAPPEL) {
-    boutonPause.hidden = false;
-    boutonPause.addEventListener('click', () => {
-      apercu.enPause = !apercu.enPause;
-      boutonPause.setAttribute('aria-pressed', String(apercu.enPause));
-      apercu.sale = true;
-    });
+  // Bouton Pause / Lecture : son nom et son icône disent ce qu'il va faire
+  const ICONES = { pause: 'M9 5v14M15 5v14', lecture: 'M8 5l11 7-11 7z' };
+  function etiqueterPause(bouton, enPause) {
+    const libelle = enPause ? t('Lecture', 'Play') : t('Pause', 'Pause');
+    const icone = bouton.querySelector('.nuage-icone path');
+    if (icone) icone.setAttribute('d', enPause ? ICONES.lecture : ICONES.pause);
+    [...bouton.childNodes].filter((n) => n.nodeType === Node.TEXT_NODE).forEach((n) => n.remove());
+    bouton.append(libelle);
+    bouton.removeAttribute('aria-pressed');
   }
+  etiqueterPause(boutonPause, apercu.enPause);
+  boutonPause.hidden = false;
+  boutonPause.addEventListener('click', () => {
+    apercu.enPause = !apercu.enPause;
+    etiqueterPause(boutonPause, apercu.enPause);
+    apercu.sale = true;
+  });
   // Thème changé : nouvelles couleurs
   new MutationObserver(() => {
     lirePalette();
@@ -1301,7 +1313,6 @@ document.querySelectorAll('.carte picture').forEach((image) => {
   document.querySelectorAll('button[data-nuage-ouvrir]').forEach((b) => { b.hidden = false; });
   const boutonEtiquettes = dialogue.querySelector('[data-nuage="etiquettes"]');
   const boutonPauseDialogue = dialogue.querySelector('[data-nuage="pause"]');
-  if (!RAPPEL) boutonPauseDialogue.hidden = true;
 
   // Bouton ou geste « retour » du navigateur / du téléphone : il doit refermer la vue agrandie,
   // pas quitter la page. On ajoute donc une étape à l'historique à l'ouverture ; « retour » la retire
@@ -1315,7 +1326,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
     vue = new Vue(scene, false);
     vue.theta = apercu.theta;                  // on reprend l'angle de l'aperçu : continuité
     vue.enPause = apercu.enPause;
-    boutonPauseDialogue.setAttribute('aria-pressed', String(vue.enPause));
+    etiqueterPause(boutonPauseDialogue, vue.enPause);
     boutonEtiquettes.setAttribute('aria-pressed', 'true');
     animer(vue);
     if (communaute) filtrer(communaute); else effacer();
@@ -1443,7 +1454,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
     tout: () => effacer(),
     pause: () => {
       vue.enPause = !vue.enPause;
-      boutonPauseDialogue.setAttribute('aria-pressed', String(vue.enPause));
+      etiqueterPause(boutonPauseDialogue, vue.enPause);
       vue.sale = true;
     },
     etiquettes: () => {
