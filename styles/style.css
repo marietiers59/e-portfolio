@@ -399,28 +399,20 @@ abbr[title] { text-decoration: none; cursor: help; }
   cursor: pointer;
 }
 .theme[hidden] { display: none; }
-/* Teintes propres à chaque icône, pour équilibrer leur poids visuel :
-   le soleil (traits fins) un peu plus clair, la lune (forme pleine) un peu plus foncée.
-   --theme-soleil sert aussi aux icônes ▶ de la visite guidée. */
-:root { --theme-soleil: hsl(205 60% 42%); --theme-lune: hsl(205 70% 22%); }
-:root[data-theme="sombre"] { --theme-soleil: hsl(205 85% 88%); --theme-lune: hsl(205 55% 70%); }
-.theme-soleil { color: var(--theme-soleil); }
-.theme-lune   { color: var(--theme-lune); }
+/* Une seule teinte, pleine, pour le soleil, la lune et les icônes ▶ de la visite guidée.
+   Le thème affiché se lit à la position de la pastille, pas à la couleur des icônes. */
+:root { --icone-barre: hsl(205 60% 42%); }
+:root[data-theme="sombre"] { --icone-barre: hsl(205 80% 82%); }
 .theme-icone {
   width: 1.05rem; height: 1.05rem;
+  color: var(--icone-barre);
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  opacity: 0.45;
-  transition: opacity var(--duree), transform 300ms ease;
+  transition: transform 300ms ease;
 }
-.theme[aria-pressed="false"] .theme-soleil,
-.theme[aria-pressed="true"]  .theme-lune { opacity: 1; }
-.theme:hover .theme-icone { opacity: 0.8; }
-.theme[aria-pressed="false"]:hover .theme-soleil,
-.theme[aria-pressed="true"]:hover  .theme-lune { opacity: 1; }
 .theme:hover .theme-soleil { transform: rotate(30deg); }
 .theme:hover .theme-lune   { transform: rotate(-15deg); }
 .theme[aria-pressed="true"] .langue-interrupteur::before { transform: translateX(0.95rem); }
@@ -2569,9 +2561,10 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
   z-index: 10;
   translate: -50% 0;
   padding: 0.3rem 0.6rem;
+  border: 1px solid var(--indigo-200);   /* mêmes couleurs que les autres bulles (sous-menu CV, carte de la zone) */
   border-radius: 0.5rem;
-  background: var(--encre);
-  color: var(--fond);
+  background: var(--carte);
+  color: var(--encre);
   font: 700 0.8rem/1.2 var(--police-interface);
   white-space: nowrap;
   box-shadow: var(--ombre-legere);
@@ -2597,14 +2590,14 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
   border: 0;
   border-radius: 999px;
   background: none;
-  color: var(--theme-soleil);           /* même teinte que le soleil de l'interrupteur de thème voisin */
+  color: var(--icone-barre);            /* même teinte que le soleil et la lune voisins */
   cursor: pointer;
   transition: background-color var(--duree), transform var(--duree);
 }
 .visite-lancer-barre:hover { background: var(--bleu-100); }
 .visite-lancer-barre:active { transform: translateY(1px); }
 .visite-lancer-une { display: inline-flex; align-items: center; gap: 0.45rem; }
-.visite-lancer-une .visite-icone { color: var(--theme-soleil); }   /* l'icône seule ; le texte du bouton garde sa couleur */
+.visite-lancer-une .visite-icone { color: var(--icone-barre); }   /* l'icône seule ; le texte du bouton garde sa couleur */
 
 .visite-icone {
   width: 1.2rem; height: 1.2rem;
