@@ -2,9 +2,9 @@
    Bascule de zoom (barre du bas, à gauche) : loupe « − » ⇄ loupe « + »
    ---------------------------------------------------------------------
    Comme un interrupteur à bascule monté sur ressort : on appuie d'un
-   côté, le plateau penche, la page change d'un cran, et le plateau
-   revient tout seul au milieu. Un clic sur la crête (au centre)
-   ramène au zoom 0, la taille réelle.
+   côté, la crête (la barre centrale) file au bout du plateau, la page
+   change d'un cran, et la crête revient toute seule au milieu. Un clic
+   sur la crête ramène au zoom 0, la taille réelle.
 
    – Le zoom agrandit la taille de base (rem) : textes, marges, cartes
      et barres grandissent ensemble, comme avec le zoom du navigateur.
@@ -32,6 +32,7 @@
   const CLE = 'zoom-page';
   const REPETITION_DEPART = 450;  // ms avant que l'appui maintenu ne répète
   const REPETITION = 260;         // ms entre deux crans répétés
+  const APPUI_MIN = 170;          // ms : même un clic bref laisse la crête arriver au bout
 
   const moins = bloc.querySelector('.zoom-moins');
   const plus = bloc.querySelector('.zoom-plus');
@@ -113,7 +114,7 @@
     const max = plafond();
     const depart = Math.min(voulu, max);
     const suivant = Math.min(max, Math.max(0, depart + pas));
-    if (suivant === depart) { butee(pas); annoncerNiveau(); return false; }
+    if (suivant === depart) { annoncerNiveau(); return false; }
     voulu = suivant;
     ecrire(voulu);
     appliquer(true);
@@ -129,15 +130,18 @@
     crete.classList.add('zoom-pulse');
   };
 
-  /* ----- La bascule : penche à l'appui, revient au milieu en ressort ----- */
-  const pencher = (pas) => { bloc.dataset.appui = pas < 0 ? 'moins' : 'plus'; };
-  const relacher = () => { delete bloc.dataset.appui; };
-  const butee = (pas) => {                         // déjà au bout : petite secousse
-    bloc.classList.remove('zoom-butee-moins', 'zoom-butee-plus');
-    void bloc.offsetWidth;
-    bloc.classList.add(pas < 0 ? 'zoom-butee-moins' : 'zoom-butee-plus');
+  /* ----- La bascule : la crête file du côté appuyé, revient au milieu en ressort ----- */
+  let debutAppui = 0, minuterieRelache = 0;
+  const pencher = (pas) => {
+    clearTimeout(minuterieRelache);
+    bloc.dataset.appui = pas < 0 ? 'moins' : 'plus';
+    debutAppui = performance.now();
   };
-  bloc.addEventListener('animationend', () => bloc.classList.remove('zoom-butee-moins', 'zoom-butee-plus', 'zoom-pulse'));
+  const relacher = () => {                         // au moins APPUI_MIN au bout, puis le ressort
+    clearTimeout(minuterieRelache);
+    const reste = APPUI_MIN - (performance.now() - debutAppui);
+    minuterieRelache = setTimeout(() => { delete bloc.dataset.appui; }, Math.max(0, reste));
+  };
   crete.addEventListener('animationend', () => crete.classList.remove('zoom-pulse'));
 
   [[moins, -1], [plus, 1]].forEach(([bouton, pas]) => {
@@ -161,10 +165,7 @@
     bouton.addEventListener('click', (e) => {
       if (aRepete) { aRepete = false; return; }   // l'appui maintenu a déjà fait son travail
       cran(pas);
-      if (e.detail === 0) {                         // clavier : la bascule penche brièvement
-        pencher(pas);
-        setTimeout(relacher, 140);
-      }
+      if (e.detail === 0) { pencher(pas); relacher(); }   // clavier : même aller-retour de la crête
     });
     bouton.addEventListener('contextmenu', (e) => e.preventDefault());   // appui long sur écran tactile
   });
