@@ -295,6 +295,72 @@
   }
   construireSousMenuCv();
 
+  /* Ailleurs dans les pages (boutons « Mon CV », « Lire mon CV »…) : même choix que dans la barre,
+     télécharger le PDF ou l'ouvrir dans un nouvel onglet, dans une bulle qui s'ouvre sous le bouton. */
+  function construireChoixCv(lien, n) {
+    const pdf = lien.getAttribute('href');
+    const id = `choix-cv-${n}`;
+    const enveloppe = document.createElement('span');
+    enveloppe.className = 'choix-cv';
+    enveloppe.innerHTML = `
+      <button type="button" class="${lien.className} choix-cv-bouton" aria-expanded="false" aria-controls="${id}">
+        ${lien.innerHTML} <span class="nav-cv-fleche" aria-hidden="true">▾</span></button>
+      <ul class="sous-menu-cv" id="${id}">
+        <li><a href="${pdf}" type="application/pdf" data-cv="telecharger">${t('Télécharger le PDF', 'Download the PDF')}</a></li>
+        <li><a href="${pdf}" type="application/pdf" data-cv="ouvrir" target="_blank" rel="noopener">${t('Ouvrir dans un nouvel onglet', 'Open in a new tab')}</a></li>
+      </ul>`;
+    lien.replaceWith(enveloppe);
+    const bouton = enveloppe.querySelector('button');
+    const menu = enveloppe.querySelector('.sous-menu-cv');
+    const ajuster = () => requestAnimationFrame(() => {
+      if (getComputedStyle(menu).display === 'none') return;
+      menu.style.left = ''; menu.style.right = '';
+      if (menu.getBoundingClientRect().right > innerWidth - 8) { menu.style.left = 'auto'; menu.style.right = '0'; }
+      if (menu.getBoundingClientRect().left < 8) { menu.style.left = `${8 - enveloppe.getBoundingClientRect().left}px`; menu.style.right = 'auto'; }
+      const b = bouton.getBoundingClientRect();
+      menu.style.setProperty('--queue-x', `${b.left + b.width / 2 - menu.getBoundingClientRect().left}px`);
+    });
+    const basculer = (ouvert) => {
+      enveloppe.classList.toggle('ouvert', ouvert);
+      bouton.setAttribute('aria-expanded', String(ouvert));
+      if (ouvert) { enveloppe.classList.remove('replie'); ajuster(); }
+    };
+    let minuteur;
+    enveloppe.addEventListener('pointerenter', (evt) => {
+      if (evt.pointerType !== 'mouse') return;
+      clearTimeout(minuteur);
+      enveloppe.classList.remove('replie');
+      if (!enveloppe.classList.contains('survol')) { enveloppe.classList.add('survol'); ajuster(); }
+    });
+    enveloppe.addEventListener('pointerleave', (evt) => {
+      if (evt.pointerType !== 'mouse') return;
+      clearTimeout(minuteur);
+      minuteur = setTimeout(() => enveloppe.classList.remove('survol'), 300);
+    });
+    addEventListener('resize', ajuster);
+    bouton.addEventListener('click', () => basculer(!enveloppe.classList.contains('ouvert')));
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+      basculer(false); enveloppe.classList.remove('survol');
+    }));
+    document.addEventListener('click', (evt) => { if (!enveloppe.contains(evt.target)) basculer(false); });
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key !== 'Escape') return;
+      if (!enveloppe.classList.contains('ouvert') && !enveloppe.classList.contains('survol')) return;
+      const avaitFocus = enveloppe.contains(document.activeElement);
+      clearTimeout(minuteur);
+      enveloppe.classList.remove('survol');
+      basculer(false);
+      enveloppe.classList.add('replie');
+      if (avaitFocus) bouton.focus();
+    });
+    enveloppe.addEventListener('focusout', (evt) => {
+      if (!enveloppe.contains(evt.relatedTarget)) { basculer(false); enveloppe.classList.remove('replie'); }
+    });
+  }
+  document.querySelectorAll(SELECTEUR_CV).forEach((lien, n) => {
+    if (!lien.closest('.navigation-liste, .sous-menu-cv')) construireChoixCv(lien, n);
+  });
+
   const liensCv = document.querySelectorAll(SELECTEUR_CV);
   // Le CV (public ou complet) se télécharge toujours sous le nom choisi ; le lien « ouvrir » l'affiche dans un onglet
   liensCv.forEach((a) => { if (a.dataset.cv !== 'ouvrir') a.download = NOM_CV; });
