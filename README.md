@@ -34,6 +34,7 @@ pages/projets.html    projets (cartes, filtres, tri)
 pages/espace.html     espace personnel (réglage du compteur de visites)
 styles/style.css      feuille de styles commune
 scripts/script.js     défilement, formulaire, filtres, calendrier, compteur
+scripts/apparition.js fondu des blocs au défilement (entrée en montant, sortie en descendant)
 scripts/bug-egg.js    une petite surprise dans la frise chronologique
 medias/               images
 ```

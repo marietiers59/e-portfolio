@@ -17,10 +17,12 @@
 
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
+  <script>(function(){var r=document.documentElement;if(!r.animate||!window.matchMedia||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=48">
+  <link rel="stylesheet" href="../styles/style.css?v=49">
   <script src="../scripts/rideau.js?v=6" defer></script>
   <script src="../scripts/script.js?v=18" defer></script>
+  <script src="../scripts/apparition.js?v=1" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/contact-eggs.js?v=14" defer></script>
 </head>
@@ -238,7 +240,7 @@
 <tr><th scope="row">13.5</th><td class="statut-c">Compliant</td><td>Decorative symbols hidden, arrows named.</td></tr>
 <tr><th scope="row">13.6</th><td class="statut-c">Compliant</td><td>Relevant alternatives.</td></tr>
 <tr><th scope="row">13.7</th><td class="statut-c">Compliant</td><td>No flashing.</td></tr>
-<tr><th scope="row">13.8</th><td class="statut-c">Compliant</td><td>Animated GIF only on hover or focus (5 s on touch screens); still image with “reduce motion”.</td></tr>
+<tr><th scope="row">13.8</th><td class="statut-c">Compliant</td><td>Animated GIF only on hover or focus (5 s on touch screens); still image with “reduce motion”. Fade-in effects on scroll are brief (under one second), triggered by the person scrolling and removed with “reduce motion”.</td></tr>
 <tr><th scope="row">13.9</th><td class="statut-c">Compliant</td><td>Portrait and landscape.</td></tr>
 <tr><th scope="row">13.10</th><td class="statut-c">Compliant</td><td>Swiping between pages on smartphones: the menu offers the same navigation with a single tap.</td></tr>
 <tr><th scope="row">13.11</th><td class="statut-c">Compliant</td><td>Actions fire on release.</td></tr>
