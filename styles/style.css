@@ -1224,11 +1224,14 @@ abbr[title] { text-decoration: none; cursor: help; }
 .pilier-fleche { display: inline-block; transition: transform var(--duree) ease; }
 .pilier:hover .pilier-fleche { transform: translateX(0.2rem); }
 
-/* --- Appareils à souris : cartes repliées, déploiement au survol ou au focus clavier --- */
+/* --- Appareils à souris : cartes repliées, déploiement au survol ou au focus clavier ---
+   Focus clavier = :focus-visible (un clic de souris ne le déclenche pas) ; le survol l'emporte
+   toujours : dès qu'une carte du groupe est survolée, le focus clavier n'a plus d'effet visuel.
+   Ainsi, curseur hors des cartes et sans navigation au clavier, aucune carte n'est voilée. */
 @media (hover: hover) {
   .emplacement { transition: z-index 0s linear 300ms; } /* reste au-dessus pendant le repli */
   .emplacement:hover,
-  .emplacement:focus-within { z-index: 5; transition-delay: 0s; }
+  .emplacement:has(:focus-visible) { z-index: 5; transition-delay: 0s; }
 
   /* La place réservée a la taille de la carte repliée : la carte déployée déborde par-dessus */
   .carte-emplacement { aspect-ratio: 1; }
@@ -1242,11 +1245,11 @@ abbr[title] { text-decoration: none; cursor: help; }
 
   .carte-deploiement { grid-template-rows: 0fr; }
   .emplacement:not(.replie):hover .carte-deploiement,
-  .emplacement:not(.replie):focus-within .carte-deploiement { grid-template-rows: 1fr; }
+  :is(.cartes, .piliers):not(:has(.emplacement:hover)) .emplacement:not(.replie):has(:focus-visible) .carte-deploiement { grid-template-rows: 1fr; }
 
   /* Carte survolée : agrandie, plus en relief, détachée par une aura blanche */
   .emplacement:not(.replie):hover .carte,
-  .emplacement:not(.replie):focus-within .carte {
+  :is(.cartes, .piliers):not(:has(.emplacement:hover)) .emplacement:not(.replie):has(:focus-visible) .carte {
     transform: translate(-0.125rem, -0.3rem) scale(1.04);
     box-shadow: var(--aura), var(--ombre-survol);
     filter: contrast(1.06) saturate(1.1);   /* un cran plus nette et plus vive */
@@ -1263,11 +1266,11 @@ abbr[title] { text-decoration: none; cursor: help; }
 
   /* Les autres cartes du même groupe : désaturées, à peine floues, sous un voile blanc */
   :is(.cartes, .piliers):has(.emplacement:not(.replie):hover) .emplacement:not(:hover) .carte,
-  :is(.cartes, .piliers):has(.emplacement:not(.replie):focus-within) .emplacement:not(:focus-within) .carte {
+  :is(.cartes, .piliers):not(:has(.emplacement:hover)):has(.emplacement:not(.replie) :focus-visible) .emplacement:not(:has(:focus-visible)) .carte {
     filter: saturate(0.25) blur(0.6px);
   }
   :is(.cartes, .piliers):has(.emplacement:not(.replie):hover) .emplacement:not(:hover) .carte::before,
-  :is(.cartes, .piliers):has(.emplacement:not(.replie):focus-within) .emplacement:not(:focus-within) .carte::before {
+  :is(.cartes, .piliers):not(:has(.emplacement:hover)):has(.emplacement:not(.replie) :focus-visible) .emplacement:not(:has(:focus-visible)) .carte::before {
     opacity: 0.5;
   }
 }
@@ -1319,13 +1322,13 @@ abbr[title] { text-decoration: none; cursor: help; }
   /* Image : même hauteur qu'au repos (100cqw = largeur du pilier replié), recadrée en largeur */
   .pilier-image { height: 100cqw; }
 
-  .pilier-emplacement:not(.replie):is(:hover, :focus-within) > .carte {
+  .pilier-emplacement:not(.replie):is(:hover, :has(:focus-visible)) > .carte {
     left:  calc(-1rem - var(--pilier-marge));
     right: calc(-1rem - var(--pilier-marge));
     transform: translateY(-0.3rem);   /* pas d'agrandissement : l'élargissement suffit, la carte ne déborde pas sur ses voisines */
   }
-  .pilier-emplacement:not(.replie):first-child:is(:hover, :focus-within) > .carte { left:  calc(-1 * var(--pilier-marge)); }
-  .pilier-emplacement:not(.replie):last-child:is(:hover, :focus-within)  > .carte { right: calc(-1 * var(--pilier-marge)); }
+  .pilier-emplacement:not(.replie):first-child:is(:hover, :has(:focus-visible)) > .carte { left:  calc(-1 * var(--pilier-marge)); }
+  .pilier-emplacement:not(.replie):last-child:is(:hover, :has(:focus-visible))  > .carte { right: calc(-1 * var(--pilier-marge)); }
   .pilier-emplacement:hover > .carte:active { transform: translateY(0); }
 
   /* Section « Mon parcours » : même voile que les piliers voisins tant qu'un pilier est survolé */
@@ -1340,8 +1343,8 @@ abbr[title] { text-decoration: none; cursor: help; }
     pointer-events: none;
     transition: opacity 260ms ease;
   }
-  body:has(.piliers .emplacement:not(.replie):is(:hover, :focus-within)) .section-parcours { filter: saturate(0.25) blur(0.6px); }
-  body:has(.piliers .emplacement:not(.replie):is(:hover, :focus-within)) .section-parcours::after { opacity: 0.5; }
+  body:is(:has(.piliers .emplacement:not(.replie):hover), :has(.piliers .emplacement:not(.replie) :focus-visible)) .section-parcours { filter: saturate(0.25) blur(0.6px); }
+  body:is(:has(.piliers .emplacement:not(.replie):hover), :has(.piliers .emplacement:not(.replie) :focus-visible)) .section-parcours::after { opacity: 0.5; }
 }
 
 /* --- Date avec calendrier au survol (accueil) --- */
