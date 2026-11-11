@@ -18,14 +18,14 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=44">
+  <link rel="stylesheet" href="../styles/style.css?v=45">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('../index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
-  <script src="../scripts/rideau.js?v=5" defer></script>
+  <script src="../scripts/rideau.js?v=6" defer></script>
   <script src="../scripts/script.js?v=17" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=5" defer></script>
-  <script src="../scripts/contact-eggs.js?v=12" defer></script>
+  <script src="../scripts/contact-eggs.js?v=14" defer></script>
 </head>
 
 <body id="haut">
@@ -588,7 +588,7 @@
               <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="recentrer">Recentrer</button>
               <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="etiquettes" aria-pressed="true">Toutes les étiquettes</button>
               <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="tout">Tout afficher</button>
-              <button class="nuage-outil nuage-fermer" type="button" data-nuage="fermer"><span aria-hidden="true">&#x2715;</span> <span class="nuage-fermer-texte">Retour à la page</span></button>
+              <button class="nuage-outil nuage-fermer" type="button" data-nuage="fermer"><span aria-hidden="true">&#xD7;</span> <span class="nuage-fermer-texte">Retour à la page</span></button>
             </div>
           </div>
           <div class="nuage-scene"></div>
