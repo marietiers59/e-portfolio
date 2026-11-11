@@ -2561,9 +2561,10 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
   z-index: 10;
   translate: -50% 0;
   padding: 0.3rem 0.6rem;
+  border: 1px solid var(--indigo-200);   /* mêmes couleurs que les autres bulles (sous-menu CV, carte de la zone) */
   border-radius: 0.5rem;
-  background: var(--encre);
-  color: var(--fond);
+  background: var(--carte);
+  color: var(--encre);
   font: 700 0.8rem/1.2 var(--police-interface);
   white-space: nowrap;
   box-shadow: var(--ombre-legere);
