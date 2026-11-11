@@ -434,13 +434,15 @@ abbr[title] { text-decoration: none; cursor: help; }
 }
 
 /* Bascule de zoom (barre du bas, à gauche ; scripts/zoom.js) : loupe « − » ⇄ loupe « + ».
-   Un interrupteur à bascule monté sur ressort : le plateau penche du côté appuyé, puis revient
-   au milieu en dépassant un peu, comme un ressort ; la crête, au centre, remet la taille réelle.
+   Un interrupteur à bascule monté sur ressort : la crête (la barre centrale) glisse du côté appuyé,
+   puis revient progressivement au milieu en dépassant à peine, comme un ressort ;
+   un clic sur la crête remet la taille réelle. Au survol, la bascule grossit très légèrement.
    Le zoom agrandit la taille de base (--zoom-page, posée en tête de page puis par zoom.js).
    Bloc caché sans JavaScript (attribut hidden retiré par zoom.js). */
 html { font-size: calc(var(--zoom-page, 1) * 100%); }
 .zoom {
-  --zoom-ressort: 560ms cubic-bezier(0.3, 2.1, 0.5, 1);   /* retour au milieu, avec un rebond */
+  --zoom-ressort: 650ms cubic-bezier(0.34, 1.45, 0.64, 1);   /* retour au milieu, avec un léger rebond */
+  --zoom-course: 1.2rem;                                     /* trajet de la crête jusqu'au bout du plateau */
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -496,7 +498,7 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
   border-radius: 999px;
   background: var(--carte);
   box-shadow: var(--ombre-legere);
-  transition: transform var(--zoom-ressort), background-color var(--duree), box-shadow var(--duree);
+  transition: transform var(--zoom-ressort), scale var(--duree), background-color var(--duree), box-shadow var(--duree);
 }
 .zoom-plateau {                            /* le plateau dessiné, sous les trois boutons */
   position: absolute;
@@ -509,28 +511,26 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
   background: var(--turquoise-200);
   box-shadow: inset 0 1px 2px hsl(var(--ombre-teinte) / 0.18);
   pointer-events: none;
-  transition: transform var(--zoom-ressort), background-color var(--duree);
+  transition: scale var(--duree), background-color var(--duree);
 }
-/* Appui : le plateau (et sa crête) penche vite du côté pressé, la loupe s'enfonce */
-.zoom[data-appui] :is(.zoom-plateau, .zoom-crete > span) { transition-duration: 90ms; transition-timing-function: ease-out; }
-.zoom[data-appui="moins"] :is(.zoom-plateau, .zoom-crete > span) { transform: rotate(-11deg); }
-.zoom[data-appui="plus"]  :is(.zoom-plateau, .zoom-crete > span) { transform: rotate(11deg); }
+/* Appui : la crête file au bout du plateau, du côté pressé, et la loupe s'enfonce ;
+   au relâchement, elle revient au milieu (transition --zoom-ressort) */
+.zoom[data-appui] .zoom-crete > span { transition: transform 150ms ease-out, scale var(--duree), background-color var(--duree), box-shadow var(--duree); }
+.zoom[data-appui="moins"] .zoom-crete > span { transform: translateX(calc(-1 * var(--zoom-course))); }
+.zoom[data-appui="plus"]  .zoom-crete > span { transform: translateX(var(--zoom-course)); }
+/* Bout de course : la crête ne fait que la moitié du trajet */
+.zoom[data-appui="moins"]:has(.zoom-moins[aria-disabled="true"]) .zoom-crete > span { transform: translateX(calc(-0.4 * var(--zoom-course))); }
+.zoom[data-appui="plus"]:has(.zoom-plus[aria-disabled="true"])   .zoom-crete > span { transform: translateX(calc(0.4 * var(--zoom-course))); }
 .zoom[data-appui="moins"] .zoom-moins .zoom-loupe,
 .zoom[data-appui="plus"]  .zoom-plus  .zoom-loupe { transform: scale(0.84); }
-/* Survol (souris seulement) : le plateau esquisse la bascule, comme les interrupteurs voisins */
+/* Survol (souris seulement) : la bascule (plateau et crête) grossit très légèrement */
 @media (hover: hover) {
+  .zoom:has(.zoom-cote:hover, .zoom-crete:hover) :is(.zoom-plateau, .zoom-crete > span) { scale: 1.06; }
   .zoom:has(.zoom-cote:hover, .zoom-crete:hover) .zoom-plateau { background: var(--bleu-200); }
-  .zoom:not([data-appui]):has(.zoom-moins:hover:not([aria-disabled="true"])) :is(.zoom-plateau, .zoom-crete > span) { transform: rotate(-3.5deg); }
-  .zoom:not([data-appui]):has(.zoom-plus:hover:not([aria-disabled="true"]))  :is(.zoom-plateau, .zoom-crete > span) { transform: rotate(3.5deg); }
-  .zoom-crete:hover > span { transform: scaleY(1.08); }
 }
-/* Bout de course : la loupe pâlit, et un appui de trop fait juste trembler le plateau */
+/* Bout de course : la loupe pâlit */
 .zoom-cote[aria-disabled="true"] { cursor: default; }
 .zoom-cote[aria-disabled="true"] .zoom-loupe { opacity: 0.4; }
-.zoom-butee-moins :is(.zoom-plateau, .zoom-crete > span) { animation: zoom-butee-moins 380ms ease-out; }
-.zoom-butee-plus  :is(.zoom-plateau, .zoom-crete > span) { animation: zoom-butee-plus 380ms ease-out; }
-@keyframes zoom-butee-moins { 25% { transform: rotate(-6deg); } 55% { transform: rotate(2deg); } 80% { transform: rotate(-1deg); } }
-@keyframes zoom-butee-plus  { 25% { transform: rotate(6deg); }  55% { transform: rotate(-2deg); } 80% { transform: rotate(1deg); } }
 /* Zoom différent de 0 : la crête se colore, pour rappeler qu'un clic dessus ramène à la taille réelle */
 .zoom-modifie .zoom-crete > span { background: var(--indigo-200); box-shadow: var(--ombre-legere), inset 0 0 0 1.5px var(--indigo-400); }
 .zoom-pulse > span { animation: zoom-pulse 420ms ease-out; }
@@ -541,7 +541,8 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 .zoom.zoom:has(.zoom-crete:is(:hover, :focus-visible)) .zoom-cote::after { opacity: 0; }   /* une seule bulle à la fois */
 @media (prefers-reduced-motion: reduce) {
   .zoom-plateau, .zoom-crete > span, .zoom-loupe { transition: none; }
-  :is(.zoom-butee-moins, .zoom-butee-plus) :is(.zoom-plateau, .zoom-crete > span), .zoom-pulse > span { animation: none; }
+  .zoom[data-appui] .zoom-crete > span { transition: none; }
+  .zoom-pulse > span { animation: none; }
 }
 @media print { .zoom { display: none; } }
 
