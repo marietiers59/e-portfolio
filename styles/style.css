@@ -1904,7 +1904,6 @@ abbr[title] { text-decoration: none; cursor: help; }
 .nuage-3d .nuage-apercu .nuage-svg { display: none; }
 .nuage-toile { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .nuage-apercu .nuage-toile { inset: 0.25rem; width: calc(100% - 0.5rem); height: calc(100% - 0.5rem); border-radius: 0.8rem; }
-.nuage-pause[aria-pressed="true"] { background: var(--turquoise-100); border-color: var(--turquoise-200); }
 @media (prefers-reduced-motion: no-preference) {
   .nuage-dialogue[open] { animation: nuage-ouverture 0.28s ease-out; }
 }

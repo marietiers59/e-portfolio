@@ -19,11 +19,11 @@
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=51">
+  <link rel="stylesheet" href="../styles/style.css?v=52">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('../index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
-  <script src="../scripts/script.js?v=20" defer></script>
+  <script src="../scripts/script.js?v=21" defer></script>
   <script src="../scripts/apparition.js?v=2" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=5" defer></script>
@@ -560,7 +560,7 @@
             </ul>
             <p class="nuage-actions">
               <button class="bouton" type="button" data-nuage-ouvrir hidden><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg>Agrandir</button>
-              <button class="bouton bouton-second nuage-pause" type="button" data-nuage-pause aria-pressed="false" hidden><svg class="nuage-icone nuage-icone-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5v14M15 5v14"/></svg>Pause</button>
+              <button class="bouton bouton-second nuage-pause" type="button" data-nuage-pause hidden><svg class="nuage-icone nuage-icone-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5v14M15 5v14"/></svg>Pause</button>
               <a class="bouton bouton-second" href="../medias/nuage-competences.gexf" download>Fichier Gephi <span class="nuage-ext">.gexf</span></a>
             </p>
             <details class="nuage-texte">
@@ -587,7 +587,7 @@
             <div class="nuage-outils" role="toolbar" aria-label="Commandes du nuage">
               <button class="nuage-outil" type="button" data-nuage="plus" title="Zoomer"><span aria-hidden="true">+</span><span class="sr">Zoomer</span></button>
               <button class="nuage-outil" type="button" data-nuage="moins" title="Dézoomer"><span aria-hidden="true">&#x2212;</span><span class="sr">Dézoomer</span></button>
-              <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="pause" aria-pressed="false">Pause</button>
+              <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="pause">Pause</button>
               <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="recentrer">Recentrer</button>
               <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="etiquettes" aria-pressed="true">Toutes les étiquettes</button>
               <button class="nuage-outil nuage-outil-texte" type="button" data-nuage="tout">Tout afficher</button>
