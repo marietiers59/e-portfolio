@@ -18,11 +18,11 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=47">
+  <link rel="stylesheet" href="../styles/style.css?v=48">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){history.scrollRestoration='manual'}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
-  <script src="../scripts/script.js?v=17" defer></script>
+  <script src="../scripts/script.js?v=18" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=5" defer></script>
   <script src="../scripts/contact-eggs.js?v=14" defer></script>
@@ -126,7 +126,7 @@
     <section class="section section-piliers" aria-labelledby="piliers-titre">
       <div class="conteneur">
         <h2 class="sr" id="piliers-titre">In brief</h2>
-        <!-- Pour changer une illustration : remplacer l'adresse picsum par medias/mon-image.jpg (format carré) -->
+        <!-- Pour changer une illustration : remplacer medias/pilier-….jpg par une autre image carrée -->
         <ul class="piliers">
           <li class="emplacement pilier-emplacement">
             <article class="carte pilier">
@@ -237,21 +237,22 @@
         <div class="section-entete">
           <h2 class="section-titre" id="parcours-titre">My journey</h2>
           <p class="frise-legende">
-            <span class="legende legende-projet">projects<span class="legende-cote"> (on the left)</span></span>
+            <span class="legende legende-projet">projects and internships<span class="legende-cote"> (on the left)</span></span>
             <span class="legende legende-formation">education<span class="legende-cote"> (on the right)</span></span>
           </p>
         </div>
 
         <!--
           Du plus récent au plus ancien. Un jalon = une année de début, toujours au même format.
-          Classe frise-projet = à gauche, frise-formation = à droite.
+          Classe frise-projet = à gauche (projets et stages), frise-formation = à droite.
+          Un nom de projet peut renvoyer à sa carte : projects.html#identifiant-de-la-carte.
         -->
         <ol class="frise">
           <li class="frise-etape frise-projet">
             <p class="frise-jalon"><time datetime="2026">2026</time></p>
             <div class="frise-boite">
               <h3><span class="frise-nature">project<span class="sr">:</span> </span>Team projects</h3>
-              <p>A complete website (front end and back end), Otaku List, and a Space Invaders game, all built as a <strong>team</strong>.</p>
+              <p>A complete website (front end and back end), <a class="frise-lien" href="projects.html#otaku-list">Otaku List</a>, and a <a class="frise-lien" href="projects.html#space-invaders">Space Invaders</a> game, all built as a <strong>team</strong>.</p>
             </div>
           </li>
 
@@ -259,7 +260,7 @@
             <p class="frise-jalon"><time datetime="2026">2026</time></p>
             <div class="frise-boite">
               <h3><span class="frise-nature">project<span class="sr">:</span> </span>Solo projects</h3>
-              <p>ToDoList+ and a Pac-Man game, developed <strong>independently</strong>.</p>
+              <p><a class="frise-lien" href="projects.html#todolist">ToDoList+</a> and a <a class="frise-lien" href="projects.html#pac-man">Pac-Man</a> game, developed <strong>independently</strong>.</p>
             </div>
           </li>
 
@@ -284,6 +285,14 @@
             <div class="frise-boite">
               <h3><span class="frise-nature">education<span class="sr">:</span> </span>Development fundamentals</h3>
               <p><i lang="fr">AFPA</i> Roubaix — algorithms, <strong>web and mobile web development</strong>.</p>
+            </div>
+          </li>
+
+          <li class="frise-etape frise-projet frise-stage">
+            <p class="frise-jalon"><time datetime="2025">2025</time></p>
+            <div class="frise-boite">
+              <h3><span class="frise-nature">internships<span class="sr">:</span> </span>Software tester at Worldline</h3>
+              <p>Two internships (January, then June to July): <strong class="kw">functional testing</strong> and performance measurement of European banking applications, <strong>accessibility audits</strong> against WCAG and <i lang="fr"><abbr title="Référentiel général d'amélioration de l'accessibilité">RGAA</abbr></i> (French government accessibility standard), and an introduction to <strong class="kw">test automation</strong>. Daily meetings in English with teams from four countries.</p>
             </div>
           </li>
 
@@ -358,7 +367,8 @@
 
     </div>
     <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
-      Placeholder images: <a href="https://picsum.photos">Lorem Picsum</a> · Photo of the <i lang="fr">IUT</i>: LinkedIn cover of “IUT de Lens Alumni”<br>
+      Banner generated by AI · Profile photo retouched with AI · Photo of the <i lang="fr">IUT</i>: LinkedIn cover of “IUT de Lens Alumni” · Placeholder images for upcoming projects: <a href="https://picsum.photos">Lorem Picsum</a><br>
+      Site designed and built with the help of the AI assistant <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic)<br>
       Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site, in line with the <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener" hreflang="en">GDPR<span class="sr"> (General Data Protection Regulation, new tab)</span></a><br>
       <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
       Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="accessibility.html">statement and test details</a><br>
