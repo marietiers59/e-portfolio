@@ -1,32 +1,105 @@
-Ce dépôt contient deux sortes d'éléments, sous deux régimes différents.
+Licence propriétaire — tous droits réservés
+===========================================
 
-1. Le code (fichiers .html, .css et .js) — licence MIT
+Copyright © 2026 Marie Tiers. Tous droits réservés.
 
-MIT License
+Ce dépôt n'est PAS un logiciel libre ni un projet open source. Son code est
+rendu visible pour que l'on puisse évaluer mon travail, pas pour être réutilisé.
 
-Copyright (c) 2026 Marie Tiers
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. Ce que couvre cette licence
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Tout le contenu de ce dépôt et du site https://marietiers59.github.io/e-portfolio/
+(ci-après « l'œuvre »), sauf les éléments de tiers listés à l'article 4 :
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+- le code : fichiers HTML, CSS, JavaScript, scripts et programmes du dossier
+  outils/ (Python, Java, shell), fichiers de configuration ;
+- le design : charte graphique, palette, mise en page, composants d'interface,
+  animations, pictogrammes, illustrations, frise, nuage de compétences ;
+- les contenus : textes en français et en anglais, CV (PDF et versions masquées),
+  photographies, images, vidéos, études de cas ;
+- l'organisation du dépôt, sa documentation, ses tickets et son historique Git.
 
-2. Le contenu — tous droits réservés
 
-Les textes, le CV (cv-marie-tiers.pdf), les photographies et les illustrations
-du dossier medias/ sont © 2026 Marie Tiers, tous droits réservés, sauf les
-images de tiers, qui restent la propriété de leurs auteurs. Ils ne peuvent être
-réutilisés sans autorisation écrite.
+2. Ce qui est permis
+
+a) Consulter le site en ligne et lire le code source sur GitHub, dans le seul
+   but de découvrir ou d'évaluer mon travail (recrutement, enseignement, jury).
+b) Les seuls droits que les conditions d'utilisation de GitHub accordent
+   d'office aux autres utilisateurs de la plateforme (afficher le dépôt et en
+   créer une copie [fork] sur GitHub). Ces droits s'arrêtent là : une copie
+   [fork] ne donne aucun droit de modifier, publier ou réutiliser l'œuvre
+   en dehors de GitHub ni dans un autre projet.
+c) Les courtes citations et analyses permises par l'article L.122-5 du code
+   de la propriété intellectuelle, avec mention de l'autrice et de la source.
+
+
+3. Ce qui est interdit sans mon autorisation écrite et préalable
+
+a) Copier, télécharger pour réutiliser, reproduire tout ou partie de l'œuvre,
+   même un extrait de code, une feuille de styles, une fonction ou un gabarit.
+b) Modifier, adapter, traduire, compiler ou intégrer l'œuvre, même en partie,
+   dans un autre site, logiciel, modèle ou projet, scolaire ou non.
+c) Publier, distribuer, héberger ailleurs, vendre, louer ou concéder l'œuvre
+   ou une œuvre dérivée.
+d) Présenter l'œuvre ou une partie de l'œuvre comme la sienne, notamment dans
+   un travail rendu à un établissement d'enseignement (plagiat).
+e) Utiliser l'œuvre pour entraîner, affiner, évaluer ou alimenter un système
+   d'intelligence artificielle, ou en faire de la fouille de textes et de
+   données. Je m'y oppose expressément, au sens de l'article L.122-5-3 du code
+   de la propriété intellectuelle et de l'article 4 de la directive (UE)
+   2019/790.
+f) Retirer ou modifier les mentions de droits d'auteur.
+
+
+4. Éléments de tiers
+
+Ils restent la propriété de leurs auteurs et sous leur propre licence :
+
+- scripts/vendor/matter-0.20.0.min.js : Matter.js, © Liam Brummitt et
+  contributeurs, licence MIT (texte dans scripts/vendor/matter-LICENSE.txt) ;
+- logos des technologies : Simple Icons (CC0), marques de leurs propriétaires ;
+- fond de la carte de la zone de recherche : © contributeurs OpenStreetMap
+  (ODbL) ;
+- polices Nunito et Atkinson Hyperlegible, chargées depuis Google Fonts
+  (SIL Open Font License) ;
+- images provisoires des projets bientôt en ligne : Lorem Picsum ;
+- photographie de l'IUT de Lens et logos d'établissements ou d'entreprises :
+  propriété de leurs titulaires.
+
+Les marques, œuvres et personnages évoqués par les clins d'œil du site
+appartiennent à leurs propriétaires respectifs.
+
+
+5. Absence de garantie
+
+L'œuvre est fournie « telle quelle », sans aucune garantie. Je ne pourrai être
+tenue responsable d'aucun dommage lié à sa consultation.
+
+
+6. Demander une autorisation
+
+Toute demande (réutilisation, collaboration, citation longue) se fait par le
+formulaire de contact du site : https://marietiers59.github.io/e-portfolio/#contact
+Une autorisation n'existe que si elle est écrite et signée de ma main.
+
+
+7. Droit applicable
+
+Cette licence est régie par le droit français. Toute violation constitue une
+contrefaçon au sens des articles L.335-2 et suivants du code de la propriété
+intellectuelle.
+
+
+-------------------------------------------------------------------------------
+English summary (the French text above prevails)
+
+Copyright © 2026 Marie Tiers. All rights reserved. This repository is NOT open
+source. You may view the website and read the source code on GitHub only to
+discover or assess my work, and you keep only the rights GitHub's Terms of
+Service grant to all users (viewing and forking on GitHub). Without my prior
+written permission, you may not copy, reuse, modify, adapt, translate,
+redistribute, host elsewhere, sell or claim as your own any part of the code,
+design or content, nor use it for AI training or text and data mining (rights
+expressly reserved under Article 4 of Directive (EU) 2019/790). Third-party
+components listed in section 4 remain under their own licences.
