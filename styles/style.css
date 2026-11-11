@@ -599,7 +599,18 @@ abbr[title] { text-decoration: none; cursor: help; }
     inset 0 1px 0 hsl(var(--clair) / 0.9),                   /* reflet sur l'arête du haut */
     0 0.75rem 1.5rem -0.75rem hsl(var(--ombre-teinte) / 0.35);
   font-size: 0.95rem;
+  transition: transform 260ms ease, box-shadow 260ms ease;
 }
+/* Survol : la vignette se soulève à peine (moins que les boutons : 1 px, ombre à peine plus longue) */
+@media (hover: hover) and (pointer: fine) {
+  .breve:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 hsl(var(--clair) / 0.9),
+      0 0.85rem 1.6rem -0.8rem hsl(var(--ombre-teinte) / 0.4);
+  }
+}
+@media (prefers-reduced-motion: reduce) { .breve, .breve:hover { transition: none; transform: none; } }
 .breve strong { display: block; }
 .breve strong::before {          /* petite pastille bleu-cyan devant l'intitulé */
   content: "";
