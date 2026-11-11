@@ -18,11 +18,11 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=47">
+  <link rel="stylesheet" href="../styles/style.css?v=48">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('../index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
-  <script src="../scripts/script.js?v=17" defer></script>
+  <script src="../scripts/script.js?v=18" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=5" defer></script>
   <script src="../scripts/contact-eggs.js?v=14" defer></script>
@@ -121,7 +121,7 @@
         <h2 class="sr">Liste des projets</h2>
         <ul class="cartes">
 
-          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="otaku-list" data-cadre="but2" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -138,6 +138,15 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Laravel</li><li class="tag tag-techno">PHP</li><li class="tag tag-techno">GitLab</li></ul>
                     <p class="carte-resume">Application web <strong class="kw">Laravel</strong> conçue à quatre pour que les fans d'animés et de mangas tiennent leurs listes à jour.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Une application web pour consulter et gérer des animés et des mangas, avec comptes et rôles (utilisateur, contributeur, administrateur).</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Création du dépôt, découpage du travail en tickets et développement des jalons 1 à 3.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Une branche par ticket, relue avant fusion ; <strong>Fortify</strong> pour l'authentification, <i lang="en">policies</i> et <i lang="en">gates</i> Laravel pour les droits.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Trois jalons sur cinq livrés et fonctionnels : un choix assumé de la <strong>qualité</strong> plutôt que du volume.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/Otaku-List">Voir le code</a></p>
                   </div>
                 </div>
@@ -146,7 +155,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="space-invaders" data-cadre="but2" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -163,6 +172,15 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">GitLab</li></ul>
                     <p class="carte-resume">Le classique <i lang="en">Space Invaders</i> recodé en <strong class="kw">Java</strong> en équipe sous GitLab, avec la qualité du code pour boussole.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Compléter jalon par jalon un jeu JavaFX fourni par l'enseignant, en appliquant les patrons de conception.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Vaisseau alien, fin de partie, une partie des collisions, puis déplacement et tir aléatoire des aliens (patron <strong>Stratégie</strong>).</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Tickets GitLab, une branche par fonctionnalité, <strong>relecture croisée</strong> avant chaque fusion.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Un jeu jouable qui se lance d'une seule commande Gradle, documenté par un diagramme de classes UML.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/space-invaders">Voir le code</a></p>
                   </div>
                 </div>
@@ -171,7 +189,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="voix-en-image" data-cadre="perso" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -195,7 +213,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="carte-tout-petits" data-cadre="perso" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -219,7 +237,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="fractalens" data-cadre="but2" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -239,6 +257,15 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Gradle</li><li class="tag tag-techno">tests unitaires</li></ul>
                     <p class="carte-resume">Six <i lang="en">sprints</i> en équipe pour bâtir <i lang="en">FractaLens</i> : une bibliothèque <strong class="kw">Java</strong> qui change des nombres complexes en fractales animées.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Une bibliothèque Java qui génère des fractales (Julia, Mandelbrot…) en images fixes ou animées.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Nombres complexes, suite Tricorn, palettes de couleurs (patrons <strong>Stratégie</strong> et <strong>Décorateur</strong>) et animation par rotation.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Six paquets bâtis chacun autour d'un ou deux patrons de conception ; <strong>tests unitaires</strong> et couverture mesurée avec JaCoCo.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Un programme en ligne de commande qui produit des images PNG et des GIF animés.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/FractaLens">Voir le code</a></p>
                   </div>
                 </div>
@@ -247,7 +274,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but2" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="geocodage-flask" data-cadre="but2" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -271,7 +298,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="caisse-food-truck" data-cadre="perso" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -295,7 +322,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="amis-de-buxton" data-cadre="perso" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -319,7 +346,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="perso" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="labo-netsim" data-cadre="perso" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -343,7 +370,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="centre-sante" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -360,6 +387,15 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Gradle</li><li class="tag tag-techno">journalisation</li></ul>
                     <p class="carte-resume">Application <strong class="kw">Java</strong> et Gradle menée à trois pour un cabinet médical : patients, médecins, rendez-vous et ordonnances y trouvent leur dossier.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Gérer les patients, médecins, médicaments, rendez-vous et ordonnances d'un cabinet médical, avec recherche et statistiques.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Modules de recherche et de statistiques, journalisation, documentation du modèle et vue des rendez-vous.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Travail réparti en tickets GitLab, <strong>tests unitaires</strong> des services et journalisation des classes métier.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Une application Java sous Gradle, testée et documentée, avec une interface graphique.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/centre_sante_bien-etre">Voir le code</a></p>
                   </div>
                 </div>
@@ -368,7 +404,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="todolist" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -392,7 +428,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="resumecv" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -416,7 +452,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="pac-man" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -440,7 +476,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="base-de-donnees" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -464,7 +500,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="scripts-reseau" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -488,7 +524,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="graphes" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -512,7 +548,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="statistiques" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -536,7 +572,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="portfolio-but1" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-bientot" tabindex="0">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -560,7 +596,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="sae-1-02" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -577,6 +613,14 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Python</li><li class="tag tag-techno">Jupyter</li></ul>
                     <p class="carte-resume">SAÉ 1.02 : tests d'une <strong>structure de données inconnue</strong>, algorithmes de piles, files et <strong>tri fusion</strong>, mesures de performance analysées dans un <i lang="en">notebook</i> Python.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Découvrir par l'expérience le fonctionnement et les performances d'une structure de données dont on ne connaît que l'API.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> 11 fonctions sur 13 testées et chronométrées, puis piles, files et tri fusion mesurés de 2<sup>10</sup> à 2<sup>19</sup> éléments ; courbes tracées dans un <i lang="en">notebook</i> Python.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Opérer en début de structure est <strong>près de quatre fois plus rapide</strong> qu'en fin : 40 ms contre 153 ms pour 64 ajouts sur 524 288 éléments.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes">Voir le code</a></p>
                   </div>
                 </div>
@@ -585,7 +629,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2026">
+          <li class="emplacement carte-emplacement" id="sae-1-01" data-cadre="but1" data-annee-projet="2026">
             <article class="carte carte-appli">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -602,6 +646,15 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSV</li></ul>
                     <p class="carte-resume">SAÉ 1.01 : application <strong>Java</strong> pilotant le navigateur pour saisir les notes d'une promotion, calculer les <strong>moyennes pondérées</strong>, sauvegarder, classer et exporter en CSV.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Saisir les notes d'une promotion, calculer les moyennes pondérées, sauvegarder et recharger, dans un navigateur piloté par Java.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Méthodes de gestion des saisies, puis <strong>débogage</strong> de l'enchaînement des pages.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Un prototype en console, puis l'application web ; en options : moyennes par matière, classement et export CSV.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Application rendue, puis fiabilisée en octobre 2026 : plus de page blanche entre deux formulaires, plus de plantage sur une saisie invalide.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-01-gestion-notes">Voir le code</a></p>
                   </div>
                 </div>
@@ -610,7 +663,7 @@
             </article>
           </li>
 
-          <li class="emplacement carte-emplacement" data-cadre="but1" data-annee-projet="2025">
+          <li class="emplacement carte-emplacement" id="byclowatt" data-cadre="but1" data-annee-projet="2025">
             <article class="carte carte-web">
               <div class="carte-face">
                 <div class="carte-visuel">
@@ -627,6 +680,15 @@
                   <div class="carte-texte">
                     <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSS</li><li class="tag tag-techno">JavaScript</li><li class="tag tag-techno">Figma</li></ul>
                     <p class="carte-resume">SAÉ 1.05 / 1.06 : création d'une <strong>entreprise fictive</strong> de l'économie sociale et solidaire, de l'enquête et des <strong>personae</strong> jusqu'aux chartes, aux maquettes Figma et au <strong>site vitrine</strong> <i lang="en">responsive</i> en HTML, CSS et JavaScript.</p>
+                    <details class="cas">
+                      <summary class="cas-titre">Étude de cas</summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Inventer une entreprise fictive de l'économie sociale et solidaire, puis son site vitrine.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Nom et concept, vectorisation du logo, dessin des trois attractions, rapport, vidéo et une version du site plus riche en JavaScript.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Enquête et <strong>personae</strong>, chartes graphique et éditoriale, maquettes Figma pour mobile, tablette et ordinateur.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Un site <i lang="en">responsive</i> en ligne, au HTML valide W3C, avec des images allégées de 15,7 à 4,1 Mo.</li>
+                      </ol>
+                    </details>
                     <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/BycloWatt">Voir le code</a></p>
                   </div>
                 </div>
@@ -704,7 +766,8 @@
 
     </div>
     <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
-      Images provisoires : <a href="https://picsum.photos">Lorem Picsum</a> · Photo de l'IUT : couverture LinkedIn « IUT de Lens Alumni »<br>
+      Bannière générée par IA · Photo de profil retouchée par IA · Photo de l'IUT : couverture LinkedIn « IUT de Lens Alumni » · Images provisoires des projets bientôt en ligne : <a href="https://picsum.photos">Lorem Picsum</a><br>
+      Site conçu et codé avec l'assistance de l'IA <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic)<br>
       Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site, dans le respect du <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/fra" target="_blank" rel="noopener" hreflang="fr">RGPD<span class="sr"> (règlement général sur la protection des données, nouvel onglet)</span></a><br>
       <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
       Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="accessibilite.html">déclaration et détail des tests</a><br>

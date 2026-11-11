@@ -556,6 +556,28 @@ if (outilsProjets) {
 
   afficher();
   outilsProjets.hidden = false; // sans JavaScript, la barre reste cachée et toutes les cartes s'affichent
+
+  // Arrivée sur une carte précise (projets.html#otaku-list, depuis la frise de l'accueil) :
+  // la carte est rendue visible même si un filtre ou la case « bientôt en ligne » la cachait,
+  // puis la page défile jusqu'à elle et l'entoure un instant. La carte reste repliée :
+  // le visiteur choisit d'ouvrir ou non ses détails.
+  const allerALaCarte = () => {
+    const ident = decodeURIComponent(location.hash.slice(1));
+    const carte = ident && cartesFiltrables.find((c) => c.id === ident);
+    if (!carte) return;
+    if (carte.hidden) {
+      etat.cadre = 'tous';
+      if (estEnCours(carte)) etat.enCours = true;
+      afficher();
+    }
+    carte.classList.remove('carte-reperee');
+    void carte.offsetWidth; // relance l'animation si la même carte est visée deux fois
+    carte.classList.add('carte-reperee');
+    defilerVers(() => carte.getBoundingClientRect().top + window.scrollY - decalageBarre(),
+                () => donnerLeFocus(carte));
+  };
+  allerALaCarte();
+  window.addEventListener('hashchange', allerALaCarte);
 }
 
 /* ---------- 6. Calendrier au survol d'une date (accueil) ---------- */
