@@ -682,12 +682,12 @@ abbr[title] { text-decoration: none; cursor: help; }
 
   /* Les trois brèves restent au-dessus de la ligne de flottaison : les espacements de la une
      se resserrent avec la hauteur de la fenêtre (vh), sans toucher aux grands écrans */
-  .une { padding-top: clamp(1rem, 7vh - 2.5rem, 4.5rem); }
+  .une { padding-top: clamp(1rem, 7vh - 2.5rem, 4.5rem); padding-bottom: clamp(1rem, 4vh - 0.25rem, 3rem); }
   .une-grille { row-gap: clamp(0.5rem, 2vh - 0.25rem, 1.25rem); }
   .une-titre { font-size: min(var(--taille-titre-une), 5.2vh); }
   .une-corps p { margin-bottom: clamp(0.4rem, 1.6vh - 0.2rem, 0.85rem); }
-  .une-actions { margin-top: clamp(0.5rem, 2.6vh - 0.6rem, 1.4rem) !important; }
-  .breves { margin-top: clamp(0.25rem, 5vh - 2.5rem, 1.75rem); }   /* s'ajoute à l'écart de la grille */
+  .une-actions { margin-top: clamp(0.75rem, 3.4vh - 0.5rem, 2.25rem) !important; }   /* boutons un peu plus bas : bas de bannière aéré */
+  .breves { margin-top: clamp(0.5rem, 5vh - 1.5rem, 2.75rem); }   /* s'ajoute à l'écart de la grille */
   .breve { padding-block: clamp(0.5rem, 1.5vh, 0.85rem); }
 }
 /* Fenêtres basses (portables 13-14 pouces, navigateur non plein écran) : texte de la une un peu plus serré */
@@ -702,6 +702,8 @@ abbr[title] { text-decoration: none; cursor: help; }
   .une-actions .bouton { padding: 0.45rem 1.25rem; }
   .breve { font-size: 0.9rem; }
   .breve .lien-a-venir { margin-top: 0.25rem; }
+  .une-actions { margin-top: 0.6rem !important; }
+  .breves { margin-top: 0.4rem; }
 }
 
 /* ---------- 5. Sections ---------- */
