@@ -399,6 +399,12 @@ abbr[title] { text-decoration: none; cursor: help; }
   cursor: pointer;
 }
 .theme[hidden] { display: none; }
+/* Teintes propres à chaque icône, pour équilibrer leur poids visuel :
+   le soleil (traits fins) un peu plus clair, la lune (forme pleine) un peu plus foncée */
+.theme { --theme-soleil: hsl(205 60% 42%); --theme-lune: hsl(205 70% 22%); }
+:root[data-theme="sombre"] .theme { --theme-soleil: hsl(205 85% 88%); --theme-lune: hsl(205 55% 70%); }
+.theme-soleil { color: var(--theme-soleil); }
+.theme-lune   { color: var(--theme-lune); }
 .theme-icone {
   width: 1.05rem; height: 1.05rem;
   fill: none;
