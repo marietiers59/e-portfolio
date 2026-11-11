@@ -662,6 +662,12 @@ abbr[title] { text-decoration: none; cursor: help; }
   .une-portrait { justify-self: end; width: min(100% - 1.5rem, 17rem); margin: 0.9rem; }
   .une-portrait::before { inset: -0.75rem; }
 
+  /* Sans défiler, la bannière descend jusqu'à la barre « Contact » : plus de bande vide entre les deux.
+     L'en-tête (nom, menu, bannière) occupe toute la hauteur entre les deux barres fixes ; la bannière
+     prend la place restante et y centre son contenu. */
+  body > .entete { display: flex; flex-direction: column; min-height: calc(100vh - 2 * var(--barre-h)); min-height: calc(100svh - 2 * var(--barre-h)); }
+  .une { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; }
+
   /* Les trois brèves restent au-dessus de la ligne de flottaison : les espacements de la une
      se resserrent avec la hauteur de la fenêtre (vh), sans toucher aux grands écrans */
   .une { padding-top: clamp(1rem, 7vh - 2.5rem, 4.5rem); }
