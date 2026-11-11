@@ -2489,6 +2489,10 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
 @media (prefers-reduced-motion: reduce) {
   html[data-arrivee] :is(body > header > :not(.entete-nav, .notice-recruteur), body > main, body > footer) { animation: none; }
 }
+/* Apparition au défilement (scripts/apparition.js) : le contenu attend, invisible, que le script
+   prenne la main (quelques millisecondes), pour ne pas s'afficher puis disparaître aussitôt */
+html.apparition-attente :is(.une, body > main, body > footer) { opacity: 0; }
+@media print { html.apparition-attente :is(.une, body > main, body > footer) { opacity: 1; } }
 /* Changement de page sur smartphone sans clignotement : les barres fixes (Menu, Contact) restent
    à l'écran d'une page à l'autre, et l'ancienne page cède la place sans fondu (navigateurs récents) */
 @media (pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem) {

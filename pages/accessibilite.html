@@ -17,10 +17,12 @@
 
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
+  <script>(function(){var r=document.documentElement;if(!r.animate||!window.matchMedia||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=47">
+  <link rel="stylesheet" href="../styles/style.css?v=48">
   <script src="../scripts/rideau.js?v=6" defer></script>
   <script src="../scripts/script.js?v=17" defer></script>
+  <script src="../scripts/apparition.js?v=1" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/contact-eggs.js?v=14" defer></script>
 </head>
@@ -238,7 +240,7 @@
 <tr><th scope="row">13.5</th><td class="statut-c">conforme</td><td>Symboles décoratifs masqués, flèches nommées.</td></tr>
 <tr><th scope="row">13.6</th><td class="statut-c">conforme</td><td>Alternatives pertinentes.</td></tr>
 <tr><th scope="row">13.7</th><td class="statut-c">conforme</td><td>Aucun flash.</td></tr>
-<tr><th scope="row">13.8</th><td class="statut-c">conforme</td><td>GIF animé seulement au survol ou au focus (5 s sur écran tactile) ; image fixe avec « animations réduites ».</td></tr>
+<tr><th scope="row">13.8</th><td class="statut-c">conforme</td><td>GIF animé seulement au survol ou au focus (5 s sur écran tactile) ; image fixe avec « animations réduites ». Fondus d'apparition au défilement brefs (moins d'une seconde), déclenchés par la personne qui fait défiler et supprimés avec « animations réduites ».</td></tr>
 <tr><th scope="row">13.9</th><td class="statut-c">conforme</td><td>Portrait et paysage.</td></tr>
 <tr><th scope="row">13.10</th><td class="statut-c">conforme</td><td>Balayage entre les pages sur smartphone : le menu offre la même navigation d'un simple appui.</td></tr>
 <tr><th scope="row">13.11</th><td class="statut-c">conforme</td><td>Actions déclenchées au relâchement.</td></tr>
