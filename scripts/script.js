@@ -481,6 +481,25 @@ document.querySelectorAll('[data-annee]').forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
 
+// Pied de page, « Afficher plus de sources » : le volet s'ouvre au survol ; un clic l'épingle ouvert,
+// un second clic ou Échap le referme, même sous le curseur (jusqu'à ce que celui-ci s'en aille).
+document.querySelectorAll('[data-sources]').forEach((bloc) => {
+  const bouton = bloc.querySelector('.sources-bouton');
+  const libelle = bouton.querySelector('.sources-texte');
+  const estEpingle = () => bouton.getAttribute('aria-expanded') === 'true';
+  const epingler = (ouvert) => {
+    bouton.setAttribute('aria-expanded', String(ouvert));
+    libelle.textContent = ouvert ? t('Masquer les sources', 'Hide sources') : t('Afficher plus de sources', 'Show more sources');
+    bloc.classList.toggle('escamote', !ouvert);
+  };
+  bloc.dataset.pret = '';
+  bouton.addEventListener('click', () => epingler(!estEpingle()));
+  bloc.addEventListener('mouseleave', () => bloc.classList.remove('escamote'));
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' && (estEpingle() || bloc.matches(':hover'))) epingler(false);
+  });
+});
+
 /* ---------- 5. Filtres et tri de la page Projets ---------- */
 // Par défaut : filtre « Tous », tri du plus récent au plus ancien (l'ordre du HTML),
 // projets « bientôt en ligne » (cartes .carte-bientot) masqués tant que la case n'est pas cochée.

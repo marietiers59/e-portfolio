@@ -2269,6 +2269,43 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .pied-mentions a:is(:hover, :focus-visible) { box-shadow: 0 1px 0 currentColor; }
 .pied-mentions [hidden] { display: none; }
 
+/* « Afficher plus de sources » : volet replié, ouvert au survol ; un clic l'épingle, un second clic ou Échap le referme */
+.sources { display: inline-block; margin-top: 0.3rem; }
+.sources-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--trait);
+  border-radius: 999px;
+  background: var(--carte);
+  color: var(--indigo-700);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.sources-bouton::after {
+  content: "";
+  width: 0.38rem; height: 0.38rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.12rem) rotate(45deg);
+  transition: transform 200ms ease;
+}
+.sources-volet {
+  display: none;
+  margin-top: 0.4rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--rayon);
+  background: var(--carte);
+  box-shadow: var(--ombre-legere);
+  line-height: 1.75;
+}
+.sources:hover:not(.escamote) .sources-volet,
+.sources:not([data-pret]):focus-within .sources-volet,   /* sans JavaScript : le clavier ouvre aussi le volet */
+.sources-bouton[aria-expanded="true"] + .sources-volet { display: block; }
+.sources:is(:hover:not(.escamote), :has([aria-expanded="true"])) .sources-bouton::after { transform: translateY(0.12rem) rotate(225deg); }
+
 /* Mention « obligatoire » dans les étiquettes (RGAA 11.10) */
 .obligatoire { font-weight: 400; color: var(--encre-douce); font-size: 0.85em; }
 
