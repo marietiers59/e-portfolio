@@ -45,8 +45,9 @@ Pour l'afficher sur son ordinateur : ouvrir `index.html` dans un navigateur, ou 
 
 ## droits
 
-Le code est sous licence MIT ; les textes, photos, illustrations et le CV restent tous droits réservés.
-Détails dans [LICENSE](LICENSE).
+Tous droits réservés, pour le code comme pour le design et les contenus : ce dépôt n'est pas open source.
+Aucun réemploi sans mon accord écrit et préalable ; si je l'accorde, la mention de l'autrice et de la source est obligatoire.
+Les composants de tiers gardent leur propre licence. Détails dans [LICENSE](LICENSE).
 
 ## contact
 
