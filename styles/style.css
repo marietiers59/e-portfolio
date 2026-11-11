@@ -2300,7 +2300,15 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   background: var(--carte);
   box-shadow: var(--ombre-legere);
   line-height: 1.75;
+  max-width: 48rem;
 }
+.sources-groupe {
+  display: block;
+  margin-top: 0.55rem;
+  color: var(--encre);
+  font-family: var(--police-interface);
+}
+.sources-groupe:first-child { margin-top: 0; }
 .sources:hover:not(.escamote) .sources-volet,
 .sources:not([data-pret]):focus-within .sources-volet,   /* sans JavaScript : le clavier ouvre aussi le volet */
 .sources-bouton[aria-expanded="true"] + .sources-volet { display: block; }

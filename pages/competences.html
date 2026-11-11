@@ -19,7 +19,7 @@
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
   <script>(function(){var r=document.documentElement;if(!r.animate||!window.matchMedia||matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=50">
+  <link rel="stylesheet" href="../styles/style.css?v=51">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('../index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -785,7 +785,7 @@
     </div>
     <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers<br>
       Bannière et illustrations des piliers « Ma philosophie » et « Mon objectif » générées par IA · Photo de profil retouchée par IA · Photo de l'IUT : authentique, tirée de la couverture LinkedIn « IUT de Lens Alumni »<br>
-      Site conçu et codé avec l'assistance de l'IA <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic)<br>
+      Site conçu et codé avec l'assistance de l'IA <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic), hébergé par <a href="https://pages.github.com"><i lang="en">GitHub Pages</i></a><br>
       Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site, dans le respect du <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/fra" target="_blank" rel="noopener" hreflang="fr">RGPD<span class="sr"> (règlement général sur la protection des données, nouvel onglet)</span></a><br>
       <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
       Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="accessibilite.html">déclaration et détail des tests</a><br>
@@ -793,13 +793,22 @@
       <span class="sources" data-sources>
         <button class="sources-bouton" type="button" aria-expanded="false" aria-controls="sources-volet"><span class="sources-texte">Afficher plus de sources</span></button>
         <span class="sources-volet" id="sources-volet">
-        Vignettes des projets : illustrations générées par IA, hors captures d'écran<br>
+        <strong class="sources-groupe">Images</strong>
+        Vignettes des projets : illustrations générées par IA, ou captures d'écran de mes propres projets<br>
         Images provisoires des projets bientôt en ligne : <a href="https://picsum.photos">Lorem Picsum</a><br>
-        Logos des technologies : <a href="https://simpleicons.org">Simple Icons</a> (CC0), marques de leurs propriétaires<br>
-        Carte de la zone de recherche : © contributeurs <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a><br>
-        Polices Nunito et Atkinson Hyperlegible : <a href="https://fonts.google.com">Google Fonts</a><br>
-        Nuage de compétences spatialisé avec <a href="https://gephi.org">Gephi</a><br>
-        Moteur physique <a href="https://brm.io/matter-js/">Matter.js</a> (licence MIT)
+        Logos des technologies : <a href="https://simpleicons.org">Simple Icons</a> (CC0), marques de leurs propriétaires ; pictogrammes dessinés pour le site<br>
+        Carte de la zone de recherche : fond © contributeurs <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, communes situées avec <a href="https://nominatim.org">Nominatim</a>, image composée avec Pillow et NumPy
+        <strong class="sources-groupe">Contenus</strong>
+        Compétences et notions : programme national du BUT informatique<br>
+        Projets d'équipe : menés avec mes coéquipières et coéquipiers, nommés dans chaque dépôt ; base du jeu <i lang="en">Space Invaders</i> fournie par l'IUT de Lens<br>
+        Nuage de compétences : communautés (méthode de Louvain) et disposition (ForceAtlas2) calculées avec <a href="https://gephi.org">Gephi</a>
+        <strong class="sources-groupe">Code et services</strong>
+        Polices Nunito et Atkinson Hyperlegible : <a href="https://fonts.google.com"><i lang="en">Google Fonts</i></a> ; Trebuchet MS, police de l'appareil<br>
+        Moteur physique <a href="https://brm.io/matter-js/">Matter.js</a> (licence MIT)<br>
+        Vérification du domaine des adresses e-mail du formulaire : <a href="https://developers.google.com/speed/public-dns"><i lang="en">Google Public DNS</i></a> (seul le domaine est transmis)<br>
+        Tests d'accessibilité et de code : Lighthouse, axe-core, validateur du W3C
+        <strong class="sources-groupe">Clins d'œil</strong>
+        Quelques surprises cachées rendent hommage aux <i lang="en">easter eggs</i> de Google et à la culture populaire : œuvres et marques de leurs propriétaires respectifs
         </span>
       </span></p>
   </footer>
