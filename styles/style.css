@@ -675,8 +675,9 @@ abbr[title] { text-decoration: none; cursor: help; }
 
   /* Sans défiler, la bannière descend jusqu'à la barre « Contact » : plus de bande vide entre les deux.
      L'en-tête (nom, menu, bannière) occupe toute la hauteur entre les deux barres fixes ; la bannière
-     prend la place restante et y centre son contenu. */
-  body > .entete { display: flex; flex-direction: column; min-height: calc(100vh - 2 * var(--barre-h)); min-height: calc(100svh - 2 * var(--barre-h)); }
+     prend la place restante et y centre son contenu. Seulement pour l'en-tête qui contient la bannière
+     (accueil) : sur les autres pages, l'en-tête garde sa hauteur naturelle. */
+  body > .entete:has(.une) { display: flex; flex-direction: column; min-height: calc(100vh - 2 * var(--barre-h)); min-height: calc(100svh - 2 * var(--barre-h)); }
   .une { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; }
 
   /* Les trois brèves restent au-dessus de la ligne de flottaison : les espacements de la une
