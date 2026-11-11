@@ -1,7 +1,8 @@
 /*
-  Visite guidée de l'accueil (français et anglais)
+  Visite guidée de l'accueil, des projets et des compétences (français et anglais)
 
-  · Lancement : bouton ▷ de la barre du haut, ou bouton « Visite guidée » sous la présentation.
+  · Lancement : bouton ▷ de la barre du haut, ou bouton « Visite guidée » sous la présentation (accueil)
+    ou sous l'introduction (Projets, Compétences).
   · Chaque halte éclaire un disque aux bords flous ; le reste de la page est voilé de noir translucide.
     Entre deux haltes, le voile s'estompe, la page défile, puis le voile revient sur la halte suivante.
   · Commandes (icônes, info-bulle au survol ou au focus) : retour au début, précédent, lecture / pause,
@@ -10,97 +11,231 @@
   · Le voile laisse passer les clics : la page reste utilisable pendant la visite.
   · Avec « animations réduites », la page saute d'une halte à l'autre, sans défilement animé.
 
-  Pour modifier une halte : tableau HALTES ci-dessous (cible = sélecteur CSS, ou liste de sélecteurs
+  Pour modifier une halte : tableau PAGES ci-dessous, une liste de haltes par page (cible = sélecteur CSS, ou liste de sélecteurs
   dont on éclaire l'ensemble). Une halte dont la cible est absente ou cachée est sautée.
 */
 (() => {
-  if (!document.querySelector('.une-entete')) return;   // seulement sur les pages d'accueil
-
   const anglais = document.documentElement.lang.toLowerCase().startsWith('en');
   const t = (fr, en) => (anglais ? en : fr);
   const mouvementReduit = window.matchMedia('(prefers-reduced-motion: reduce)');
   const geste = window.matchMedia('(hover: hover)').matches ? t('Survolez', 'Hover over') : t('Touchez', 'Tap');
 
-  /* ----- Les haltes ----- */
-  const HALTES = [
+  /* ----- Les haltes, page par page ----- */
+  // repere : élément qui identifie la page ; lancement : où placer le bouton « Visite guidée » dans la page
+  const RELANCE = {
+    cible: '.visite-lancer-barre',
+    titre: t('À vous de jouer !', 'Over to you!'),
+    texte: t(
+      'Merci de votre visite. Ce bouton la relance quand vous voulez.',
+      'Thank you for taking the tour. This button starts it again whenever you like.'),
+  };
+  const lienVers = (fr, en) => `.navigation-liste a[href$="${t(fr, en)}"]`;
+
+  const PAGES = [
     {
-      cible: '.une-entete',
-      titre: t('Bienvenue !', 'Welcome!'),
-      texte: t(
-        'Je suis Marie, étudiante en <strong class="kw">BUT informatique</strong> : je conçois, développe <strong>et teste</strong> des applications. Suivez le guide !',
-        'I\'m Marie, a <strong class="kw"><i lang="fr">BUT</i> in Computer Science</strong> student: I design, develop <strong>and test</strong> applications. Follow the guide!'),
+      repere: '.une-entete',
+      lancement: (b) => document.querySelector('.une-actions')?.append(b),
+      haltes: [
+        {
+          cible: '.une-entete',
+          titre: t('Bienvenue !', 'Welcome!'),
+          texte: t(
+            'Je suis Marie, étudiante en <strong class="kw">BUT informatique</strong> : je conçois, développe <strong>et teste</strong> des applications. Suivez le guide !',
+            'I\'m Marie, a <strong class="kw"><i lang="fr">BUT</i> in Computer Science</strong> student: I design, develop <strong>and test</strong> applications. Follow the guide!'),
+        },
+        {
+          cible: '.navigation',
+          titre: t('Le menu', 'The menu'),
+          texte: t(
+            'Mes <strong>projets</strong>, mes <strong>compétences</strong>, mon <strong class="kw">CV</strong> en PDF et mon CV vidéo : tout part d\'ici.',
+            'My <strong>projects</strong>, my <strong>skills</strong>, my <strong class="kw">CV</strong> as a PDF and my video CV: it all starts here.'),
+        },
+        {
+          cible: '.breve:nth-child(1)',
+          titre: t('Certifiée ISTQB', 'ISTQB certified'),
+          texte: t(
+            'La certification internationale du <strong class="kw">test logiciel</strong>, obtenue avant mon entrée en BUT : la qualité est mon réflexe.',
+            'The international <strong class="kw">software testing</strong> certification, earned before starting my degree: quality is my reflex.'),
+        },
+        {
+          cible: '.breve:nth-child(2)',
+          titre: t('Mon stage', 'My internship'),
+          texte: t(
+            `<strong class="kw">8 à 10 semaines</strong> à partir du 26 avril 2027. ${geste} la date : le calendrier s'affiche.`,
+            `<strong class="kw">8 to 10 weeks</strong> from 26 April 2027. ${geste} the date to see the calendar.`),
+        },
+        {
+          cible: '.breve:nth-child(3)',
+          titre: t('Ma mobilité', 'Where I can work'),
+          texte: t(
+            `Lille, Lens, Douai et Arras. ${geste} les villes : la carte de ma zone apparaît.`,
+            `Lille, Lens, Douai and Arras. ${geste} the towns to see a map of the area.`),
+        },
+        {
+          cible: '.piliers',
+          titre: t('En bref', 'In brief'),
+          texte: t(
+            'Ma <strong>philosophie</strong>, mon <strong>parcours</strong> et mon <strong>objectif</strong> : trois cartes qui se déplient pour en dire plus.',
+            'My <strong>philosophy</strong>, my <strong>journey</strong> and my <strong>goal</strong>: three cards that unfold to tell you more.'),
+        },
+        {
+          cible: ['#apercu-titre', '.apercu-grille'],
+          titre: t('Mes compétences', 'My skills'),
+          texte: t(
+            'Ce que le BUT m\'a fait pratiquer. La page complète ajoute mes outils de <strong class="kw">test logiciel</strong> et un <strong>nuage de compétences</strong>.',
+            'What my degree has had me practise. The full page adds my <strong class="kw">software testing</strong> tools and a <strong>skills cloud</strong>.'),
+        },
+        {
+          cible: ['#parcours-titre', '.frise-legende', '.frise-etape:first-child'],
+          titre: t('Mon parcours', 'My journey'),
+          texte: t(
+            'Une frise du plus récent au plus ancien : les <strong>projets</strong> et les <strong>formations</strong>, chacun avec sa couleur.',
+            'A timeline from newest to oldest: <strong>projects</strong> and <strong>education</strong>, each in its own colour.'),
+        },
+        {
+          cible: '.pied-coordonnees',
+          titre: t('Me contacter', 'Contact me'),
+          texte: t(
+            'Le <strong>formulaire</strong>, LinkedIn ou GitHub : à vous de choisir. Mon e-mail et mon téléphone sont réservés aux <strong class="kw">recruteurs</strong>.',
+            'The <strong>form</strong>, LinkedIn or GitHub: your choice. My email address and phone number are kept for <strong class="kw">recruiters</strong>.'),
+        },
+        {
+          cible: ['.langue', '.theme'],
+          titre: t('Langue et thème', 'Language and theme'),
+          texte: t(
+            'Le site existe aussi <strong>en anglais</strong> et en <strong>thème sombre</strong> : un clic sur les drapeaux ou sur le soleil.',
+            'The site also comes <strong>in French</strong> and in a <strong>dark theme</strong>: one click on the flags or on the sun.'),
+        },
+        RELANCE,
+      ],
     },
     {
-      cible: '.navigation',
-      titre: t('Le menu', 'The menu'),
-      texte: t(
-        'Mes <strong>projets</strong>, mes <strong>compétences</strong>, mon <strong class="kw">CV</strong> en PDF et mon CV vidéo : tout part d\'ici.',
-        'My <strong>projects</strong>, my <strong>skills</strong>, my <strong class="kw">CV</strong> as a PDF and my video CV: it all starts here.'),
+      repere: '.cartes .carte-emplacement',
+      lancement: lancementSousIntro,
+      haltes: [
+        {
+          cible: ['#titre-principal', '.section-intro'],
+          titre: t('Mes projets', 'My projects'),
+          texte: t(
+            'Travaux d\'<strong>équipe</strong> ou en <strong>solo</strong>, de cours ou personnels : chaque carte raconte une étape de mon apprentissage.',
+            '<strong>Team</strong> or <strong>solo</strong> work, coursework or personal: each card tells one step of my learning journey.'),
+        },
+        {
+          cible: '.filtres',
+          titre: t('Les filtres', 'The filters'),
+          texte: t(
+            'Un clic pour ne garder que les projets de <strong class="kw">BUT 2</strong>, de <strong class="kw">BUT 1</strong> ou mes <strong>projets perso</strong>.',
+            'One click to keep only <strong class="kw">second-year</strong>, <strong class="kw">first-year</strong> or <strong>personal</strong> projects.'),
+        },
+        {
+          cible: '.bascule',
+          titre: t('Bientôt en ligne', 'Coming soon'),
+          texte: t(
+            'Cochez pour voir aussi les projets dont le dépôt est encore <strong>en préparation</strong>.',
+            'Tick to also see the projects whose repository is still <strong>being prepared</strong>.'),
+        },
+        {
+          cible: '#bouton-tri',
+          titre: t('Le tri', 'Sorting'),
+          texte: t(
+            'Du plus récent au plus ancien, ou l\'inverse : voyez mon code <strong>mûrir</strong> d\'un projet à l\'autre.',
+            'Newest first, or oldest first: watch my code <strong>mature</strong> from one project to the next.'),
+        },
+        {
+          cible: '.carte-emplacement',
+          titre: t('Une carte projet', 'A project card'),
+          texte: t(
+            `${geste} une carte : elle se déplie avec les <strong>technologies</strong>, un résumé et le lien vers le <strong class="kw">code</strong>.`,
+            `${geste} a card: it unfolds to show the <strong>technologies</strong>, a summary and the link to the <strong class="kw">code</strong>.`),
+        },
+        {
+          cible: '.carte-emplacement:has(.carte-web)',
+          titre: t('Les sites web', 'Websites'),
+          texte: t(
+            'Les cartes <strong>site web</strong> ouvrent le site en ligne : il se visite directement dans le navigateur.',
+            '<strong>Website</strong> cards open the live site: you can browse it straight away.'),
+        },
+        {
+          cible: lienVers('competences.html', 'skills.html'),
+          titre: t('Et ensuite ?', 'What next?'),
+          texte: t(
+            'Mes <strong>compétences</strong> ont leur page, et leur propre visite guidée.',
+            'My <strong>skills</strong> have their own page, and their own guided tour.'),
+        },
+        RELANCE,
+      ],
     },
     {
-      cible: '.breve:nth-child(1)',
-      titre: t('Certifiée ISTQB', 'ISTQB certified'),
-      texte: t(
-        'La certification internationale du <strong class="kw">test logiciel</strong>, obtenue avant mon entrée en BUT : la qualité est mon réflexe.',
-        'The international <strong class="kw">software testing</strong> certification, earned before starting my degree: quality is my reflex.'),
-    },
-    {
-      cible: '.breve:nth-child(2)',
-      titre: t('Mon stage', 'My internship'),
-      texte: t(
-        `<strong class="kw">8 à 10 semaines</strong> à partir du 26 avril 2027. ${geste} la date : le calendrier s'affiche.`,
-        `<strong class="kw">8 to 10 weeks</strong> from 26 April 2027. ${geste} the date to see the calendar.`),
-    },
-    {
-      cible: '.breve:nth-child(3)',
-      titre: t('Ma mobilité', 'Where I can work'),
-      texte: t(
-        `Lille, Lens, Douai et Arras. ${geste} les villes : la carte de ma zone apparaît.`,
-        `Lille, Lens, Douai and Arras. ${geste} the towns to see a map of the area.`),
-    },
-    {
-      cible: '.piliers',
-      titre: t('En bref', 'In brief'),
-      texte: t(
-        'Ma <strong>philosophie</strong>, mon <strong>parcours</strong> et mon <strong>objectif</strong> : trois cartes qui se déplient pour en dire plus.',
-        'My <strong>philosophy</strong>, my <strong>journey</strong> and my <strong>goal</strong>: three cards that unfold to tell you more.'),
-    },
-    {
-      cible: ['#apercu-titre', '.apercu-grille'],
-      titre: t('Mes compétences', 'My skills'),
-      texte: t(
-        'Ce que le BUT m\'a fait pratiquer. La page complète ajoute mes outils de <strong class="kw">test logiciel</strong> et un <strong>nuage de compétences</strong>.',
-        'What my degree has had me practise. The full page adds my <strong class="kw">software testing</strong> tools and a <strong>skills cloud</strong>.'),
-    },
-    {
-      cible: ['#parcours-titre', '.frise-legende', '.frise-etape:first-child'],
-      titre: t('Mon parcours', 'My journey'),
-      texte: t(
-        'Une frise du plus récent au plus ancien : les <strong>projets</strong> et les <strong>formations</strong>, chacun avec sa couleur.',
-        'A timeline from newest to oldest: <strong>projects</strong> and <strong>education</strong>, each in its own colour.'),
-    },
-    {
-      cible: '.pied-coordonnees',
-      titre: t('Me contacter', 'Contact me'),
-      texte: t(
-        'Le <strong>formulaire</strong>, LinkedIn ou GitHub : à vous de choisir. Mon e-mail et mon téléphone sont réservés aux <strong class="kw">recruteurs</strong>.',
-        'The <strong>form</strong>, LinkedIn or GitHub: your choice. My email address and phone number are kept for <strong class="kw">recruiters</strong>.'),
-    },
-    {
-      cible: ['.langue', '.theme'],
-      titre: t('Langue et thème', 'Language and theme'),
-      texte: t(
-        'Le site existe aussi <strong>en anglais</strong> et en <strong>thème sombre</strong> : un clic sur les drapeaux ou sur le soleil.',
-        'The site also comes <strong>in French</strong> and in a <strong>dark theme</strong>: one click on the flags or on the sun.'),
-    },
-    {
-      cible: '.visite-lancer-barre',
-      titre: t('À vous de jouer !', 'Over to you!'),
-      texte: t(
-        'Merci de votre visite. Ce bouton la relance quand vous voulez.',
-        'Thank you for taking the tour. This button starts it again whenever you like.'),
+      repere: '.section-competences',
+      lancement: lancementSousIntro,
+      haltes: [
+        {
+          cible: ['#titre-principal', '.section-intro'],
+          titre: t('Mes compétences', 'My skills'),
+          texte: t(
+            'Une double culture <strong class="kw">développement</strong> et <strong class="kw">test logiciel</strong>, présentée de deux façons : en réseau, puis par catégorie.',
+            'A dual background in <strong class="kw">development</strong> and <strong class="kw">software testing</strong>, shown two ways: as a network, then by category.'),
+        },
+        {
+          cible: '.nuage-apercu',
+          titre: t('Le nuage de compétences', 'The skills cloud'),
+          texte: t(
+            'Mes <strong>projets</strong>, leurs <strong>outils</strong> et les compétences du BUT, reliés comme un réseau. Un clic l\'agrandit.',
+            'My <strong>projects</strong>, their <strong>tools</strong> and my degree\'s competencies, linked as a network. One click enlarges it.'),
+        },
+        {
+          cible: '.nuage-legende .nuage-puces',
+          titre: t('Les compétences du BUT', 'The degree\'s competencies'),
+          texte: t(
+            'Chacune a sa couleur. Cliquez-en une : le nuage s\'agrandit et la met en <strong>évidence</strong>.',
+            'Each has its own colour. Click one: the cloud enlarges and <strong>highlights</strong> it.'),
+        },
+        {
+          cible: 'section[aria-labelledby="cat-test"]',
+          titre: t('Test et qualité', 'Testing and quality'),
+          texte: t(
+            'Ma spécialité, en tête de liste. Chaque catégorie se <strong>lit</strong> en une phrase ou se <strong>voit</strong> d\'un coup d\'œil, logo par logo.',
+            'My speciality, first on the list. Each category can be <strong>read</strong> in one sentence or <strong>seen</strong> at a glance, logo by logo.'),
+        },
+        {
+          cible: 'section[aria-labelledby="cat-langages"]',
+          titre: t('Langages', 'Programming languages'),
+          texte: t(
+            'Du <i lang="en">back-end</i> au <i lang="en">front-end</i>, en passant par les scripts et les bases de données.',
+            'From back end to front end, including scripts and databases.'),
+        },
+        {
+          cible: 'section[aria-labelledby="cat-langues"]',
+          titre: t('Langues', 'Languages'),
+          texte: t(
+            '<strong>Anglais</strong> professionnel et technique, <strong>espagnol</strong> courant : de quoi travailler en équipe internationale.',
+            'Professional and technical <strong>English</strong>, fluent <strong>Spanish</strong>: ready for an international team.'),
+        },
+        {
+          cible: '.apercu-pied',
+          titre: t('À l\'œuvre', 'In action'),
+          texte: t(
+            'Retrouvez ces compétences dans mes <strong>projets</strong>, ou téléchargez mon <strong class="kw">CV</strong>.',
+            'See these skills at work in my <strong>projects</strong>, or download my <strong class="kw">CV</strong>.'),
+        },
+        RELANCE,
+      ],
     },
   ];
+
+  // Projets et Compétences : bouton « Visite guidée » sous l'introduction de la page
+  function lancementSousIntro(b) {
+    const entete = document.querySelector('.section-entete');
+    if (!entete) return;
+    const p = document.createElement('p');
+    p.className = 'visite-lancement';
+    p.append(b);
+    entete.append(p);
+  }
+
+  const page = PAGES.find((p) => document.querySelector(p.repere));
+  if (!page) return;
+  const HALTES = page.haltes;
 
   const VITESSES = [0.5, 0.75, 1, 1.25, 1.5, 2, 3];
   const formatVitesse = (v) => `${v.toLocaleString(anglais ? 'en-GB' : 'fr-FR')}×`;
@@ -120,7 +255,7 @@
     normale:  svg('<path class="contour" d="M4 16.5a8 8 0 1 1 16 0"/><path d="M12 16.5V9.5"/><circle cx="12" cy="16.5" r="1.3"/>'),
   };
 
-  /* ----- Boutons de lancement : barre du haut et sous la présentation ----- */
+  /* ----- Boutons de lancement : barre du haut et dans la page ----- */
   const lanceurs = [];
   const barre = document.querySelector('.barre-haut');
   if (barre) {
@@ -135,14 +270,13 @@
     (theme ?? barre.querySelector('.langue'))?.after(b);
     lanceurs.push(b);
   }
-  const actions = document.querySelector('.une-actions');
-  if (actions) {
+  {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'bouton bouton-second visite-lancer visite-lancer-une';
     b.innerHTML = `${ICONES.lancer}${t('Visite guidée', 'Guided tour')}`;
-    actions.append(b);
-    lanceurs.push(b);
+    page.lancement(b);
+    if (b.isConnected) lanceurs.push(b);
   }
 
   /* ----- Voile et panneau de commande (créés une fois, au premier lancement) ----- */
@@ -225,9 +359,10 @@
   const dureeHalte = () => haltes[index].duree;     // temps de lecture, à vitesse normale
 
   /* ----- Géométrie ----- */
+  const estVisible = (el) => el.getClientRects().length > 0 && !el.closest('[hidden]');
   const cibles = (h) => [h.cible].flat()
-    .map((s) => document.querySelector(s))
-    .filter((el) => el && el.getClientRects().length && !el.closest('[hidden]'));
+    .map((sel) => [...document.querySelectorAll(sel)].find(estVisible))   // premier élément visible (cartes filtrées…)
+    .filter(Boolean);
 
   function rectangle(els) {
     const r = els.map((el) => el.getBoundingClientRect());
@@ -382,7 +517,7 @@
     boucle = requestAnimationFrame(tic);
     const dt = dernier === null ? 0 : Math.min(100, maintenant - dernier);
     dernier = maintenant;
-    if (!lecture || !visible) return;
+    if (!lecture || !visible || document.querySelector('dialog[open]')) return;   // en attente pendant une vue agrandie
     ecoule += dt * vitesse;
     barreProgression.style.setProperty('--p', Math.min(1, ecoule / dureeHalte()));
     if (ecoule < dureeHalte()) return;

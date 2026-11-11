@@ -2622,6 +2622,7 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
 .visite-lancer-barre:hover { background: var(--bleu-100); }
 .visite-lancer-barre:active { transform: translateY(1px); }
 .visite-lancer-une { display: inline-flex; align-items: center; gap: 0.45rem; }
+.visite-lancement { margin: 1rem 0 0; }               /* Projets, Compétences : bouton sous l'introduction */
 .visite-lancer-une .visite-icone { color: var(--icone-barre); }   /* l'icône seule ; le texte du bouton garde sa couleur */
 
 .visite-icone {
