@@ -2596,10 +2596,11 @@ html[data-arrivee="gauche"] :is(body > header > :not(.entete-nav, .notice-recrut
   border: 0;
   border-radius: 999px;
   background: none;
-  color: var(--bleu-700);
+  color: hsl(205 60% 42%);              /* éclairci comme le soleil de l'interrupteur de thème voisin */
   cursor: pointer;
   transition: background-color var(--duree), transform var(--duree);
 }
+:root[data-theme="sombre"] .visite-lancer-barre { color: hsl(205 85% 88%); }
 .visite-lancer-barre:hover { background: var(--bleu-100); }
 .visite-lancer-barre:active { transform: translateY(1px); }
 .visite-lancer-une { display: inline-flex; align-items: center; gap: 0.45rem; }
