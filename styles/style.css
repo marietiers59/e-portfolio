@@ -503,6 +503,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   grid-template-columns: minmax(6.5rem, 34%) minmax(0, 1fr);
   grid-template-areas:
     "portrait entete"
+    "breves   breves"
     "corps    corps";
   column-gap: 1.5rem;
   row-gap: 1.5rem;
@@ -560,13 +561,32 @@ abbr[title] { text-decoration: none; cursor: help; }
   border-radius: 50%;
 }
 
-/* Brèves : 1 colonne sur mobile, 3 colonnes ensuite */
+/* Brèves : smartphone, trois pastilles compactes sous le titre (visibles sans défiler) ;
+   ordinateur et tablette, trois vignettes sous le texte. Chaque brève a un libellé court et un complet. */
 .breves {
+  grid-area: breves;
   list-style: none;
-  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+.breve-court { display: none; }
+@media (max-width: 47.99em) {
+  .breve-plein, .breve .lien-a-venir { display: none; }
+  .breve-court { display: inline; }
+  .breves .breve {
+    padding: 0.45rem 0.4rem;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .breves .breve strong { font-size: 0.9rem; }
+  .breves .date-calendrier, .breves .lieu-carte { display: inline; }   /* le texte court peut passer à la ligne */
+  .breves .date-calendrier::after, .breves .lieu-carte::after { display: none; }
+  .une { padding-top: 1.25rem; }
+  .une-grille { row-gap: 1rem; }
 }
 /* Verre dépoli : l'image transparaît, floutée, sous un blanc translucide */
 .breve {
@@ -580,7 +600,18 @@ abbr[title] { text-decoration: none; cursor: help; }
     inset 0 1px 0 hsl(var(--clair) / 0.9),                   /* reflet sur l'arête du haut */
     0 0.75rem 1.5rem -0.75rem hsl(var(--ombre-teinte) / 0.35);
   font-size: 0.95rem;
+  transition: transform 260ms ease, box-shadow 260ms ease;
 }
+/* Survol : la vignette se soulève à peine (moins que les boutons : 1 px, ombre à peine plus longue) */
+@media (hover: hover) and (pointer: fine) {
+  .breve:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 hsl(var(--clair) / 0.9),
+      0 0.85rem 1.6rem -0.8rem hsl(var(--ombre-teinte) / 0.4);
+  }
+}
+@media (prefers-reduced-motion: reduce) { .breve, .breve:hover { transition: none; transform: none; } }
 .breve strong { display: block; }
 .breve strong::before {          /* petite pastille bleu-cyan devant l'intitulé */
   content: "";
@@ -626,7 +657,8 @@ abbr[title] { text-decoration: none; cursor: help; }
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     grid-template-areas:
       "entete portrait"
-      "corps  portrait";
+      "corps  portrait"
+      "breves breves";
     column-gap: clamp(2rem, 6vw, 5rem);
     row-gap: 1.25rem;
   }
@@ -642,6 +674,12 @@ abbr[title] { text-decoration: none; cursor: help; }
   .une-portrait { justify-self: end; width: min(100% - 1.5rem, 17rem); margin: 0.9rem; }
   .une-portrait::before { inset: -0.75rem; }
 
+  /* Sans défiler, la bannière descend jusqu'à la barre « Contact » : plus de bande vide entre les deux.
+     L'en-tête (nom, menu, bannière) occupe toute la hauteur entre les deux barres fixes ; la bannière
+     prend la place restante et y centre son contenu. */
+  body > .entete { display: flex; flex-direction: column; min-height: calc(100vh - 2 * var(--barre-h)); min-height: calc(100svh - 2 * var(--barre-h)); }
+  .une { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; }
+
   /* Les trois brèves restent au-dessus de la ligne de flottaison : les espacements de la une
      se resserrent avec la hauteur de la fenêtre (vh), sans toucher aux grands écrans */
   .une { padding-top: clamp(1rem, 7vh - 2.5rem, 4.5rem); }
@@ -649,7 +687,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   .une-titre { font-size: min(var(--taille-titre-une), 5.2vh); }
   .une-corps p { margin-bottom: clamp(0.4rem, 1.6vh - 0.2rem, 0.85rem); }
   .une-actions { margin-top: clamp(0.5rem, 2.6vh - 0.6rem, 1.4rem) !important; }
-  .breves { margin-top: clamp(0.75rem, 5vh - 1.75rem, 3rem); }
+  .breves { margin-top: clamp(0.25rem, 5vh - 2.5rem, 1.75rem); }   /* s'ajoute à l'écart de la grille */
   .breve { padding-block: clamp(0.5rem, 1.5vh, 0.85rem); }
 }
 /* Fenêtres basses (portables 13-14 pouces, navigateur non plein écran) : texte de la une un peu plus serré */

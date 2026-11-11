@@ -18,7 +18,7 @@
   <!-- Thème clair ou sombre posé avant l'affichage (évite un éclair blanc) : choix mémorisé, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
 
-  <link rel="stylesheet" href="styles/style.css?v=37">
+  <link rel="stylesheet" href="styles/style.css?v=40">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){history.scrollRestoration='manual'}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="scripts/rideau.js?v=5" defer></script>
@@ -110,18 +110,18 @@
             </p>
           </div>
 
+          <!-- Brèves : trois faits saillants, comme les colonnes sous la une -->
+          <ul class="breves">
+            <li class="breve"><strong class="kw"><span class="breve-plein">Certifiée </span><abbr title="International Software Testing Qualifications Board">ISTQB</abbr></strong> <span class="breve-plein">Foundation (CTFL v4.0)</span><span class="breve-court">certifiée CTFL</span></li>
+            <li class="breve"><strong class="kw">Stage<span class="breve-plein"> de 8 à 10 semaines</span></strong> dès le <time class="date-calendrier" datetime="2027-04-26" data-calendrier><span class="breve-plein">26 avril 2027</span><span class="breve-court">26/04/27</span></time>
+              <!-- Calendrier d'alternance : en attente. Quand il sera prêt, déposer medias/calendrier-alternance.pdf et remplacer le <span> ci-dessous par :
+                   <span class="lien-a-venir"><a href="medias/calendrier-alternance.pdf" target="_blank" rel="noopener">Calendrier d'alternance</a> · <a href="medias/calendrier-alternance.pdf" download>télécharger (PDF)</a></span> -->
+              <span class="lien-a-venir">Calendrier d'alternance <em class="pastille-bientot">bientôt disponible</em></span>
+            </li>
+            <li class="breve"><strong class="kw">Mobile</strong> <span class="breve-plein">sur </span><span class="lieu-carte" tabindex="0" role="button" data-carte-zone aria-label="Lille, Lens, Douai et Arras"><span class="breve-plein">Lille, Lens, Douai et Arras</span><span class="breve-court">Lille, Lens…</span></span></li>
+          </ul>
         </div>
 
-        <!-- Brèves : trois faits saillants, comme les colonnes sous la une -->
-        <ul class="breves">
-          <li class="breve"><strong class="kw">Certifiée <abbr title="International Software Testing Qualifications Board">ISTQB</abbr></strong> Foundation (CTFL v4.0)</li>
-          <li class="breve"><strong class="kw">Stage de 8 à 10 semaines</strong> dès le <time class="date-calendrier" datetime="2027-04-26" data-calendrier>26 avril 2027</time>
-            <!-- Calendrier d'alternance : en attente. Quand il sera prêt, déposer medias/calendrier-alternance.pdf et remplacer le <span> ci-dessous par :
-                 <span class="lien-a-venir"><a href="medias/calendrier-alternance.pdf" target="_blank" rel="noopener">Calendrier d'alternance</a> · <a href="medias/calendrier-alternance.pdf" download>télécharger (PDF)</a></span> -->
-            <span class="lien-a-venir">Calendrier d'alternance <em class="pastille-bientot">bientôt disponible</em></span>
-          </li>
-          <li class="breve"><strong class="kw">Mobile</strong> sur <span class="lieu-carte" tabindex="0" role="button" data-carte-zone>Lille, Lens, Douai et Arras</span></li>
-        </ul>
       </div>
     </div>
   </header>
