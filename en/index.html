@@ -20,7 +20,7 @@
   <script>(function(){try{var L=[.8,.9,1,1.1,1.2,1.3,1.5,1.75,2],i=parseInt(localStorage.getItem('zoom-page'),10)+2;if(!(i>=0&&i<9)||i===2)return;while(i>2&&innerWidth/L[i]<288)i--;if(i!==2)document.documentElement.style.setProperty('--zoom-page',String(L[i]))}catch(e){}})();</script>
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=55">
+  <link rel="stylesheet" href="../styles/style.css?v=56">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){history.scrollRestoration='manual'}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -112,9 +112,12 @@
           <ul class="breves">
             <li class="breve"><strong class="kw"><abbr title="International Software Testing Qualifications Board">ISTQB</abbr><span class="breve-plein"> certified</span></strong> <span class="breve-plein">Foundation Level (CTFL v4.0)</span><span class="breve-court">CTFL certified</span></li>
             <li class="breve"><strong class="kw"><span class="breve-plein">8 to 10-week internship</span><span class="breve-court">Internship</span></strong> from <time class="date-calendrier" datetime="2027-04-26" data-calendrier><span class="breve-plein">26 April 2027</span><span class="breve-court">26/04/27</span></time>
-              <!-- Calendrier d'alternance : en attente. Quand il sera prêt, déposer medias/calendrier-alternance.pdf et remplacer le <span> ci-dessous par :
-                   <span class="lien-a-venir"><a href="../medias/calendrier-alternance.pdf" target="_blank" rel="noopener">Work-study calendar</a> · <a href="../medias/calendrier-alternance.pdf" download>download (PDF)</a></span> -->
+              <!-- Calendrier d'alternance (#151) : aperçu provisoire dans un nouvel onglet (work-study-calendar.html, bandeau d'alerte).
+                   Quand le fichier sera déposé, remplacer le premier <span> ci-dessous par :
+                   <span class="lien-a-venir"><a href="work-study-calendar.html" target="_blank" rel="noopener">Work-study calendar</a> <em class="pastille-bientot">provisional</em></span>
+                   Formulaire pour la convention de stage (#170) : à télécharger, quand le fichier sera fourni. -->
               <span class="lien-a-venir">Work-study calendar <em class="pastille-bientot">coming soon</em></span>
+              <span class="lien-a-venir">Internship agreement form <em class="pastille-bientot">coming soon</em></span>
             </li>
             <li class="breve"><strong class="kw"><span class="breve-plein">Able to work</span><span class="breve-court">Work area</span></strong> <span class="breve-plein">in </span><span class="lieu-carte" tabindex="0" role="button" data-carte-zone aria-label="Lille, Lens, Douai and Arras"><span class="breve-plein">Lille, Lens, Douai and Arras</span><span class="breve-court">Lille, Lens…</span></span></li>
           </ul>

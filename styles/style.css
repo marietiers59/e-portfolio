@@ -748,6 +748,7 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
   cursor: default;
 }
 .lien-a-venir a { font-weight: 700; }
+.lien-a-venir + .lien-a-venir { margin-top: 0.2rem; }   /* deuxième lien en attente (formulaire de convention) */
 .pastille-bientot {
   font-style: normal;
   font-size: 0.75rem;
