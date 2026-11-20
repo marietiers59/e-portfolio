@@ -120,8 +120,12 @@
     const bas = rb && rb.height ? Math.min(innerHeight, rb.top) : innerHeight;
     const marge = Math.min(MARGE_MAX, (bas - haut) * MARGE);
     const debut = scrollY <= 2;
-    const fin = scrollY + innerHeight >= racine.scrollHeight - 4;   // tout en bas : rien ne doit rester caché
-    const zoneHaut = debut ? -Infinity : haut + marge;
+    const reste = racine.scrollHeight - innerHeight - scrollY;     // défilement restant jusqu'au bas de page
+    const fin = reste <= 4;                                         // tout en bas : rien ne doit rester caché
+    // En approchant du bas, la bande d'effacement du haut rétrécit au rythme du défilement restant :
+    // tout en bas, ce qui est visible sous la barre du haut (le titre « Contact », par exemple) reste affiché,
+    // sans s'estomper puis réapparaître pendant les derniers pixels.
+    const zoneHaut = debut ? -Infinity : haut + Math.min(marge, Math.max(0, reste));
     const zoneBas = fin ? Infinity : bas - marge;
 
     let vague = 0;
