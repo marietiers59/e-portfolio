@@ -65,8 +65,26 @@ a:focus-visible, .apercu-zone:focus-visible { outline: 3px solid var(--bandeau-t
   font-family: var(--police-interface);
   font-size: 0.95rem;
 }
-.bandeau-message { margin: 0; max-width: 62rem; display: flex; gap: 0.6rem; align-items: flex-start; }
+/* Message réduit par défaut (<details>) : une ligne, « Lire la suite » déploie les détails */
+.bandeau-message { margin: 0; max-width: 62rem; flex: 1 1 22rem; min-width: 0; }
+.bandeau-message summary {
+  display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;
+  cursor: pointer; list-style: none; border-radius: 0.4rem;
+}
+.bandeau-message summary::-webkit-details-marker { display: none; }
+.bandeau-message summary:focus-visible { outline: 3px solid var(--bandeau-trait); outline-offset: 3px; }
 .bandeau-icone { flex: none; font-size: 1.35rem; line-height: 1.1; color: var(--bandeau-icone); }
+.bandeau-bascule {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-weight: 700; text-decoration: underline; text-underline-offset: 0.15em; white-space: nowrap;
+}
+.bandeau-bascule::after { content: "▾"; display: inline-block; transition: transform 0.2s ease; text-decoration: none; }
+.bandeau-message[open] .bandeau-bascule::after { transform: rotate(180deg); }
+.bandeau-message .si-ouvert { display: none; }
+.bandeau-message[open] .si-ouvert { display: inline; }
+.bandeau-message[open] .si-ferme { display: none; }
+.bandeau-details { margin: 0.45rem 0 0; padding-left: 1.95rem; max-width: 60rem; }
+@media (prefers-reduced-motion: reduce) { .bandeau-bascule::after { transition: none; } }
 .bandeau-actions { margin: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; white-space: nowrap; }
 .bandeau a { color: inherit; text-underline-offset: 0.15em; }
 
@@ -92,7 +110,8 @@ a:focus-visible, .apercu-zone:focus-visible { outline: 3px solid var(--bandeau-t
   overflow: hidden;
 }
 .apercu-page img { display: block; width: 100%; height: auto; background: #fff; }
-.apercu-page figcaption { padding: 0.4rem 0.8rem; font-size: 0.85rem; color: var(--encre-douce); text-align: center; }
+.apercu-page figcaption { padding: 0.45rem 0.8rem; font-size: 0.85rem; color: var(--encre-douce); text-align: center; }
+.apercu-page > a { display: block; cursor: zoom-in; }
 .apercu-attente {
   width: 40rem;
   max-width: 100%;

@@ -13,30 +13,40 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap">
   <!-- Thème clair ou sombre : choix mémorisé sur le site, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
-  <link rel="stylesheet" href="../styles/apercu.css?v=1">
+  <link rel="stylesheet" href="../styles/apercu.css?v=2">
 </head>
 
 <body>
   <!-- Bandeau d'alerte : en haut, au premier plan ; le document défile dans la zone du dessous, jamais sous le bandeau -->
   <header class="bandeau" role="note" aria-labelledby="bandeau-titre">
-    <p class="bandeau-message">
-      <span class="bandeau-icone" aria-hidden="true">⚠</span>
-      <span><strong id="bandeau-titre">Version provisoire, à titre indicatif.</strong>
-      Le calendrier d'alternance 2026-2027 n'est pas encore publié par l'IUT de Lens : voici celui de 2025-2026, pour donner une idée du rythme.
-      Les dates de 2026-2027 pourront différer ; la version à jour remplacera celle-ci dès sa parution.</span>
-    </p>
+    <!-- Message réduit par défaut ; « Lire la suite » déploie les détails (élément <details>, sans JavaScript) -->
+    <details class="bandeau-message">
+      <summary>
+        <span class="bandeau-icone" aria-hidden="true">⚠</span>
+        <strong id="bandeau-titre">Version provisoire, à titre indicatif.</strong>
+        <span class="bandeau-bascule"><span class="si-ferme">Lire la suite</span><span class="si-ouvert">Réduire</span></span>
+      </summary>
+      <p class="bandeau-details">
+        Le calendrier d'alternance 2026-2027 n'est pas encore publié par l'IUT de Lens : voici celui de 2025-2026 (BUT Informatique en alternance, 2<sup>e</sup> année), pour donner une idée du rythme entre l'IUT et l'entreprise.
+        Je recherche une alternance en contrat de professionnalisation ; les dates de 2026-2027 pourront différer, et la version à jour remplacera celle-ci dès sa parution.
+      </p>
+    </details>
     <p class="bandeau-actions">
-      <!-- Lien de téléchargement : à activer avec le fichier (voir ticket) -->
+      <a href="../medias/calendrier-alternance-but2-2025-2026.pdf" download="Calendrier_alternance_BUT2_Informatique_IUT_Lens_2025-2026.pdf">Télécharger le PDF</a>
       <a href="../index.html">Retour au portfolio</a>
     </p>
   </header>
 
   <main class="apercu-zone" id="contenu" tabindex="0" aria-labelledby="titre-document">
     <h1 class="visuellement-cache" id="titre-document">Calendrier d'alternance 2025-2026, BUT Informatique, IUT de Lens</h1>
-    <!-- Pages du calendrier en images (lisibles sur tous les téléphones, contrairement à un PDF intégré).
-         Une <figure class="apercu-page"> par page :
-         <figure class="apercu-page"><img src="../medias/calendrier-alternance-2025-2026-1.webp" alt="…" width="…" height="…"><figcaption>Page 1 sur N</figcaption></figure> -->
-    <p class="apercu-attente">Le calendrier sera affiché ici très prochainement.</p>
+    <!-- Calendrier en image (lisible sur tous les téléphones, contrairement à un PDF intégré) ; clic = image en grand -->
+    <figure class="apercu-page">
+      <a href="../medias/calendrier-alternance-but2-2025-2026-grand.webp" aria-label="Agrandir le calendrier">
+        <img src="../medias/calendrier-alternance-but2-2025-2026.webp" width="1600" height="1132"
+             alt="Calendrier d'alternance 2025-2026 du BUT Informatique en 2e année, de septembre à août : semaines à l'IUT (cours, numérotées de 1 à 9) et semaines en entreprise, jours fériés et vacances. Le détail est dans le PDF à télécharger.">
+      </a>
+      <figcaption>Calendrier 2025-2026, BUT Informatique en alternance, 2<sup>e</sup> année · clique ou appuie sur l'image pour l'agrandir</figcaption>
+    </figure>
   </main>
 </body>
 </html>
