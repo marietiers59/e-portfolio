@@ -1,0 +1,41 @@
+name: tickets dans les commits
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    name: chaque commit cite un ticket
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: messages de commit
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          manquants=0
+          for c in $(git rev-list --no-merges "$BASE..$HEAD"); do
+            if ! git log -1 --format=%B "$c" | grep -Eq '#[0-9]+'; then
+              echo "::error::le commit $(git log -1 --format='%h %s' "$c") ne cite aucun ticket (#N)"
+              manquants=$((manquants + 1))
+            fi
+          done
+          [ "$manquants" -eq 0 ] && echo "tous les commits citent au moins un ticket"
+          exit "$manquants"
+      - name: tickets de la merge request
+        env:
+          CORPS: ${{ github.event.pull_request.body }}
+        run: |
+          if printf '%s' "$CORPS" | grep -Eiq '(close[sd]?|fix(e[sd])?|resolve[sd]?|refs?) #[0-9]+'; then
+            echo "la merge request cite ses tickets"
+          else
+            echo "::error::la description doit citer ses tickets (Closes #N ou Refs #N)"
+            exit 1
+          fi

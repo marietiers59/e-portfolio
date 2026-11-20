@@ -1,0 +1,75 @@
+name: tâche
+description: Travail technique, finition ou documentation
+labels: ["type/tâche"]
+assignees: ["marietiers59"]
+body:
+  - type: textarea
+    id: besoin
+    attributes:
+      label: besoin
+      description: Ce qu'il faut faire et pourquoi.
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: critères d'acceptation
+      value: |
+        - [ ] 
+    validations:
+      required: true
+  - type: dropdown
+    id: zones
+    attributes:
+      label: zones
+      multiple: true
+      options:
+        - accueil
+        - projets
+        - compétences
+        - contact
+        - cv
+        - navigation
+        - design
+        - bilingue
+        - easter-eggs
+        - visite-guidée
+        - dépôt
+    validations:
+      required: true
+  - type: dropdown
+    id: priorite
+    attributes:
+      label: priorité
+      options:
+        - haute
+        - moyenne
+        - basse
+    validations:
+      required: true
+  - type: dropdown
+    id: taille
+    attributes:
+      label: taille estimée
+      options:
+        - "s (moins de 80 lignes)"
+        - "m (80 à 400 lignes)"
+        - "l (plus de 400 lignes)"
+  - type: input
+    id: epic
+    attributes:
+      label: epic parent
+      placeholder: "#69"
+  - type: input
+    id: bloque
+    attributes:
+      label: bloqué par
+      placeholder: "#145, #146"
+  - type: input
+    id: echeance
+    attributes:
+      label: échéance
+      placeholder: "2026-12-18"
+  - type: markdown
+    attributes:
+      value: "Pense à choisir le **jalon**, à rattacher le ticket à son **epic** (sous-ticket) et à ajouter les étiquettes `zone/…`, `priorité/…` et `taille/…`."
