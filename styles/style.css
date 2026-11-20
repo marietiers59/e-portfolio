@@ -16,6 +16,7 @@
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
    10. Visite guidée et info-bulles
+   11. Panneau « chantier en cours » (page Mon univers, #174)
    ========================================================= */
 
 /* ---------- 1. Variables ---------- */
@@ -3019,3 +3020,79 @@ html.apparition-attente :is(.une, body > main, body > footer) { opacity: 0; }
   [data-infobulle]::after { transition: opacity 120ms linear; transform: none !important; }
 }
 @media print { .visite, .visite-lancer { display: none !important; } }
+
+
+/* ---------- 11. Panneau « chantier en cours » (#174) ----------
+   Lien du menu marqué data-chantier : le clic ouvre ce panneau au lieu de la page (scripts/script.js, section 12).
+   La même carte s'affiche, sans <dialog>, sur la page elle-même pour un accès direct (.chantier-carte). */
+.chantier {
+  width: min(calc(100vw - 2rem), 30rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  border: none;
+  border-radius: var(--rayon);
+  background: transparent;
+  color: var(--encre);
+  overflow: visible;
+}
+.chantier::backdrop { background: hsl(220 30% 12% / 0.5); backdrop-filter: blur(3px); }
+@media (prefers-reduced-motion: no-preference) {
+  .chantier[open] { animation: chantier-arrivee 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.25); }
+}
+@keyframes chantier-arrivee { from { opacity: 0; transform: translateY(1rem) rotate(-1.5deg); } to { opacity: 1; transform: none; } }
+
+.chantier-carte {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 1.75rem clamp(1.1rem, 4vw, 2rem) 1.5rem;
+  border-radius: var(--rayon);
+  background: var(--grain), linear-gradient(165deg, var(--lavande-100), var(--bleu-50) 70%);
+  box-shadow: var(--ombre-survol);
+  text-align: center;
+  outline: 2px dashed var(--lavande-400);
+  outline-offset: -0.6rem;
+}
+.chantier-dessin { width: min(100%, 15rem); height: auto; overflow: visible; }
+.chantier-dessin .ch-maison  { fill: var(--carte); stroke: var(--lavande-400); stroke-width: 1.5; stroke-linejoin: round; }
+.chantier-dessin .ch-cloison { fill: none; stroke: var(--lavande-400); stroke-width: 1.2; stroke-dasharray: 3 2.5; }
+.chantier-dessin .ch-planche { stroke: var(--lavande-700); stroke-width: 1.2; }
+.chantier-dessin .ch-rayure  { fill: var(--lavande-200); }
+.chantier-dessin .ch-fond-rayure { fill: var(--carte); }
+.chantier-dessin .ch-pied    { fill: none; stroke: var(--lavande-700); stroke-width: 2.2; stroke-linecap: round; }
+.chantier-dessin .ch-plot    { fill: var(--rose-200); stroke: var(--rose-400); stroke-width: 1.2; stroke-linejoin: round; }
+.chantier-dessin .ch-plot-bande { fill: var(--carte); }
+.chantier-dessin .ch-sol     { stroke: var(--lavande-400); stroke-width: 1.2; stroke-linecap: round; }
+.chantier-dessin .ch-grue    { fill: none; stroke: var(--indigo-400); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.chantier-dessin .ch-charge  { fill: var(--anis-200); stroke: var(--anis-400); stroke-width: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .chantier-dessin .ch-oscille { transform-origin: 122px 13px; animation: chantier-oscille 3.2s ease-in-out infinite alternate; }
+}
+@keyframes chantier-oscille { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+
+.chantier-etat { margin: 0; }
+.chantier-etat .pastille-bientot { font-size: 0.85rem; padding: 0.15rem 0.8rem; color: var(--lavande-700); }
+.chantier-titre {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+  font-weight: 800;
+  color: var(--indigo-700);
+}
+.chantier-texte { margin: 0; max-width: 32ch; color: var(--encre-douce); }
+.chantier-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin: 0.5rem 0 0; }
+.chantier-fermer {
+  position: absolute;
+  top: 0.9rem; right: 0.9rem;
+  width: 2.5rem; height: 2.5rem;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--carte);
+  color: var(--encre-douce);
+  font: 400 1.5rem/1 var(--police-interface);
+  cursor: pointer;
+  transition: border-color var(--duree), color var(--duree);
+}
+.chantier-fermer:hover { border-color: var(--lavande-400); color: var(--encre); }
+@media print { .chantier { display: none !important; } }

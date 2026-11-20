@@ -1,12 +1,12 @@
 /*
   Smartphone : balayage gauche / droite entre les pages du menu, en boucle.
-  Accueil → Projets → Compétences → CV vidéo → Accueil… (et l'inverse en balayant vers la droite).
+  Accueil → Projets → Compétences → Loisirs → CV vidéo → Accueil… (et l'inverse en balayant vers la droite).
 
   · Seulement sur smartphone (écran tactile étroit, ou téléphone tenu en paysage) :
     ordinateur et tablette ne changent pas.
   · Le menu reste le moyen principal de navigation ; le balayage est un raccourci (RGAA 13.10).
   · Pas de balayage quand le geste part d'un champ de formulaire, d'un tableau qui défile en largeur,
-    du nuage de compétences, d'une vue agrandie, ou des bords de l'écran (gestes du navigateur).
+    du nuage de compétences, du cartel de « Mon univers », d'une vue agrandie, ou des bords de l'écran (gestes du navigateur).
   · Avec « animations réduites », la page change sans glissement.
   · Zoom à deux doigts toujours possible : un pincement n'est jamais pris pour un balayage,
     et une page agrandie se parcourt au doigt sans changer de page.
@@ -19,8 +19,8 @@
 
   const anglais = document.documentElement.lang.toLowerCase().startsWith('en');
   const PAGES = anglais
-    ? [['en/index.html', 'Home'], ['en/projects.html', 'Projects'], ['en/skills.html', 'Skills'], ['en/video-cv.html', 'Video CV']]
-    : [['index.html', 'Accueil'], ['pages/projets.html', 'Projets'], ['pages/competences.html', 'Compétences'], ['pages/cv-video.html', 'CV vidéo']];
+    ? [['en/index.html', 'Home'], ['en/projects.html', 'Projects'], ['en/skills.html', 'Skills'], ['en/my-world.html', 'Hobbies'], ['en/video-cv.html', 'Video CV']]
+    : [['index.html', 'Accueil'], ['pages/projets.html', 'Projets'], ['pages/competences.html', 'Compétences'], ['pages/univers.html', 'Loisirs'], ['pages/cv-video.html', 'CV vidéo']];
 
   // Racine du site, déduite de l'adresse de ce script (…/scripts/balayage.js)
   const ceScript = document.currentScript || document.querySelector('script[src*="balayage.js"]');
@@ -77,7 +77,7 @@
   /* ----- Suivi du doigt ----- */
   // L'en-tête (logo, menu, notice « Recruteur ? ») et les barres fixes ne bougent pas : seul le contenu glisse
   const mobiles = () => [...document.querySelectorAll('body > header > :not(.entete-nav, .notice-recruteur), body > main, body > footer')];
-  const EXCLUS = 'input, textarea, select, button, canvas, dialog, .nuage, .tableau-defilant, .calendrier, [data-pas-de-balayage]';
+  const EXCLUS = 'input, textarea, select, button, canvas, dialog, .nuage, .tableau-defilant, .calendrier, .cartel, [data-pas-de-balayage]';
   let x0 = 0, y0 = 0, t0 = 0, dx = 0, etat = null;     // etat : null | 'attente' | 'horizontal'
 
   function defileEnLargeur(el) {

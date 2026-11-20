@@ -11,6 +11,7 @@
    9. Images animées (GIF) : en mouvement seulement à la demande
   10. Nuage de compétences en 3D (page Compétences : aperçu animé, vue agrandie)
   11. Vignettes de compétences : rangées équilibrées et centrées
+  12. Page en travaux : panneau « chantier en cours » à la place du lien (#174)
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -1529,4 +1530,69 @@ document.querySelectorAll('.carte picture').forEach((image) => {
     equilibrer(g);
     observateur.observe(g.parentElement);
   });
+})();
+
+
+/* ---------- 12. Page en travaux : panneau « chantier en cours » (#174) ---------- */
+// Un lien marqué data-chantier (menu « Loisirs ») n'ouvre pas sa page : un panneau s'affiche
+// par-dessus la page actuelle. Échap, × ou « Revenir à la page » le referment, le focus revient au lien.
+// Aperçu réservé : avec ?apercu=1 une fois dans l'adresse de la page, le lien s'ouvre normalement
+// pendant toute la durée de l'onglet (sessionStorage, clé « univers-apercu »).
+/** Dessin du panneau : maison de poupée en chantier, barrière, plot et grue (suffixe = id unique). */
+function dessinChantier(suffixe) {
+  const motif = `chantier-rayures-${suffixe}`;
+  return `<svg class="chantier-dessin" viewBox="0 0 170 110" aria-hidden="true" focusable="false">
+    <defs><pattern id="${motif}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect class="ch-fond-rayure" width="10" height="10"/><rect class="ch-rayure" width="5" height="10"/></pattern></defs>
+    <path class="ch-grue" d="M150 104V8M100 13h58M150 8l-10 5M150 8l6 5M150 30l-8-17"/>
+    <g class="ch-oscille"><path class="ch-grue" d="M122 13v19"/><rect class="ch-charge" x="114" y="32" width="16" height="12" rx="1.5"/></g>
+    <path class="ch-maison" d="M40 52 78 22l38 30h-6v52H46V52z"/>
+    <path class="ch-cloison" d="M78 52v52M46 78h64M80 54h28v22H80z"/>
+    <path class="ch-pied" d="M24 87l-6 17M24 87l6 17M100 87l-6 17M100 87l6 17"/>
+    <rect class="ch-planche" x="14" y="74" width="96" height="13" rx="3" style="fill:url(#${motif})"/>
+    <path class="ch-plot" d="M128 104l8-24 8 24z"/><path class="ch-plot-bande" d="M131.4 94h9.2l-1.4-4h-6.4z"/>
+    <path class="ch-sol" d="M6 104h158"/>
+  </svg>`;
+}
+
+(() => {
+  const liens = document.querySelectorAll('a[data-chantier]');
+  if (!liens.length) return;
+  let apercu = false;
+  try { apercu = sessionStorage.getItem('univers-apercu') === '1'; } catch (e) { /* stockage indisponible */ }
+  if (apercu) return;                                   // Marie consulte le chantier : liens normaux
+
+  let dialogue = null;
+  function construire() {
+    dialogue = document.createElement('dialog');
+    dialogue.className = 'chantier';
+    dialogue.setAttribute('aria-labelledby', 'chantier-titre');
+    dialogue.setAttribute('aria-describedby', 'chantier-texte');
+    const projets = document.querySelector('.navigation-liste a[href$="projets.html"], .navigation-liste a[href$="projects.html"]');
+    dialogue.innerHTML = `<div class="chantier-carte">
+      <button class="chantier-fermer" type="button" aria-label="${t('Fermer le panneau', 'Close this notice')}" data-fermer>×</button>
+      ${dessinChantier('dialogue')}
+      <p class="chantier-etat"><em class="pastille-bientot">${t('en travaux', 'under construction')}</em></p>
+      <h2 class="chantier-titre" id="chantier-titre">${t('Mon univers se construit', 'My world is being built')}</h2>
+      <p class="chantier-texte" id="chantier-texte">${t(
+        'Mes <strong class="kw">loisirs</strong> et <strong class="kw">centres d’intérêt</strong> emménagent dans une maison de poupée, pièce par pièce : dessin, équitation, nature, musique… La visite ouvrira bientôt !',
+        'My <strong class="kw">hobbies</strong> and <strong class="kw">interests</strong> are moving into a doll’s house, one room at a time: drawing, horse riding, nature, music… The tour opens soon!')}</p>
+      <p class="chantier-actions">
+        <button class="bouton" type="button" data-fermer autofocus>${t('Revenir à la page', 'Back to the page')}</button>
+        ${projets ? `<a class="bouton bouton-second" href="${projets.getAttribute('href')}">${t('Voir mes projets', 'See my projects')}</a>` : ''}
+      </p>
+    </div>`;
+    dialogue.addEventListener('click', (e) => {
+      if (e.target === dialogue || e.target.closest('[data-fermer]')) dialogue.close();   // clic sur le voile ou un bouton
+    });
+    document.body.append(dialogue);
+  }
+
+  liens.forEach((lien) => lien.addEventListener('click', (e) => {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button > 0) return;  // nouvel onglet : la page affiche le même panneau
+    e.preventDefault();
+    if (!dialogue) construire();
+    if (typeof dialogue.showModal === 'function') dialogue.showModal();
+    else window.location.href = lien.href;              // très vieux navigateur : la page affiche le panneau
+  }));
 })();
