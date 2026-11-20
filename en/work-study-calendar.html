@@ -13,25 +13,37 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap">
   <!-- Thème clair ou sombre : choix mémorisé sur le site, sinon réglage de l'appareil -->
   <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='clair'&&t!=='sombre'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'sombre':'clair'}document.documentElement.dataset.theme=t})();</script>
-  <link rel="stylesheet" href="../styles/apercu.css?v=1">
+  <link rel="stylesheet" href="../styles/apercu.css?v=2">
 </head>
 
 <body>
   <header class="bandeau" role="note" aria-labelledby="bandeau-titre">
-    <p class="bandeau-message">
-      <span class="bandeau-icone" aria-hidden="true">⚠</span>
-      <span><strong id="bandeau-titre">Provisional version, for guidance only.</strong>
-      The 2026-2027 work-study calendar has not yet been published by <i lang="fr">IUT de Lens</i>: this is the 2025-2026 one, to give an idea of the schedule.
-      Dates for 2026-2027 may differ; the updated version will replace this one as soon as it is released.</span>
-    </p>
+    <details class="bandeau-message">
+      <summary>
+        <span class="bandeau-icone" aria-hidden="true">⚠</span>
+        <strong id="bandeau-titre">Provisional version, for guidance only.</strong>
+        <span class="bandeau-bascule"><span class="si-ferme">Read more</span><span class="si-ouvert">Show less</span></span>
+      </summary>
+      <p class="bandeau-details">
+        The 2026-2027 work-study calendar has not yet been published by <i lang="fr">IUT de Lens</i>: this is the 2025-2026 one (<i lang="fr">BUT Informatique</i>, second year), to give an idea of the pattern between the <i lang="fr">IUT</i> and the company.
+        Dates for 2026-2027 may differ; the updated version will replace this one as soon as it is released.
+      </p>
+    </details>
     <p class="bandeau-actions">
+      <a href="../medias/calendrier-alternance-but2-2025-2026.pdf" download="Work-study_calendar_BUT2_Computer_Science_IUT_Lens_2025-2026.pdf">Download the PDF</a>
       <a href="index.html">Back to the portfolio</a>
     </p>
   </header>
 
   <main class="apercu-zone" id="contenu" tabindex="0" aria-labelledby="titre-document">
     <h1 class="visuellement-cache" id="titre-document">Work-study calendar 2025-2026, <i lang="fr">BUT Informatique</i>, <i lang="fr">IUT de Lens</i></h1>
-    <p class="apercu-attente">The calendar will be shown here very soon.</p>
+    <figure class="apercu-page">
+      <a href="../medias/calendrier-alternance-but2-2025-2026-grand.webp" aria-label="Enlarge the calendar">
+        <img src="../medias/calendrier-alternance-but2-2025-2026.webp" width="1600" height="1132"
+             alt="2025-2026 work-study calendar of the BUT in Computer Science, second year, from September to August: weeks at the IUT (classes, numbered 1 to 9) and weeks in the company, bank holidays and breaks. Full details are in the downloadable PDF (in French).">
+      </a>
+      <figcaption>2025-2026 calendar, <i lang="fr">BUT Informatique</i>, second year (in French) · click or tap the image to enlarge it</figcaption>
+    </figure>
   </main>
 </body>
 </html>
