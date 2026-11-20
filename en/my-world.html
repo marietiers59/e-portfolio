@@ -8,7 +8,7 @@
   <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/pages/univers.html">
   <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/my-world.html">
   <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/pages/univers.html">
-  <!-- Page en travaux (#174) : retirer la ligne noindex à l'ouverture (#175) -->
+  <!-- Page prépubliée en construction (#177) : retirer la ligne noindex avec les images définitives (#175) -->
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#ddedf8">
 
@@ -23,9 +23,7 @@
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
   <link rel="stylesheet" href="../styles/style.css?v=57">
-  <link rel="stylesheet" href="../styles/univers.css?v=1">
-  <!-- Aperçu réservé : ?apercu=1 dans l'adresse ouvre le chantier pour tout l'onglet ; sinon panneau « en travaux » seul -->
-  <script>(function(){var a=false;try{a=/[?&]apercu=1(&|$)/.test(location.search)||sessionStorage.getItem('univers-apercu')==='1';if(a)sessionStorage.setItem('univers-apercu','1')}catch(e){}if(a)document.documentElement.classList.add('univers-apercu')})();</script>
+  <link rel="stylesheet" href="../styles/univers.css?v=2">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -33,9 +31,9 @@
   <script src="../scripts/apparition.js?v=2" defer></script>
   <script src="../scripts/zoom.js?v=2" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
-  <script src="../scripts/balayage.js?v=5" defer></script>
+  <script src="../scripts/balayage.js?v=6" defer></script>
   <script src="../scripts/contact-eggs.js?v=15" defer></script>
-  <script src="../scripts/univers.js?v=1" defer></script>
+  <script src="../scripts/univers.js?v=2" defer></script>
 </head>
 
 <body id="haut">
@@ -82,14 +80,12 @@
       <div class="conteneur">
         <div class="section-entete">
           <h1 class="section-titre" id="titre-principal" tabindex="-1">My world</h1>
-          <p class="univers-apercu-note"><em class="pastille-bientot">Private preview: this page stays closed to the public while it is being built.</em></p>
           <p class="section-intro">Welcome to my <strong class="kw">doll’s house</strong>! Each room holds a part of my life away from code. The set looks real… but look closely: a few <strong class="kw">clues</strong> give the model away.</p>
         </div>
 
-        <!-- Page en travaux : sans ?apercu=1 dans l'adresse, seul ce panneau s'affiche (styles/univers.css) -->
-        <div class="univers-chantier">
-          <div class="chantier-carte">
-            <svg class="chantier-dessin" viewBox="0 0 170 110" aria-hidden="true" focusable="false">
+        <!-- Prépublication (#177) : bandeau à retirer quand les images définitives seront en place (#175) -->
+        <div class="univers-avertissement" role="note">
+          <svg class="chantier-dessin" viewBox="0 0 170 110" aria-hidden="true" focusable="false">
               <defs><pattern id="chantier-rayures-en" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                 <rect class="ch-fond-rayure" width="10" height="10"/><rect class="ch-rayure" width="5" height="10"/></pattern></defs>
               <path class="ch-grue" d="M150 104V8M100 13h58M150 8l-10 5M150 8l6 5M150 30l-8-17"/>
@@ -101,13 +97,9 @@
               <path class="ch-plot" d="M128 104l8-24 8 24z"/><path class="ch-plot-bande" d="M131.4 94h9.2l-1.4-4h-6.4z"/>
               <path class="ch-sol" d="M6 104h158"/>
             </svg>
-            <p class="chantier-etat"><em class="pastille-bientot">under construction</em></p>
-            <h2 class="chantier-titre">My world is being built</h2>
-            <p class="chantier-texte">My <strong class="kw">hobbies</strong> and <strong class="kw">interests</strong> are moving into a doll’s house, one room at a time: drawing, horse riding, nature, music… The tour opens soon!</p>
-            <p class="chantier-actions">
-              <a class="bouton" href="index.html">Back to the home page</a>
-              <a class="bouton bouton-second" href="projects.html">See my projects</a>
-            </p>
+          <div class="univers-avertissement-texte">
+            <p class="univers-avertissement-titre"><em class="pastille-bientot">under construction</em> <strong>The building site is open to visitors!</strong></p>
+            <p>The <strong class="kw">room pictures are placeholders</strong>: the final sets, my drawings and my photos are moving in soon. The objects and clues are already in place, so the tour and the game work.</p>
           </div>
         </div>
 
@@ -120,12 +112,39 @@
           <!-- Cadre : scène 3D, cartel et message ; le cartel reste hors de la perspective (sinon il ne peut pas se fixer en bas d'écran sur téléphone) -->
           <div class="univers-cadre">
             <div class="univers-scene">
-              <div class="maison" role="group" aria-label="Model of the house, six rooms">
+              <div class="maison" role="group" aria-label="Model of the house, seven rooms">
                 <div class="maison-toit">
                   <span class="toit-ficelle" aria-hidden="true"></span>
                   <span class="toit-pignon" aria-hidden="true"></span>
                   <span class="toit-enseigne" aria-hidden="true">my world</span>
-                  <button class="indice indice-global" type="button" data-indice="ficelle" data-texte="A string holds up the roof like a puppet: the whole house fits in a hand!" style="--x:50%;--y:-28%;--r:3rem"><span class="sr">Look at this detail</span></button>
+                  <button class="indice indice-global" type="button" data-indice="ficelle" data-texte="A string holds up the roof like a puppet: the whole house fits in a hand!" style="--x:50%;--y:-3rem;--r:2.5rem"><span class="sr">Look at this detail</span></button>
+                  <!-- Grenier : septième pièce, sous le toit (le pignon est découpé à sa taille, styles/univers.css) -->
+                  <ol class="maison-grenier">
+                    <li class="piece piece-grenier piece-grenier" data-piece="grenier" data-image="" style="--teinte-100:var(--turquoise-100);--teinte-200:var(--turquoise-200);--teinte-400:var(--cyan-trait)">
+                      <div class="piece-boite" aria-hidden="true">
+                        <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M3 10v4M6 8v8M18 8v8M21 10v4M6 12h12"/></svg><em class="pastille-bientot">image coming soon</em></span>
+                        <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                      </div>
+                      <div class="piece-calque">
+                        <button class="objet" type="button" data-objet="1" style="--x:26%;--y:68%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The Pilates mat</span></button>
+                        <button class="objet" type="button" data-objet="2" style="--x:50%;--y:30%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The schedule on the wall</span></button>
+                        <button class="objet" type="button" data-objet="3" style="--x:72%;--y:64%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The dumbbells</span></button>
+                        <button class="indice" type="button" data-indice="grenier" data-texte="The dumbbells are two shirt buttons threaded on a matchstick!" style="--x:72%;--y:64%;--r:9%" tabindex="-1"><span class="sr">Look at this detail</span></button>
+                      </div>
+                      <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">the attic gym</span><span class="sr">: sport and fitness</span></button>
+                      <div class="piece-texte" hidden>
+                        <p class="cartel-surtitre">sport and fitness</p>
+                        <h2 class="cartel-titre" tabindex="-1">The attic gym</h2>
+                        <p>Every week, <strong class="kw">two hours of group exercise</strong>: a <strong class="kw">Pilates</strong> class at the <i lang="fr">IUT</i> (my university institute of technology) and an adult <strong class="kw">keep-fit</strong> class. I top it up with <strong class="kw">an hour and a half of fitness training</strong> at a Basic-Fit gym.</p>
+                        <h3 class="cartel-sous-titre">Things to explore</h3>
+                        <ul class="cartel-objets">
+                          <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The Pilates mat</strong>: one class a week at the <i lang="fr">IUT</i>.</span></li>
+                          <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The schedule on the wall</strong>: two hours in a group and an hour and a half at the gym, every week.</span></li>
+                          <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The dumbbells</strong>: keep-fit and fitness training.</span></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ol>
                 </div>
                 <ol class="maison-pieces">
                   <li class="piece piece-atelier" data-piece="atelier" data-image="" style="--teinte-100:var(--lavande-100);--teinte-200:var(--lavande-200);--teinte-400:var(--lavande-400)">
@@ -146,7 +165,7 @@
                       <p>I have been <strong class="kw">drawing since I was tiny</strong>: my first art class was at the age of two. Mechanisms, skeletons, characters… In my first year of the BUT, as in my Master’s year (M1), I drew the <strong class="kw">advertising visuals</strong> and <strong class="kw">fictional products</strong> for our projects. Today I retouch in <strong class="kw">Photoshop</strong> and share my drawings on DeviantArt.</p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
-                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The frame on the wall</strong>: one of my drawings [to be chosen].</span></li>
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The frame on the wall</strong>: one of my drawings, soon to be hung.</span></li>
                         <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The sketchbook</strong>: mechanisms, skeletons and characters.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The posters</strong>: the three BycloWatt attractions, drawn then coloured in Photoshop.</span></li>
                       </ul>
@@ -167,11 +186,11 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">general knowledge and an open mind</p>
                       <h2 class="cartel-titre" tabindex="-1">The cabinet of curiosities</h2>
-                      <p><strong class="kw">Curious about everything</strong>, I have <strong class="kw">good general knowledge</strong> and a genuinely <strong class="kw">open mind</strong>, fed by languages: I speak <strong class="kw">fluent Spanish</strong> and <strong class="kw">English</strong>.</p>
+                      <p><strong class="kw">Curious about everything</strong>, I have <strong class="kw">good general knowledge</strong> and a genuinely <strong class="kw">open mind</strong>, fed by languages. I studied <strong class="kw">English</strong>, <strong class="kw">Spanish</strong> (which I speak <strong class="kw">fluently</strong>), <strong class="kw">German</strong>, <strong class="kw">Dutch</strong> and <strong class="kw">Chinese</strong> in class, for at least a year each, and taught myself <strong class="kw">Italian</strong>: enough to get by on my own when travelling.</p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The globe</strong>: a longing to discover other cultures.</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The dictionaries</strong>: Spanish and English, always within reach.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The dictionaries</strong>: English, Spanish, German, Dutch and Chinese, plus an Italian phrasebook.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The open encyclopaedia</strong>: everyday curiosity.</span></li>
                       </ul>
                     </div>
@@ -215,11 +234,11 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">horse riding</p>
                       <h2 class="cartel-titre" tabindex="-1">The tack room</h2>
-                      <p><strong class="kw">In the saddle from 1999 to 2022</strong>: over twenty years of riding. I <strong class="kw">owned three horses</strong> and was <strong class="kw">placed in competitions</strong> [discipline to be specified].</p>
+                      <p><strong class="kw">In the saddle from 1999 to 2022</strong>: over twenty years of riding and <strong class="kw">three horses</strong> of my own. In inter-school competitions (secondary level), I <strong class="kw">ranked first in the region</strong> (Nord-Pas-de-Calais). My disciplines: <strong class="kw">pony games</strong> (gymkhana and show jumping), <strong class="kw">show jumping</strong>, <strong class="kw">carousel</strong> (a musical ride with basic dressage) and, with my last mare, <strong class="kw">endurance riding</strong> over 20 km.</p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
-                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The three stable name plates</strong>: [horses’ names to be added].</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The rosettes</strong>: competition memories.</span></li>
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The three stable name plates</strong>: one for each of my horses.<!-- à compléter : noms des chevaux --></span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The rosettes</strong>: first place in the regional inter-school competitions.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The riding hat and boots</strong>: put away since 2022.</span></li>
                       </ul>
                     </div>
@@ -263,11 +282,11 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">DIY and invention</p>
                       <h2 class="cartel-titre" tabindex="-1">The inventor’s workbench</h2>
-                      <p><strong class="kw">Handywoman</strong> and <strong class="kw">inventor</strong>: I love repairing, making and coming up with my own solutions, from hand tools to the keyboard. [An invention or a DIY project to showcase?]</p>
+                      <p><strong class="kw">Handywoman</strong> and <strong class="kw">inventor</strong>: I love repairing, making and coming up with my own solutions, from hand tools to the keyboard.<!-- à compléter : une invention ou un bricolage à présenter --></p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The toolbox</strong>: always open.</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The invention notebook</strong>: [an idea to showcase?]</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The invention notebook</strong>: pages full of ideas.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The soldering iron</strong>: and its tiny components.</span></li>
                       </ul>
                     </div>
@@ -288,7 +307,7 @@
             <!-- Cartel : étiquette de musée de la pièce ouverte (contenu recopié depuis .piece-texte) -->
             <div class="cartel" id="cartel" role="region" aria-label="Room label" hidden>
               <button class="cartel-fermer" type="button" aria-label="Back to the overview">×</button>
-              <p class="cartel-position" data-modele="room {i} of 6"></p>
+              <p class="cartel-position" data-modele="room {i} of 7"></p>
               <div class="cartel-contenu"></div>
             </div>
             <p class="univers-message" role="status" aria-live="polite"></p>
@@ -302,7 +321,7 @@
               <button class="univers-bouton" type="button" data-action="pause" aria-pressed="false"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg><span>pause</span></button>
             </div>
             <div class="univers-groupe univers-jeu" role="group" aria-labelledby="jeu-titre">
-              <p class="univers-jeu-texte" id="jeu-titre"><strong>The clue game</strong>: this set is a model, and nine details give it away. <span class="univers-compteur"><span data-trouves>0</span> / 9 found</span></p>
+              <p class="univers-jeu-texte" id="jeu-titre"><strong>The clue game</strong>: this set is a model, and ten details give it away. <span class="univers-compteur"><span data-trouves>0</span> / 10 found</span></p>
               <button class="univers-bouton" type="button" data-action="indice"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span>a clue</span></button>
               <button class="univers-bouton" type="button" data-action="reponses"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span>the answers</span></button>
               <button class="univers-bouton" type="button" data-action="zero"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4v6h6"/><path d="M4.8 15a8 8 0 1 0 1.6-8.4L4 10"/></svg><span>reset everything</span></button>

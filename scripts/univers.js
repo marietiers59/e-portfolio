@@ -4,15 +4,15 @@
    · Zoom « caméra » sur une pièce (écrans ≥ 40em) ; sur téléphone, la pièce vient en haut de l'écran
      et son cartel monte du bas.
    · Cartel : texte recopié depuis .piece-texte ; pastilles d'objets ⇄ liste du cartel.
-   · Jeu des indices : 9 détails trahissent la maquette (trouvés gardés le temps de l'onglet).
+   · Jeu des indices : 10 détails trahissent la maquette (trouvés gardés le temps de l'onglet).
    · Mouvement réduit : ni balancement ni suivi de la souris, changements de vue instantanés.
-   Ne fait rien tant que la page est en travaux (classe univers-apercu absente, cf. <head>).
+   · Grenier : septième pièce, sous le toit ; les étages restent en 3 colonnes.
    ========================================================= */
 'use strict';
 
 (() => {
   const racine = document.querySelector('[data-univers]');
-  if (!racine || !document.documentElement.classList.contains('univers-apercu')) return;
+  if (!racine) return;
 
   const anglais = document.documentElement.lang.toLowerCase().startsWith('en');
   const t = (fr, en) => (anglais ? en : fr);
@@ -47,8 +47,10 @@
     return { x, y };
   }
   function mesurer() {
-    const largeur = pieces[0].offsetWidth;
+    const largeur = maison.querySelector('.maison-pieces .piece').offsetWidth;   // une pièce d'étage (le grenier est plus large)
     maison.style.setProperty('--p', `${(largeur * 0.32).toFixed(1)}px`);
+    const grenier = maison.querySelector('.piece-grenier');           // grenier bas de plafond : moins profond
+    if (grenier) grenier.style.setProperty('--p', `${Math.min(largeur * 0.32, grenier.offsetHeight * 0.45).toFixed(1)}px`);
   }
 
   /* ----- État de la caméra : valeurs visées et valeurs affichées (rapprochées à chaque image) ----- */
@@ -223,7 +225,7 @@
     enregistrer();
     afficherCompte();
     let texte = b.dataset.texte;
-    if (nouveau && trouves.size === indices.length) texte += t(' Bravo, les neuf indices sont trouvés !', ' Well done, you found all nine clues!');
+    if (nouveau && trouves.size === indices.length) texte += t(' Bravo, les dix indices sont trouvés !', ' Well done, you found all ten clues!');
     annoncer(texte);
   });
 
