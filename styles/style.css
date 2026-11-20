@@ -2513,6 +2513,23 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   background: var(--fond);
   transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
 }
+
+/* Pied de page compact sur ordinateur quand la fenêtre est basse (portables, navigateur non plein écran) :
+   tout en bas de la page, le titre « Contact » reste visible sous la barre du haut (#194).
+   Coordonnées sur deux colonnes, encart et mentions resserrés ; rien ne change sur smartphone. */
+@media (min-width: 48em) and (max-height: 52em) {
+  .pied { padding-block-end: 0.5rem; }
+  .pied .section-titre { margin-bottom: 0.5rem; }
+  .coordonnees {
+    margin-top: 0.6rem;
+    grid-template-columns: repeat(2, minmax(0, auto));
+    justify-content: start;
+    gap: 0.35rem 1.5rem;
+  }
+  .rideau { margin-top: 0.6rem; padding: 0.6rem 0.85rem; gap: 0.4rem; }
+  .rideau-texte { font-size: 0.9rem; line-height: 1.45; }
+  .pied-mentions { margin-top: 0.75rem; line-height: 1.45; }
+}
 .rideau-ligne input:focus {
   outline: none;
   border-color: var(--indigo-400);
