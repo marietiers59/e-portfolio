@@ -125,7 +125,11 @@
   }
 
   /* ----- Ouvrir / fermer une pièce ----- */
-  function nomPiece(li) { return li.querySelector('.piece-plaque').textContent; }
+  /** Nom de la pièce au milieu d'une phrase : « du côté de l'atelier » (la plaque porte une majuscule, #181). */
+  function nomPiece(li) {
+    const nom = li.querySelector('.piece-plaque').textContent;
+    return nom.charAt(0).toLowerCase() + nom.slice(1);
+  }
 
   function ouvrir(i, { focus = true } = {}) {
     ouverte = i;
@@ -279,7 +283,7 @@
       case 'pause':
         pause = !pause;
         b.setAttribute('aria-pressed', String(pause));
-        b.querySelector('span').textContent = pause ? t('reprendre', 'resume') : t('pause', 'pause');
+        b.querySelector('span').textContent = pause ? t('Reprendre', 'Resume') : t('Pause', 'Pause');
         demarrer();
         break;
       case 'indice':   pisteSuivante(); break;
