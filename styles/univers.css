@@ -556,3 +556,14 @@
 :root[data-theme="sombre"] :is(.cv-trait, .cv-point) { stroke: hsl(40 24% 85%); fill: hsl(40 24% 85%); }
 :root[data-theme="sombre"] .cv-credit { fill: hsl(220 13% 73%); }
 :root[data-theme="sombre"] .cv-drapeau image { filter: brightness(0.9); }
+
+/* « Ce que j'en retire » (#189) : le lien entre le loisir et le métier, mis en valeur dans le cartel */
+.cartel-contenu .cartel-retire {
+  margin: 0.2rem 0 0.7rem;
+  padding: 0.45rem 0.75rem;
+  border-left: 3px solid var(--sapin-400);
+  border-radius: 0 0.6rem 0.6rem 0;
+  background: var(--sapin-100);
+  font-size: 0.93rem;
+}
+.cartel-retire strong { color: var(--sapin-700); }
