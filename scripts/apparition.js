@@ -10,8 +10,8 @@
    – Web Animations API (element.animate) : rien n'écrase les transitions
      de survol ni les easter eggs, et un bloc visible n'a plus aucune
      animation sur lui (ses styles d'origine s'appliquent tels quels).
-   – « Réduire les animations » sur l'appareil : rien ne bouge, tout
-     reste affiché.
+   – « Réduire les animations » sur l'appareil : simple fondu, sans
+     aucun déplacement.
    – La classe html.apparition-attente (posée en tête de page) masque
      le contenu le temps que ce script prenne la main ; filet de
      sécurité : elle tombe d'elle-même au bout de 3 s.
@@ -21,7 +21,8 @@
 
   const racine = document.documentElement;
   const liberer = () => racine.classList.remove('apparition-attente');
-  if (!Element.prototype.animate || matchMedia('(prefers-reduced-motion: reduce)').matches) { liberer(); return; }
+  if (!Element.prototype.animate) { liberer(); return; }
+  const mouvementReduit = matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ----- Réglages ----- */
   const CIBLES = [
@@ -37,23 +38,23 @@
     // Pied de page : coordonnées et formulaire
     '.pied-coordonnees > *', '.formulaire > *',
   ].join(',');
-  const DECALAGE_REM = 1.5;          // amplitude du mouvement vertical
-  const DUREE_ENTREE = 650;          // ms
-  const DUREE_SORTIE = 450;          // ms (une sortie un peu plus vive qu'une entrée)
-  const RETARD = 70;                 // ms entre deux blocs qui entrent ensemble (effet de vague)
+  const DECALAGE_REM = 3;            // amplitude du mouvement vertical
+  const DUREE_ENTREE = 1100;         // ms
+  const DUREE_SORTIE = 900;          // ms (une sortie un peu plus vive qu'une entrée)
+  const RETARD = 130;                // ms entre deux blocs qui entrent ensemble (effet de vague)
   const RETARD_MAX = 6;              // au-delà, plus d'attente supplémentaire
-  const MARGE = 0.05;                // part de l'écran, en haut et en bas, où les blocs s'estompent
-  const MARGE_MAX = 48;              // px
+  const MARGE = 0.12;                // part de l'écran, en haut et en bas, où les blocs s'estompent
+  const MARGE_MAX = 140;             // px
   const HYSTERESIS = 4;              // px : évite qu'un bloc pile au bord clignote
   const ENTREE = 'cubic-bezier(0.22, 0.8, 0.3, 1)';
-  const SORTIE = 'cubic-bezier(0.5, 0, 0.75, 0.4)';
+  const SORTIE = 'cubic-bezier(0.45, 0, 0.55, 1)';
 
   /* ----- État ----- */
   let elements = [];
   const etats = new WeakMap();       // élément → { visible, anim }
   let fige = false, planifie = false, impression = false, recollecter = false;
 
-  const decalage = () => DECALAGE_REM * parseFloat(getComputedStyle(racine).fontSize);
+  const decalage = () => (mouvementReduit.matches ? 0 : DECALAGE_REM * parseFloat(getComputedStyle(racine).fontSize));
 
   // Les blocs à animer, sans doublon imbriqué (le parent suffit) ni texte réservé aux lecteurs d'écran.
   const collecter = () => {

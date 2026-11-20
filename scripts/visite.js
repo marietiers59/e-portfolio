@@ -1,8 +1,7 @@
 /*
   Visite guidée de l'accueil, des projets et des compétences (français et anglais)
 
-  · Lancement : bouton ▷ de la barre du haut, ou bouton « Visite guidée » sous la présentation (accueil)
-    ou sous l'introduction (Projets, Compétences).
+  · Lancement : bouton ▷ de la barre du haut, à droite de l'interrupteur clair / sombre (avec info-bulle).
   · Chaque halte éclaire un disque aux bords flous ; le reste de la page est voilé de noir translucide.
     Entre deux haltes, le voile s'estompe, la page défile, puis le voile revient sur la halte suivante.
   · Commandes (icônes, info-bulle au survol ou au focus) : retour au début, précédent, lecture / pause,
@@ -21,7 +20,7 @@
   const geste = window.matchMedia('(hover: hover)').matches ? t('Survolez', 'Hover over') : t('Touchez', 'Tap');
 
   /* ----- Les haltes, page par page ----- */
-  // repere : élément qui identifie la page ; lancement : où placer le bouton « Visite guidée » dans la page
+  // repere : élément qui identifie la page
   const RELANCE = {
     cible: '.visite-lancer-barre',
     titre: t('À vous de jouer !', 'Over to you!'),
@@ -34,7 +33,6 @@
   const PAGES = [
     {
       repere: '.une-entete',
-      lancement: (b) => document.querySelector('.une-actions')?.append(b),
       haltes: [
         {
           cible: '.une-entete',
@@ -111,7 +109,6 @@
     },
     {
       repere: '.cartes .carte-emplacement',
-      lancement: lancementSousIntro,
       haltes: [
         {
           cible: ['#titre-principal', '.section-intro'],
@@ -167,7 +164,6 @@
     },
     {
       repere: '.section-competences',
-      lancement: lancementSousIntro,
       haltes: [
         {
           cible: ['#titre-principal', '.section-intro'],
@@ -223,16 +219,6 @@
     },
   ];
 
-  // Projets et Compétences : bouton « Visite guidée » sous l'introduction de la page
-  function lancementSousIntro(b) {
-    const entete = document.querySelector('.section-entete');
-    if (!entete) return;
-    const p = document.createElement('p');
-    p.className = 'visite-lancement';
-    p.append(b);
-    entete.append(p);
-  }
-
   const page = PAGES.find((p) => document.querySelector(p.repere));
   if (!page) return;
   const HALTES = page.haltes;
@@ -255,7 +241,7 @@
     normale:  svg('<path class="contour" d="M4 16.5a8 8 0 1 1 16 0"/><path d="M12 16.5V9.5"/><circle cx="12" cy="16.5" r="1.3"/>'),
   };
 
-  /* ----- Boutons de lancement : barre du haut et dans la page ----- */
+  /* ----- Bouton de lancement : icône dans la barre du haut ----- */
   const lanceurs = [];
   const barre = document.querySelector('.barre-haut');
   if (barre) {
@@ -269,14 +255,6 @@
     const theme = barre.querySelector('.theme');
     (theme ?? barre.querySelector('.langue'))?.after(b);
     lanceurs.push(b);
-  }
-  {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'bouton bouton-second visite-lancer visite-lancer-une';
-    b.innerHTML = `${ICONES.lancer}${t('Visite guidée', 'Guided tour')}`;
-    page.lancement(b);
-    if (b.isConnected) lanceurs.push(b);
   }
 
   /* ----- Voile et panneau de commande (créés une fois, au premier lancement) ----- */

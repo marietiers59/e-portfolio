@@ -10,7 +10,7 @@ rendu visible pour que l'on puisse évaluer mon travail, pas pour être réutili
 1. Ce que couvre cette licence
 
 Tout le contenu de ce dépôt et du site https://marietiers59.github.io/e-portfolio/
-(ci-après « l'œuvre »), sauf les éléments de tiers listés à l'article 4 :
+(ci-après « l'œuvre »), sauf les éléments de tiers listés à l'article 5 :
 
 - le code : fichiers HTML, CSS, JavaScript, scripts et programmes du dossier
   outils/ (Python, Java, shell), fichiers de configuration ;
@@ -52,7 +52,23 @@ e) Utiliser l'œuvre pour entraîner, affiner, évaluer ou alimenter un système
 f) Retirer ou modifier les mentions de droits d'auteur.
 
 
-4. Éléments de tiers
+4. Si j'autorise un réemploi
+
+Une autorisation ne vaut que pour les éléments, l'usage et la durée qu'elle
+précise. Dans tous les cas, la personne autorisée doit :
+
+a) citer l'autrice et la source, de façon visible, à côté de l'élément
+   réutilisé : « Marie Tiers — https://marietiers59.github.io/e-portfolio/ » ;
+b) conserver intactes les mentions de droits d'auteur ;
+c) signaler toute modification apportée à l'élément d'origine ;
+d) ne pas laisser entendre que je cautionne son projet.
+
+L'autorisation est personnelle : elle ne peut être ni cédée, ni transmise, ni
+étendue à un tiers. Un réemploi qui ne respecte pas ces conditions est traité
+comme un réemploi non autorisé.
+
+
+5. Éléments de tiers
 
 Ils restent la propriété de leurs auteurs et sous leur propre licence :
 
@@ -71,20 +87,20 @@ Les marques, œuvres et personnages évoqués par les clins d'œil du site
 appartiennent à leurs propriétaires respectifs.
 
 
-5. Absence de garantie
+6. Absence de garantie
 
 L'œuvre est fournie « telle quelle », sans aucune garantie. Je ne pourrai être
 tenue responsable d'aucun dommage lié à sa consultation.
 
 
-6. Demander une autorisation
+7. Demander une autorisation
 
 Toute demande (réutilisation, collaboration, citation longue) se fait par le
 formulaire de contact du site : https://marietiers59.github.io/e-portfolio/#contact
 Une autorisation n'existe que si elle est écrite et signée de ma main.
 
 
-7. Droit applicable
+8. Droit applicable
 
 Cette licence est régie par le droit français. Toute violation constitue une
 contrefaçon au sens des articles L.335-2 et suivants du code de la propriété
@@ -101,5 +117,8 @@ Service grant to all users (viewing and forking on GitHub). Without my prior
 written permission, you may not copy, reuse, modify, adapt, translate,
 redistribute, host elsewhere, sell or claim as your own any part of the code,
 design or content, nor use it for AI training or text and data mining (rights
-expressly reserved under Article 4 of Directive (EU) 2019/790). Third-party
-components listed in section 4 remain under their own licences.
+expressly reserved under Article 4 of Directive (EU) 2019/790). If I do grant
+permission, you must visibly credit the author and the source (“Marie Tiers —
+https://marietiers59.github.io/e-portfolio/”), keep the copyright notices, flag
+any change, and not imply my endorsement. Third-party
+components listed in section 5 remain under their own licences.

@@ -76,9 +76,13 @@ personne précise, et la publication des projets encore « bientôt en ligne ».
 ```
 index.html                 accueil (français)
 en/                        pages anglaises
-pages/                     projets, compétences, CV vidéo, accessibilité, espace personnel
+pages/                     projets, compétences, CV vidéo, accessibilité, espace personnel,
+                           aperçus du calendrier d'alternance et du formulaire de convention
 styles/style.css           feuille de styles commune (thèmes clair et sombre)
+styles/apercu.css          pages d'aperçu de documents (bandeau d'alerte réductible)
 scripts/script.js          menu, formulaire, filtres, calendrier, compteur, nuage 3D
+scripts/apparition.js      fondu des blocs au défilement
+scripts/zoom.js            bascule de zoom de la page (barre du bas)
 scripts/rideau.js          rideau sur les coordonnées
 scripts/balayage.js        balayage entre pages sur téléphone
 scripts/visite.js          visite guidée
@@ -86,7 +90,7 @@ scripts/carte-zone.js      carte de la zone de recherche
 scripts/contact-eggs.js    surprises du champ Message
 scripts/bug-egg.js         surprise de la frise
 scripts/vendor/            Matter.js (licence MIT)
-medias/                    images, drapeaux, nuage de compétences, CV masqués
+medias/                    images, drapeaux, nuage de compétences, CV masqués, documents de stage
 outils/nuage-competences/  construction du nuage (Python, Java, Gephi)
 outils/carte-zone/         composition de la carte (Python)
 .github/                   modèles de tickets et de merge requests, CODEOWNERS, vérifications
@@ -110,8 +114,10 @@ ouvrir <http://localhost:8000>.
 
 ## droits
 
-**Tous droits réservés.** Le code, le design et les contenus peuvent être consultés pour évaluer mon
-travail, mais pas copiés, adaptés ni réutilisés sans mon accord écrit. Détails dans [LICENSE](LICENSE).
+**Tous droits réservés**, pour le code comme pour le design et les contenus : ce dépôt n'est pas open source.
+Le site peut être consulté pour évaluer mon travail, mais rien ne peut en être copié, adapté ni réutilisé sans mon accord écrit et préalable ;
+si je l'accorde, la mention de l'autrice et de la source est obligatoire.
+Les composants de tiers gardent leur propre licence. Détails dans [LICENSE](LICENSE).
 
 Site conçu avec l'assistance de Claude (Anthropic) ; certaines illustrations sont générées par IA,
 comme l'indique le pied de page du site.

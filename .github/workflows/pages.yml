@@ -1,0 +1,41 @@
+# Publication du site sur GitHub Pages (#167)
+# Remplace la publication automatique « depuis une branche », bloquée côté GitHub le 11/11/2026.
+# À chaque push sur main (et à la demande, onglet Actions → « Run workflow »),
+# le dépôt est publié tel quel : site statique, sans Jekyll.
+# Réglage associé : Settings → Pages → Source = « GitHub Actions ».
+name: publication du site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Une seule publication à la fois ; une nouvelle remplace celle en attente
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publier:
+    environment:
+      name: github-pages
+      url: ${{ steps.publication.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Préparer le site (sans fichiers du dépôt inutiles en ligne)
+        run: |
+          mkdir _site
+          rsync -a --exclude '.git*' --exclude '.github' --exclude '.githooks' --exclude '_site' ./ _site/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: publication
+        uses: actions/deploy-pages@v4

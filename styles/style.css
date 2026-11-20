@@ -213,6 +213,7 @@ body {
   color: var(--encre);
   background-color: var(--fond);
   background-image: var(--grain);
+  overflow-wrap: break-word;     /* un mot trop long pour sa colonne passe à la ligne (page zoomée, petit écran) */
 }
 
 img { display: block; max-width: 100%; }
@@ -432,6 +433,119 @@ abbr[title] { text-decoration: none; cursor: help; }
   .theme-icone { transition: none; }
 }
 
+/* Bascule de zoom (barre du bas, à gauche ; scripts/zoom.js) : loupe « − » ⇄ loupe « + ».
+   Un interrupteur à bascule monté sur ressort : la crête (la barre centrale) glisse du côté appuyé,
+   puis revient progressivement au milieu en dépassant à peine, comme un ressort ;
+   un clic sur la crête remet la taille réelle. Au survol, la bascule grossit très légèrement.
+   Le zoom agrandit la taille de base (--zoom-page, posée en tête de page puis par zoom.js).
+   Bloc caché sans JavaScript (attribut hidden retiré par zoom.js). */
+html { font-size: calc(var(--zoom-page, 1) * 100%); }
+.zoom {
+  --zoom-ressort: 650ms cubic-bezier(0.34, 1.45, 0.64, 1);   /* retour au milieu, avec un léger rebond */
+  --zoom-course: 1.2rem;                                     /* trajet de la crête jusqu'au bout du plateau */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: -0.4rem;            /* la loupe s'aligne sur le bord du contenu, comme le drapeau en haut */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.zoom[hidden] { display: none; }
+.balayage-points + .zoom { margin-inline-start: 0.6rem; }   /* sur smartphone, après les points des pages */
+.zoom-cote, .zoom-crete {
+  position: relative;
+  z-index: 1;                              /* au-dessus du plateau dessiné */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.zoom-cote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.2rem;                          /* zone de clic confortable (WCAG 2.5.8) */
+  border-radius: 999px;
+}
+.zoom-moins { padding-inline-start: 0.4rem; }
+.zoom-plus  { padding-inline-end: 0.4rem; }
+.zoom-loupe {
+  width: 1.15rem; height: 1.15rem;
+  color: var(--icone-barre);               /* même teinte que le soleil, la lune et la visite guidée */
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  transition: transform 160ms ease, opacity var(--duree);
+}
+.zoom-demi { width: 1.3rem; height: 1.15rem; }   /* moitié du plateau : prolonge la zone de clic de la loupe */
+.zoom-crete {
+  display: grid;
+  place-items: center;
+  width: 0.7rem;
+  height: 2.2rem;
+  border-radius: 999px;
+}
+.zoom-crete > span {                       /* la crête : une pastille dressée au milieu du plateau */
+  width: 0.55rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: var(--carte);
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--zoom-ressort), scale var(--duree), background-color var(--duree), box-shadow var(--duree);
+}
+.zoom-plateau {                            /* le plateau dessiné, sous les trois boutons */
+  position: absolute;
+  top: 50%;
+  left: calc(0.4rem + 1.15rem + 0.4rem);
+  width: calc(1.3rem * 2 + 0.7rem);
+  height: 1.15rem;
+  margin-top: -0.575rem;
+  border-radius: 999px;
+  background: var(--turquoise-200);
+  box-shadow: inset 0 1px 2px hsl(var(--ombre-teinte) / 0.18);
+  pointer-events: none;
+  transition: scale var(--duree), background-color var(--duree);
+}
+/* Appui : la crête file au bout du plateau, du côté pressé, et la loupe s'enfonce ;
+   au relâchement, elle revient au milieu (transition --zoom-ressort) */
+.zoom[data-appui] .zoom-crete > span { transition: transform 150ms ease-out, scale var(--duree), background-color var(--duree), box-shadow var(--duree); }
+.zoom[data-appui="moins"] .zoom-crete > span { transform: translateX(calc(-1 * var(--zoom-course))); }
+.zoom[data-appui="plus"]  .zoom-crete > span { transform: translateX(var(--zoom-course)); }
+/* Bout de course : la crête ne fait que la moitié du trajet */
+.zoom[data-appui="moins"]:has(.zoom-moins[aria-disabled="true"]) .zoom-crete > span { transform: translateX(calc(-0.4 * var(--zoom-course))); }
+.zoom[data-appui="plus"]:has(.zoom-plus[aria-disabled="true"])   .zoom-crete > span { transform: translateX(calc(0.4 * var(--zoom-course))); }
+.zoom[data-appui="moins"] .zoom-moins .zoom-loupe,
+.zoom[data-appui="plus"]  .zoom-plus  .zoom-loupe { transform: scale(0.84); }
+/* Survol (souris seulement) : la bascule (plateau et crête) grossit très légèrement */
+@media (hover: hover) {
+  .zoom:has(.zoom-cote:hover, .zoom-crete:hover) :is(.zoom-plateau, .zoom-crete > span) { scale: 1.06; }
+  .zoom:has(.zoom-cote:hover, .zoom-crete:hover) .zoom-plateau { background: var(--bleu-200); }
+}
+/* Bout de course : la loupe pâlit */
+.zoom-cote[aria-disabled="true"] { cursor: default; }
+.zoom-cote[aria-disabled="true"] .zoom-loupe { opacity: 0.4; }
+/* Zoom différent de 0 : la crête se colore, pour rappeler qu'un clic dessus ramène à la taille réelle */
+.zoom-modifie .zoom-crete > span { background: var(--indigo-200); box-shadow: var(--ombre-legere), inset 0 0 0 1.5px var(--indigo-400); }
+.zoom-pulse > span { animation: zoom-pulse 420ms ease-out; }
+@keyframes zoom-pulse { 40% { transform: scale(1.35, 1.15); } }
+/* Après chaque cran, la bulle de la crête affiche le niveau un instant (classe posée par zoom.js) */
+.zoom-montre .zoom-crete::after { opacity: 1; transform: none; transition-delay: 0s; }
+.zoom.zoom-montre .zoom-cote::after,
+.zoom.zoom:has(.zoom-crete:is(:hover, :focus-visible)) .zoom-cote::after { opacity: 0; }   /* une seule bulle à la fois */
+@media (prefers-reduced-motion: reduce) {
+  .zoom-plateau, .zoom-crete > span, .zoom-loupe { transition: none; }
+  .zoom[data-appui] .zoom-crete > span { transition: none; }
+  .zoom-pulse > span { animation: none; }
+}
+@media print { .zoom { display: none; } }
+
 /* ---------- 4. En-tête, navigation et une ---------- */
 /* Ligne de navigation : empilée sur mobile, en ligne à partir de la tablette */
 .entete-nav {
@@ -634,6 +748,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   cursor: default;
 }
 .lien-a-venir a { font-weight: 700; }
+.lien-a-venir + .lien-a-venir { margin-top: 0.2rem; }   /* deuxième lien en attente (formulaire de convention) */
 .pastille-bientot {
   font-style: normal;
   font-size: 0.75rem;
@@ -1904,7 +2019,6 @@ abbr[title] { text-decoration: none; cursor: help; }
 .nuage-3d .nuage-apercu .nuage-svg { display: none; }
 .nuage-toile { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .nuage-apercu .nuage-toile { inset: 0.25rem; width: calc(100% - 0.5rem); height: calc(100% - 0.5rem); border-radius: 0.8rem; }
-.nuage-pause[aria-pressed="true"] { background: var(--turquoise-100); border-color: var(--turquoise-200); }
 @media (prefers-reduced-motion: no-preference) {
   .nuage-dialogue[open] { animation: nuage-ouverture 0.28s ease-out; }
 }
@@ -2162,6 +2276,7 @@ abbr[title] { text-decoration: none; cursor: help; }
   gap: 1.75rem;
   align-items: center;           /* contenu centré dans la hauteur du pied de page */
 }
+.pied-grille > * { min-width: 0; }  /* une colonne ne s'élargit jamais au-delà de l'écran, même page zoomée */
 .pied-coordonnees p { margin: 0; }
 .pied .section-titre { margin-bottom: 0.75rem; }
 
@@ -2382,6 +2497,7 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   box-shadow: var(--ombre-legere);
 }
 .rideau p { margin: 0; }
+.rideau > * { min-width: 0; }  /* le champ e-mail rétrécit avec l'écran au lieu de l'élargir */
 .rideau-texte { font-size: 0.95rem; }
 .rideau-texte a { font-weight: 700; }   /* lien repérable autrement que par la couleur (RGAA 10.6) */
 .rideau-ligne { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
@@ -2577,8 +2693,8 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
 .rideau-merci-fermer:hover { background: var(--gris-100); }
 
 /* ---------- 9. Écrans larges, TV, mouvement réduit ---------- */
-@media (min-width: 100em) { html { font-size: 112.5%; } }
-@media (min-width: 140em) { html { font-size: 137.5%; } }
+@media (min-width: 100em) { html { font-size: calc(var(--zoom-page, 1) * 112.5%); } }   /* le zoom de la bascule s'y ajoute */
+@media (min-width: 140em) { html { font-size: calc(var(--zoom-page, 1) * 137.5%); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -2749,7 +2865,7 @@ html.apparition-attente :is(.une, body > main, body > footer) { opacity: 0; }
 [data-bulle="debut"]::after { left: 0; translate: 0 0; }
 [data-bulle="fin"]::after   { left: auto; right: 0; translate: 0 0; }
 
-/* Boutons de lancement : icône dans la barre du haut, bouton sous la présentation */
+/* Bouton de lancement : icône dans la barre du haut */
 .visite-lancer[hidden] { display: none; }
 .visite-lancer-barre {
   display: inline-grid;
@@ -2765,9 +2881,6 @@ html.apparition-attente :is(.une, body > main, body > footer) { opacity: 0; }
 }
 .visite-lancer-barre:hover { background: var(--bleu-100); }
 .visite-lancer-barre:active { transform: translateY(1px); }
-.visite-lancer-une { display: inline-flex; align-items: center; gap: 0.45rem; }
-.visite-lancement { margin: 1rem 0 0; }               /* Projets, Compétences : bouton sous l'introduction */
-.visite-lancer-une .visite-icone { color: var(--icone-barre); }   /* l'icône seule ; le texte du bouton garde sa couleur */
 
 .visite-icone {
   width: 1.2rem; height: 1.2rem;
