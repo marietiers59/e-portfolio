@@ -23,7 +23,7 @@
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
   <link rel="stylesheet" href="../styles/style.css?v=57">
-  <link rel="stylesheet" href="../styles/univers.css?v=3">
+  <link rel="stylesheet" href="../styles/univers.css?v=5">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('../index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -33,7 +33,7 @@
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=6" defer></script>
   <script src="../scripts/contact-eggs.js?v=15" defer></script>
-  <script src="../scripts/univers.js?v=4" defer></script>
+  <script src="../scripts/univers.js?v=5" defer></script>
 </head>
 
 <body id="haut">
@@ -112,7 +112,7 @@
           <!-- Cadre : scène 3D, cartel et message ; le cartel reste hors de la perspective (sinon il ne peut pas se fixer en bas d'écran sur téléphone) -->
           <div class="univers-cadre">
             <div class="univers-scene">
-              <div class="maison" role="group" aria-label="Maquette de la maison, sept pièces">
+              <div class="maison" role="group" aria-label="Maquette de la maison, huit pièces">
                 <div class="maison-toit">
                   <span class="toit-ficelle" aria-hidden="true"></span>
                   <span class="toit-pignon" aria-hidden="true"></span>
@@ -135,11 +135,12 @@
                       <div class="piece-texte" hidden>
                         <p class="cartel-surtitre">Sport et forme</p>
                         <h2 class="cartel-titre" tabindex="-1">Le grenier sport</h2>
-                        <p>Chaque semaine, <strong class="kw">deux heures de sport en groupe</strong> : une séance de <strong class="kw">pilates</strong> à l’IUT et une séance de <strong class="kw">gym d’entretien</strong> pour adultes. Je complète par <strong class="kw">1 h 30 de fitness</strong> en salle, chez Basic-Fit.</p>
+                        <p>Chaque semaine, <strong class="kw">deux heures de sport en groupe</strong> (pilates à l’IUT et gym d’entretien), puis <strong class="kw">1 h 30 de fitness</strong> en salle.</p>
+                        <p class="cartel-retire"><strong>Ce que j’en retire</strong> : la régularité, et la tête plus claire pour coder.</p>
                         <h3 class="cartel-sous-titre">Objets à explorer</h3>
                         <ul class="cartel-objets">
                           <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Le tapis de pilates</strong> : une séance chaque semaine à l’IUT.</span></li>
-                          <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Le planning au mur</strong> : 2 h en groupe et 1 h 30 en salle, chaque semaine.</span></li>
+                          <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Le planning au mur</strong> : 2 h en groupe et 1 h 30 en salle, chez Basic-Fit.</span></li>
                           <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Les haltères</strong> : gym d’entretien et fitness.</span></li>
                         </ul>
                       </div>
@@ -162,11 +163,12 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">Dessin et graphisme</p>
                       <h2 class="cartel-titre" tabindex="-1">L’atelier</h2>
-                      <p>Je <strong class="kw">dessine depuis toute petite</strong> : premier atelier de dessin dès deux ans. Mécanismes, squelettes, personnages… En BUT 1 comme en Master 1, j’ai dessiné les <strong class="kw">visuels publicitaires</strong> et les <strong class="kw">produits fictifs</strong> de nos projets. Je retouche aujourd’hui sous <strong class="kw">Photoshop</strong> et je partage mes dessins sur <i lang="en">DeviantArt</i>.</p>
+                      <p>Je <strong class="kw">dessine depuis toute petite</strong> : mécanismes, squelettes, personnages. En BUT 1 comme en Master 1, j’ai dessiné les <strong class="kw">visuels de nos projets</strong>, que je retouche sous Photoshop.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : le soin du détail et l’œil pour les interfaces, utiles aussi pour tester une application.</p>
                       <h3 class="cartel-sous-titre">Objets à explorer</h3>
                       <ul class="cartel-objets">
-                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Le cadre au mur</strong> : un de mes dessins, bientôt accroché.</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Le carnet de croquis</strong> : mécanismes, squelettes et personnages.</span></li>
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Le cadre au mur</strong> : un de mes dessins, bientôt accroché ; d’autres sont sur <i lang="en">DeviantArt</i>.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Le carnet de croquis</strong> : mon premier atelier de dessin, à deux ans, et tous ceux qui ont suivi.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Les affiches</strong> : les trois attractions de BycloWatt, dessinées puis colorisées sous Photoshop.</span></li>
                       </ul>
                     </div>
@@ -179,21 +181,20 @@
                     <div class="piece-calque">
                       <button class="objet" type="button" data-objet="1" style="--x:30%;--y:52%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Objet 1 : Le globe</span></button>
                       <button class="objet" type="button" data-objet="2" style="--x:70%;--y:40%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Objet 2 : Les dictionnaires</span></button>
-                      <button class="objet" type="button" data-objet="3" style="--x:52%;--y:74%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Objet 3 : Le fanion du jumelage</span></button>
-                      <button class="objet" type="button" data-objet="4" style="--x:48%;--y:24%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Objet 4 : Les certificats de langues</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:48%;--y:24%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Objet 3 : Les certificats de langues</span></button>
                       <button class="indice" type="button" data-indice="cabinet" data-texte="Une pièce de un euro aussi grande qu’un tableau : l’échelle nous trahit !" style="--x:84%;--y:66%;--r:11%" tabindex="-1"><span class="sr">Examiner ce détail</span></button>
                     </div>
                     <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">Le cabinet de curiosités</span><span class="sr"> : Culture générale et ouverture au monde</span></button>
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">Culture générale et ouverture au monde</p>
                       <h2 class="cartel-titre" tabindex="-1">Le cabinet de curiosités</h2>
-                      <p><strong class="kw">Curieuse de tout</strong>, j’ai une <strong class="kw">bonne culture générale</strong> et une vraie <strong class="kw">ouverture au monde</strong>. <strong class="kw">Apprendre</strong> est pour moi un loisir : j’ai étudié en cours l’<strong class="kw">anglais</strong>, l’<strong class="kw">espagnol</strong>, l’<strong class="kw">allemand</strong>, le <strong class="kw">néerlandais</strong> et le <strong class="kw">chinois</strong> (au moins un an chacune), appris l’<strong class="kw">italien</strong> seule, assez pour me débrouiller en voyage, et passé <strong class="kw">une année Erasmus en Espagne</strong> ; je parle espagnol couramment. Côté associations : membre des <strong class="kw">Amis de Buxton</strong> (jumelage France–Royaume-Uni) depuis 2024, et auparavant de <strong class="kw">Latinos en Lille</strong>.</p>
+                      <p><strong class="kw">Curieuse de tout</strong>, j’apprends pour le plaisir : cinq langues étudiées en cours, l’italien appris seule et <strong class="kw">une année Erasmus en Espagne</strong>. Je parle espagnol couramment.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : apprendre vite, et m’adapter à d’autres façons de penser.</p>
                       <h3 class="cartel-sous-titre">Objets à explorer</h3>
                       <ul class="cartel-objets">
-                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Le globe</strong> : l’envie de découvrir d’autres cultures.</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les dictionnaires</strong> : anglais, espagnol, allemand, néerlandais et chinois, plus un guide de conversation italien.</span></li>
-                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le fanion du jumelage</strong> : Les Amis de Buxton, entre la France et le Royaume-Uni.</span></li>
-                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>Les certificats de langues</strong> : Cambridge FCE et CLES 2 en anglais, DELE B2 en espagnol.</span></li>
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Le globe</strong> : une année Erasmus en Espagne, et l’envie de découvrir d’autres cultures.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les dictionnaires</strong> : anglais, espagnol, allemand, néerlandais et chinois en cours (au moins un an chacune), plus un guide de conversation italien.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Les certificats de langues</strong> : Cambridge FCE et CLES 2 en anglais, DELE B2 en espagnol.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -212,7 +213,8 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">Musique des années 80 et 90</p>
                       <h2 class="cartel-titre" tabindex="-1">La piste de danse</h2>
-                      <p>Les <strong class="kw">tubes des années 80 et 90</strong> sont ma bande-son préférée. Le 7 juin 2025, j’étais <strong class="kw">au premier rang</strong> du concert <strong class="kw"><i>Stars 80 vs Stars 90 : La Grande Battle</i></strong>, diffusé en direct sur M6.</p>
+                      <p>Les <strong class="kw">tubes des années 80 et 90</strong> sont ma bande-son préférée. Le 7 juin 2025, j’étais <strong class="kw">au premier rang</strong> de <i>Stars 80 vs Stars 90 : La Grande Battle</i>, diffusé en direct sur M6.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : de l’énergie et de la bonne humeur, qui comptent aussi en équipe.</p>
                       <h3 class="cartel-sous-titre">Objets à explorer</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Le juke-box</strong> : tubes des années 80 et 90.</span></li>
@@ -236,12 +238,13 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">Équitation</p>
                       <h2 class="cartel-titre" tabindex="-1">La sellerie</h2>
-                      <p><strong class="kw">À cheval de 1999 à 2022</strong> : plus de vingt ans de selle et <strong class="kw">trois chevaux</strong> dont j’ai été propriétaire. En compétition inter-collèges et lycées, j’ai été <strong class="kw">1<sup>re</sup> régionale</strong> (Nord-Pas-de-Calais). Mes disciplines : <strong class="kw"><i lang="en">pony-games</i></strong> (gymkhana et CSO), <strong class="kw">CSO</strong> (concours de saut d’obstacles), <strong class="kw">carrousel</strong> (dressage basse école) et, avec ma dernière jument, l’<strong class="kw">endurance</strong> sur 20 km.</p>
+                      <p><strong class="kw">À cheval de 1999 à 2022</strong>, avec trois chevaux dont j’ai été propriétaire. En compétition inter-collèges et lycées, j’ai été <strong class="kw">1<sup>re</sup> régionale</strong> (Nord-Pas-de-Calais).</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : la régularité, le calme sous pression et le sens des responsabilités.</p>
                       <h3 class="cartel-sous-titre">Objets à explorer</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Les trois plaques de box</strong> : une pour chacun de mes chevaux.<!-- à compléter : noms des chevaux --></span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les flots de classement</strong> : 1<sup>re</sup> régionale en inter-collèges et lycées.</span></li>
-                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>La bombe et les bottes</strong> : rangées depuis 2022.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les flots de classement</strong> : <i lang="en">pony-games</i> (gymkhana et CSO), CSO (concours de saut d’obstacles) et carrousel (dressage basse école).</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>La bombe et les bottes</strong> : rangées en 2022, après l’endurance sur 20 km avec ma dernière jument.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -261,12 +264,13 @@
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">Nature, aventure et cartographie</p>
                       <h2 class="cartel-titre" tabindex="-1">Le refuge de la baroudeuse</h2>
-                      <p>Avant l’informatique, j’étais <strong class="kw">guide nature</strong> et <strong class="kw">guide conférencière</strong> (offices de tourisme des 4 Rivières et de Sambre-Avesnois), après un DEUST Guide Nature Multilingue obtenu en <strong class="kw">major de promotion</strong>, et j’ai la formation de <strong class="kw">garde-chasse et garde-pêche</strong> (assermentation à venir). J’ai <strong class="kw">encadré une équipe de dix personnes</strong> sur une mission de <strong class="kw">cartographie</strong>. Sac sur le dos, carte en main : j’ai l’âme d’une <strong class="kw">aventurière</strong>, avec <strong class="kw">88 des 96 départements</strong> de métropole et de Corse et <strong class="kw">22 pays et territoires d’Europe</strong> au compteur, du Portugal à la Finlande.</p>
+                      <p>Avant l’informatique, j’étais <strong class="kw">guide nature</strong> et <strong class="kw">guide conférencière</strong>, et j’ai <strong class="kw">encadré une équipe de dix personnes</strong> sur une mission de cartographie. Sac sur le dos, j’ai parcouru 88 des 96 départements de métropole et de Corse, et 22 pays et territoires d’Europe.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : l’autonomie, le sens de l’orientation, et l’art d’expliquer simplement des choses complexes.</p>
                       <h3 class="cartel-sous-titre">Objets à explorer</h3>
                       <ul class="cartel-objets">
-                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>La carte annotée</strong> : souvenir de la mission de cartographie.</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les jumelles et la loupe</strong> : le matériel de la naturaliste.</span></li>
-                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le sac à dos</strong> : toujours prêt pour le départ.</span></li>
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>La carte annotée</strong> : la mission de cartographie, avec une équipe de dix personnes.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les jumelles et la loupe</strong> : DEUST Guide Nature Multilingue, et formation de garde-chasse et garde-pêche (assermentation à venir).</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le sac à dos</strong> : celui des visites guidées, pour les offices de tourisme des 4 Rivières et de Sambre-Avesnois.</span></li>
                         <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>La carte de mes voyages</strong> : <a class="cartel-carte" href="../medias/carte-voyages.svg" data-carte-voyages>voir la carte</a> · Allemagne, Andorre, Angleterre, Autriche, Belgique, Danemark, Espagne, Finlande, Hongrie, Irlande, Lettonie, Luxembourg, Monaco, Pays-Bas, Portugal, République tchèque, Slovaquie, Suisse et Vatican, sans oublier Jersey et Gibraltar.</span></li>
                       </ul>
                     </div>
@@ -287,11 +291,41 @@
                       <p class="cartel-surtitre">Bricolage et invention</p>
                       <h2 class="cartel-titre" tabindex="-1">L’établi de l’inventeuse</h2>
                       <p><strong class="kw">Bricoleuse</strong> et <strong class="kw">inventeuse</strong> : j’aime réparer, fabriquer et imaginer mes propres solutions, des outils à la main jusqu’au clavier.<!-- à compléter : une invention ou un bricolage à présenter --></p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : le réflexe de chercher la cause d’une panne avant de la contourner : un bon réflexe de testeuse.</p>
                       <h3 class="cartel-sous-titre">Objets à explorer</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>La boîte à outils</strong> : toujours ouverte.</span></li>
                         <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Le carnet d’inventions</strong> : des idées plein les pages.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le fer à souder</strong> : et ses petits composants.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-commune piece-large" data-piece="commune" data-image="" style="--teinte-100:var(--rose-100);--teinte-200:var(--rose-200);--teinte-400:var(--rose-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.3c3.1 0 6 2.2 6 5.7"/></svg><em class="pastille-bientot">Image à venir</em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:10%;--y:58%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Objet 1 : La valise de chantier</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:30%;--y:42%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Objet 2 : Les tasses du café langues</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:50%;--y:30%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Objet 3 : Le badge de <i lang="en">greeter</i></span></button>
+                      <button class="objet" type="button" data-objet="4" style="--x:70%;--y:40%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Objet 4 : Le panneau d’affichage</span></button>
+                      <button class="objet" type="button" data-objet="5" style="--x:90%;--y:56%" tabindex="-1"><span aria-hidden="true">5</span><span class="sr">Objet 5 : Le fanion du jumelage</span></button>
+                      <button class="indice" type="button" data-indice="commune" data-texte="Les tabourets sont des bouchons de liège, et la table un couvercle de boîte à fromage !" style="--x:58%;--y:74%;--r:5%" tabindex="-1"><span class="sr">Examiner ce détail</span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">La salle commune</span><span class="sr"> : Engagement et bénévolat</span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre">Engagement et bénévolat</p>
+                      <h2 class="cartel-titre" tabindex="-1">La salle commune</h2>
+                      <p>Des <strong class="kw">chantiers de bénévolat</strong> en France, en Allemagne et en Angleterre m’ont tant plu que j’en ai <strong class="kw">encadré un</strong> : ils ont changé ma vie. Depuis, je m’engage là où je suis : tutorat et cafés langues à l’Université de Lille, puis <strong class="kw">BDE, conseil d’IUT et éco-délégué·e·s</strong> à Lens.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : travailler avec des personnes très différentes, et faire avancer un collectif.</p>
+                      <h3 class="cartel-sous-titre">Objets à explorer</h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>La valise de chantier</strong> : chantiers de bénévolat en France, en Allemagne et en Angleterre, dont un que j’ai encadré.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les tasses du café langues</strong> : Université de Lille, Cité Scientifique : six ans de cafés langues, dont une année à les organiser comme tutrice tandem, et du tutorat d’anglais pour le relais handicap.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le badge de <i lang="en">greeter</i></strong> : Lille en anglais, allemand, espagnol et néerlandais.</span></li>
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>Le panneau d’affichage</strong> : BDE, élue au conseil d’IUT (et au conseil de département en BUT 1), coordinatrice d’éco-délégué·e·s pour le service DD & RSE de l’Université d’Artois.</span></li>
+                        <li data-objet="5"><span class="cartel-num" aria-hidden="true">5</span> <span><strong>Le fanion du jumelage</strong> : Les Amis de Buxton (France–Royaume-Uni) depuis 2024, et auparavant Latinos en Lille.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -311,7 +345,7 @@
             <!-- Cartel : étiquette de musée de la pièce ouverte (contenu recopié depuis .piece-texte) -->
             <div class="cartel" id="cartel" role="region" aria-label="Cartel de la pièce" hidden>
               <button class="cartel-fermer" type="button" aria-label="Revenir à la vue d’ensemble">×</button>
-              <p class="cartel-position" data-modele="Pièce {i} sur 7"></p>
+              <p class="cartel-position" data-modele="Pièce {i} sur 8"></p>
               <div class="cartel-contenu"></div>
             </div>
             <p class="univers-message" role="status" aria-live="polite"></p>
@@ -325,7 +359,7 @@
               <button class="univers-bouton" type="button" data-action="pause" aria-pressed="false"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg><span>Pause</span></button>
             </div>
             <div class="univers-groupe univers-jeu" role="group" aria-labelledby="jeu-titre">
-              <p class="univers-jeu-texte" id="jeu-titre"><strong>Le jeu des indices</strong> : ce décor est une maquette, dix détails la trahissent. <span class="univers-compteur"><span data-trouves>0</span> / 10 trouvés</span></p>
+              <p class="univers-jeu-texte" id="jeu-titre"><strong>Le jeu des indices</strong> : ce décor est une maquette, onze détails la trahissent. <span class="univers-compteur"><span data-trouves>0</span> / 11 trouvés</span></p>
               <button class="univers-bouton" type="button" data-action="indice"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span>Un indice</span></button>
               <button class="univers-bouton" type="button" data-action="reponses"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span>Les réponses</span></button>
               <button class="univers-bouton" type="button" data-action="zero"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4v6h6"/><path d="M4.8 15a8 8 0 1 0 1.6-8.4L4 10"/></svg><span>Tout remettre à zéro</span></button>
