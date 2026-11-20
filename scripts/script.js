@@ -1572,7 +1572,7 @@ function dessinChantier(suffixe) {
     dialogue.innerHTML = `<div class="chantier-carte">
       <button class="chantier-fermer" type="button" aria-label="${t('Fermer le panneau', 'Close this notice')}" data-fermer>×</button>
       ${dessinChantier('dialogue')}
-      <p class="chantier-etat"><em class="pastille-bientot">${t('en travaux', 'under construction')}</em></p>
+      <p class="chantier-etat"><em class="pastille-bientot">${t('En travaux', 'Under construction')}</em></p>
       <h2 class="chantier-titre" id="chantier-titre">${t('Mon univers se construit', 'My world is being built')}</h2>
       <p class="chantier-texte" id="chantier-texte">${t(
         'Mes <strong class="kw">loisirs</strong> et <strong class="kw">centres d’intérêt</strong> emménagent dans une maison de poupée, pièce par pièce : dessin, équitation, nature, musique… La visite ouvrira bientôt !',

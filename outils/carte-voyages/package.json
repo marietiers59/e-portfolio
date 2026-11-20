@@ -1,0 +1,14 @@
+{
+  "name": "carte-voyages",
+  "private": true,
+  "description": "Carte d'Europe des voyages de Marie Tiers (e-portfolio, #179)",
+  "type": "module",
+  "scripts": { "construire": "node construire.mjs" },
+  "dependencies": {
+    "d3-geo": "^3.1.1",
+    "flag-icons": "^7.6.0",
+    "topojson-client": "^3.1.0",
+    "topojson-simplify": "^3.0.3",
+    "world-atlas": "^2.0.2"
+  }
+}

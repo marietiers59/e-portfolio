@@ -7,6 +7,7 @@
    5. Cartel (étiquette de musée de la pièce ouverte)
    6. Commandes et jeu des indices
    7. Écrans larges, thème sombre, mouvement réduit
+   8. Carte de mes voyages (#179)
    Animation et zoom : scripts/univers.js (variables --rx, --ry, --zoom, --dx, --dy, --ox, --oy, --p).
    ========================================================= */
 
@@ -494,3 +495,63 @@
   .indice.piste { animation: none; border-color: var(--rose-400); border-style: solid; }
 }
 @media print { .univers-commandes, .cartel, .univers-message { display: none !important; } }
+
+/* ---------- 8. Carte de mes voyages (#179) ---------- */
+.cartel-carte { font-weight: 700; white-space: nowrap; }
+.carte-voyages {
+  width: min(calc(100vw - 1rem), 62rem);
+  max-height: calc(100dvh - 1rem);
+  padding: 0;
+  border: none;
+  border-radius: var(--rayon);
+  background: var(--carte);
+  color: var(--encre);
+  box-shadow: var(--ombre-survol);
+}
+.carte-voyages[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.carte-voyages::backdrop { background: hsl(220 30% 12% / 0.55); backdrop-filter: blur(3px); }
+@media (prefers-reduced-motion: no-preference) {
+  .carte-voyages[open] { animation: carte-voyages-ouverture 0.28s ease-out; }
+}
+@keyframes carte-voyages-ouverture { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: none; } }
+.carte-voyages-barre {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.7rem 0.9rem 0.7rem 1.2rem;
+  border-bottom: 1px solid var(--trait);
+}
+.carte-voyages-titre { margin: 0; font-family: var(--police-titre); font-size: 1.15rem; font-weight: 800; color: var(--indigo-700); }
+.carte-voyages-fermer {
+  flex: none;
+  width: 2.5rem; height: 2.5rem;
+  border: 1px solid var(--trait);
+  border-radius: 50%;
+  background: var(--carte);
+  color: var(--encre-douce);
+  font: 400 1.5rem/1 var(--police-interface);
+  cursor: pointer;
+}
+.carte-voyages-fermer:hover { color: var(--encre); border-color: var(--lavande-400); }
+.carte-voyages-corps { overflow: auto; padding: 0.6rem; min-height: 12rem; }
+.carte-voyages-corps svg {                   /* toute la carte à l’écran : largeur bornée par la hauteur disponible (rapport 5:4) */
+  display: block;
+  width: min(100%, calc((100dvh - 9.5rem) * 1.25));
+  height: auto;
+  margin-inline: auto;
+  border-radius: 0.8rem;
+}
+.carte-voyages-attente { margin: 0; padding: 4rem 1rem; text-align: center; color: var(--encre-douce); }
+.carte-voyages-legende { margin: 0; padding: 0.5rem 1.2rem 0.8rem; font-size: 0.85rem; color: var(--encre-douce); }
+.carte-voyages-pastille {
+  display: inline-block; width: 0.9rem; height: 0.9rem; margin-right: 0.3rem;
+  border-radius: 0.2rem; background: hsl(165 34% 74%); vertical-align: -0.1em;
+}
+.cv-drapeau:hover .cv-cadre { stroke: var(--indigo-700); stroke-width: 1.6; }
+/* Thème sombre : mêmes formes, couleurs de nuit (le SVG porte les couleurs du thème clair) */
+:root[data-theme="sombre"] .cv-mer { fill: hsl(212 30% 17%); }
+:root[data-theme="sombre"] .cv-pays { fill: hsl(228 12% 27%); }
+:root[data-theme="sombre"] .cv-visite { fill: hsl(165 22% 38%); }
+:root[data-theme="sombre"] .carte-voyages-pastille { background: hsl(165 22% 38%); }
+:root[data-theme="sombre"] .cv-frontiere { stroke: hsl(228 12% 48%); }
+:root[data-theme="sombre"] :is(.cv-trait, .cv-point) { stroke: hsl(40 24% 85%); fill: hsl(40 24% 85%); }
+:root[data-theme="sombre"] .cv-credit { fill: hsl(220 13% 73%); }
+:root[data-theme="sombre"] .cv-drapeau image { filter: brightness(0.9); }

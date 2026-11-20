@@ -3,3 +3,7 @@
 # Nuage de compétences : fichier intermédiaire (régénéré par outils/nuage-competences/construire.sh)
 outils/nuage-competences/entree.gexf
 outils/nuage-competences/__pycache__/
+
+# Carte des voyages : dépendances installées par npm install (outils/carte-voyages)
+outils/carte-voyages/node_modules/
+outils/carte-voyages/package-lock.json
