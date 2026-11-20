@@ -38,6 +38,9 @@
     // Pied de page : coordonnées et formulaire
     '.pied-coordonnees > *', '.formulaire > *',
   ].join(',');
+  // Groupes : leurs blocs apparaissent et disparaissent ensemble, selon la position du groupe entier
+  // (section Contact : titre, introduction, coordonnées, rideau et formulaire jusqu'au bouton « Envoyer »).
+  const GROUPES = ['.pied-grille'].join(',');
   const DECALAGE_REM = 3;            // amplitude du mouvement vertical
   const DUREE_ENTREE = 1100;         // ms
   const DUREE_SORTIE = 900;          // ms (une sortie un peu plus vive qu'une entrée)
@@ -52,6 +55,7 @@
   /* ----- État ----- */
   let elements = [];
   const etats = new WeakMap();       // élément → { visible, anim }
+  const etatsGroupes = new WeakMap(); // groupe → { visible }
   let fige = false, planifie = false, impression = false, recollecter = false;
 
   const decalage = () => (mouvementReduit.matches ? 0 : DECALAGE_REM * parseFloat(getComputedStyle(racine).fontSize));
@@ -128,11 +132,38 @@
     const zoneHaut = debut ? -Infinity : haut + Math.min(marge, Math.max(0, reste));
     const zoneBas = fin ? Infinity : bas - marge;
 
+    // Décision commune pour chaque groupe, d'après le cadre du groupe entier (jamais animé lui-même)
+    const decisions = new Map();
+    const decider = (groupe) => {
+      if (decisions.has(groupe)) return decisions.get(groupe);
+      const r = groupe.getBoundingClientRect();
+      let g = etatsGroupes.get(groupe);
+      if (!g) { g = { visible: undefined }; etatsGroupes.set(groupe, g); }
+      const dedans = r.top < zoneBas && r.bottom > zoneHaut;
+      if (g.visible === undefined) g.visible = dedans;
+      else if (!g.visible && r.top < zoneBas - HYSTERESIS && r.bottom > zoneHaut + HYSTERESIS) g.visible = true;
+      else if (g.visible && (r.top > zoneBas + HYSTERESIS || r.bottom < zoneHaut - HYSTERESIS)) g.visible = false;
+      const d = { visible: g.visible, retard: null };
+      decisions.set(groupe, d);
+      return d;
+    };
+
     let vague = 0;
     for (const el of elements) {
       const r = el.getBoundingClientRect();
       if (!r.width && !r.height) continue;                      // masqué (filtre, attribut hidden…)
       const e = etats.get(el);
+      const groupe = el.closest(GROUPES);
+      if (groupe) {                                             // membre d'un groupe : tous ensemble, même instant
+        const d = decider(groupe);
+        if (d.visible && e.visible !== true) {
+          if (d.retard === null) d.retard = Math.min(vague++, RETARD_MAX) * RETARD;
+          montrer(el, e, d.retard);
+        } else if (!d.visible && e.visible !== false) {
+          cacher(el, e, e.visible === undefined);
+        }
+        continue;
+      }
       const dy = decalageActuel(el, e);
       const top = r.top - dy, bottom = r.bottom - dy;           // position au repos, sans le mouvement en cours
 
