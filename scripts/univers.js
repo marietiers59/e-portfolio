@@ -4,9 +4,9 @@
    · Zoom « caméra » sur une pièce (écrans ≥ 40em) ; sur téléphone, la pièce vient en haut de l'écran
      et son cartel monte du bas.
    · Cartel : texte recopié depuis .piece-texte ; pastilles d'objets ⇄ liste du cartel.
-   · Jeu des indices : 10 détails trahissent la maquette (trouvés gardés le temps de l'onglet).
+   · Jeu des indices : 11 détails trahissent la maquette (trouvés gardés le temps de l'onglet).
    · Mouvement réduit : ni balancement ni suivi de la souris, changements de vue instantanés.
-   · Grenier : septième pièce, sous le toit ; les étages restent en 3 colonnes.
+   · Grenier sous le toit, deux étages de 3 pièces, salle commune sur tout le rez-de-chaussée (8 pièces).
    · Carte de mes voyages (#179) : SVG chargé à la première ouverture, puis affiché dans un dialogue.
    ========================================================= */
 'use strict';
@@ -230,7 +230,7 @@
     enregistrer();
     afficherCompte();
     let texte = b.dataset.texte;
-    if (nouveau && trouves.size === indices.length) texte += t(' Bravo, les dix indices sont trouvés !', ' Well done, you found all ten clues!');
+    if (nouveau && trouves.size === indices.length) texte += t(' Bravo, les onze indices sont trouvés !', ' Well done, you found all eleven clues!');
     annoncer(texte);
   });
 

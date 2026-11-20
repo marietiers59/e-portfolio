@@ -464,6 +464,7 @@
 @media (min-width: 40em) {
   .maison-pieces { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .maison { --ga: 38%; --gh: 57%; --toit: 100 / 29; }
+  .piece-large { grid-column: 1 / -1; aspect-ratio: 3 / 1; }   /* salle commune : tout le rez-de-chaussée (#187) */
   .univers-scene { padding-block: 5rem 3rem; }
   /* Cartel posé dans la scène, à droite de la pièce agrandie */
   .cartel {

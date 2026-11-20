@@ -23,7 +23,7 @@
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
   <link rel="stylesheet" href="../styles/style.css?v=57">
-  <link rel="stylesheet" href="../styles/univers.css?v=3">
+  <link rel="stylesheet" href="../styles/univers.css?v=4">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -33,7 +33,7 @@
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=6" defer></script>
   <script src="../scripts/contact-eggs.js?v=15" defer></script>
-  <script src="../scripts/univers.js?v=4" defer></script>
+  <script src="../scripts/univers.js?v=5" defer></script>
 </head>
 
 <body id="haut">
@@ -112,7 +112,7 @@
           <!-- Cadre : scène 3D, cartel et message ; le cartel reste hors de la perspective (sinon il ne peut pas se fixer en bas d'écran sur téléphone) -->
           <div class="univers-cadre">
             <div class="univers-scene">
-              <div class="maison" role="group" aria-label="Model of the house, seven rooms">
+              <div class="maison" role="group" aria-label="Model of the house, eight rooms">
                 <div class="maison-toit">
                   <span class="toit-ficelle" aria-hidden="true"></span>
                   <span class="toit-pignon" aria-hidden="true"></span>
@@ -179,21 +179,19 @@
                     <div class="piece-calque">
                       <button class="objet" type="button" data-objet="1" style="--x:30%;--y:52%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The globe</span></button>
                       <button class="objet" type="button" data-objet="2" style="--x:70%;--y:40%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The dictionaries</span></button>
-                      <button class="objet" type="button" data-objet="3" style="--x:52%;--y:74%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The twinning pennant</span></button>
-                      <button class="objet" type="button" data-objet="4" style="--x:48%;--y:24%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Item 4: The language certificates</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:48%;--y:24%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The language certificates</span></button>
                       <button class="indice" type="button" data-indice="cabinet" data-texte="A one-euro coin as big as a painting: the scale gives it away!" style="--x:84%;--y:66%;--r:11%" tabindex="-1"><span class="sr">Look at this detail</span></button>
                     </div>
                     <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The cabinet of curiosities</span><span class="sr">: General knowledge and an open mind</span></button>
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">General knowledge and an open mind</p>
                       <h2 class="cartel-titre" tabindex="-1">The cabinet of curiosities</h2>
-                      <p><strong class="kw">Curious about everything</strong>, I have <strong class="kw">good general knowledge</strong> and a genuinely <strong class="kw">open mind</strong>. <strong class="kw">Learning</strong> is a hobby in itself: I studied <strong class="kw">English</strong>, <strong class="kw">Spanish</strong>, <strong class="kw">German</strong>, <strong class="kw">Dutch</strong> and <strong class="kw">Chinese</strong> in class (at least a year each), taught myself enough <strong class="kw">Italian</strong> to get by when travelling, and spent <strong class="kw">an Erasmus year in Spain</strong>; I speak Spanish fluently. In the community: a member of <strong class="kw"><i lang="fr">Les Amis de Buxton</i></strong> (a France–UK twinning association) since 2024, and formerly of <strong class="kw"><i lang="fr">Latinos en Lille</i></strong>.</p>
+                      <p><strong class="kw">Curious about everything</strong>, I have <strong class="kw">good general knowledge</strong> and a genuinely <strong class="kw">open mind</strong>. <strong class="kw">Learning</strong> is a hobby in itself: I studied <strong class="kw">English</strong>, <strong class="kw">Spanish</strong>, <strong class="kw">German</strong>, <strong class="kw">Dutch</strong> and <strong class="kw">Chinese</strong> in class (at least a year each), taught myself enough <strong class="kw">Italian</strong> to get by when travelling, and spent <strong class="kw">an Erasmus year in Spain</strong>; I speak Spanish fluently.</p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The globe</strong>: a longing to discover other cultures.</span></li>
                         <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The dictionaries</strong>: English, Spanish, German, Dutch and Chinese, plus an Italian phrasebook.</span></li>
-                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The twinning pennant</strong>: <i lang="fr">Les Amis de Buxton</i>, between France and the UK.</span></li>
-                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The language certificates</strong>: Cambridge FCE and CLES 2 (a French university language certificate) in English, DELE B2 in Spanish.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The language certificates</strong>: Cambridge FCE and CLES 2 (a French university language certificate) in English, DELE B2 in Spanish.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -295,6 +293,34 @@
                       </ul>
                     </div>
                   </li>
+                  <li class="piece piece-commune piece-large" data-piece="commune" data-image="" style="--teinte-100:var(--rose-100);--teinte-200:var(--rose-200);--teinte-400:var(--rose-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.3c3.1 0 6 2.2 6 5.7"/></svg><em class="pastille-bientot">Image coming soon</em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:10%;--y:58%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The work-camp suitcase</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:30%;--y:42%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The language-café mugs</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:50%;--y:30%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The greeter badge</span></button>
+                      <button class="objet" type="button" data-objet="4" style="--x:70%;--y:40%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Item 4: The notice board</span></button>
+                      <button class="objet" type="button" data-objet="5" style="--x:90%;--y:56%" tabindex="-1"><span aria-hidden="true">5</span><span class="sr">Item 5: The twinning pennant</span></button>
+                      <button class="indice" type="button" data-indice="commune" data-texte="The stools are corks, and the table is a cheese-box lid!" style="--x:58%;--y:74%;--r:5%" tabindex="-1"><span class="sr">Look at this detail</span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The common room</span><span class="sr">: Volunteering and community</span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre">Volunteering and community</p>
+                      <h2 class="cartel-titre" tabindex="-1">The common room</h2>
+                      <p>Here, the door stays open. <strong class="kw">Volunteer work camps</strong> in France, Germany and England meant so much to me that I went on to <strong class="kw">lead one</strong>: they changed my life. At the University of Lille (<i lang="fr">Cité Scientifique</i> campus), I was a <strong class="kw">tandem tutor</strong> for a year, bringing together students of different nationalities, and an <strong class="kw">English tutor</strong> for the disability support service; that year I <strong class="kw">ran the language cafés</strong>, which I attended for six years. I was also a <strong class="kw">greeter</strong> in Lille, showing visitors around in English, German, Spanish and Dutch. Today, at the <i lang="fr">IUT</i> in Lens: a member of the <strong class="kw"><i lang="fr">BDE</i></strong> (student union), an <strong class="kw">elected member of the <i lang="fr">IUT</i> council</strong> (and of the department council in my first year), and <strong class="kw">coordinator of student eco-delegates</strong> for the University of Artois sustainability and CSR service. In the community: <strong class="kw"><i lang="fr">Les Amis de Buxton</i></strong> (a France–UK twinning association) since 2024, and formerly <strong class="kw"><i lang="fr">Latinos en Lille</i></strong>.</p>
+                      <h3 class="cartel-sous-titre">Things to explore</h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The work-camp suitcase</strong>: volunteer camps in France, Germany and England, one of which I led.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The language-café mugs</strong>: six years of meetings, including one year running them.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The greeter badge</strong>: Lille in English, German, Spanish and Dutch.</span></li>
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The notice board</strong>: student union, <i lang="fr">IUT</i> council and eco-delegates at the <i lang="fr">IUT</i> in Lens.</span></li>
+                        <li data-objet="5"><span class="cartel-num" aria-hidden="true">5</span> <span><strong>The twinning pennant</strong>: <i lang="fr">Les Amis de Buxton</i>, between France and the UK.</span></li>
+                      </ul>
+                    </div>
+                  </li>
                 </ol>
                 <div class="maison-socle">
                   <span class="socle-dessus" aria-hidden="true"></span>
@@ -311,7 +337,7 @@
             <!-- Cartel : étiquette de musée de la pièce ouverte (contenu recopié depuis .piece-texte) -->
             <div class="cartel" id="cartel" role="region" aria-label="Room label" hidden>
               <button class="cartel-fermer" type="button" aria-label="Back to the overview">×</button>
-              <p class="cartel-position" data-modele="Room {i} of 7"></p>
+              <p class="cartel-position" data-modele="Room {i} of 8"></p>
               <div class="cartel-contenu"></div>
             </div>
             <p class="univers-message" role="status" aria-live="polite"></p>
@@ -325,7 +351,7 @@
               <button class="univers-bouton" type="button" data-action="pause" aria-pressed="false"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg><span>Pause</span></button>
             </div>
             <div class="univers-groupe univers-jeu" role="group" aria-labelledby="jeu-titre">
-              <p class="univers-jeu-texte" id="jeu-titre"><strong>The clue game</strong>: this set is a model, and ten details give it away. <span class="univers-compteur"><span data-trouves>0</span> / 10 found</span></p>
+              <p class="univers-jeu-texte" id="jeu-titre"><strong>The clue game</strong>: this set is a model, and eleven details give it away. <span class="univers-compteur"><span data-trouves>0</span> / 11 found</span></p>
               <button class="univers-bouton" type="button" data-action="indice"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span>A clue</span></button>
               <button class="univers-bouton" type="button" data-action="reponses"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span>The answers</span></button>
               <button class="univers-bouton" type="button" data-action="zero"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4v6h6"/><path d="M4.8 15a8 8 0 1 0 1.6-8.4L4 10"/></svg><span>Reset everything</span></button>
