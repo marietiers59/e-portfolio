@@ -7,6 +7,7 @@
    · Jeu des indices : 10 détails trahissent la maquette (trouvés gardés le temps de l'onglet).
    · Mouvement réduit : ni balancement ni suivi de la souris, changements de vue instantanés.
    · Grenier : septième pièce, sous le toit ; les étages restent en 3 colonnes.
+   · Carte de mes voyages (#179) : SVG chargé à la première ouverture, puis affiché dans un dialogue.
    ========================================================= */
 'use strict';
 
@@ -287,6 +288,36 @@
       default: break;
     }
   });
+
+  /* ----- Carte de mes voyages (#179) ----- */
+  // Le lien mène au fichier SVG (repli sans JavaScript) ; ici, la carte est insérée dans la page
+  // pour suivre le thème clair ou sombre, puis montrée dans un dialogue (×, Échap, clic sur le voile).
+  const dialogueCarte = document.querySelector('.carte-voyages');
+  if (dialogueCarte && typeof dialogueCarte.showModal === 'function') {
+    const corps = dialogueCarte.querySelector('.carte-voyages-corps');
+    let chargee = false;
+    async function charger() {
+      if (chargee) return;
+      try {
+        const reponse = await fetch(corps.dataset.source);
+        if (!reponse.ok) throw new Error(String(reponse.status));
+        corps.innerHTML = await reponse.text();
+        chargee = true;
+      } catch (e) {
+        corps.innerHTML = `<p class="carte-voyages-attente"><a href="${corps.dataset.source}">${t('Ouvrir la carte', 'Open the map')}</a></p>`;
+      }
+    }
+    document.addEventListener('click', (e) => {
+      const lien = e.target.closest('[data-carte-voyages]');
+      if (!lien || e.ctrlKey || e.metaKey || e.shiftKey || e.button > 0) return;
+      e.preventDefault();
+      dialogueCarte.showModal();
+      charger();
+    });
+    dialogueCarte.addEventListener('click', (e) => {
+      if (e.target === dialogueCarte || e.target.closest('.carte-voyages-fermer')) dialogueCarte.close();
+    });
+  }
 
   /* ----- Redimensionnement, visibilité, préférences ----- */
   new ResizeObserver(() => {

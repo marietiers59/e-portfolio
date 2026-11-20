@@ -23,7 +23,7 @@
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
   <link rel="stylesheet" href="../styles/style.css?v=57">
-  <link rel="stylesheet" href="../styles/univers.css?v=2">
+  <link rel="stylesheet" href="../styles/univers.css?v=3">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('../index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
@@ -33,7 +33,7 @@
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=6" defer></script>
   <script src="../scripts/contact-eggs.js?v=15" defer></script>
-  <script src="../scripts/univers.js?v=2" defer></script>
+  <script src="../scripts/univers.js?v=3" defer></script>
 </head>
 
 <body id="haut">
@@ -265,7 +265,7 @@
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>La carte annotée</strong> : souvenir de la mission de cartographie.</span></li>
                         <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les jumelles et la loupe</strong> : le matériel de la naturaliste.</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le sac à dos</strong> : toujours prêt pour le départ.</span></li>
-                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>La carte de mes voyages</strong> : Allemagne, Andorre, Angleterre, Autriche, Belgique, Danemark, Espagne, Finlande, Hongrie, Irlande, Lettonie, Luxembourg, Monaco, Pays-Bas, Portugal, République tchèque, Slovaquie, Suisse et Vatican, sans oublier Jersey et Gibraltar.</span></li>
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>La carte de mes voyages</strong> : <a class="cartel-carte" href="../medias/carte-voyages.svg" data-carte-voyages>voir la carte</a> · Allemagne, Andorre, Angleterre, Autriche, Belgique, Danemark, Espagne, Finlande, Hongrie, Irlande, Lettonie, Luxembourg, Monaco, Pays-Bas, Portugal, République tchèque, Slovaquie, Suisse et Vatican, sans oublier Jersey et Gibraltar.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -330,6 +330,16 @@
             </div>
           </div>
         </div>
+
+        <!-- Carte de mes voyages (#179) : medias/carte-voyages.svg, régénérée par outils/carte-voyages/construire.mjs -->
+        <dialog class="carte-voyages" aria-labelledby="carte-voyages-titre">
+          <div class="carte-voyages-barre">
+            <h2 class="carte-voyages-titre" id="carte-voyages-titre">La carte de mes voyages</h2>
+            <button class="carte-voyages-fermer" type="button" aria-label="Fermer la carte">×</button>
+          </div>
+          <div class="carte-voyages-corps" data-source="../medias/carte-voyages.svg"><p class="carte-voyages-attente">Chargement de la carte…</p></div>
+          <p class="carte-voyages-legende"><span class="carte-voyages-pastille" aria-hidden="true"></span> 22 pays et territoires visités · fond <a href="https://www.naturalearthdata.com">Natural Earth</a>, drapeaux <a href="https://github.com/lipis/flag-icons"><i lang="en">flag-icons</i></a></p>
+        </dialog>
       </div>
     </section>
   </main>
@@ -410,7 +420,8 @@
         Vignettes des projets : illustrations générées par IA, ou captures d'écran de mes propres projets<br>
         Images provisoires des projets bientôt en ligne : <a href="https://picsum.photos">Lorem Picsum</a><br>
         Logos des technologies : <a href="https://simpleicons.org">Simple Icons</a> (CC0), marques de leurs propriétaires ; pictogrammes dessinés pour le site<br>
-        Carte de la zone de recherche : fond © contributeurs <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, communes situées avec <a href="https://nominatim.org">Nominatim</a>, image composée avec Pillow et NumPy
+        Carte de la zone de recherche : fond © contributeurs <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, communes situées avec <a href="https://nominatim.org">Nominatim</a>, image composée avec Pillow et NumPy<br>
+        Carte de mes voyages : fond <a href="https://www.naturalearthdata.com">Natural Earth</a> (domaine public) via <i lang="en">world-atlas</i>, drapeaux <a href="https://github.com/lipis/flag-icons"><i lang="en">flag-icons</i></a> (licence MIT), carte composée avec d3-geo
         <strong class="sources-groupe">Contenus</strong>
         Compétences et notions : programme national du BUT informatique<br>
         Projets d'équipe : menés avec mes coéquipières et coéquipiers, nommés dans chaque dépôt ; base du jeu <i lang="en">Space Invaders</i> fournie par l'IUT de Lens<br>
