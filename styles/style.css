@@ -2914,6 +2914,7 @@ html.apparition-attente :is(.une, body > main, body > footer) { opacity: 0; }
 .visite-en-haut [data-infobulle]::after { bottom: auto; top: calc(100% + 0.5rem); transform: translateY(-0.25rem); }
 [data-bulle="debut"]::after { left: 0; translate: 0 0; }
 [data-bulle="fin"]::after   { left: auto; right: 0; translate: 0 0; }
+[data-bulle="bas-debut"]::after { bottom: auto; top: calc(100% + 0.5rem); left: 0; translate: 0 0; transform: translateY(-0.25rem); }   /* sous le bouton, aligné à gauche (thème) */
 
 /* Bouton de lancement : icône dans la barre du haut */
 .visite-lancer[hidden] { display: none; }

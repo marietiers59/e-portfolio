@@ -849,10 +849,11 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     const jusqua = bascule ?? maintenant + 6 * 36e5;       // nuit ou jour polaire : on revérifie dans 6 h
     ecrire('theme-soleil', themeSoleil);
     ecrire('theme-soleil-jusqua', String(jusqua));          // lu par le script du <head> des autres pages
-    // Un ancien choix au bouton, sans date de fin, ne vaut plus que jusqu'à la prochaine bascule
-    if (lire('theme') && !lire('theme-jusqua')) ecrire('theme-jusqua', String(jusqua));
+    // Un ancien choix au bouton, fait sans le soleil (donc sans date de fin), cède la place au soleil (#210)
+    if (lire('theme') && !lire('theme-jusqua')) ecrire('theme', null);
     const cible = choixMemorise() ?? themeSoleil;
     if (racine.dataset.theme !== cible) appliquer(cible, true);
+    expliquer();
     // setTimeout plafonné à 6 h ; à la sortie de veille, « visibilitychange » relance le calcul
     minuterie = setTimeout(suivreSoleil, Math.min(jusqua - maintenant + 1000, 6 * 36e5));
   };
@@ -861,7 +862,34 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     position = null;
     clearTimeout(minuterie);
     ['soleil-position', 'theme-soleil', 'theme-soleil-jusqua'].forEach((cle) => ecrire(cle, null));
+    expliquer();
   };
+
+  // Infobulle du bouton : dit si le thème suit le soleil, et jusqu'à quelle heure (#210)
+  const anglais = racine.lang.startsWith('en');
+  const heure = (t) => {
+    const d = new Date(t);
+    return anglais
+      ? d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true })
+      : `${d.getHours()}\u00A0h\u00A0${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+  function expliquer() {
+    if (!bouton) return;
+    const sombre = racine.dataset.theme === 'sombre';
+    let texte = anglais ? 'Light or dark theme' : 'Thème clair ou sombre';
+    if (position) {
+      const manuel = choixMemorise();
+      const jusqua = Number(lire(manuel ? 'theme-jusqua' : 'theme-soleil-jusqua'));
+      const nom = anglais ? (sombre ? 'dark' : 'light') : (sombre ? 'sombre' : 'clair');
+      if (jusqua) {
+        texte = manuel
+          ? (anglais ? `Your choice: ${nom} until ${heure(jusqua)}, then the sun takes over` : `Votre choix : ${nom} jusqu'à ${heure(jusqua)}, puis le soleil reprend la main`)
+          : (anglais ? `Follows the sun: ${nom} until ${heure(jusqua)}` : `Au rythme du soleil : ${nom} jusqu'à ${heure(jusqua)}`);
+      }
+    }
+    bouton.dataset.infobulle = texte;
+    bouton.dataset.bulle = 'bas-debut';
+  }
 
   // Demande de localisation dès l'arrivée sur le site (une fois par session tant que le visiteur n'a pas répondu)
   const localiser = async () => {
@@ -896,6 +924,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   };
 
   appliquer(racine.dataset.theme === 'sombre' ? 'sombre' : 'clair', false);
+  expliquer();
   localiser();
   document.addEventListener('visibilitychange', () => { if (!document.hidden) suivreSoleil(); });
 
@@ -908,6 +937,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       // Avec le soleil, le choix au bouton vaut jusqu'au prochain lever ou coucher ; sans, il est gardé
       if (position) ecrire('theme-jusqua', String(prochaineBascule(Date.now(), position) ?? Date.now() + 6 * 36e5));
       else ecrire('theme-jusqua', null);
+      expliquer();
       // Juste après le clic, la pastille va jusqu'au bout de l'interrupteur, même si la souris est encore dessus
       bouton.classList.add('vient-de-basculer');
     });
