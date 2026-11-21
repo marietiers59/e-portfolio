@@ -18,3 +18,4 @@ python3 nuage.py graphe
 java -Djava.awt.headless=true -Dstdout.encoding=UTF-8 -cp "$JAR" Spatialiser.java entree.gexf ../../medias/nuage-competences.gexf 2>&1 \
   | grep -v -E '^(Picked up|[A-Z][a-z]{2} [0-9]{2}, |INFO:|WARNING:)' || true
 python3 nuage.py rendu
+node ../pages/construire.mjs

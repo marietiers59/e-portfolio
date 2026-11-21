@@ -5,20 +5,18 @@ Nuage de compétences façon Gephi.
   python3 nuage.py graphe   → entree.gexf (nœuds, liens, tailles, positions de départ)
   java … Spatialiser.java   → ../../medias/nuage-competences.gexf (Gephi : modularité + ForceAtlas2)
   python3 nuage.py rendu    → fragments FR et EN dans modeles/fragments/ (nuage-*.fr.html, nuage-*.en.html),
-                              pages Compétences et Skills régénérées (outils/pages/construire.mjs),
+                              à reporter dans les pages : node outils/pages/construire.mjs,
                               + medias/nuage-competences.svg (image seule)
 
 construire.sh enchaîne les trois étapes.
 """
-import html
 import math
 import random
-import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from donnees import BUT, BUT_LONG, NOTIONS, OUTILS, PROJETS
+from donnees import BUT, NOTIONS, OUTILS, PROJETS
 
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parent.parent

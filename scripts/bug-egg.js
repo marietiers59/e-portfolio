@@ -27,7 +27,7 @@
   const couche = boite.parentElement;   // l'étape de la timeline, qui sert de repère
 
   let dejaAttrapee = false;
-  try { dejaAttrapee = sessionStorage.getItem("bug-egg") === "attrapee"; } catch (e) {}
+  try { dejaAttrapee = sessionStorage.getItem("bug-egg") === "attrapee"; } catch { /* stockage indisponible : la coccinelle peut revenir */ }
   if (dejaAttrapee && !MODE_TEST) return;
   if (MODE_TEST) console.info("[bug-egg] Mode test actif : la coccinelle va apparaître.");
 
@@ -139,7 +139,7 @@
     if (MODE_TEST) {
       console.info("[bug-egg] Capture réussie (non comptée).");
     } else {
-      try { sessionStorage.setItem("bug-egg", "attrapee"); } catch (e) {}
+      try { sessionStorage.setItem("bug-egg", "attrapee"); } catch { /* stockage indisponible : rien à mémoriser */ }
       if (window.goatcounter && typeof window.goatcounter.count === "function") {
         window.goatcounter.count({ path: "easter-egg-bug", title: "Coccinelle attrapée", event: true });
       }

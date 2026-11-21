@@ -91,12 +91,34 @@
   ];
 
   /* ---------- Outils ---------- */
-  const simplifier = (texte) => texte
+  // Ponctuation et espaces finaux ignorés : une boucle plutôt qu'une expression régulière
+  // en « …+$ », dont le temps d'exécution peut exploser sur un long texte (S5852)
+  const FINALE = /[\s.!?…]/u;
+  const sansFinale = (texte) => {
+    let fin = texte.length;
+    while (fin > 0 && FINALE.test(texte[fin - 1])) {
+      fin -= 1;
+    }
+    return texte.slice(0, fin);
+  };
+  const simplifier = (texte) => sansFinale(texte
     .normalize('NFD').replace(/\p{M}/gu, '')       // sans accents
-    .toLowerCase()
-    .replace(/[\s.!?…]+$/u, '')                    // ponctuation finale ignorée
+    .toLowerCase())
     .replace(/^\s+/u, '')
     .replace(/\s+/gu, ' ');
+
+  /** Nombre au hasard dans [0, 1[, comme Math.random(), mais tiré par le générateur du navigateur
+      (crypto.getRandomValues) : aucun usage sensible ici, simple hasard des animations et des surprises. */
+  const tirages = new Uint32Array(64);
+  let tiragesRestants = 0;
+  function hasard() {
+    if (tiragesRestants === 0) {
+      crypto.getRandomValues(tirages);
+      tiragesRestants = tirages.length;
+    }
+    tiragesRestants -= 1;
+    return tirages[tiragesRestants] / 4294967296;     // 2³², pour rester strictement sous 1
+  }
 
   const compter = (chemin, titre) => {
     if (MODE_TEST || compter[chemin]) return;      // une fois par page vue
@@ -331,11 +353,11 @@
     cendres.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < 45; i++) {
       const c = document.createElement('span');
-      const taille = 2 + Math.random() * 4;
+      const taille = 2 + hasard() * 4;
       c.className = 'st-cendre';
-      c.style.cssText = `left:${Math.random() * 100}%;width:${taille}px;height:${taille}px;`
-        + `--dx:${(Math.random() - 0.5) * 30}vw;animation-duration:${9 + Math.random() * 10}s;`
-        + `animation-delay:${-Math.random() * 18}s;opacity:${0.35 + Math.random() * 0.6}`;
+      c.style.cssText = `left:${hasard() * 100}%;width:${taille}px;height:${taille}px;`
+        + `--dx:${(hasard() - 0.5) * 30}vw;animation-duration:${9 + hasard() * 10}s;`
+        + `animation-delay:${-hasard() * 18}s;opacity:${0.35 + hasard() * 0.6}`;
       cendres.append(c);
     }
     document.body.append(cendres);
@@ -351,7 +373,7 @@
       const roule = de.animate(
         [{ rotate: '0deg', scale: 1 }, { rotate: '540deg', scale: 1.25, offset: 0.45 }, { rotate: '1080deg', scale: 1 }],
         { duration: 1300, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' });
-      const defile = setInterval(() => { chiffre.textContent = String(2 + Math.floor(Math.random() * 19)); }, 70);
+      const defile = setInterval(() => { chiffre.textContent = String(2 + Math.floor(hasard() * 19)); }, 70);
       await roule.finished.catch(() => {});
       clearInterval(defile);
     }
@@ -365,16 +387,16 @@
       const L = innerWidth, H = innerHeight, pas = Math.max(L / 14, 28);
       const zigzag = (x, y, longueur, pente) => {
         let d = `M ${x.toFixed(0)} ${y.toFixed(0)}`; const points = [];
-        for (let fait = 0; fait < longueur; fait += pas * (0.5 + Math.random())) {
-          x += pas * (0.5 + Math.random()); y += pente * pas + (Math.random() - 0.5) * pas * 0.9;
+        for (let fait = 0; fait < longueur; fait += pas * (0.5 + hasard())) {
+          x += pas * (0.5 + hasard()); y += pente * pas + (hasard() - 0.5) * pas * 0.9;
           d += ` L ${x.toFixed(0)} ${y.toFixed(0)}`; points.push([x, y]);
         }
         return { d, points };
       };
-      const tronc = zigzag(-10, H * (0.25 + Math.random() * 0.2), L + 20, 0.25);
+      const tronc = zigzag(-10, H * (0.25 + hasard() * 0.2), L + 20, 0.25);
       const eclats = [0.35, 0.65].map((t) => {
         const [x, y] = tronc.points[Math.floor(tronc.points.length * t)];
-        return zigzag(x, y, L * 0.12, Math.random() < 0.5 ? -0.9 : 0.9).d;
+        return zigzag(x, y, L * 0.12, hasard() < 0.5 ? -0.9 : 0.9).d;
       });
       const fissure = voile('st-fissure', `<svg viewBox="0 0 ${L} ${H}">`
         + [tronc.d, ...eclats].map((d) => `<path d="${d}"/>`).join('') + '</svg>');
@@ -510,7 +532,7 @@
   };
 
   const nouvelAlien = (x, y) => {
-    const n = Math.floor(Math.random() * SPRITES.length);
+    const n = Math.floor(hasard() * SPRITES.length);
     const [i1, i2] = SPRITES[n];
     const l = i1[0].length, h = i1.length;
     const el = document.createElement('div');
@@ -526,9 +548,9 @@
   };
 
   const apparaitre = () => {
-    const depuisCote = Math.random() < 0.3;
-    const x = depuisCote ? (Math.random() < 0.5 ? -40 : innerWidth + 10) : Math.random() * innerWidth;
-    const y = depuisCote ? Math.random() * innerHeight * 0.6 : -30;
+    const depuisCote = hasard() < 0.3;
+    const x = depuisCote ? (hasard() < 0.5 ? -40 : innerWidth + 10) : hasard() * innerWidth;
+    const y = depuisCote ? hasard() * innerHeight * 0.6 : -30;
     return nouvelAlien(x, y);
   };
 
@@ -560,7 +582,7 @@
 
   const mordre = (alien, cible, r) => {
     const x = alien.x + alien.l / 2 - r.left, y = alien.y + alien.h / 2 - r.top;
-    cible.morsures.push(`radial-gradient(circle at ${x.toFixed(0)}px ${y.toFixed(0)}px, transparent ${10 + Math.random() * 8}px, #000 0)`);
+    cible.morsures.push(`radial-gradient(circle at ${x.toFixed(0)}px ${y.toFixed(0)}px, transparent ${10 + hasard() * 8}px, #000 0)`);
     cible.el.style.maskImage = cible.morsures.join(',');
     cible.el.style.webkitMaskImage = cible.el.style.maskImage;
     cible.el.style.maskComposite = 'intersect';
@@ -569,10 +591,10 @@
       cible.mangee = true;
       cible.el.style.visibility = 'hidden';               // digéré ; la mise en page ne bouge pas
     }
-    alien.ox = Math.random(); alien.oy = Math.random();    // la bouchée suivante, ailleurs sur l'élément
+    alien.ox = hasard(); alien.oy = hasard();    // la bouchée suivante, ailleurs sur l'élément
   };
 
-  const choisirCible = (alien) => {
+  const choisirCible = () => {
     // Garde-fou : une cible devenue invisible ou sortie de la page compte comme mangée.
     zerg.cibles.forEach((c) => {
       const r = c.el.getBoundingClientRect();
@@ -581,7 +603,7 @@
     const restantes = zerg.cibles.filter((c) => !c.mangee && c.apres.every((d) => d.mangee));
     if (!restantes.length) return null;
     const charge = (c) => zerg.aliens.filter((a) => a.cible === c).length;
-    restantes.sort((a, b) => charge(a) - charge(b) || Math.random() - 0.5);
+    restantes.sort((a, b) => charge(a) - charge(b) || hasard() - 0.5);
     return restantes[0];
   };
 
@@ -616,13 +638,13 @@
       if (a.etat === 'gg') { [cx, cy] = a.place; vitesse = 650; }
       else if (a.etat === 'part') { cx = a.x; cy = -80; vitesse = 260; }
       else {
-        if (!a.cible || a.cible.mangee) { a.cible = choisirCible(a); a.ox = Math.random(); a.oy = Math.random(); a.etat = 'va'; }
+        if (!a.cible || a.cible.mangee) { a.cible = choisirCible(); a.ox = hasard(); a.oy = hasard(); a.etat = 'va'; }
         if (!a.cible) continue;
         const r = a.cible.el.getBoundingClientRect();
         cx = r.left + a.ox * r.width - a.l / 2; cy = r.top + a.oy * r.height - a.h / 2;
         if (a.etat === 'mange' && t >= a.prochaineMorsure) {
           mordre(a, a.cible, r);
-          a.prochaineMorsure = t + 300 + Math.random() * 150;
+          a.prochaineMorsure = t + 300 + hasard() * 150;
         }
       }
       const dx = cx - a.x, dy = cy - a.y, d = Math.hypot(dx, dy);
@@ -798,11 +820,11 @@
     document.body.append(zoneMagie);
     for (let i = 0; i < 40; i++) {
       const p = document.createElement('span');
-      const fumee = i % 2 === 0, taille = fumee ? 8 + Math.random() * 12 : 1 + Math.random() * 2.5;
+      const fumee = i % 2 === 0, taille = fumee ? 8 + hasard() * 12 : 1 + hasard() * 2.5;
       p.className = fumee ? 'mg-fumee' : 'mg-bulle';
-      p.style.cssText = `left:${Math.random() * 100}%;bottom:-${taille}${fumee ? 'vmin' : 'rem'};`
+      p.style.cssText = `left:${hasard() * 100}%;bottom:-${taille}${fumee ? 'vmin' : 'rem'};`
         + `width:${taille}${fumee ? 'vmin' : 'rem'};height:${taille}${fumee ? 'vmin' : 'rem'};`
-        + `--dx:${(Math.random() - 0.5) * 30}vw;--s:${fumee ? 1.6 : 1};--duree:${3 + Math.random() * 3}s;--delai:${Math.random() * 1.2}s`;
+        + `--dx:${(hasard() - 0.5) * 30}vw;--s:${fumee ? 1.6 : 1};--duree:${3 + hasard() * 3}s;--delai:${hasard() * 1.2}s`;
       p.addEventListener('animationend', () => p.remove());
       zoneMagie.append(p);
     }
@@ -824,24 +846,24 @@
       if (m.actif) return;
       m.actif = true;
       elementsVisibles().forEach((el, i) => {
-        const h = 40 + Math.random() * 90, monte = `0 ${-h}px`;
+        const h = 40 + hasard() * 90, monte = `0 ${-h}px`;
         const envol = el.animate([{ translate: '0 0' }, { translate: monte }],
           { duration: 1600, delay: i * 45, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'forwards' });
         animsMagie.push(envol);
         envol.finished.then(() => {                // puis il flotte doucement
           if (!m.actif) return;
           animsMagie.push(el.animate([{ translate: monte }, { translate: `0 ${-h - 10}px` }],
-            { duration: 1400 + Math.random() * 900, direction: 'alternate', iterations: Infinity, easing: 'ease-in-out', fill: 'forwards' }));
+            { duration: 1400 + hasard() * 900, direction: 'alternate', iterations: Infinity, easing: 'ease-in-out', fill: 'forwards' }));
         }).catch(() => {});
       });
     } else {
       m.actif = true;
       // Chaque clic : un élément pas encore déplacé monte, hésite, puis retombe de travers.
       const libres = elementsVisibles().filter((el) => !el.dataset.mgForce);
-      const el = libres[Math.floor(Math.random() * libres.length)];
+      const el = libres[Math.floor(hasard() * libres.length)];
       if (!el) return;
       el.dataset.mgForce = '1';
-      const dx = (Math.random() - 0.5) * 80, dy = 10 + Math.random() * 25, r = (Math.random() < 0.5 ? -1 : 1) * (4 + Math.random() * 8);
+      const dx = (hasard() - 0.5) * 80, dy = 10 + hasard() * 25, r = (hasard() < 0.5 ? -1 : 1) * (4 + hasard() * 8);
       animsMagie.push(el.animate([
         { translate: '0 0', rotate: '0deg', easing: 'cubic-bezier(0.2, 0.8, 0.3, 1)' },
         { translate: '0 -90px', rotate: '-2deg', offset: 0.4, easing: 'ease-in-out' },
@@ -944,11 +966,11 @@
         frictionAir: flottant ? 0.004 : 0.01, chamfer: { radius: 4 },
       });
       if (flottant) {
-        M.Body.setVelocity(corps, { x: (Math.random() - 0.5) * 3, y: (Math.random() - 0.5) * 3 });
-        M.Body.setAngularVelocity(corps, (Math.random() - 0.5) * 0.02);
+        M.Body.setVelocity(corps, { x: (hasard() - 0.5) * 3, y: (hasard() - 0.5) * 3 });
+        M.Body.setAngularVelocity(corps, (hasard() - 0.5) * 0.02);
       } else {                                      // une pichenette : les morceaux basculent en tombant
-        M.Body.setVelocity(corps, { x: (Math.random() - 0.5) * 4, y: -1 - Math.random() * 3 });
-        M.Body.setAngularVelocity(corps, (Math.random() - 0.5) * 0.06);
+        M.Body.setVelocity(corps, { x: (hasard() - 0.5) * 4, y: -1 - hasard() * 3 });
+        M.Body.setAngularVelocity(corps, (hasard() - 0.5) * 0.06);
       }
       el.style.transformOrigin = 'center';
       el.style.willChange = 'translate, rotate';
@@ -1050,13 +1072,13 @@
 
   // Une rangée de stalactites (pointes de glace de longueurs variées) et une couche de neige en vagues.
   const svgStalactites = (largeur) => {
-    let x = 2 + Math.random() * 6, d = '', reflets = '', bas = 0;
+    let x = 2 + hasard() * 6, d = '', reflets = '', bas = 0;
     while (x < largeur - 6) {
-      const l = 3 + Math.random() * 6, h = 6 + Math.random() ** 2 * 30;
+      const l = 3 + hasard() * 6, h = 6 + hasard() ** 2 * 30;
       d += `M${x.toFixed(1)} 0 L${(x + l / 2).toFixed(1)} ${h.toFixed(1)} L${(x + l).toFixed(1)} 0 Z `;
       reflets += `M${(x + l * 0.3).toFixed(1)} 1 L${(x + l * 0.45).toFixed(1)} ${(h * 0.7).toFixed(1)} `;
       bas = Math.max(bas, h);
-      x += l + Math.random() * 12;
+      x += l + hasard() * 12;
     }
     return { hauteur: Math.ceil(bas) + 2, svg: `<defs><linearGradient id="ng-glace" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#f4fbff" stop-opacity="0.95"/><stop offset="1" stop-color="#9fd3f5" stop-opacity="0.55"/></linearGradient></defs>
@@ -1064,7 +1086,7 @@
   };
   const svgChapeau = (largeur) => {
     let d = `M0 10 `;
-    for (let x = 0; x <= largeur; x += 10 + Math.random() * 14) d += `Q${(x + 6).toFixed(1)} ${(1 + Math.random() * 4).toFixed(1)} ${(x + 12).toFixed(1)} ${(4 + Math.random() * 3).toFixed(1)} `;
+    for (let x = 0; x <= largeur; x += 10 + hasard() * 14) d += `Q${(x + 6).toFixed(1)} ${(1 + hasard() * 4).toFixed(1)} ${(x + 12).toFixed(1)} ${(4 + hasard() * 3).toFixed(1)} `;
     return `<path d="${d} L${largeur} 10 Z" fill="#fdfeff" stroke="#d9ecf8" stroke-width="0.8"/>`;
   };
 
@@ -1089,13 +1111,13 @@
       const glace = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       glace.setAttribute('class', 'ng-glace ng-stalactites');
       glace.setAttribute('width', r.width); glace.setAttribute('height', hauteur);
-      glace.style.cssText = `left:${x}px;top:${y + r.height - 1}px;--duree:${8 + Math.random() * 8}s;--delai:${2 + i * 0.3 + Math.random() * 3}s`;
+      glace.style.cssText = `left:${x}px;top:${y + r.height - 1}px;--duree:${8 + hasard() * 8}s;--delai:${2 + i * 0.3 + hasard() * 3}s`;
       glace.innerHTML = svg;
       const chapeau = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       chapeau.setAttribute('class', 'ng-glace ng-chapeau');
       chapeau.setAttribute('width', r.width); chapeau.setAttribute('height', 10);
       chapeau.setAttribute('viewBox', `0 0 ${r.width} 10`);
-      chapeau.style.cssText = `left:${x}px;top:${y - 8}px;--delai:${1 + Math.random() * 4}s`;
+      chapeau.style.cssText = `left:${x}px;top:${y - 8}px;--delai:${1 + hasard() * 4}s`;
       chapeau.innerHTML = svgChapeau(r.width);
       calque.append(glace, chapeau);
     });
@@ -1109,8 +1131,8 @@
     fond.addColorStop(0, 'rgba(232, 242, 250, 0.55)'); fond.addColorStop(1, 'rgba(240, 248, 255, 0.95)');
     ctx.fillStyle = fond; ctx.fillRect(0, 0, w, h);
     for (let i = 0; i < (w * h) / 900; i++) {   // grain du givre
-      ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5})`;
-      ctx.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2, 1 + Math.random() * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${hasard() * 0.5})`;
+      ctx.fillRect(hasard() * w, hasard() * h, 1 + hasard() * 2, 1 + hasard() * 2);
     }
   };
 
@@ -1167,8 +1189,8 @@
     if (flocons) {
       const ctx = flocons.getContext('2d');
       const liste = Array.from({ length: Math.round(innerWidth / 8) }, () => ({
-        x: Math.random() * innerWidth, y: Math.random() * innerHeight, r: 1 + Math.random() * 3,
-        v: 25 + Math.random() * 55, phase: Math.random() * 6.3, o: 0.5 + Math.random() * 0.5,
+        x: hasard() * innerWidth, y: hasard() * innerHeight, r: 1 + hasard() * 3,
+        v: 25 + hasard() * 55, phase: hasard() * 6.3, o: 0.5 + hasard() * 0.5,
       }));
       let avant = performance.now();
       const tomber = (t) => {
@@ -1177,7 +1199,7 @@
         ctx.clearRect(0, 0, innerWidth, innerHeight);
         for (const f of liste) {
           f.y += f.v * dt * (0.6 + f.r / 4); f.x += Math.sin(t / 900 + f.phase) * 12 * dt;
-          if (f.y > innerHeight + 5) { f.y = -5; f.x = Math.random() * innerWidth; }
+          if (f.y > innerHeight + 5) { f.y = -5; f.x = hasard() * innerWidth; }
           ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255, 255, 255, ${f.o})`; ctx.shadowColor = 'rgba(70, 115, 160, 0.85)'; ctx.shadowBlur = 3;
           ctx.fill();

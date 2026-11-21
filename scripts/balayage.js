@@ -159,7 +159,12 @@
     else suivre(0, 'transform 180ms ease-out, opacity 180ms ease-out');
   }
   document.addEventListener('touchend', finir);
-  document.addEventListener('touchcancel', () => { if (etat === 'horizontal') suivre(0, 'transform 180ms ease-out'); etat = null; });
+  document.addEventListener('touchcancel', () => {
+    if (etat === 'horizontal') {
+      suivre(0, 'transform 180ms ease-out');
+    }
+    etat = null;
+  });
 
   // Retour par l'historique (cache du navigateur) : la page revient en place
   window.addEventListener('pageshow', (e) => { if (e.persisted) suivre(0); });

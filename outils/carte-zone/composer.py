@@ -1,7 +1,7 @@
 """Carte de la zone de recherche de stage : fond CARTO (OpenStreetMap) + zone « amibe » à bord diffus."""
 import json, math, sys
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
 DOSSIER = sys.argv[1]
 SORTIE = sys.argv[2]

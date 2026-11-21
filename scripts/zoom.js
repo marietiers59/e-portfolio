@@ -60,7 +60,7 @@
 
   const pourcent = (i) => {
     const p = Math.round(FACTEURS[i] * 100);
-    return anglais ? `${p}%` : `${p} %`;
+    return anglais ? `${p}%` : `${p}\u202f%`;   // espace fine insécable avant % en français
   };
 
   /* ----- Appliquer un niveau, en gardant sous les yeux ce qu'on regardait ----- */

@@ -258,7 +258,7 @@
   }
 
   /* ----- Voile et panneau de commande (créés une fois, au premier lancement) ----- */
-  let racine, voile, panneau, message, titre, texte, compteur, barreProgression, select, boutons;
+  let racine, voile, panneau, titre, texte, compteur, barreProgression, select, boutons;
 
   function construire() {
     racine = document.createElement('div');
@@ -304,7 +304,6 @@
 
     voile = racine.querySelector('.visite-voile');
     panneau = racine.querySelector('.visite-panneau');
-    message = racine.querySelector('.visite-message');
     titre = racine.querySelector('.visite-titre');
     texte = racine.querySelector('.visite-texte');
     compteur = racine.querySelector('.visite-compteur');

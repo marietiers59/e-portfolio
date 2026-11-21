@@ -119,7 +119,7 @@ ouvrir <http://localhost:8000>.
 - **Pages bilingues** : on modifie le modèle dans `modeles/`, jamais la page publiée, puis on régénère
   avec `node outils/pages/construire.mjs`. Une page publiée qui ne correspond plus à son modèle est
   refusée par le *hook* `pre-commit` et par la vérification GitHub de chaque *merge request*.
-- **Tests automatisés** : 48 tests de bout en bout avec Playwright (rideau, thème, zoom, liens des
+- **Tests automatisés** : 53 tests de bout en bout avec Playwright (rideau, thème, zoom, liens des
   17 pages, smartphone), lancés par `npm test` et sur chaque *merge request* ; couverture des scripts
   dans `couverture/lcov.info`, lisible par SonarQube (`sonar-project.properties`).
 - **Relecture** : Marie Tiers est l'unique relectrice et propriétaire du code (`.github/CODEOWNERS`).
