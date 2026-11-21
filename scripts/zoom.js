@@ -9,7 +9,7 @@
    – Le zoom agrandit la taille de base (rem) : textes, marges, cartes
      et barres grandissent ensemble, comme avec le zoom du navigateur.
    – Niveau mémorisé sur l'appareil (localStorage, clé « zoom-page ») et
-     appliqué dès la tête de page (petit script en ligne), donc sans
+     appliqué dès la tête de page (scripts/tete.js), donc sans
      clignotement d'une page à l'autre.
    – Plafond selon la largeur de l'écran : la page garde toujours au moins
      18 rem « virtuels » de large, donc jamais de défilement horizontal.
@@ -25,7 +25,7 @@
   const anglais = racine.lang.startsWith('en');
   const t = (fr, en) => (anglais ? en : fr);
 
-  // Niveaux : l'indice 2 est le zoom 0 (100 %). Les mêmes valeurs figurent dans le script en tête de page.
+  // Niveaux : l'indice 2 est le zoom 0 (100 %). Les mêmes valeurs figurent dans scripts/tete.js.
   const FACTEURS = [0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.5, 1.75, 2];
   const ZERO = 2;
   const LARGEUR_MIN = 288;        // px « virtuels » minimum (18 rem) : au-delà, la page déborderait
@@ -60,7 +60,7 @@
 
   const pourcent = (i) => {
     const p = Math.round(FACTEURS[i] * 100);
-    return anglais ? `${p}%` : `${p} %`;
+    return anglais ? `${p}%` : `${p}\u202f%`;   // espace fine insécable avant % en français
   };
 
   /* ----- Appliquer un niveau, en gardant sous les yeux ce qu'on regardait ----- */

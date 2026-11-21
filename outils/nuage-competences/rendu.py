@@ -13,9 +13,9 @@ import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from couleurs import arrondir, couleur, couleur_point, couleur_texte
-from donnees import BUT_LONG, MASQUES, NOTIONS
-from nuage import GEPHI, IMAGE, PAGES, degres, graphe, rayon
+from couleurs import couleur_point, couleur_texte
+from donnees import BUT_LONG, MASQUES
+from nuage import FRAGMENTS, GEPHI, IMAGE, MODELE, degres, graphe, rayon
 
 NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
 
@@ -184,15 +184,6 @@ def construire(langue, fige=False):
         nom[c] = lib[p]
     k = {i: teinte[classe[i]] for i in noeuds}
 
-    # Place de chaque nœud sur le dégradé : de gauche à droite (un peu de haut en bas), en continu ;
-    # on prend le rang plutôt que la distance, pour que les trois couleurs soient également présentes
-    gx = [pos[i][0] for i in noeuds]
-    gy = [pos[i][1] for i in noeuds]
-    axe = {i: 0.85 * (pos[i][0] - min(gx)) / (max(gx) - min(gx)) + 0.15 * (pos[i][1] - min(gy)) / (max(gy) - min(gy))
-           for i in noeuds}
-    rangs = sorted(noeuds, key=lambda i: axe[i])
-    u = {i: arrondir(n / (len(rangs) - 1)) for n, i in enumerate(rangs)}
-    u_comm = {c: arrondir(sum(u[m] for m in ms) / len(ms)) for c, ms in membres.items()}
 
     # Ajustement des étiquettes (mêmes positions pour les deux langues : on prend la plus longue)
     boites = {}
@@ -203,15 +194,12 @@ def construire(langue, fige=False):
         boites[i] = (max(w, 2 * r[i] + 2), h, r[i] ** 2, h / 2 - r[i])
     ajuster_etiquettes(pos, boites)
 
-    xs = [pos[i][0] for i in noeuds]
-    ys = [pos[i][1] for i in noeuds]
     marge = 24
     x0 = min(pos[i][0] - boites[i][0] / 2 for i in noeuds) - marge
     x1 = max(pos[i][0] + boites[i][0] / 2 for i in noeuds) + marge
     y0 = min(pos[i][1] + boites[i][3] - boites[i][1] / 2 for i in noeuds) - marge
     y1 = max(pos[i][1] + boites[i][3] + boites[i][1] / 2 for i in noeuds) + marge
     vb = f"{x0:.0f} {y0:.0f} {x1 - x0:.0f} {y1 - y0:.0f}"
-    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
 
     # Liens courbes (sens horaire, comme Gephi), couleur de l'extrémité la moins connectée
     aretes = []
@@ -227,9 +215,7 @@ def construire(langue, fige=False):
         aretes.append(f'<path class="l {k[b]}{cache}" data-a="{a}" data-b="{b}" style="{st}" stroke-width="{0.5 + 0.55 * w:.2f}" '
                       f'd="M{xa:.1f} {ya:.1f}Q{qx:.1f} {qy:.1f} {xb:.1f} {yb:.1f}"/>')
 
-    # Nœuds du centre vers l'extérieur (ordre d'apparition de l'animation), petits dessous, gros dessus
-    ordre = sorted(noeuds, key=lambda i: math.hypot(pos[i][0] - cx, pos[i][1] - cy))
-    rang = {i: n for n, i in enumerate(ordre)}
+    # Nœuds : petits dessous, gros dessus
     formes, etiquettes = [], []
     for i in sorted(noeuds, key=lambda i: r[i]):
         t = noeuds[i][2]
@@ -253,8 +239,8 @@ def construire(langue, fige=False):
     svg = (f'<svg class="nuage-svg" viewBox="{vb}" style="--etq-apercu: {etq_apercu:.0f}px" role="img" aria-label="{titre}" focusable="false" '
            f'preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">\n'
            f'<g class="liens">\n' + "\n".join(aretes) + '\n</g>\n'
-           f'<g class="noeuds">\n' + "\n".join(formes) + '\n</g>\n'
-           f'<g class="etiquettes">\n' + "\n".join(etiquettes) + '\n</g>\n</svg>')
+           '<g class="noeuds">\n' + "\n".join(formes) + '\n</g>\n'
+           '<g class="etiquettes">\n' + "\n".join(etiquettes) + '\n</g>\n</svg>')
 
     # Légende : une puce par communauté (bouton de filtre dans la vue agrandie)
     comms = sorted(membres, key=lambda c: -len(membres[c]))
@@ -317,23 +303,25 @@ def image_seule():
     IMAGE.write_text('<?xml version="1.0" encoding="UTF-8"?>\n' + svg + "\n", encoding="utf-8")
 
 
-def injecter(chemin, marqueur, contenu):
-    page = chemin.read_text(encoding="utf-8")
-    motif = re.compile(rf"(<!-- {marqueur}:debut -->)(.*?)(\s*<!-- {marqueur}:fin -->)", re.S)
-    assert motif.search(page), f"marqueurs « {marqueur} » absents de {chemin.name}"
-    retrait = re.search(rf"\n([ \t]*)<!-- {marqueur}:debut -->", page).group(1)
+def ecrire_fragment(marqueur, langue, contenu):
+    """modeles/fragments/<marqueur>.<langue>.html, en reprenant le retrait du marqueur dans le modèle."""
+    modele = MODELE.read_text(encoding="utf-8")
+    trouve = re.search(rf"\n([ \t]*)<!-- {marqueur}:debut -->{{{{fragment:{marqueur}}}}}", modele)
+    assert trouve, f"marqueur « {marqueur} » ou {{{{fragment:{marqueur}}}}} absent de {MODELE.name}"
+    retrait = trouve.group(1)
     corps = "\n".join(retrait + ligne if ligne else ligne for ligne in contenu.split("\n"))
-    page = motif.sub(lambda m: m.group(1) + "\n" + corps + m.group(3), page)
-    chemin.write_text(page, encoding="utf-8")
+    (FRAGMENTS / f"{marqueur}.{langue}.html").write_text("\n" + corps, encoding="utf-8")
 
 
 def rendre():
-    for langue, chemin in PAGES.items():
+    for langue in ("fr", "en"):
         svg, legende, texte, _, json_donnees = construire(langue)
-        injecter(chemin, "nuage-svg", svg)
-        injecter(chemin, "nuage-legende", legende)
-        injecter(chemin, "nuage-texte", texte)
-        injecter(chemin, "nuage-donnees", '<script type="application/json" id="nuage-donnees">' + json_donnees + "</script>")
-        print(f"{chemin.relative_to(chemin.parents[1])} : nuage injecté")
+        ecrire_fragment("nuage-svg", langue, svg)
+        ecrire_fragment("nuage-legende", langue, legende)
+        ecrire_fragment("nuage-texte", langue, texte)
+        ecrire_fragment("nuage-donnees", langue, '<script type="application/json" id="nuage-donnees">' + json_donnees + "</script>")
+        print(f"modeles/fragments/nuage-*.{langue}.html écrits")
+    # Les pages publiées se régénèrent ensuite à partir du modèle et des fragments (construire.sh le fait)
+    print("pages à régénérer : node outils/pages/construire.mjs")
     image_seule()
     print(f"{IMAGE.name} écrit")

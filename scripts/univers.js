@@ -27,7 +27,6 @@
   const message = racine.querySelector('.univers-message');
   const indices = [...maison.querySelectorAll('.indice')];
   const compteur = racine.querySelector('[data-trouves]');
-  const boutonPause = racine.querySelector('[data-action="pause"]');
 
   const reduit = window.matchMedia('(prefers-reduced-motion: reduce)');
   const large = window.matchMedia('(min-width: 40em)');
@@ -212,8 +211,8 @@
   /* ----- Jeu des indices ----- */
   const CLE = 'univers-indices';
   let trouves = new Set();
-  try { trouves = new Set(JSON.parse(sessionStorage.getItem(CLE) || '[]')); } catch (e) { /* stockage indisponible */ }
-  function enregistrer() { try { sessionStorage.setItem(CLE, JSON.stringify([...trouves])); } catch (e) { /* tant pis */ } }
+  try { trouves = new Set(JSON.parse(sessionStorage.getItem(CLE) || '[]')); } catch { /* stockage indisponible */ }
+  function enregistrer() { try { sessionStorage.setItem(CLE, JSON.stringify([...trouves])); } catch { /* stockage indisponible : tant pis */ } }
   function afficherCompte() {
     compteur.textContent = String(trouves.size);
     indices.forEach((b) => b.classList.toggle('trouve', trouves.has(b.dataset.indice)));
@@ -307,7 +306,8 @@
         if (!reponse.ok) throw new Error(String(reponse.status));
         corps.innerHTML = await reponse.text();
         chargee = true;
-      } catch (e) {
+      } catch {
+        // carte indisponible (hors ligne…) : simple lien vers l'image
         corps.innerHTML = `<p class="carte-voyages-attente"><a href="${corps.dataset.source}">${t('Ouvrir la carte', 'Open the map')}</a></p>`;
       }
     }

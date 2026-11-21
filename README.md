@@ -58,8 +58,10 @@ personne précise, et la publication des projets encore « bientôt en ligne ».
 
 ## choix de réalisation
 
-- **HTML, CSS et JavaScript** écrits à la main, sans *framework* ni étape de compilation ; seule
-  bibliothèque : Matter.js pour un clin d'œil à la gravité.
+- **HTML, CSS et JavaScript** écrits à la main, sans *framework* ; seule bibliothèque : Matter.js pour
+  un clin d'œil à la gravité. Seule étape de construction : un petit script sans dépendance qui tire
+  les pages françaises et anglaises d'un **modèle bilingue unique** par page (`modeles/`,
+  mode d'emploi dans `outils/pages/LISEZMOI.md`).
 - **Mobile d'abord** et adaptatif : une colonne sur téléphone en portrait, trois colonnes sur tablette,
   ordinateur et télévision.
 - **Charte** : trois couleurs pastel équilibrées sur le cercle chromatique, Trebuchet pour le texte,
@@ -74,12 +76,14 @@ personne précise, et la publication des projets encore « bientôt en ligne ».
 ## structure
 
 ```
-index.html                 accueil (français)
-en/                        pages anglaises
-pages/                     projets, compétences, CV vidéo, accessibilité, espace personnel,
+modeles/                   modèles bilingues des pages (source à modifier) et pages.json
+index.html                 accueil (français), généré à partir de modeles/index.html
+en/                        pages anglaises, générées
+pages/                     pages françaises, générées : projets, compétences, CV vidéo, accessibilité, espace personnel,
                            aperçus du calendrier d'alternance et du formulaire de convention
 styles/style.css           feuille de styles commune (thèmes clair et sombre)
 styles/apercu.css          pages d'aperçu de documents (bandeau d'alerte réductible)
+scripts/tete.js            réglages posés avant l'affichage (thème, zoom mémorisé, apparition)
 scripts/script.js          menu, formulaire, filtres, calendrier, compteur, nuage 3D
 scripts/apparition.js      fondu des blocs au défilement
 scripts/zoom.js            bascule de zoom de la page (barre du bas)
@@ -91,10 +95,12 @@ scripts/contact-eggs.js    surprises du champ Message
 scripts/bug-egg.js         surprise de la frise
 scripts/vendor/            Matter.js (licence MIT)
 medias/                    images, drapeaux, nuage de compétences, CV masqués, documents de stage
+outils/pages/              génération des pages à partir des modèles (Node, sans dépendance)
 outils/nuage-competences/  construction du nuage (Python, Java, Gephi)
 outils/carte-zone/         composition de la carte (Python)
+tests/                     tests de bout en bout (Playwright), mode d'emploi dans tests/LISEZMOI.md
 .github/                   modèles de tickets et de merge requests, CODEOWNERS, vérifications
-.githooks/                 contrôle local des messages de commit
+.githooks/                 contrôles locaux : messages de commit, pages à jour
 ```
 
 Pour afficher le site sur son ordinateur : lancer `python -m http.server` dans ce dossier, puis
@@ -110,6 +116,12 @@ ouvrir <http://localhost:8000>.
 - **Commits numérotés** : chaque message de commit cite au moins un ticket (`#N`). Le contrôle se fait
   en local par un *hook* et sur GitHub à chaque *merge request*. Pour activer le *hook* une fois
   pour toutes : `git config core.hooksPath .githooks`
+- **Pages bilingues** : on modifie le modèle dans `modeles/`, jamais la page publiée, puis on régénère
+  avec `node outils/pages/construire.mjs`. Une page publiée qui ne correspond plus à son modèle est
+  refusée par le *hook* `pre-commit` et par la vérification GitHub de chaque *merge request*.
+- **Tests automatisés** : 53 tests de bout en bout avec Playwright (rideau, thème, zoom, liens des
+  17 pages, smartphone), lancés par `npm test` et sur chaque *merge request* ; couverture des scripts
+  dans `couverture/lcov.info`, lisible par SonarQube (`sonar-project.properties`).
 - **Relecture** : Marie Tiers est l'unique relectrice et propriétaire du code (`.github/CODEOWNERS`).
 
 ## droits
