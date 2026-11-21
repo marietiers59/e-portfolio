@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="<!--fr-->fr<!--en-->en-GB<!--/-->">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><!--fr-->Mon univers<!--en-->My world<!--/--> · Marie Tiers</title>
+  <!--fr-->
+  <meta name="description" content="Les loisirs et centres d’intérêt de Marie Tiers, étudiante en BUT informatique à l’IUT de Lens, visités comme une maison de poupée : dessin, équitation, nature, musique, curiosité et bricolage.">
+  <!--en-->
+  <meta name="description" content="The hobbies and interests of Marie Tiers, Computer Science student in Lens, France, toured like a doll’s house: drawing, horse riding, nature, music, curiosity and DIY.">
+  <!--/-->
+  <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/pages/univers.html">
+  <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/my-world.html">
+  <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/pages/univers.html">
+  <!-- Page prépubliée en construction (#177) : retirer la ligne noindex avec les images définitives (#175) -->
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <!-- Réglages posés avant l'affichage : thème, zoom mémorisé, apparition, retour à l'accueil (scripts/tete.js) -->
+  <script src="{{racine}}scripts/tete.js?v=1" data-zoom data-apparition data-balayage="{{page:index}}"></script>
+
+  <link rel="stylesheet" href="{{racine}}styles/style.css?v=58">
+  <link rel="stylesheet" href="{{racine}}styles/univers.css?v=5">
+  <script src="{{racine}}scripts/rideau.js?v=6" defer></script>
+  <script src="{{racine}}scripts/script.js?v=23" defer></script>
+  <script src="{{racine}}scripts/apparition.js?v=4" defer></script>
+  <script src="{{racine}}scripts/zoom.js?v=2" defer></script>
+  <script src="{{racine}}scripts/carte-zone.js?v=5" defer></script>
+  <script src="{{racine}}scripts/balayage.js?v=6" defer></script>
+  <script src="{{racine}}scripts/contact-eggs.js?v=15" defer></script>
+  <script src="{{racine}}scripts/univers.js?v=5" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#<!--fr-->contenu<!--en-->content<!--/-->"><!--fr-->Aller au contenu<!--en-->Skip to content<!--/--></a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="langue" href="{{traduction}}" hreflang="<!--fr-->en-GB<!--en-->fr<!--/-->" data-actif="<!--fr-->fr<!--en-->en<!--/-->">
+      <img class="langue-drapeau" src="{{racine}}medias/drapeau-fr.svg" alt="" width="24" height="16">
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <img class="langue-drapeau" src="{{racine}}medias/drapeau-gb.svg" alt="" width="24" height="16">
+      <span class="sr" lang="<!--fr-->en-GB<!--en-->fr<!--/-->"><!--fr-->Read this page in English<!--en-->Lire cette page en français<!--/--></span>
+    </a>
+    <button class="theme" type="button" aria-pressed="false" hidden>
+      <svg class="theme-icone theme-soleil" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <svg class="theme-icone theme-lune" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      <span class="sr"><!--fr-->Thème sombre<!--en-->Dark theme<!--/--></span>
+    </button>
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+    <div class="conteneur entete-nav">
+      <a class="logo" href="{{page:index}}">Marie TIERS</a>
+      <nav class="navigation" aria-label="<!--fr-->Navigation principale<!--en-->Main navigation<!--/-->">
+        <ul class="navigation-liste">
+          <li><a href="{{page:index}}"><!--fr-->Accueil<!--en-->Home<!--/--></a></li>
+          <li><a href="{{page:projets}}"><!--fr-->Projets<!--en-->Projects<!--/--></a></li>
+          <li><a href="{{page:competences}}"><!--fr-->Compétences<!--en-->Skills<!--/--></a></li>
+          <li><a href="{{page:index}}#<!--fr-->parcours<!--en-->journey<!--/-->"><!--fr-->Parcours<!--en-->Journey<!--/--></a></li>
+          <li><a href="{{page:univers}}" aria-current="page"><!--fr-->Loisirs<!--en-->Hobbies<!--/--></a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="{{racine}}cv-marie-tiers<!--en-->-en<!--/-->.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="{{page:cv-video}}"><!--fr-->CV vidéo<!--en-->Video CV<!--/--></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="<!--fr-->contenu<!--en-->content<!--/-->">
+    <section class="section section-univers" aria-labelledby="titre-principal">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h1 class="section-titre" id="titre-principal" tabindex="-1"><!--fr-->Mon univers<!--en-->My world<!--/--></h1>
+          <!--fr-->
+          <p class="section-intro">Bienvenue dans ma <strong class="kw">maison de poupée</strong> ! Chaque pièce abrite un pan de ma vie hors du code. Le décor a l’air vrai… mais regardez bien : quelques <strong class="kw">indices</strong> trahissent la maquette.</p>
+          <!--en-->
+          <p class="section-intro">Welcome to my <strong class="kw">doll’s house</strong>! Each room holds a part of my life away from code. The set looks real… but look closely: a few <strong class="kw">clues</strong> give the model away.</p>
+          <!--/-->
+        </div>
+
+        <!--fr-->
+        <!-- Prépublication (#177) : bandeau à retirer quand les images définitives seront en place (#175) -->
+        <!--en-->
+        <!-- Prépublication (#177) : bandeau à retirer quand les images définitives seront en place (#175) -->
+        <!--/-->
+        <div class="univers-avertissement" role="note">
+          <svg class="chantier-dessin" viewBox="0 0 170 110" aria-hidden="true" focusable="false">
+              <defs><pattern id="chantier-rayures-<!--fr-->fr<!--en-->en<!--/-->" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect class="ch-fond-rayure" width="10" height="10"/><rect class="ch-rayure" width="5" height="10"/></pattern></defs>
+              <path class="ch-grue" d="M150 104V8M100 13h58M150 8l-10 5M150 8l6 5M150 30l-8-17"/>
+              <g class="ch-oscille"><path class="ch-grue" d="M122 13v19"/><rect class="ch-charge" x="114" y="32" width="16" height="12" rx="1.5"/></g>
+              <path class="ch-maison" d="M40 52 78 22l38 30h-6v52H46V52z"/>
+              <path class="ch-cloison" d="M78 52v52M46 78h64M80 54h28v22H80z"/>
+              <path class="ch-pied" d="M24 87l-6 17M24 87l6 17M100 87l-6 17M100 87l6 17"/>
+              <rect class="ch-planche" x="14" y="74" width="96" height="13" rx="3" style="fill:url(#chantier-rayures-<!--fr-->fr<!--en-->en<!--/-->)"/>
+              <path class="ch-plot" d="M128 104l8-24 8 24z"/><path class="ch-plot-bande" d="M131.4 94h9.2l-1.4-4h-6.4z"/>
+              <path class="ch-sol" d="M6 104h158"/>
+            </svg>
+          <div class="univers-avertissement-texte">
+            <p class="univers-avertissement-titre"><em class="pastille-bientot"><!--fr-->En<!--en-->Under<!--/--> construction</em> <strong><!--fr-->Le chantier est ouvert au public <!--en-->The building site is open to visitors<!--/-->!</strong></p>
+            <!--fr-->
+            <p>Les <strong class="kw">images des pièces sont provisoires</strong> : les décors définitifs, mes dessins et mes photos emménagent bientôt. Les objets et les indices sont déjà à leur place : la visite et le jeu fonctionnent.</p>
+            <!--en-->
+            <p>The <strong class="kw">room pictures are placeholders</strong>: the final sets, my drawings and my photos are moving in soon. The objects and clues are already in place, so the tour and the game work.</p>
+            <!--/-->
+          </div>
+        </div>
+
+        <!-- ===== Maison de poupée (#173, #174) =====
+          Images des pièces<!--fr--> <!--en--> <!--/-->: medias/univers/<pièce>.webp (4:3), à déclarer dans data-image="../medias/univers/atelier.webp".
+          Pastilles d'objets (--x, --y) et zones d'indices (--x, --y, --r) en % de la pièce<!--fr--> <!--en--> <!--/-->: à recaler sur les images définitives (#175).
+        -->
+        <div class="univers" data-univers>
+          <!--fr-->
+          <p class="univers-mode">Cliquez sur une pièce pour y entrer ; survolez la maison pour la faire pivoter.</p>
+          <!-- Cadre : scène 3D, cartel et message ; le cartel reste hors de la perspective (sinon il ne peut pas se fixer en bas d'écran sur téléphone) -->
+          <!--en-->
+          <p class="univers-mode">Click a room to step inside; hover over the house to turn it.</p>
+          <!-- Cadre : scène 3D, cartel et message ; le cartel reste hors de la perspective (sinon il ne peut pas se fixer en bas d'écran sur téléphone) -->
+          <!--/-->
+          <div class="univers-cadre">
+            <div class="univers-scene">
+              <div class="maison" role="group" aria-label="<!--fr-->Maquette de la maison, huit pièces<!--en-->Model of the house, eight rooms<!--/-->">
+                <div class="maison-toit">
+                  <span class="toit-ficelle" aria-hidden="true"></span>
+                  <span class="toit-pignon" aria-hidden="true"></span>
+                  <span class="toit-enseigne" aria-hidden="true"><!--fr-->Mon univers<!--en-->My world<!--/--></span>
+                  <button class="indice indice-global" type="button" data-indice="ficelle" data-texte="<!--fr-->Une ficelle retient le toit, comme une marionnette : la maison tient dans la main <!--en-->A string holds up the roof like a puppet: the whole house fits in a hand<!--/-->!" style="--x:50%;--y:-3rem;--r:2.5rem"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                  <!--fr-->
+                  <!-- Grenier : septième pièce, sous le toit (le pignon est découpé à sa taille, styles/univers.css) -->
+                  <!--en-->
+                  <!-- Grenier : septième pièce, sous le toit (le pignon est découpé à sa taille, styles/univers.css) -->
+                  <!--/-->
+                  <ol class="maison-grenier">
+                    <li class="piece piece-grenier piece-grenier" data-piece="grenier" data-image="" style="--teinte-100:var(--turquoise-100);--teinte-200:var(--turquoise-200);--teinte-400:var(--cyan-trait)">
+                      <div class="piece-boite" aria-hidden="true">
+                        <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M3 10v4M6 8v8M18 8v8M21 10v4M6 12h12"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                        <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                      </div>
+                      <div class="piece-calque">
+                        <button class="objet" type="button" data-objet="1" style="--x:26%;--y:68%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : Le tapis de pilates<!--en-->Item 1: The Pilates mat<!--/--></span></button>
+                        <button class="objet" type="button" data-objet="2" style="--x:50%;--y:30%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Le planning au mur<!--en-->Item 2: The schedule on the wall<!--/--></span></button>
+                        <button class="objet" type="button" data-objet="3" style="--x:72%;--y:64%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Les haltères<!--en-->Item 3: The dumbbells<!--/--></span></button>
+                        <button class="indice" type="button" data-indice="grenier" data-texte="<!--fr-->Les haltères sont deux boutons de chemise enfilés sur une allumette <!--en-->The dumbbells are two shirt buttons threaded on a matchstick<!--/-->!" style="--x:72%;--y:64%;--r:9%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                      </div>
+                      <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->Le grenier sport<!--en-->The attic gym<!--/--></span><span class="sr"><!--fr--> : Sport et forme<!--en-->: Sport and fitness<!--/--></span></button>
+                      <div class="piece-texte" hidden>
+                        <p class="cartel-surtitre">Sport <!--fr-->et forme<!--en-->and fitness<!--/--></p>
+                        <h2 class="cartel-titre" tabindex="-1"><!--fr-->Le grenier sport<!--en-->The attic gym<!--/--></h2>
+                        <!--fr-->
+                        <p>Chaque semaine, <strong class="kw">deux heures de sport en groupe</strong> (pilates à l’IUT et gym d’entretien), puis <strong class="kw">1 h 30 de fitness</strong> en salle.</p>
+                        <!--en-->
+                        <p>Every week, <strong class="kw">two hours of group exercise</strong> (Pilates at the <i lang="fr">IUT</i>, my university institute of technology, and a keep-fit class), then <strong class="kw">an hour and a half of fitness training</strong> at the gym.</p>
+                        <!--/-->
+                        <p class="cartel-retire"><strong><!--fr-->Ce que j’en retire<!--en-->What I take from it<!--/--></strong><!--fr--> : la régularité, et la tête plus claire pour coder<!--en-->: regular habits, and a clearer head for coding<!--/-->.</p>
+                        <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                        <ul class="cartel-objets">
+                          <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->Le tapis de pilates<!--en-->The Pilates mat<!--/--></strong><!--fr--> : une séance chaque semaine à l’IUT<!--en-->: one class a week at the <i lang="fr">IUT</i><!--/-->.</span></li>
+                          <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong><!--fr-->Le planning au mur<!--en-->The schedule on the wall<!--/--></strong><!--fr--> : 2 h en groupe et 1 h 30 en salle, chez Basic-Fit<!--en-->: two hours in a group and an hour and a half at a Basic-Fit gym<!--/-->.</span></li>
+                          <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->Les haltères<!--en-->The dumbbells<!--/--></strong><!--fr--> : gym d’entretien et fitness<!--en-->: keep-fit and fitness training<!--/-->.</span></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+                <ol class="maison-pieces">
+                  <li class="piece piece-atelier" data-piece="atelier" data-image="" style="--teinte-100:var(--lavande-100);--teinte-200:var(--lavande-200);--teinte-400:var(--lavande-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3M4 20l1-4"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:22%;--y:34%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : Le cadre au mur<!--en-->Item 1: The frame on the wall<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:58%;--y:70%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Le carnet de croquis<!--en-->Item 2: The sketchbook<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:80%;--y:30%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Les affiches<!--en-->Item 3: The posters<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="atelier" data-texte="<!--fr-->Un crayon à papier plus grand que la porte : on est bien dans une maquette <!--en-->A pencil taller than the door: this is definitely a model<!--/-->!" style="--x:42%;--y:62%;--r:13%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->L’atelier<!--en-->The studio<!--/--></span><span class="sr"><!--fr--> : Dessin et graphisme<!--en-->: Drawing and graphic design<!--/--></span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre"><!--fr-->Dessin et graphisme<!--en-->Drawing and graphic design<!--/--></p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->L’atelier<!--en-->The studio<!--/--></h2>
+                      <!--fr-->
+                      <p>Je <strong class="kw">dessine depuis toute petite</strong> : mécanismes, squelettes, personnages. En BUT 1 comme en Master 1, j’ai dessiné les <strong class="kw">visuels de nos projets</strong>, que je retouche sous Photoshop.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : le soin du détail et l’œil pour les interfaces, utiles aussi pour tester une application.</p>
+                      <!--en-->
+                      <p>I have been <strong class="kw">drawing since I was tiny</strong>: mechanisms, skeletons, characters. In my first BUT year, as in my Master’s year (M1), I drew the <strong class="kw">visuals for our projects</strong>, which I retouch in Photoshop.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: an eye for detail and for interfaces, which also helps when testing an application.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->Le cadre au mur<!--en-->The frame on the wall<!--/--></strong><!--fr--> : un de mes dessins, bientôt accroché ; d’autres sont sur <i lang="en">DeviantArt</i><!--en-->: one of my drawings, soon to be hung; more are on DeviantArt<!--/-->.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong><!--fr-->Le carnet de croquis<!--en-->The sketchbook<!--/--></strong><!--fr--> : mon premier atelier de dessin, à deux ans, et tous ceux qui ont suivi<!--en-->: my first art class at the age of two, and every one since<!--/-->.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->Les affiches<!--en-->The posters<!--/--></strong><!--fr--> : les trois attractions de BycloWatt, dessinées puis colorisées sous<!--en-->: the three BycloWatt attractions, drawn then coloured in<!--/--> Photoshop.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-cabinet" data-piece="cabinet" data-image="" style="--teinte-100:var(--bleu-100);--teinte-200:var(--bleu-200);--teinte-400:var(--bleu-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="10" r="6"/><path d="M6 10h12M12 4c-2.2 2-2.2 10 0 12M12 4c2.2 2 2.2 10 0 12M6.5 16.5a8 8 0 0 0 11 0M12 18v3M9 21h6"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:30%;--y:52%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : Le<!--en-->Item 1: The<!--/--> globe</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:70%;--y:40%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Les dictionnaires<!--en-->Item 2: The dictionaries<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:48%;--y:24%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Les certificats de langues<!--en-->Item 3: The language certificates<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="cabinet" data-texte="<!--fr-->Une pièce de un euro aussi grande qu’un tableau : l’échelle nous trahit <!--en-->A one-euro coin as big as a painting: the scale gives it away<!--/-->!" style="--x:84%;--y:66%;--r:11%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->Le cabinet de curiosités<!--en-->The cabinet of curiosities<!--/--></span><span class="sr"><!--fr--> : Culture générale et ouverture au monde<!--en-->: General knowledge and an open mind<!--/--></span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre"><!--fr-->Culture générale et ouverture au monde<!--en-->General knowledge and an open mind<!--/--></p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->Le cabinet de curiosités<!--en-->The cabinet of curiosities<!--/--></h2>
+                      <!--fr-->
+                      <p><strong class="kw">Curieuse de tout</strong>, j’apprends pour le plaisir : cinq langues étudiées en cours, l’italien appris seule et <strong class="kw">une année Erasmus en Espagne</strong>. Je parle espagnol couramment.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : apprendre vite, et m’adapter à d’autres façons de penser.</p>
+                      <!--en-->
+                      <p><strong class="kw">Curious about everything</strong>, I learn for the fun of it: five languages studied in class, Italian taught to myself and <strong class="kw">an Erasmus year in Spain</strong>. I speak Spanish fluently.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: learning fast, and adapting to other ways of thinking.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->Le<!--en-->The<!--/--> globe</strong><!--fr--> : une année Erasmus en Espagne, et l’envie de découvrir d’autres<!--en-->: an Erasmus year in Spain, and a longing to discover other<!--/--> cultures.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong><!--fr-->Les dictionnaires<!--en-->The dictionaries<!--/--></strong><!--fr--> : anglais, espagnol, allemand, néerlandais et chinois en cours (au moins un an chacune), plus un guide de conversation italien<!--en-->: English, Spanish, German, Dutch and Chinese in class (at least a year each), plus an Italian phrasebook<!--/-->.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->Les certificats de langues<!--en-->The language certificates<!--/--></strong><!--fr--> <!--/-->: Cambridge FCE <!--fr-->et CLES 2 en anglais, DELE B2 en espagnol<!--en-->and CLES 2 (a French university language certificate) in English, DELE B2 in Spanish<!--/-->.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-piste" data-piece="piste" data-image="" style="--teinte-100:var(--rose-100);--teinte-200:var(--rose-200);--teinte-400:var(--rose-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.5"/><path d="M12 6.5a5.5 5.5 0 0 1 5.5 5.5"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:24%;--y:58%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : Le juke-box<!--en-->Item 1: The jukebox<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:54%;--y:22%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : La boule à facettes<!--en-->Item 2: The disco ball<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:78%;--y:70%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Le billet de concert<!--en-->Item 3: The concert ticket<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="piste" data-texte="<!--fr-->Le juke-box est une boîte d’allumettes peinte : regardez le grattoir sur le côté <!--en-->The jukebox is a painted matchbox: look at the striker on its side<!--/-->!" style="--x:24%;--y:58%;--r:12%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->La piste de danse<!--en-->The dance floor<!--/--></span><span class="sr"><!--fr--> : Musique des années 80 et 90<!--en-->: 80s and 90s music<!--/--></span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre"><!--fr-->Musique des années 80 et 90<!--en-->80s and 90s music<!--/--></p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->La piste de danse<!--en-->The dance floor<!--/--></h2>
+                      <!--fr-->
+                      <p>Les <strong class="kw">tubes des années 80 et 90</strong> sont ma bande-son préférée. Le 7 juin 2025, j’étais <strong class="kw">au premier rang</strong> de <i>Stars 80 vs Stars 90 : La Grande Battle</i>, diffusé en direct sur M6.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : de l’énergie et de la bonne humeur, qui comptent aussi en équipe.</p>
+                      <!--en-->
+                      <p><strong class="kw">80s and 90s hits</strong> are my favourite soundtrack. On 7 June 2025, I was <strong class="kw">in the front row</strong> at <i lang="fr">Stars 80 vs Stars 90 : La Grande Battle</i>, broadcast live on the French TV channel M6.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: energy and good spirits, which matter in a team too.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->Le juke-box<!--en-->The jukebox<!--/--></strong><!--fr--> : tubes des années 80 et 90<!--en-->: 80s and 90s hits<!--/-->.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong><!--fr-->La boule à facettes<!--en-->The disco ball<!--/--></strong><!--fr--> : pour que la fête continue<!--en-->: to keep the party going<!--/-->.</span></li>
+                        <!--fr-->
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>Le billet de concert</strong> : <i>Stars 80 vs Stars 90 : La Grande Battle</i>, 7 juin 2025, premier rang.</span></li>
+                        <!--en-->
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The concert ticket</strong>: <i lang="fr">Stars 80 vs Stars 90 : La Grande Battle</i>, 7 June 2025, front row.</span></li>
+                        <!--/-->
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-sellerie" data-piece="sellerie" data-image="" style="--teinte-100:var(--anis-100);--teinte-200:var(--anis-200);--teinte-400:var(--anis-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M7 20v-8a5 5 0 0 1 10 0v8M7 20h2.5M14.5 20H17"/><circle cx="8.6" cy="14" r=".6"/><circle cx="15.4" cy="14" r=".6"/><circle cx="9.6" cy="10" r=".6"/><circle cx="14.4" cy="10" r=".6"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:30%;--y:30%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : Les trois plaques de box<!--en-->Item 1: The three stable name plates<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:66%;--y:36%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Les flots de classement<!--en-->Item 2: The rosettes<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:48%;--y:72%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : La bombe et les bottes<!--en-->Item 3: The riding hat and boots<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="sellerie" data-texte="<!--fr-->Une épingle de couturière plantée dans la cloison, grande comme une lance <!--en-->A dressmaker’s pin stuck in the wall, as big as a spear<!--/-->!" style="--x:86%;--y:40%;--r:10%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->La sellerie<!--en-->The tack room<!--/--></span><span class="sr"><!--fr--> : Équitation<!--en-->: Horse riding<!--/--></span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre"><!--fr-->Équitation<!--en-->Horse riding<!--/--></p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->La sellerie<!--en-->The tack room<!--/--></h2>
+                      <!--fr-->
+                      <p><strong class="kw">À cheval de 1999 à 2022</strong>, avec trois chevaux dont j’ai été propriétaire. En compétition inter-collèges et lycées, j’ai été <strong class="kw">1<sup>re</sup> régionale</strong> (Nord-Pas-de-Calais).</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : la régularité, le calme sous pression et le sens des responsabilités.</p>
+                      <!--en-->
+                      <p><strong class="kw">In the saddle from 1999 to 2022</strong>, with three horses of my own. In inter-school competitions (secondary level), I <strong class="kw">ranked first in the region</strong> (Nord-Pas-de-Calais).</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: regular habits, calm under pressure and a sense of responsibility.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <!--fr-->
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>Les trois plaques de box</strong> : une pour chacun de mes chevaux.<!-- à compléter : noms des chevaux --></span></li>
+                        <!--en-->
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The three stable name plates</strong>: one for each of my horses.<!-- à compléter : noms des chevaux --></span></li>
+                        <!--/-->
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong><!--fr-->Les flots de classement<!--en-->The rosettes<!--/--></strong><!--fr--> : <i lang="en">pony-games</i> (gymkhana et CSO), CSO (concours de saut d’obstacles) et carrousel (dressage basse école<!--en-->: pony games (gymkhana and show jumping), show jumping and carousel (a musical ride with basic dressage<!--/-->).</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->La bombe et les bottes<!--en-->The riding hat and boots<!--/--></strong><!--fr--> : rangées en 2022, après l’endurance sur 20 km avec ma dernière jument<!--en-->: put away in 2022, after 20 km endurance rides with my last mare<!--/-->.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-refuge" data-piece="refuge" data-image="" style="--teinte-100:var(--sapin-100);--teinte-200:var(--sapin-200);--teinte-400:var(--sapin-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M12 3l5 7h-3l4 6H6l4-6H7zM12 16v4"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:26%;--y:32%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : La carte annotée<!--en-->Item 1: The annotated map<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:62%;--y:58%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Les jumelles et la loupe<!--en-->Item 2: The binoculars and magnifying glass<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:82%;--y:70%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Le sac à dos<!--en-->Item 3: The backpack<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="4" style="--x:50%;--y:22%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr"><!--fr-->Objet 4 : La carte de mes voyages<!--en-->Item 4: The map of my travels<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="refuge" data-texte="<!--fr-->Un arbre en lichen, comme sur les maquettes de train électrique <!--en-->A lichen tree, just like on model railways<!--/-->!" style="--x:14%;--y:62%;--r:12%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->Le refuge de la baroudeuse<!--en-->The adventurer’s refuge<!--/--></span><span class="sr"><!--fr--> : Nature, aventure et cartographie<!--en-->: Nature, adventure and mapping<!--/--></span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre">Nature, <!--fr-->aventure et cartographie<!--en-->adventure and mapping<!--/--></p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->Le refuge de la baroudeuse<!--en-->The adventurer’s refuge<!--/--></h2>
+                      <!--fr-->
+                      <p>Avant l’informatique, j’étais <strong class="kw">guide nature</strong> et <strong class="kw">guide conférencière</strong>, et j’ai <strong class="kw">encadré une équipe de dix personnes</strong> sur une mission de cartographie. Sac sur le dos, j’ai parcouru 88 des 96 départements de métropole et de Corse, et 22 pays et territoires d’Europe.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : l’autonomie, le sens de l’orientation, et l’art d’expliquer simplement des choses complexes.</p>
+                      <!--en-->
+                      <p>Before computing, I was a <strong class="kw">nature guide</strong> and a <strong class="kw">tour guide</strong>, and I <strong class="kw">led a team of ten</strong> on a mapping assignment. Backpack on, I have travelled through 88 of the 96 <i lang="fr">départements</i> of mainland France and Corsica, and 22 European countries and territories.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: independence, a good sense of direction, and the knack of explaining complex things simply.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->La carte annotée<!--en-->The annotated map<!--/--></strong><!--fr--> : la mission de cartographie, avec une équipe de dix personnes<!--en-->: the mapping assignment, with a team of ten<!--/-->.</span></li>
+                        <!--fr-->
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les jumelles et la loupe</strong> : DEUST Guide Nature Multilingue, et formation de garde-chasse et garde-pêche (assermentation à venir).</span></li>
+                        <!--en-->
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The binoculars and magnifying glass</strong>: a two-year multilingual nature guide diploma (DEUST, a French university diploma), and training as a game and fishing warden (swearing-in to come).</span></li>
+                        <!--/-->
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->Le sac à dos<!--en-->The backpack<!--/--></strong><!--fr--> : celui des visites guidées, pour les offices de tourisme des 4 Rivières et de<!--en-->: from my guided tours for the 4 Rivières and<!--/--> Sambre-Avesnois<!--en--> tourist offices<!--/-->.</span></li>
+                        <!--fr-->
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>La carte de mes voyages</strong> : <a class="cartel-carte" href="{{racine}}medias/carte-voyages.svg" data-carte-voyages>voir la carte</a> · Allemagne, Andorre, Angleterre, Autriche, Belgique, Danemark, Espagne, Finlande, Hongrie, Irlande, Lettonie, Luxembourg, Monaco, Pays-Bas, Portugal, République tchèque, Slovaquie, Suisse et Vatican, sans oublier Jersey et Gibraltar.</span></li>
+                        <!--en-->
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The map of my travels</strong>: <a class="cartel-carte" href="{{racine}}medias/carte-voyages.svg" data-carte-voyages>see the map</a> · Andorra, Austria, Belgium, the Czech Republic, Denmark, England, Finland, Germany, Hungary, Ireland, Latvia, Luxembourg, Monaco, the Netherlands, Portugal, Slovakia, Spain, Switzerland and the Vatican, not forgetting Jersey and Gibraltar.</span></li>
+                        <!--/-->
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-etabli" data-piece="etabli" data-image="" style="--teinte-100:var(--indigo-100);--teinte-200:var(--indigo-200);--teinte-400:var(--indigo-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M14.5 4.2a4.5 4.5 0 0 0-5.3 6L3.5 16l3.5 3.5 5.8-5.7a4.5 4.5 0 0 0 6-5.3l-2.8 2.8-2.7-.7-.7-2.7z"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:22%;--y:66%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : La boîte à outils<!--en-->Item 1: The toolbox<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:50%;--y:40%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Le carnet d’inventions<!--en-->Item 2: The invention notebook<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:76%;--y:62%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Le fer à souder<!--en-->Item 3: The soldering iron<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="etabli" data-texte="<!--fr-->Le bout du doigt de la maquettiste dépasse par la fenêtre <!--en-->The model maker’s fingertip is poking through the window<!--/-->!" style="--x:80%;--y:22%;--r:11%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->L’établi de l’inventeuse<!--en-->The inventor’s workbench<!--/--></span><span class="sr"><!--fr--> : Bricolage et<!--en-->: DIY and<!--/--> invention</span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre"><!--fr-->Bricolage et<!--en-->DIY and<!--/--> invention</p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->L’établi de l’inventeuse<!--en-->The inventor’s workbench<!--/--></h2>
+                      <!--fr-->
+                      <p><strong class="kw">Bricoleuse</strong> et <strong class="kw">inventeuse</strong> : j’aime réparer, fabriquer et imaginer mes propres solutions, des outils à la main jusqu’au clavier.<!-- à compléter : une invention ou un bricolage à présenter --></p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : le réflexe de chercher la cause d’une panne avant de la contourner : un bon réflexe de testeuse.</p>
+                      <!--en-->
+                      <p><strong class="kw">Handywoman</strong> and <strong class="kw">inventor</strong>: I love repairing, making and coming up with my own solutions, from hand tools to the keyboard.<!-- à compléter : une invention ou un bricolage à présenter --></p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: the habit of finding the cause of a fault before working around it: a good habit for a tester.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->La boîte à outils<!--en-->The toolbox<!--/--></strong><!--fr--> : toujours ouverte<!--en-->: always open<!--/-->.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong><!--fr-->Le carnet d’inventions<!--en-->The invention notebook<!--/--></strong><!--fr--> : des idées plein les pages<!--en-->: pages full of ideas<!--/-->.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->Le fer à souder<!--en-->The soldering iron<!--/--></strong><!--fr--> : et ses petits composants<!--en-->: and its tiny components<!--/-->.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-commune piece-large" data-piece="commune" data-image="" style="--teinte-100:var(--rose-100);--teinte-200:var(--rose-200);--teinte-400:var(--rose-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.3c3.1 0 6 2.2 6 5.7"/></svg><em class="pastille-bientot">Image <!--fr-->à venir<!--en-->coming soon<!--/--></em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:10%;--y:58%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr"><!--fr-->Objet 1 : La valise de chantier<!--en-->Item 1: The work-camp suitcase<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:30%;--y:42%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr"><!--fr-->Objet 2 : Les tasses du café langues<!--en-->Item 2: The language-café mugs<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:50%;--y:30%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr"><!--fr-->Objet 3 : Le badge de <i lang="en">greeter</i><!--en-->Item 3: The greeter badge<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="4" style="--x:70%;--y:40%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr"><!--fr-->Objet 4 : Le panneau d’affichage<!--en-->Item 4: The notice board<!--/--></span></button>
+                      <button class="objet" type="button" data-objet="5" style="--x:90%;--y:56%" tabindex="-1"><span aria-hidden="true">5</span><span class="sr"><!--fr-->Objet 5 : Le fanion du jumelage<!--en-->Item 5: The twinning pennant<!--/--></span></button>
+                      <button class="indice" type="button" data-indice="commune" data-texte="<!--fr-->Les tabourets sont des bouchons de liège, et la table un couvercle de boîte à fromage <!--en-->The stools are corks, and the table is a cheese-box lid<!--/-->!" style="--x:58%;--y:74%;--r:5%" tabindex="-1"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque"><!--fr-->La salle commune<!--en-->The common room<!--/--></span><span class="sr"><!--fr--> : Engagement et bénévolat<!--en-->: Volunteering and community<!--/--></span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre"><!--fr-->Engagement et bénévolat<!--en-->Volunteering and community<!--/--></p>
+                      <h2 class="cartel-titre" tabindex="-1"><!--fr-->La salle commune<!--en-->The common room<!--/--></h2>
+                      <!--fr-->
+                      <p>Des <strong class="kw">chantiers de bénévolat</strong> en France, en Allemagne et en Angleterre m’ont tant plu que j’en ai <strong class="kw">encadré un</strong> : ils ont changé ma vie. Depuis, je m’engage là où je suis : tutorat et cafés langues à l’Université de Lille, puis <strong class="kw">BDE, conseil d’IUT et éco-délégué·e·s</strong> à Lens.</p>
+                      <p class="cartel-retire"><strong>Ce que j’en retire</strong> : travailler avec des personnes très différentes, et faire avancer un collectif.</p>
+                      <!--en-->
+                      <p><strong class="kw">Volunteer work camps</strong> in France, Germany and England meant so much to me that I went on to <strong class="kw">lead one</strong>: they changed my life. Since then, I get involved wherever I am: tutoring and language cafés at the University of Lille, then the <strong class="kw">student union, the <i lang="fr">IUT</i> council and the eco-delegates</strong> in Lens.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: working with very different people, and moving a group forward.</p>
+                      <!--/-->
+                      <h3 class="cartel-sous-titre"><!--fr-->Objets à explorer<!--en-->Things to explore<!--/--></h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong><!--fr-->La valise de chantier<!--en-->The work-camp suitcase<!--/--></strong><!--fr--> : chantiers de bénévolat en France, en Allemagne et en Angleterre, dont un que j’ai encadré<!--en-->: volunteer camps in France, Germany and England, one of which I led<!--/-->.</span></li>
+                        <!--fr-->
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>Les tasses du café langues</strong> : Université de Lille, Cité Scientifique : six ans de cafés langues, dont une année à les organiser comme tutrice tandem, et du tutorat d’anglais pour le relais handicap.</span></li>
+                        <!--en-->
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The language-café mugs</strong>: University of Lille, <i lang="fr">Cité Scientifique</i> campus: six years of language cafés, including one year running them as a tandem tutor, plus English tutoring for the disability support service.</span></li>
+                        <!--/-->
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong><!--fr-->Le badge de <i lang="en">greeter</i><!--en-->The greeter badge<!--/--></strong><!--fr--> : Lille en anglais, allemand, espagnol et néerlandais<!--en-->: Lille in English, German, Spanish and Dutch<!--/-->.</span></li>
+                        <!--fr-->
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>Le panneau d’affichage</strong> : BDE, élue au conseil d’IUT (et au conseil de département en BUT 1), coordinatrice d’éco-délégué·e·s pour le service DD & RSE de l’Université d’Artois.</span></li>
+                        <li data-objet="5"><span class="cartel-num" aria-hidden="true">5</span> <span><strong>Le fanion du jumelage</strong> : Les Amis de Buxton (France–Royaume-Uni) depuis 2024, et auparavant Latinos en Lille.</span></li>
+                        <!--en-->
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The notice board</strong>: student union (<i lang="fr">BDE</i>), elected member of the <i lang="fr">IUT</i> council (and of the department council in my first year), coordinator of student eco-delegates for the University of Artois sustainability and CSR service.</span></li>
+                        <li data-objet="5"><span class="cartel-num" aria-hidden="true">5</span> <span><strong>The twinning pennant</strong>: <i lang="fr">Les Amis de Buxton</i> (France–UK) since 2024, and formerly <i lang="fr">Latinos en Lille</i>.</span></li>
+                        <!--/-->
+                      </ul>
+                    </div>
+                  </li>
+                </ol>
+                <div class="maison-socle">
+                  <span class="socle-dessus" aria-hidden="true"></span>
+                  <span class="socle-face">
+                    <span class="socle-regle" aria-hidden="true"></span>
+                    <span class="socle-etiquette" aria-hidden="true"><!--fr-->Maquette · échelle 1/<!--en-->Model · scale 1:<!--/-->24<br>M. T. · 2026</span>
+                    <button class="indice indice-global" type="button" data-indice="regle" data-texte="<!--fr-->Une règle graduée borde le socle : tout ici se mesure en centimètres<!--en-->A ruler runs along the base: everything here is measured in centimetres<!--/-->." style="--x:22%;--y:22%;--r:2.5rem"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                    <button class="indice indice-global" type="button" data-indice="etiquette" data-texte="<!--fr-->L’étiquette l’avoue sans détour : maquette au 1/24e<!--en-->The label says it plainly: a 1:24 scale model<!--/-->." style="--x:84%;--y:55%;--r:2.5rem"><span class="sr"><!--fr-->Examiner ce détail<!--en-->Look at this detail<!--/--></span></button>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!--fr-->
+            <!-- Cartel : étiquette de musée de la pièce ouverte (contenu recopié depuis .piece-texte) -->
+            <!--en-->
+            <!-- Cartel : étiquette de musée de la pièce ouverte (contenu recopié depuis .piece-texte) -->
+            <!--/-->
+            <div class="cartel" id="cartel" role="region" aria-label="<!--fr-->Cartel de la pièce<!--en-->Room label<!--/-->" hidden>
+              <button class="cartel-fermer" type="button" aria-label="<!--fr-->Revenir à la vue d’ensemble<!--en-->Back to the overview<!--/-->">×</button>
+              <p class="cartel-position" data-modele="<!--fr-->Pièce {i} sur<!--en-->Room {i} of<!--/--> 8"></p>
+              <div class="cartel-contenu"></div>
+            </div>
+            <p class="univers-message" role="status" aria-live="polite"></p>
+          </div>
+
+          <div class="univers-commandes">
+            <div class="univers-groupe" role="group" aria-label="<!--fr-->Commandes de la visite<!--en-->Tour controls<!--/-->">
+              <button class="univers-bouton" type="button" data-action="precedente"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.5 6 8.5 12l6 6"/></svg><span><!--fr-->Pièce précédente<!--en-->Previous room<!--/--></span></button>
+              <button class="univers-bouton" type="button" data-action="ensemble"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span><!--fr-->Vue d’ensemble<!--en-->Overview<!--/--></span></button>
+              <button class="univers-bouton" type="button" data-action="suivante"><span><!--fr-->Pièce suivante<!--en-->Next room<!--/--></span><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.5 6l6 6-6 6"/></svg></button>
+              <button class="univers-bouton" type="button" data-action="pause" aria-pressed="false"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg><span>Pause</span></button>
+            </div>
+            <div class="univers-groupe univers-jeu" role="group" aria-labelledby="jeu-titre">
+              <p class="univers-jeu-texte" id="jeu-titre"><strong><!--fr-->Le jeu des indices<!--en-->The clue game<!--/--></strong><!--fr--> : ce décor est une maquette, onze détails la trahissent<!--en-->: this set is a model, and eleven details give it away<!--/-->. <span class="univers-compteur"><span data-trouves>0</span> / 11 <!--fr-->trouvés<!--en-->found<!--/--></span></p>
+              <button class="univers-bouton" type="button" data-action="indice"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span><!--fr-->Un indice<!--en-->A clue<!--/--></span></button>
+              <button class="univers-bouton" type="button" data-action="reponses"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span><!--fr-->Les réponses<!--en-->The answers<!--/--></span></button>
+              <button class="univers-bouton" type="button" data-action="zero"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4v6h6"/><path d="M4.8 15a8 8 0 1 0 1.6-8.4L4 10"/></svg><span><!--fr-->Tout remettre à zéro<!--en-->Reset everything<!--/--></span></button>
+            </div>
+          </div>
+        </div>
+
+        <!--fr-->
+        <!-- Carte de mes voyages (#179) : medias/carte-voyages.svg, régénérée par outils/carte-voyages/construire.mjs -->
+        <!--en-->
+        <!-- Carte de mes voyages (#179) : medias/carte-voyages.svg, régénérée par outils/carte-voyages/construire.mjs -->
+        <!--/-->
+        <dialog class="carte-voyages" aria-labelledby="carte-voyages-titre">
+          <div class="carte-voyages-barre">
+            <h2 class="carte-voyages-titre" id="carte-voyages-titre"><!--fr-->La carte de mes voyages<!--en-->The map of my travels<!--/--></h2>
+            <button class="carte-voyages-fermer" type="button" aria-label="<!--fr-->Fermer la carte<!--en-->Close the map<!--/-->">×</button>
+          </div>
+          <div class="carte-voyages-corps" data-source="{{racine}}medias/carte-voyages.svg"><p class="carte-voyages-attente"><!--fr-->Chargement de la carte<!--en-->Loading the map<!--/-->…</p></div>
+          <p class="carte-voyages-legende"><span class="carte-voyages-pastille" aria-hidden="true"></span> 22 <!--fr-->pays et territoires visités · fond<!--en-->countries and territories visited · base map<!--/--> <a href="https://www.naturalearthdata.com">Natural Earth</a>, <!--fr-->drapeaux<!--en-->flags<!--/--> <a href="https://github.com/lipis/flag-icons"><!--fr--><i lang="en">flag-icons</i><!--en-->flag-icons<!--/--></a></p>
+        </dialog>
+      </div>
+    </section>
+  </main>
+
+
+  <!--fr-->
+  <!-- ===== Pied de page (défile avec la page) ===== -->
+  <!--en-->
+  <!-- ===== Footer (scrolls with the page) ===== -->
+  <!--/-->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1"><!--fr-->Me contacter<!--en-->Contact me<!--/--></h2>
+        <!--fr-->
+        <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
+        <!--en-->
+        <p>An <strong class="kw">internship</strong> or <strong class="kw">work-study</strong> offer, a question about a project? Write to me and I will get back to you quickly.</p>
+        <!--/-->
+        <ul class="coordonnees">
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span><span class="lieu-carte" tabindex="0" role="button" data-carte-zone>Lille, Lens, Douai, Arras</span></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="<!--fr-->Formulaire de contact<!--en-->Contact form<!--/-->"
+            data-endpoint="">
+        <p class="champ">
+          <label for="nom"><!--fr-->Nom<!--en-->Name<!--/--> <span class="obligatoire">(<!--fr-->obligatoire<!--en-->required<!--/-->)</span></label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email"><!--fr-->Adresse e-mail<!--en-->Email address<!--/--> <span class="obligatoire">(<!--fr-->obligatoire<!--en-->required<!--/-->)</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet"><!--fr-->Objet<!--en-->Subject<!--/--></label>
+          <select id="objet" name="objet">
+            <option><!--fr-->Proposition de stage<!--en-->Internship offer<!--/--></option>
+            <option><!--fr-->Proposition d'alternance<!--en-->Work-study offer<!--/--></option>
+            <option>Question <!--fr-->sur un projet<!--en-->about a project<!--/--></option>
+            <option><!--fr-->Autre<!--en-->Other<!--/--></option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message <span class="obligatoire">(<!--fr-->obligatoire<!--en-->required<!--/-->)</span></label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!--fr-->
+        <!-- Champ piège anti-robots : invisible pour les humains -->
+        <!--en-->
+        <!-- Anti-bot trap field: invisible to humans -->
+        <!--/-->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege"><!--fr-->Ne pas remplir<!--en-->Do not fill in<!--/--></label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit"><!--fr-->Envoyer<!--en-->Send<!--/--></button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · <!--fr-->tous droits réservés : aucun réemploi sans mon accord écrit, et alors avec mention obligatoire de l'autrice et de la<!--en-->all rights reserved: no reuse without my written permission, and even then only with credit to the author and the<!--/--> source · <a href="https://github.com/marietiers59/e-portfolio/blob/main/LICENSE"><!--fr-->licence complète<!--en-->full licence<!--/--></a><br>
+      <!--fr-->
+      Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="{{page:accessibilite}}">déclaration et détail des tests</a><br>
+      Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site, dans le respect du <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/fra" target="_blank" rel="noopener" hreflang="fr">RGPD<span class="sr"> (règlement général sur la protection des données, nouvel onglet)</span></a><br>
+      <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
+      <!--en-->
+      Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="{{page:accessibilite}}">statement and test details</a><br>
+      Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site, in line with the <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener" hreflang="en">GDPR<span class="sr"> (General Data Protection Regulation, new tab)</span></a><br>
+      <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
+      <!--/-->
+      <!--fr-->Mesure d'audience sans cookie <!--en-->Cookie-free visitor analytics<!--/-->: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="{{page:espace}}"<!--fr-->>espace personnel<!--en--> hreflang="fr">personal area<!--/--></a><br>
+      <span class="sources" data-sources>
+        <button class="sources-bouton" type="button" aria-expanded="false" aria-controls="sources-volet"><span class="sources-texte"><!--fr-->Afficher plus de<!--en-->Show more<!--/--> sources</span></button>
+        <span class="sources-volet" id="sources-volet">
+        <strong class="sources-groupe"><!--fr-->Conception et hébergement<!--en-->Design and hosting<!--/--></strong>
+        Site <!--fr-->conçu et codé avec l'assistance de l'IA<!--en-->designed and built with the help of the AI assistant<!--/--> <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic)<br>
+        <!--fr-->Hébergement <!--en-->Hosting<!--/-->: <a href="https://pages.github.com"><!--fr--><i lang="en"><!--/-->GitHub Pages</<!--fr-->i></<!--/-->a>
+        <strong class="sources-groupe">Images</strong>
+        <!--fr-->
+        Bannière et illustrations des piliers « Ma philosophie » et « Mon objectif » : générées par IA<br>
+        Photo de profil : retouchée par IA<br>
+        Photo de l'IUT : authentique, tirée de la couverture LinkedIn « IUT de Lens Alumni »<br>
+        Vignettes des projets : illustrations générées par IA, ou captures d'écran de mes propres projets<br>
+        <!--en-->
+        Banner and illustrations for the “My philosophy” and “My goal” pillars: generated by AI<br>
+        Profile photo: retouched with AI<br>
+        Photo of the <i lang="fr">IUT</i>: genuine, taken from the LinkedIn cover of “IUT de Lens Alumni”<br>
+        Project thumbnails: illustrations generated by AI, or screenshots of my own projects<br>
+        <!--/-->
+        <!--fr-->Images provisoires des projets bientôt en ligne <!--en-->Placeholder images for upcoming projects<!--/-->: <a href="https://picsum.photos">Lorem Picsum</a><br>
+        <!--fr-->Logos des technologies <!--en-->Technology logos<!--/-->: <a href="https://simpleicons.org">Simple Icons</a> (CC0), <!--fr-->marques de leurs propriétaires ; pictogrammes dessinés pour le<!--en-->trademarks of their respective owners; pictograms drawn for this<!--/--> site<br>
+        <!--fr-->Carte de la zone de recherche : fond © contributeurs<!--en-->Map of the search area: background ©<!--/--> <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a><!--fr-->, communes situées avec<!--en--> contributors, towns located with<!--/--> <a href="https://nominatim.org">Nominatim</a>, image <!--fr-->composée avec Pillow et<!--en-->composed with Pillow and<!--/--> NumPy<br>
+        <!--fr-->
+        Carte de mes voyages : fond <a href="https://www.naturalearthdata.com">Natural Earth</a> (domaine public) via <i lang="en">world-atlas</i>, drapeaux <a href="https://github.com/lipis/flag-icons"><i lang="en">flag-icons</i></a> (licence MIT), carte composée avec d3-geo
+        <!--en-->
+        Map of my travels: base map <a href="https://www.naturalearthdata.com">Natural Earth</a> (public domain) via world-atlas, flags <a href="https://github.com/lipis/flag-icons">flag-icons</a> (MIT licence), map composed with d3-geo
+        <!--/-->
+        <strong class="sources-groupe"><!--fr-->Contenus<!--en-->Content<!--/--></strong>
+        <!--fr-->
+        Compétences et notions : programme national du BUT informatique<br>
+        Projets d'équipe : menés avec mes coéquipières et coéquipiers, nommés dans chaque dépôt ; base du jeu <i lang="en">Space Invaders</i> fournie par l'IUT de Lens<br>
+        Nuage de compétences : communautés (méthode de Louvain) et disposition (ForceAtlas2) calculées avec <a href="https://gephi.org">Gephi</a>
+        <!--en-->
+        Skills and topics: the national curriculum of the <i lang="fr">BUT</i> in Computer Science (French three-year university degree)<br>
+        Team projects: built with my teammates, named in each repository; the base of the Space Invaders game was provided by the <i lang="fr">IUT de Lens</i><br>
+        Skills network: communities (Louvain method) and layout (ForceAtlas2) computed with <a href="https://gephi.org">Gephi</a>
+        <!--/-->
+        <strong class="sources-groupe">Code <!--fr-->et<!--en-->and<!--/--> services</strong>
+        <!--fr-->
+        Polices Nunito et Atkinson Hyperlegible : <a href="https://fonts.google.com"><i lang="en">Google Fonts</i></a> ; Trebuchet MS, police de l'appareil<br>
+        <!--en-->
+        Nunito and Atkinson Hyperlegible fonts: <a href="https://fonts.google.com">Google Fonts</a>; Trebuchet MS, the device's own font<br>
+        <!--/-->
+        <!--fr-->Moteur physique<!--en-->Physics engine<!--/--> <a href="https://brm.io/matter-js/">Matter.js</a> (<!--fr-->licence MIT<!--en-->MIT licence<!--/-->)<br>
+        <!--fr-->Vérification du domaine des adresses e-mail du formulaire <!--en-->Checking the domain of e-mail addresses in the form<!--/-->: <a href="https://developers.google.com/speed/public-dns"><!--fr--><i lang="en"><!--/-->Google Public DNS</<!--fr-->i></a> (seul le domaine est transmis<!--en-->a> (only the domain is sent<!--/-->)<br>
+        <!--fr-->
+        Tests d'accessibilité et de code : Lighthouse, axe-core, validateur du W3C
+        <!--en-->
+        Accessibility and code testing: Lighthouse, axe-core, W3C validator
+        <!--/-->
+        <strong class="sources-groupe"><!--fr-->Clins d'œil<!--en-->Nods and winks<!--/--></strong>
+        <!--fr-->
+        Quelques surprises cachées rendent hommage aux <i lang="en">easter eggs</i> de Google et à la culture populaire : œuvres et marques de leurs propriétaires respectifs
+        <!--en-->
+        A few hidden surprises pay tribute to Google's easter eggs and to popular culture: works and trademarks of their respective owners
+        <!--/-->
+        </span>
+      </span></p>
+  </footer>
+
+  <!--fr-->
+  <!-- ===== Barre fixe du bas ===== -->
+  <!--en-->
+  <!-- ===== Fixed bottom bar ===== -->
+  <!--/-->
+  <div class="barre barre-bas">
+    <div class="zoom" role="group" aria-label="<!--fr-->Zoom de la page<!--en-->Page zoom<!--/-->" hidden>
+      <span class="zoom-plateau" aria-hidden="true"></span>
+      <button class="zoom-cote zoom-moins" type="button" aria-label="<!--fr-->Dézoomer<!--en-->Zoom out<!--/-->" data-infobulle="<!--fr-->Dézoomer<!--en-->Zoom out<!--/-->" data-bulle="debut">
+        <svg class="zoom-loupe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.3 15.3 5.2 5.2M7.8 10.5h5.4"/></svg>
+        <span class="zoom-demi" aria-hidden="true"></span>
+      </button>
+      <button class="zoom-crete" type="button" aria-label="<!--fr-->Taille réelle, zoom actuel 100 <!--en-->Actual size, current zoom 100<!--/-->%" data-infobulle="<!--fr-->Taille réelle (actuellement 100 <!--en-->Actual size (now 100<!--/-->%)"><span aria-hidden="true"></span></button>
+      <button class="zoom-cote zoom-plus" type="button" aria-label="<!--fr-->Zoomer<!--en-->Zoom in<!--/-->" data-infobulle="<!--fr-->Zoomer<!--en-->Zoom in<!--/-->">
+        <span class="zoom-demi" aria-hidden="true"></span>
+        <svg class="zoom-loupe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.3 15.3 5.2 5.2M7.8 10.5h5.4M10.5 7.8v5.4"/></svg>
+      </button>
+      <span class="zoom-annonce sr" aria-live="polite"></span>
+    </div>
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>

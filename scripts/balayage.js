@@ -10,7 +10,7 @@
   · Avec « animations réduites », la page change sans glissement.
   · Zoom à deux doigts toujours possible : un pincement n'est jamais pris pour un balayage,
     et une page agrandie se parcourt au doigt sans changer de page.
-  · Arrivée animée et retour à l'accueil quand on actualise : petit script en tête de chaque page.
+  · Arrivée animée et retour à l'accueil quand on actualise : scripts/tete.js, chargé en tête de chaque page.
 */
 (() => {
   const TELEPHONE = '(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)';

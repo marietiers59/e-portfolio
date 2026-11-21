@@ -32,7 +32,7 @@ jobs:
       - name: Préparer le site (sans fichiers du dépôt inutiles en ligne)
         run: |
           mkdir _site
-          rsync -a --exclude '.git*' --exclude '.github' --exclude '.githooks' --exclude '_site' ./ _site/
+          rsync -a --exclude '.git*' --exclude '.github' --exclude '.githooks' --exclude '_site' --exclude 'modeles' --exclude 'sonar-project.properties' ./ _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -9,7 +9,7 @@
    – Le zoom agrandit la taille de base (rem) : textes, marges, cartes
      et barres grandissent ensemble, comme avec le zoom du navigateur.
    – Niveau mémorisé sur l'appareil (localStorage, clé « zoom-page ») et
-     appliqué dès la tête de page (petit script en ligne), donc sans
+     appliqué dès la tête de page (scripts/tete.js), donc sans
      clignotement d'une page à l'autre.
    – Plafond selon la largeur de l'écran : la page garde toujours au moins
      18 rem « virtuels » de large, donc jamais de défilement horizontal.

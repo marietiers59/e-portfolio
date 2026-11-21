@@ -1,0 +1,23 @@
+# Vérifications de chaque merge request (#199)
+# Les pages publiées doivent correspondre à leur modèle bilingue (modeles/, outils/pages/LISEZMOI.md).
+name: vérifications
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pages:
+    name: pages à jour par rapport aux modèles
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Comparer les pages publiées aux modèles
+        run: node outils/pages/construire.mjs --verifier
