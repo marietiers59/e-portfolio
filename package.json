@@ -1,0 +1,17 @@
+{
+  "name": "e-portfolio-marie-tiers",
+  "private": true,
+  "description": "Outillage du site : génération des pages bilingues et tests de bout en bout (le site lui-même n'a aucune dépendance).",
+  "type": "module",
+  "scripts": {
+    "construire": "node outils/pages/construire.mjs",
+    "verifier": "node outils/pages/construire.mjs --verifier",
+    "test": "playwright test",
+    "test:voir": "playwright test --ui"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "monocart-reporter": "^2.15.1"
+  }
+}

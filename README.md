@@ -98,6 +98,7 @@ medias/                    images, drapeaux, nuage de compétences, CV masqués,
 outils/pages/              génération des pages à partir des modèles (Node, sans dépendance)
 outils/nuage-competences/  construction du nuage (Python, Java, Gephi)
 outils/carte-zone/         composition de la carte (Python)
+tests/                     tests de bout en bout (Playwright), mode d'emploi dans tests/LISEZMOI.md
 .github/                   modèles de tickets et de merge requests, CODEOWNERS, vérifications
 .githooks/                 contrôles locaux : messages de commit, pages à jour
 ```
@@ -118,6 +119,9 @@ ouvrir <http://localhost:8000>.
 - **Pages bilingues** : on modifie le modèle dans `modeles/`, jamais la page publiée, puis on régénère
   avec `node outils/pages/construire.mjs`. Une page publiée qui ne correspond plus à son modèle est
   refusée par le *hook* `pre-commit` et par la vérification GitHub de chaque *merge request*.
+- **Tests automatisés** : 48 tests de bout en bout avec Playwright (rideau, thème, zoom, liens des
+  17 pages, smartphone), lancés par `npm test` et sur chaque *merge request* ; couverture des scripts
+  dans `couverture/lcov.info`, lisible par SonarQube (`sonar-project.properties`).
 - **Relecture** : Marie Tiers est l'unique relectrice et propriétaire du code (`.github/CODEOWNERS`).
 
 ## droits
