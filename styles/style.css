@@ -2082,6 +2082,21 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 .nuage-outil:hover { border-color: var(--bleu-400); }
 .nuage-outil[aria-pressed="true"] { background: var(--turquoise-100); border-color: var(--turquoise-200); }
 .nuage-fermer { background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150)); border-color: var(--turquoise-200); color: var(--bleu-700); }
+/* Bouton « × Retour à la page » (#218) : texte à taille normale, marge de chaque côté pour que la croix
+   et la dernière lettre ne touchent pas la bordure arrondie ; la croix seule reste grande */
+.nuage-outil.nuage-fermer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 1.05rem 0.3rem 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.nuage-outil.nuage-fermer > [aria-hidden="true"] { font-size: 1.25rem; line-height: 1; }
+@media (max-width: 39.99em) {     /* petits écrans : la croix seule, bouton rond */
+  .nuage-outil.nuage-fermer { justify-content: center; gap: 0; padding: 0; min-width: 2.25rem; }
+}
 .nuage-scene {
   position: relative;
   overflow: hidden;
