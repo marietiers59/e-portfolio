@@ -2279,7 +2279,7 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 }
 .pied-grille > * { min-width: 0; }  /* une colonne ne s'élargit jamais au-delà de l'écran, même page zoomée */
 .pied-coordonnees p { margin: 0; }
-.pied .section-titre { margin-bottom: 0.75rem; }
+.pied .section-titre { margin-bottom: 1.1rem; }   /* de l'air sous la barre bleue du titre */
 
 .coordonnees {
   list-style: none;
@@ -2454,7 +2454,21 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
     grid-template-rows: auto auto 1fr;
   }
   .champ:has(textarea) { grid-template-rows: auto 1fr; }
-  .champ textarea { height: 100%; }
+  .champ textarea { height: 100%; min-height: 8rem; }
+  /* Tout en bas de l'accueil, le pied de page remplit la hauteur entre les deux barres :
+     pas de vide en haut de l'écran ; la place en plus revient au champ Message (#206) */
+  .pied {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 2 * var(--barre-h));
+    min-height: calc(100dvh - 2 * var(--barre-h));
+  }
+  .pied-grille { flex: 1 0 auto; }
+  /* Colonne de gauche calée en haut (titre juste sous la barre) ; l'encart du rideau descend
+     s'aligner sur le bas du formulaire */
+  .pied-coordonnees { align-self: stretch; display: flex; flex-direction: column; }
+  .pied-coordonnees .coordonnees { margin-bottom: 1rem; }
+  .pied-coordonnees .rideau { margin-top: auto; }
 }
 
 /* Lien discret du pied de page */
@@ -2514,21 +2528,39 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
 }
 
-/* Pied de page compact sur ordinateur quand la fenêtre est basse (portables, navigateur non plein écran) :
-   tout en bas de la page, le titre « Contact » reste visible sous la barre du haut (#194).
-   Coordonnées sur deux colonnes, encart et mentions resserrés ; rien ne change sur smartphone. */
-@media (min-width: 48em) and (max-height: 52em) {
-  .pied { padding-block-end: 0.5rem; }
-  .pied .section-titre { margin-bottom: 0.5rem; }
-  .coordonnees {
-    margin-top: 0.6rem;
-    grid-template-columns: repeat(2, minmax(0, auto));
-    justify-content: start;
-    gap: 0.35rem 1.5rem;
-  }
-  .rideau { margin-top: 0.6rem; padding: 0.6rem 0.85rem; gap: 0.4rem; }
+/* Pied de page compact sur ordinateur quand la fenêtre est basse (portable, navigateur non plein écran) :
+   tout en bas de la page, le titre « Me contacter » reste visible sous la barre du haut (#194, allégé en #206).
+   Trois paliers ; rien ne change sur smartphone. */
+@media (min-width: 48em) and (max-height: 49em) {
+  /* palier 1 : coordonnées un peu resserrées */
+  .coordonnees { margin-top: 0.75rem; gap: 0.35rem 1.5rem; }
+  .rideau { padding: 0.75rem 0.9rem; gap: 0.5rem; }
+  .pied-mentions { margin-top: 1rem; }
+  .champ textarea { min-height: 6rem; }
+}
+@media (min-width: 48em) and (max-height: 45em) {
+  /* palier 2 : fenêtre très basse, tout se resserre encore un peu */
+  .pied { padding-block: 1.25rem 0.5rem; }
+  .pied .section-titre { margin-bottom: 0.8rem; }
+  .rideau { padding: 0.6rem 0.85rem; gap: 0.4rem; }
   .rideau-texte { font-size: 0.9rem; line-height: 1.45; }
   .pied-mentions { margin-top: 0.75rem; line-height: 1.45; }
+  .champ textarea { min-height: 5rem; }
+}
+@media (min-width: 48em) and (max-height: 42em) {
+  /* palier 3 : fenêtre de portable 1366 × 768 (environ 650 px utiles) : coordonnées sur deux colonnes */
+  .pied .section-titre { margin-bottom: 0.6rem; }
+  .coordonnees {
+    margin-top: 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, auto));
+    justify-content: start;
+    gap: 0.3rem 1.5rem;
+  }
+  .pied-coordonnees .coordonnees { margin-bottom: 0.6rem; }
+  .rideau { padding: 0.5rem 0.8rem; gap: 0.35rem; }
+  .pied-mentions { margin-top: 0.6rem; line-height: 1.4; }
+  .formulaire { margin-top: 2.2rem; row-gap: 0.7rem; padding: 1rem 1.25rem; }
+  .champ textarea { min-height: 4rem; }
 }
 .rideau-ligne input:focus {
   outline: none;
