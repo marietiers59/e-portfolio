@@ -4,7 +4,8 @@ Nuage de compétences façon Gephi.
 
   python3 nuage.py graphe   → entree.gexf (nœuds, liens, tailles, positions de départ)
   java … Spatialiser.java   → ../../medias/nuage-competences.gexf (Gephi : modularité + ForceAtlas2)
-  python3 nuage.py rendu    → SVG injecté dans pages/competences.html et en/skills.html,
+  python3 nuage.py rendu    → fragments FR et EN dans modeles/fragments/ (nuage-*.fr.html, nuage-*.en.html),
+                              pages Compétences et Skills régénérées (outils/pages/construire.mjs),
                               + medias/nuage-competences.svg (image seule)
 
 construire.sh enchaîne les trois étapes.
@@ -24,7 +25,8 @@ RACINE = ICI.parent.parent
 ENTREE = ICI / "entree.gexf"
 GEPHI = RACINE / "medias" / "nuage-competences.gexf"
 IMAGE = RACINE / "medias" / "nuage-competences.svg"
-PAGES = {"fr": RACINE / "pages" / "competences.html", "en": RACINE / "en" / "skills.html"}
+MODELE = RACINE / "modeles" / "competences.html"   # modèle bilingue de la page Compétences / Skills
+FRAGMENTS = RACINE / "modeles" / "fragments"
 
 
 # ---------- 1. Graphe ----------

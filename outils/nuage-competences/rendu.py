@@ -10,12 +10,13 @@ import json
 import math
 import random
 import re
+import subprocess
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 from couleurs import arrondir, couleur, couleur_point, couleur_texte
 from donnees import BUT_LONG, MASQUES, NOTIONS
-from nuage import GEPHI, IMAGE, PAGES, degres, graphe, rayon
+from nuage import FRAGMENTS, GEPHI, IMAGE, MODELE, RACINE, degres, graphe, rayon
 
 NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
 
@@ -317,23 +318,25 @@ def image_seule():
     IMAGE.write_text('<?xml version="1.0" encoding="UTF-8"?>\n' + svg + "\n", encoding="utf-8")
 
 
-def injecter(chemin, marqueur, contenu):
-    page = chemin.read_text(encoding="utf-8")
-    motif = re.compile(rf"(<!-- {marqueur}:debut -->)(.*?)(\s*<!-- {marqueur}:fin -->)", re.S)
-    assert motif.search(page), f"marqueurs « {marqueur} » absents de {chemin.name}"
-    retrait = re.search(rf"\n([ \t]*)<!-- {marqueur}:debut -->", page).group(1)
+def ecrire_fragment(marqueur, langue, contenu):
+    """modeles/fragments/<marqueur>.<langue>.html, en reprenant le retrait du marqueur dans le modèle."""
+    modele = MODELE.read_text(encoding="utf-8")
+    trouve = re.search(rf"\n([ \t]*)<!-- {marqueur}:debut -->{{{{fragment:{marqueur}}}}}", modele)
+    assert trouve, f"marqueur « {marqueur} » ou {{{{fragment:{marqueur}}}}} absent de {MODELE.name}"
+    retrait = trouve.group(1)
     corps = "\n".join(retrait + ligne if ligne else ligne for ligne in contenu.split("\n"))
-    page = motif.sub(lambda m: m.group(1) + "\n" + corps + m.group(3), page)
-    chemin.write_text(page, encoding="utf-8")
+    (FRAGMENTS / f"{marqueur}.{langue}.html").write_text("\n" + corps, encoding="utf-8")
 
 
 def rendre():
-    for langue, chemin in PAGES.items():
+    for langue in ("fr", "en"):
         svg, legende, texte, _, json_donnees = construire(langue)
-        injecter(chemin, "nuage-svg", svg)
-        injecter(chemin, "nuage-legende", legende)
-        injecter(chemin, "nuage-texte", texte)
-        injecter(chemin, "nuage-donnees", '<script type="application/json" id="nuage-donnees">' + json_donnees + "</script>")
-        print(f"{chemin.relative_to(chemin.parents[1])} : nuage injecté")
+        ecrire_fragment("nuage-svg", langue, svg)
+        ecrire_fragment("nuage-legende", langue, legende)
+        ecrire_fragment("nuage-texte", langue, texte)
+        ecrire_fragment("nuage-donnees", langue, '<script type="application/json" id="nuage-donnees">' + json_donnees + "</script>")
+        print(f"modeles/fragments/nuage-*.{langue}.html écrits")
+    # Les pages publiées se régénèrent à partir du modèle et des fragments
+    subprocess.run(["node", str(RACINE / "outils" / "pages" / "construire.mjs")], check=True)
     image_seule()
     print(f"{IMAGE.name} écrit")

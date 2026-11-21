@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Refuse un commit si une page publiée ne correspond plus à son modèle (modeles/) — voir outils/pages/LISEZMOI.md
+# Activé avec le hook commit-msg : git config core.hooksPath .githooks
+set -euo pipefail
+racine="$(git rev-parse --show-toplevel)"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-commit : Node absent, vérification des pages sautée (elle sera faite sur GitHub)." >&2
+  exit 0
+fi
+
+if ! node "$racine/outils/pages/construire.mjs" --verifier; then
+  echo >&2
+  echo "Commit refusé : régénérer les pages (node outils/pages/construire.mjs), puis les ajouter au commit." >&2
+  exit 1
+fi
