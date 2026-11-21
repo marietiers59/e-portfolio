@@ -12,6 +12,7 @@
    6. Cartes projets, filtres et piliers
    6 bis. Compétences
    6 ter. Nuage de compétences (graphe Gephi)
+   6 quater. Diplômes et certifications
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
@@ -2111,6 +2112,147 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .nuage-apercu:hover, .nuage-puce:not(:disabled):hover { transform: none; }
+}
+
+/* ---------- 6 quater. Diplômes et certifications (page Compétences, #216) ---------- */
+/*
+  Une carte par justificatif : vignette sur fond papier, intitulé, organisme et année.
+  Clic → vue agrandie dans un <dialog> (scripts/script.js, section 13) ; sans script, l'image seule s'ouvre.
+  Rangées équilibrées : 1 colonne (mobile), 2 (tablette : 2 + 2), 4 (ordinateur : une seule rangée).
+*/
+.diplomes { margin-top: clamp(2rem, 5vw, 3rem); }
+.diplomes-titre { margin: 0 0 0.4rem; font-size: 1.35rem; font-weight: 800; color: var(--indigo-700); text-align: center; }
+.diplomes-intro { margin: 0 auto 1.25rem; max-width: 42rem; text-align: center; font-size: 0.95rem; color: var(--encre-douce); }
+.diplomes-intro strong { color: var(--encre); }
+.diplomes-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  align-items: stretch;
+}
+@media (min-width: 40em) { .diplomes-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 64em) { .diplomes-liste { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.diplome-lien {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-top: 0.3rem solid var(--accent-400);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease;
+}
+.diplome-lien:hover { transform: translateY(-2px); box-shadow: var(--ombre-survol); }
+.diplome-lien:focus-visible { outline: 3px solid var(--bleu-400); outline-offset: 3px; }
+.diplome-cadre {                 /* vignette entière, posée sur un fond papier ; même cadre 4:3 pour toutes,
+                                    paysage comme portrait (le certificat de Cambridge est en hauteur) */
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--gris-100);
+  border-bottom: 1px solid var(--trait);
+}
+.diplome-vignette {
+  position: absolute;
+  inset: 0.6rem;
+  width: calc(100% - 1.2rem);
+  height: calc(100% - 1.2rem);
+  object-fit: contain;
+  filter: drop-shadow(0.1rem 0.15rem 0.3rem hsl(var(--ombre-teinte) / 0.18));
+}
+.diplome-texte { display: grid; gap: 0.35rem; padding: 0.9rem 1rem 1.1rem; }
+.diplome-nom { font-family: var(--police-interface); font-size: 1rem; font-weight: 800; line-height: 1.3; color: var(--accent-700); }
+.diplome-detail { font-size: 0.85rem; line-height: 1.45; color: var(--encre-douce); }
+.diplome-detail abbr { text-decoration: underline dotted; text-underline-offset: 0.2em; }
+.diplome-loupe {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150));
+  color: var(--bleu-700);
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease;
+}
+.diplome-lien:hover .diplome-loupe { transform: scale(1.12); }
+
+/* Vue agrandie : plein écran sur mobile, grande fenêtre ailleurs (même allure que celle du nuage) */
+.diplome-dialogue {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--carte);
+  color: var(--encre);
+}
+.diplome-dialogue[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.diplome-dialogue::backdrop { background: hsl(220 30% 12% / 0.55); backdrop-filter: blur(3px); }
+.diplome-barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem clamp(0.75rem, 2vw, 1.25rem);
+  border-bottom: 1px solid var(--trait);
+}
+.diplome-dialogue-titre { margin: 0; flex: 1 1 12rem; font-size: 1.05rem; font-weight: 800; color: var(--indigo-700); }
+.diplome-compteur { margin: 0; font-family: var(--police-interface); font-size: 0.85rem; font-weight: 700; color: var(--encre-douce); }
+.diplome-outils { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+a.nuage-outil { display: inline-grid; place-items: center; text-decoration: none; }
+.diplome-scene {
+  margin: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  padding: clamp(0.6rem, 2vw, 1.25rem);
+  background: radial-gradient(ellipse at 50% 45%, var(--carte) 35%, var(--gris-100));
+  touch-action: pan-y pinch-zoom;
+  overflow: hidden;
+}
+.diplome-image {
+  justify-self: center;
+  align-self: center;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.3rem;
+  box-shadow: var(--ombre-survol);
+  background: #fff;
+}
+.diplome-legende { max-width: 60rem; margin: 0 auto; text-align: center; font-size: 0.85rem; color: var(--encre-douce); }
+@media (min-width: 48em) {
+  .diplome-dialogue {
+    width: min(94vw, 80rem);
+    height: min(94dvh, 62rem);
+    margin: auto;
+    border-radius: var(--rayon);
+    box-shadow: var(--ombre-survol);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .diplome-dialogue[open] { animation: nuage-ouverture 0.28s ease-out; }
+  .diplome-image.change { animation: diplome-fondu 0.25s ease-out; }
+}
+@keyframes diplome-fondu { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .diplome-lien:hover { transform: none; }
 }
 
 /* ---------- 7. Frise chronologique ---------- */

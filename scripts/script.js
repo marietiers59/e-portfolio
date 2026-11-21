@@ -12,6 +12,7 @@
   10. Nuage de compétences en 3D (page Compétences : aperçu animé, vue agrandie)
   11. Vignettes de compétences : rangées équilibrées et centrées
   12. Page en travaux : panneau « chantier en cours » à la place du lien (#174)
+  13. Diplômes et certifications : visionneuse (page Compétences, #216)
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -1749,4 +1750,83 @@ function dessinChantier(suffixe) {
     if (typeof dialogue.showModal === 'function') dialogue.showModal();
     else window.location.href = lien.href;              // très vieux navigateur : la page affiche le panneau
   }));
+})();
+
+/* ---------- 13. Diplômes et certifications : visionneuse (page Compétences, #216) ---------- */
+// Clic sur une carte : le justificatif s'ouvre en grand dans un <dialog>, avec sa description complète
+// (texte alternatif lu par les lecteurs d'écran, repris en légende). Précédent / suivant aux boutons,
+// aux flèches du clavier ou d'un glissement du doigt ; « Image seule » l'ouvre dans un nouvel onglet.
+// Fermeture : ×, Échap, clic autour du cadre, ou bouton / geste « retour » du navigateur (comme le nuage).
+// Sans JavaScript, la carte est un simple lien vers l'image.
+(() => {
+  const liens = [...document.querySelectorAll('[data-diplome]')];
+  const dialogue = document.querySelector('.diplome-dialogue');
+  if (!liens.length || !dialogue || typeof dialogue.showModal !== 'function') return;
+
+  const image = dialogue.querySelector('.diplome-image');
+  const legende = dialogue.querySelector('.diplome-legende');
+  const titre = dialogue.querySelector('.diplome-dialogue-titre');
+  const compteur = dialogue.querySelector('.diplome-compteur');
+  const lienSeul = dialogue.querySelector('.diplome-seule');
+  let courant = 0;
+
+  // Les grandes images ne se chargent qu'à la demande ; on précharge la voisine pour un défilement fluide
+  const precharger = (i) => { const im = new Image(); im.src = liens[(i + liens.length) % liens.length].href; };
+
+  function afficher(i) {
+    courant = (i + liens.length) % liens.length;
+    const lien = liens[courant];
+    image.classList.remove('change');
+    void image.offsetWidth;                    // relance le fondu
+    image.classList.add('change');
+    image.src = lien.href;
+    image.alt = lien.dataset.alt;
+    legende.textContent = lien.dataset.alt;
+    titre.innerHTML = lien.querySelector('.diplome-nom').innerHTML;
+    compteur.textContent = `${courant + 1} / ${liens.length}`;
+    lienSeul.href = lien.href;
+    precharger(courant + 1);
+  }
+
+  // Retour du navigateur : referme la visionneuse au lieu de quitter la page
+  if (history.state?.diplome) history.replaceState(null, '');
+  window.addEventListener('popstate', () => { if (dialogue.open) dialogue.close(); });
+  dialogue.addEventListener('close', () => {
+    if (history.state?.diplome) history.back();
+    image.removeAttribute('src');
+  });
+
+  liens.forEach((lien, i) => lien.addEventListener('click', (e) => {
+    e.preventDefault();
+    afficher(i);
+    dialogue.showModal();
+    if (!history.state?.diplome) history.pushState({ diplome: true }, '');
+  }));
+
+  const actions = {
+    precedent: () => afficher(courant - 1),
+    suivant: () => afficher(courant + 1),
+    fermer: () => dialogue.close(),
+  };
+  dialogue.querySelectorAll('[data-diplome-action]').forEach((b) => b.addEventListener('click', () => actions[b.dataset.diplomeAction]()));
+  dialogue.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); actions.precedent(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); actions.suivant(); }
+  });
+  let appuiSurVoile = false;                   // clic sur le voile, autour du cadre
+  dialogue.addEventListener('pointerdown', (e) => { appuiSurVoile = e.target === dialogue; });
+  dialogue.addEventListener('click', (e) => { if (appuiSurVoile && e.target === dialogue) dialogue.close(); });
+
+  // Glissement horizontal du doigt : image précédente ou suivante
+  const scene = dialogue.querySelector('.diplome-scene');
+  let depart = null;
+  scene.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') depart = { x: e.clientX, y: e.clientY }; });
+  scene.addEventListener('pointerup', (e) => {
+    if (!depart) return;
+    const dx = e.clientX - depart.x, dy = e.clientY - depart.y;
+    depart = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) (dx < 0 ? actions.suivant : actions.precedent)();
+  });
+  scene.addEventListener('pointercancel', () => { depart = null; });
 })();
