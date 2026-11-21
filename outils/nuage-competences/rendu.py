@@ -8,14 +8,13 @@ pour que les noms ne se chevauchent pas.
 import html
 import json
 import math
-import random
 import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 from couleurs import couleur_point, couleur_texte
 from donnees import BUT_LONG, MASQUES
-from nuage import FRAGMENTS, GEPHI, IMAGE, MODELE, degres, graphe, rayon
+from nuage import FRAGMENTS, GEPHI, IMAGE, MODELE, degres, empreinte, graphe, rayon
 
 NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
 
@@ -111,14 +110,13 @@ def profondeur(noeuds, liens, pos, classe):
     Le nuage prend la forme d'une boule : plus un nœud est près du centre, plus il peut s'enfoncer ;
     chaque communauté reçoit sa propre profondeur, puis on lisse le long des liens
     pour que des nœuds reliés restent proches, comme des neurones voisins."""
-    alea = random.Random(2026)
     ids = list(noeuds)
     cx = sum(pos[i][0] for i in ids) / len(ids)
     cy = sum(pos[i][1] for i in ids) / len(ids)
     rmax = max(math.hypot(pos[i][0] - cx, pos[i][1] - cy) for i in ids)
     comms = sorted(set(classe.values()))
     decalage = {c: math.cos(n * 2.4) * 0.7 for n, c in enumerate(comms)}
-    u = {i: decalage[classe[i]] + alea.uniform(-0.6, 0.6) for i in ids}
+    u = {i: decalage[classe[i]] + 1.2 * empreinte(i, "profondeur") - 0.6 for i in ids}   # écart propre à chaque nœud, entre −0,6 et +0,6
     voisins = defaultdict(list)
     for a, b in liens:
         voisins[a].append(b)
