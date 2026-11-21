@@ -771,18 +771,32 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
 
 /* ---------- 7. Thème clair / sombre ---------- */
 // Le thème est déjà posé avant l'affichage par le petit script du <head> de chaque page
-// (choix mémorisé, sinon réglage clair/sombre de l'appareil). Ici :
+// (choix encore valable, sinon thème du soleil encore valable, sinon réglage de l'appareil). Ici :
 //  · le bouton soleil ⇄ lune de la barre du haut (caché sans JavaScript) ;
 //  · la mémorisation du choix sur cet appareil (localStorage, clé « theme ») ;
-//  · le suivi du réglage de l'appareil tant que le visiteur n'a rien choisi.
+//  · le thème au rythme du soleil (#208) : si le visiteur autorise sa localisation, clair entre le lever
+//    et le coucher du soleil chez lui, sombre la nuit, avec bascule automatique à l'heure dite.
+//    Le calcul se fait sur l'appareil ; la position, arrondie à 0,1° (environ 10 km), n'en sort jamais.
+//    Un choix fait au bouton vaut alors jusqu'au prochain lever ou coucher du soleil ;
+//  · sans localisation : le choix au bouton est gardé, sinon le réglage clair/sombre de l'appareil est suivi.
 (() => {
   const racine = document.documentElement;
   const bouton = document.querySelector('.theme');
   const systeme = window.matchMedia('(prefers-color-scheme: dark)');
   const couleurNavigateur = document.querySelector('meta[name="theme-color"]');
 
+  const lire = (cle) => { try { return localStorage.getItem(cle); } catch { return null; } };
+  const ecrire = (cle, valeur) => {
+    try { if (valeur == null) localStorage.removeItem(cle); else localStorage.setItem(cle, valeur); } catch { /* stockage bloqué */ }
+  };
+  const THEMES = ['clair', 'sombre'];
+
+  // Choix fait au bouton, s'il est encore valable (avec le soleil, il expire au prochain lever ou coucher)
   const choixMemorise = () => {
-    try { return localStorage.getItem('theme'); } catch { return null; }
+    const jusqua = Number(lire('theme-jusqua'));
+    if (jusqua && jusqua <= Date.now()) { ecrire('theme', null); ecrire('theme-jusqua', null); return null; }
+    const t = lire('theme');
+    return THEMES.includes(t) ? t : null;
   };
 
   function appliquer(theme, avecTransition) {
@@ -795,14 +809,105 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     if (couleurNavigateur) couleurNavigateur.content = theme === 'sombre' ? '#222d3a' : '#ddedf8';
   }
 
+  /* ----- Le soleil : hauteur au-dessus de l'horizon (formules NOAA simplifiées, précision de quelques minutes) ----- */
+  const RAD = Math.PI / 180;
+  const SEUIL = -0.833;                                     // bord du disque au ras de l'horizon, réfraction comprise
+  const hauteurSoleil = (t, lat, lon) => {
+    const d = t / 864e5 - 10957.5;                          // jours depuis le 1er janvier 2000 à 12 h TU
+    const g = (357.529 + 0.98560028 * d) * RAD;             // anomalie moyenne
+    const q = 280.459 + 0.98564736 * d;                     // longitude moyenne
+    const L = (q + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * RAD;
+    const e = (23.439 - 0.00000036 * d) * RAD;              // obliquité de l'écliptique
+    const ascension = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L));
+    const declinaison = Math.asin(Math.sin(e) * Math.sin(L));
+    const tempsSideral = ((280.46061837 + 360.98564736629 * d + lon) % 360) * RAD;
+    const H = tempsSideral - ascension;                     // angle horaire
+    return Math.asin(Math.sin(lat * RAD) * Math.sin(declinaison)
+      + Math.cos(lat * RAD) * Math.cos(declinaison) * Math.cos(H)) / RAD;
+  };
+  const faitJour = (t, p) => hauteurSoleil(t, p.lat, p.lon) > SEUIL;
+  // Prochain lever ou coucher dans les 36 h (pas de 10 min, puis dichotomie à 30 s près) ; null en nuit ou jour polaire
+  const prochaineBascule = (t, p) => {
+    const jour = faitJour(t, p);
+    for (let a = t, b = t + 6e5; b <= t + 36 * 36e5; a = b, b += 6e5) {
+      if (faitJour(b, p) !== jour) {
+        while (b - a > 3e4) { const m = (a + b) / 2; if (faitJour(m, p) !== jour) b = m; else a = m; }
+        return Math.ceil(b);
+      }
+    }
+    return null;
+  };
+
+  let position = null;                                     // { lat, lon, t } une fois la localisation autorisée
+  let minuterie = 0;
+  const suivreSoleil = () => {
+    clearTimeout(minuterie);
+    if (!position) return;
+    const maintenant = Date.now();
+    const themeSoleil = faitJour(maintenant, position) ? 'clair' : 'sombre';
+    const bascule = prochaineBascule(maintenant, position);
+    const jusqua = bascule ?? maintenant + 6 * 36e5;       // nuit ou jour polaire : on revérifie dans 6 h
+    ecrire('theme-soleil', themeSoleil);
+    ecrire('theme-soleil-jusqua', String(jusqua));          // lu par le script du <head> des autres pages
+    // Un ancien choix au bouton, sans date de fin, ne vaut plus que jusqu'à la prochaine bascule
+    if (lire('theme') && !lire('theme-jusqua')) ecrire('theme-jusqua', String(jusqua));
+    const cible = choixMemorise() ?? themeSoleil;
+    if (racine.dataset.theme !== cible) appliquer(cible, true);
+    // setTimeout plafonné à 6 h ; à la sortie de veille, « visibilitychange » relance le calcul
+    minuterie = setTimeout(suivreSoleil, Math.min(jusqua - maintenant + 1000, 6 * 36e5));
+  };
+
+  const oublierSoleil = () => {
+    position = null;
+    clearTimeout(minuterie);
+    ['soleil-position', 'theme-soleil', 'theme-soleil-jusqua'].forEach((cle) => ecrire(cle, null));
+  };
+
+  // Demande de localisation dès l'arrivée sur le site (une fois par session tant que le visiteur n'a pas répondu)
+  const localiser = async () => {
+    if (!('geolocation' in navigator)) return;
+    let etat = 'prompt';
+    try { etat = (await navigator.permissions.query({ name: 'geolocation' })).state; } catch { /* API absente */ }
+    if (etat === 'denied') { oublierSoleil(); return; }
+    let memo = null;
+    try { memo = JSON.parse(lire('soleil-position')); } catch { /* valeur abîmée */ }
+    if (memo && Number.isFinite(memo.lat) && Number.isFinite(memo.lon)) {
+      position = memo;
+      suivreSoleil();
+      if (Date.now() - (memo.t || 0) < 864e5) return;        // position de moins d'un jour : inutile de redemander
+    }
+    if (etat !== 'granted') {
+      try {
+        if (sessionStorage.getItem('soleil-demande')) return; // déjà demandé pendant cette visite
+        sessionStorage.setItem('soleil-demande', '1');
+      } catch { /* stockage bloqué */ }
+    }
+    navigator.geolocation.getCurrentPosition((pos) => {
+      position = {
+        lat: Math.round(pos.coords.latitude * 10) / 10,
+        lon: Math.round(pos.coords.longitude * 10) / 10,
+        t: Date.now(),
+      };
+      ecrire('soleil-position', JSON.stringify(position));
+      suivreSoleil();
+    }, (erreur) => {
+      if (erreur.code === erreur.PERMISSION_DENIED) oublierSoleil();
+    }, { enableHighAccuracy: false, maximumAge: 864e5, timeout: 15000 });
+  };
+
   appliquer(racine.dataset.theme === 'sombre' ? 'sombre' : 'clair', false);
+  localiser();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) suivreSoleil(); });
 
   if (bouton) {
     bouton.hidden = false;
     bouton.addEventListener('click', () => {
       const suivant = racine.dataset.theme === 'sombre' ? 'clair' : 'sombre';
       appliquer(suivant, true);
-      try { localStorage.setItem('theme', suivant); } catch { /* stockage bloqué : le choix vaut pour cette page seulement */ }
+      ecrire('theme', suivant);                              // stockage bloqué : le choix vaut pour cette page seulement
+      // Avec le soleil, le choix au bouton vaut jusqu'au prochain lever ou coucher ; sans, il est gardé
+      if (position) ecrire('theme-jusqua', String(prochaineBascule(Date.now(), position) ?? Date.now() + 6 * 36e5));
+      else ecrire('theme-jusqua', null);
       // Juste après le clic, la pastille va jusqu'au bout de l'interrupteur, même si la souris est encore dessus
       bouton.classList.add('vient-de-basculer');
     });
@@ -811,7 +916,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   }
 
   systeme.addEventListener('change', (e) => {
-    if (!['clair', 'sombre'].includes(choixMemorise())) appliquer(e.matches ? 'sombre' : 'clair', true);
+    if (!choixMemorise() && !position) appliquer(e.matches ? 'sombre' : 'clair', true);
   });
 })();
 
