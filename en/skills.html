@@ -20,11 +20,11 @@
   <script>(function(){try{var L=[.8,.9,1,1.1,1.2,1.3,1.5,1.75,2],i=parseInt(localStorage.getItem('zoom-page'),10)+2;if(!(i>=0&&i<9)||i===2)return;while(i>2&&innerWidth/L[i]<288)i--;if(i!==2)document.documentElement.style.setProperty('--zoom-page',String(L[i]))}catch(e){}})();</script>
   <script>(function(){var r=document.documentElement;if(!r.animate)return;r.classList.add('apparition-attente');setTimeout(function(){r.classList.remove('apparition-attente')},3000)})();</script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=60">
+  <link rel="stylesheet" href="../styles/style.css?v=61">
   <!-- Smartphone : actualiser ramène à l'accueil ; arrivée animée après un balayage (scripts/balayage.js) -->
   <script>(function(){if(!(window.matchMedia&&matchMedia('(pointer: coarse) and (max-width: 47.99rem), (pointer: coarse) and (max-height: 30rem)').matches))return;try{var n=performance.getEntriesByType('navigation')[0];if(n&&n.type==='reload'){location.replace('index.html');return}var s=sessionStorage.getItem('balayage');if(s){sessionStorage.removeItem('balayage');document.documentElement.dataset.arrivee=s}}catch(e){}})();</script>
   <script src="../scripts/rideau.js?v=6" defer></script>
-  <script src="../scripts/script.js?v=26" defer></script>
+  <script src="../scripts/script.js?v=27" defer></script>
   <script src="../scripts/apparition.js?v=4" defer></script>
   <script src="../scripts/zoom.js?v=2" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
@@ -719,6 +719,77 @@
           </ul>
         </section>
         </div>
+
+        <!-- ===== Diplômes et certifications (#216) : vignettes cliquables ; vue agrandie dans un <dialog>
+             (scripts/script.js, section 13). Sans JavaScript, la vignette ouvre l'image seule.
+             Images : medias/diplomes/ (date et lieu de naissance, signature masqués). ===== -->
+        <section class="diplomes" aria-labelledby="titre-diplomes">
+          <h2 class="diplomes-titre" id="titre-diplomes">Degrees and certificates</h2>
+          <p class="diplomes-intro">The supporting documents, viewable full size. On the images, my <strong>date and place of birth</strong> and my <strong>signature</strong> are hidden.</p>
+          <ul class="diplomes-liste" role="list">
+            <li class="diplome accent-indigo">
+              <a class="diplome-lien" href="../medias/diplomes/istqb-ctfl.webp" data-diplome data-alt="Certificate from the French Software Testing Board (CFTL) stating that Marie TIERS passed the ISTQB Certified Tester Foundation Level exam, syllabus v4.0, on 25/07/2025: fundamentals of testing, testing throughout the software development lifecycle, static testing, test analysis and design, managing the test activities, test tools. Certificate no. CFTL-CTFL-FR-25-122864, with a verification QR code.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/istqb-ctfl-vignette.webp" alt="" width="480" height="340" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">ISTQB® Certified Tester Foundation Level</strong>
+                  <span class="diplome-detail"><i lang="fr">Comité français des tests logiciels</i> (CFTL), syllabus v4.0 · passed on 25/07/2025 · no. CFTL-CTFL-FR-25-122864</span>
+                </span>
+                <span class="sr">(view the full-size document)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+            <li class="diplome accent-lavande">
+              <a class="diplome-lien" href="../medias/diplomes/master-tourisme.webp" data-diplome data-alt="French Master's degree certificate in Humanities and Social Sciences, Tourism, Tourism and Coastal Engineering track, awarded by the Université du Littoral to Marie TIERS with merit (mention assez bien) for the 2016-2017 academic year, issued on 15 March 2018. Date and place of birth hidden.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/master-tourisme-vignette.webp" alt="" width="480" height="339" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">Master's degree in Humanities and Social Sciences, Tourism</strong>
+                  <span class="diplome-detail"><i lang="fr">Université du Littoral</i> · Tourism and Coastal Engineering track · <i lang="fr">mention assez bien</i> (with merit) · 2016-2017</span>
+                </span>
+                <span class="sr">(view the full-size document)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+            <li class="diplome accent-bleu">
+              <a class="diplome-lien" href="../medias/diplomes/cambridge-fce.webp" data-diplome data-alt="University of Cambridge ESOL Examinations certificate stating that Marie TIERS was awarded Grade C in the First Certificate in English, Council of Europe Level B2, June 2013 examination taken in Lille, issued on 30/07/2013.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/cambridge-fce-vignette.webp" alt="" width="255" height="360" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">Cambridge First Certificate in English (FCE)</strong>
+                  <span class="diplome-detail">Cambridge ESOL · Council of Europe level B2 (CEFR) · grade C · June 2013</span>
+                </span>
+                <span class="sr">(view the full-size document)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+            <li class="diplome accent-sapin">
+              <a class="diplome-lien" href="../medias/diplomes/c2i-niveau-1.webp" data-diplome data-alt="Level 1 French national digital skills certificate (certificat informatique et internet, C2i), awarded by the President of the Université Lille 1 to Marie TIERS following the board of examiners' decision of 12/07/2011, issued in Villeneuve-d'Ascq on 02/10/2012. Date and place of birth and holder's signature hidden.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/c2i-niveau-1-vignette.webp" alt="" width="480" height="340" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom"><i lang="fr">C2i</i> level 1, French national digital skills certificate</strong>
+                  <span class="diplome-detail"><i lang="fr">Certificat informatique et internet</i> · <i lang="fr">Université Lille 1</i> · board of examiners: 12/07/2011</span>
+                </span>
+                <span class="sr">(view the full-size document)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <dialog class="diplome-dialogue" aria-labelledby="diplome-dialogue-titre">
+          <div class="diplome-barre">
+            <h2 class="diplome-dialogue-titre" id="diplome-dialogue-titre">Document</h2>
+            <p class="diplome-compteur" aria-hidden="true"></p>
+            <div class="diplome-outils" role="toolbar" aria-label="Viewer controls">
+              <button class="nuage-outil" type="button" data-diplome-action="precedent" title="Previous"><span aria-hidden="true">&#x2039;</span><span class="sr">Previous</span></button>
+              <button class="nuage-outil" type="button" data-diplome-action="suivant" title="Next"><span aria-hidden="true">&#x203A;</span><span class="sr">Next</span></button>
+              <a class="nuage-outil nuage-outil-texte diplome-seule" href="#" target="_blank" rel="noopener">Image only</a>
+              <button class="nuage-outil nuage-fermer" type="button" data-diplome-action="fermer"><span aria-hidden="true">&#xD7;</span> <span class="nuage-fermer-texte">Back to the page</span></button>
+            </div>
+          </div>
+          <figure class="diplome-scene">
+            <img class="diplome-image" src="" alt="">
+            <figcaption class="diplome-legende"></figcaption>
+          </figure>
+        </dialog>
 
         <p class="apercu-pied">
           <a class="bouton" href="projects.html">See them at work in my projects</a>
