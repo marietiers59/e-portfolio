@@ -838,7 +838,24 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     return null;
   };
 
-  let position = null;                                     // { lat, lon, t } une fois la localisation autorisée
+  let position = null;                                     // { lat, lon, t[, estime] } une fois la localisation autorisée
+  const adresseScripts = document.querySelector('script[src*="scripts/script.js"]')?.src;
+
+  // Localisation autorisée mais position introuvable (cas fréquent sous Linux : navigateur sans service
+  // de localisation) : position estimée d'après le fuseau horaire de l'appareil, sans aucune requête
+  // extérieure — table tirée de la base tz (scripts/fuseaux-horaires.json), chargée seulement dans ce cas (#212)
+  const estimerParFuseau = async () => {
+    try {
+      const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!zone || !adresseScripts) return;
+      const table = await (await fetch(new URL('fuseaux-horaires.json', adresseScripts))).json();
+      const c = table[zone];
+      if (!c) return;
+      position = { lat: c[0], lon: c[1], t: Date.now(), estime: true };
+      ecrire('soleil-position', JSON.stringify(position));
+      suivreSoleil();
+    } catch { /* table indisponible : on reste sur le réglage de l'appareil */ }
+  };
   let minuterie = 0;
   const suivreSoleil = () => {
     clearTimeout(minuterie);
@@ -885,6 +902,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
         texte = manuel
           ? (anglais ? `Your choice: ${nom} until ${heure(jusqua)}, then the sun takes over` : `Votre choix : ${nom} jusqu'à ${heure(jusqua)}, puis le soleil reprend la main`)
           : (anglais ? `Follows the sun: ${nom} until ${heure(jusqua)}` : `Au rythme du soleil : ${nom} jusqu'à ${heure(jusqua)}`);
+        if (position.estime) texte += anglais ? ' (position estimated from your time zone)' : ' (position estimée d’après votre fuseau horaire)';
       }
     }
     bouton.dataset.infobulle = texte;
@@ -920,7 +938,8 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
       suivreSoleil();
     }, (erreur) => {
       if (erreur.code === erreur.PERMISSION_DENIED) oublierSoleil();
-    }, { enableHighAccuracy: false, maximumAge: 864e5, timeout: 15000 });
+      else estimerParFuseau();                               // autorisée mais introuvable ou trop lente
+    }, { enableHighAccuracy: false, maximumAge: 864e5, timeout: 8000 });
   };
 
   appliquer(racine.dataset.theme === 'sombre' ? 'sombre' : 'clair', false);
