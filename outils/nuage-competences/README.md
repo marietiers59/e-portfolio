@@ -21,4 +21,4 @@ cd outils/nuage-competences
 ./construire.sh
 ```
 
-Le script remplace ce qui se trouve entre les marqueurs `<!-- nuage-…:debut -->` et `<!-- nuage-…:fin -->` de `pages/competences.html` et `en/skills.html`, et réécrit `medias/nuage-competences.gexf` (à ouvrir dans Gephi) et `medias/nuage-competences.svg` (image seule).
+Le script écrit ce qui va entre les marqueurs `<!-- nuage-…:debut -->` et `<!-- nuage-…:fin -->` du modèle `modeles/competences.html` dans `modeles/fragments/nuage-*.fr.html` et `nuage-*.en.html`, régénère les pages `pages/competences.html` et `en/skills.html` (voir `outils/pages/LISEZMOI.md`), et réécrit `medias/nuage-competences.gexf` (à ouvrir dans Gephi) et `medias/nuage-competences.svg` (image seule).
