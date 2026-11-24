@@ -30,9 +30,29 @@
   }
 
   /* ---------- Thème clair ou sombre ---------- */
+  // Ordre de priorité : choix fait sur le site (s'il n'a pas expiré), sinon thème calculé
+  // d'après le lever et le coucher du soleil (s'il est encore valable), sinon réglage de l'appareil.
+  function choixValable(theme) {
+    return theme === 'clair' || theme === 'sombre';
+  }
+
   function poserTheme() {
-    let theme = lire(localStorage, 'theme');
-    if (theme !== 'clair' && theme !== 'sombre') {
+    let theme = null;
+    const maintenant = Date.now();
+    try {
+      const jusqua = Number(localStorage.getItem('theme-jusqua'));
+      if (jusqua && jusqua <= maintenant) {
+        localStorage.removeItem('theme');        // choix expiré : on l'oublie
+        localStorage.removeItem('theme-jusqua');
+      }
+      theme = localStorage.getItem('theme');
+      if (!choixValable(theme) && Number(localStorage.getItem('theme-soleil-jusqua')) > maintenant) {
+        theme = localStorage.getItem('theme-soleil');
+      }
+    } catch {
+      theme = null;                              // stockage inaccessible : réglage de l'appareil
+    }
+    if (!choixValable(theme)) {
       const sombre = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
       theme = sombre ? 'sombre' : 'clair';
     }
