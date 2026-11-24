@@ -7,3 +7,9 @@ outils/nuage-competences/__pycache__/
 # Carte des voyages : dépendances installées par npm install (outils/carte-voyages)
 outils/carte-voyages/node_modules/
 outils/carte-voyages/package-lock.json
+
+# Tests de bout en bout (npm test) : dépendances et rapports, régénérés à chaque lancement
+/node_modules/
+/test-results/
+/rapport-tests/
+/couverture/
