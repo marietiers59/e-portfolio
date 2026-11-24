@@ -12,6 +12,7 @@
    6. Cartes projets, filtres et piliers
    6 bis. Compétences
    6 ter. Nuage de compétences (graphe Gephi)
+   6 quater. Diplômes et certifications
    7. Frise chronologique
    8. Pied de page et formulaire
    9. Écrans larges, TV, mouvement réduit
@@ -2081,6 +2082,21 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 .nuage-outil:hover { border-color: var(--bleu-400); }
 .nuage-outil[aria-pressed="true"] { background: var(--turquoise-100); border-color: var(--turquoise-200); }
 .nuage-fermer { background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150)); border-color: var(--turquoise-200); color: var(--bleu-700); }
+/* Bouton « × Retour à la page » (#218) : texte à taille normale, marge de chaque côté pour que la croix
+   et la dernière lettre ne touchent pas la bordure arrondie ; la croix seule reste grande */
+.nuage-outil.nuage-fermer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 1.05rem 0.3rem 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.nuage-outil.nuage-fermer > [aria-hidden="true"] { font-size: 1.25rem; line-height: 1; }
+@media (max-width: 39.99em) {     /* petits écrans : la croix seule, bouton rond */
+  .nuage-outil.nuage-fermer { justify-content: center; gap: 0; padding: 0; min-width: 2.25rem; }
+}
 .nuage-scene {
   position: relative;
   overflow: hidden;
@@ -2111,6 +2127,147 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .nuage-apercu:hover, .nuage-puce:not(:disabled):hover { transform: none; }
+}
+
+/* ---------- 6 quater. Diplômes et certifications (page Compétences, #216) ---------- */
+/*
+  Une carte par justificatif : vignette sur fond papier, intitulé, organisme et année.
+  Clic → vue agrandie dans un <dialog> (scripts/script.js, section 13) ; sans script, l'image seule s'ouvre.
+  Rangées équilibrées : 1 colonne (mobile), 2 (tablette : 2 + 2), 4 (ordinateur : une seule rangée).
+*/
+.diplomes { margin-top: clamp(2rem, 5vw, 3rem); }
+.diplomes-titre { margin: 0 0 0.4rem; font-size: 1.35rem; font-weight: 800; color: var(--indigo-700); text-align: center; }
+.diplomes-intro { margin: 0 auto 1.25rem; max-width: 42rem; text-align: center; font-size: 0.95rem; color: var(--encre-douce); }
+.diplomes-intro strong { color: var(--encre); }
+.diplomes-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  align-items: stretch;
+}
+@media (min-width: 40em) { .diplomes-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 64em) { .diplomes-liste { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.diplome-lien {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-top: 0.3rem solid var(--accent-400);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-repos);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform var(--duree) ease, box-shadow var(--duree) ease;
+}
+.diplome-lien:hover { transform: translateY(-2px); box-shadow: var(--ombre-survol); }
+.diplome-lien:focus-visible { outline: 3px solid var(--bleu-400); outline-offset: 3px; }
+.diplome-cadre {                 /* vignette entière, posée sur un fond papier ; même cadre 4:3 pour toutes,
+                                    paysage comme portrait (le certificat de Cambridge est en hauteur) */
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--gris-100);
+  border-bottom: 1px solid var(--trait);
+}
+.diplome-vignette {
+  position: absolute;
+  inset: 0.6rem;
+  width: calc(100% - 1.2rem);
+  height: calc(100% - 1.2rem);
+  object-fit: contain;
+  filter: drop-shadow(0.1rem 0.15rem 0.3rem hsl(var(--ombre-teinte) / 0.18));
+}
+.diplome-texte { display: grid; gap: 0.35rem; padding: 0.9rem 1rem 1.1rem; }
+.diplome-nom { font-family: var(--police-interface); font-size: 1rem; font-weight: 800; line-height: 1.3; color: var(--accent-700); }
+.diplome-detail { font-size: 0.85rem; line-height: 1.45; color: var(--encre-douce); }
+.diplome-detail abbr { text-decoration: underline dotted; text-underline-offset: 0.2em; }
+.diplome-loupe {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid var(--turquoise-200);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--turquoise-100), var(--turquoise-150));
+  color: var(--bleu-700);
+  box-shadow: var(--ombre-legere);
+  transition: transform var(--duree) ease;
+}
+.diplome-lien:hover .diplome-loupe { transform: scale(1.12); }
+
+/* Vue agrandie : plein écran sur mobile, grande fenêtre ailleurs (même allure que celle du nuage) */
+.diplome-dialogue {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--carte);
+  color: var(--encre);
+}
+.diplome-dialogue[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.diplome-dialogue::backdrop { background: hsl(220 30% 12% / 0.55); backdrop-filter: blur(3px); }
+.diplome-barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem clamp(0.75rem, 2vw, 1.25rem);
+  border-bottom: 1px solid var(--trait);
+}
+.diplome-dialogue-titre { margin: 0; flex: 1 1 12rem; font-size: 1.05rem; font-weight: 800; color: var(--indigo-700); }
+.diplome-compteur { margin: 0; font-family: var(--police-interface); font-size: 0.85rem; font-weight: 700; color: var(--encre-douce); }
+.diplome-outils { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+a.nuage-outil { display: inline-grid; place-items: center; text-decoration: none; }
+.diplome-scene {
+  margin: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  padding: clamp(0.6rem, 2vw, 1.25rem);
+  background: radial-gradient(ellipse at 50% 45%, var(--carte) 35%, var(--gris-100));
+  touch-action: pan-y pinch-zoom;
+  overflow: hidden;
+}
+.diplome-image {
+  justify-self: center;
+  align-self: center;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 0.3rem;
+  box-shadow: var(--ombre-survol);
+  background: #fff;
+}
+.diplome-legende { max-width: 60rem; margin: 0 auto; text-align: center; font-size: 0.85rem; color: var(--encre-douce); }
+@media (min-width: 48em) {
+  .diplome-dialogue {
+    width: min(94vw, 80rem);
+    height: min(94dvh, 62rem);
+    margin: auto;
+    border-radius: var(--rayon);
+    box-shadow: var(--ombre-survol);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .diplome-dialogue[open] { animation: nuage-ouverture 0.28s ease-out; }
+  .diplome-image.change { animation: diplome-fondu 0.25s ease-out; }
+}
+@keyframes diplome-fondu { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .diplome-lien:hover { transform: none; }
 }
 
 /* ---------- 7. Frise chronologique ---------- */
@@ -2279,7 +2436,7 @@ html { font-size: calc(var(--zoom-page, 1) * 100%); }
 }
 .pied-grille > * { min-width: 0; }  /* une colonne ne s'élargit jamais au-delà de l'écran, même page zoomée */
 .pied-coordonnees p { margin: 0; }
-.pied .section-titre { margin-bottom: 0.75rem; }
+.pied .section-titre { margin-bottom: 1.1rem; }   /* de l'air sous la barre bleue du titre */
 
 .coordonnees {
   list-style: none;
@@ -2454,7 +2611,21 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
     grid-template-rows: auto auto 1fr;
   }
   .champ:has(textarea) { grid-template-rows: auto 1fr; }
-  .champ textarea { height: 100%; }
+  .champ textarea { height: 100%; min-height: 8rem; }
+  /* Tout en bas de l'accueil, le pied de page remplit la hauteur entre les deux barres :
+     pas de vide en haut de l'écran ; la place en plus revient au champ Message (#206) */
+  .pied {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 2 * var(--barre-h));
+    min-height: calc(100dvh - 2 * var(--barre-h));
+  }
+  .pied-grille { flex: 1 0 auto; }
+  /* Colonne de gauche calée en haut (titre juste sous la barre) ; l'encart du rideau descend
+     s'aligner sur le bas du formulaire */
+  .pied-coordonnees { align-self: stretch; display: flex; flex-direction: column; }
+  .pied-coordonnees .coordonnees { margin-bottom: 1rem; }
+  .pied-coordonnees .rideau { margin-top: auto; }
 }
 
 /* Lien discret du pied de page */
@@ -2514,21 +2685,39 @@ a.bouton-second:hover { color: var(--encre); background: var(--gris-100); }
   transition: border-color var(--duree), box-shadow var(--duree), background-color var(--duree);
 }
 
-/* Pied de page compact sur ordinateur quand la fenêtre est basse (portables, navigateur non plein écran) :
-   tout en bas de la page, le titre « Contact » reste visible sous la barre du haut (#194).
-   Coordonnées sur deux colonnes, encart et mentions resserrés ; rien ne change sur smartphone. */
-@media (min-width: 48em) and (max-height: 52em) {
-  .pied { padding-block-end: 0.5rem; }
-  .pied .section-titre { margin-bottom: 0.5rem; }
-  .coordonnees {
-    margin-top: 0.6rem;
-    grid-template-columns: repeat(2, minmax(0, auto));
-    justify-content: start;
-    gap: 0.35rem 1.5rem;
-  }
-  .rideau { margin-top: 0.6rem; padding: 0.6rem 0.85rem; gap: 0.4rem; }
+/* Pied de page compact sur ordinateur quand la fenêtre est basse (portable, navigateur non plein écran) :
+   tout en bas de la page, le titre « Me contacter » reste visible sous la barre du haut (#194, allégé en #206).
+   Trois paliers ; rien ne change sur smartphone. */
+@media (min-width: 48em) and (max-height: 49em) {
+  /* palier 1 : coordonnées un peu resserrées */
+  .coordonnees { margin-top: 0.75rem; gap: 0.35rem 1.5rem; }
+  .rideau { padding: 0.75rem 0.9rem; gap: 0.5rem; }
+  .pied-mentions { margin-top: 1rem; }
+  .champ textarea { min-height: 6rem; }
+}
+@media (min-width: 48em) and (max-height: 45em) {
+  /* palier 2 : fenêtre très basse, tout se resserre encore un peu */
+  .pied { padding-block: 1.25rem 0.5rem; }
+  .pied .section-titre { margin-bottom: 0.8rem; }
+  .rideau { padding: 0.6rem 0.85rem; gap: 0.4rem; }
   .rideau-texte { font-size: 0.9rem; line-height: 1.45; }
   .pied-mentions { margin-top: 0.75rem; line-height: 1.45; }
+  .champ textarea { min-height: 5rem; }
+}
+@media (min-width: 48em) and (max-height: 42em) {
+  /* palier 3 : fenêtre de portable 1366 × 768 (environ 650 px utiles) : coordonnées sur deux colonnes */
+  .pied .section-titre { margin-bottom: 0.6rem; }
+  .coordonnees {
+    margin-top: 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, auto));
+    justify-content: start;
+    gap: 0.3rem 1.5rem;
+  }
+  .pied-coordonnees .coordonnees { margin-bottom: 0.6rem; }
+  .rideau { padding: 0.5rem 0.8rem; gap: 0.35rem; }
+  .pied-mentions { margin-top: 0.6rem; line-height: 1.4; }
+  .formulaire { margin-top: 2.2rem; row-gap: 0.7rem; padding: 1rem 1.25rem; }
+  .champ textarea { min-height: 4rem; }
 }
 .rideau-ligne input:focus {
   outline: none;
@@ -2882,6 +3071,7 @@ html.apparition-attente :is(.une, body > main, body > footer) { opacity: 0; }
 .visite-en-haut [data-infobulle]::after { bottom: auto; top: calc(100% + 0.5rem); transform: translateY(-0.25rem); }
 [data-bulle="debut"]::after { left: 0; translate: 0 0; }
 [data-bulle="fin"]::after   { left: auto; right: 0; translate: 0 0; }
+[data-bulle="bas-debut"]::after { bottom: auto; top: calc(100% + 0.5rem); left: 0; translate: 0 0; transform: translateY(-0.25rem); }   /* sous le bouton, aligné à gauche (thème) */
 
 /* Bouton de lancement : icône dans la barre du haut */
 .visite-lancer[hidden] { display: none; }
