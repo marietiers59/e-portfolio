@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="<!--fr-->fr<!--en-->en-GB<!--/-->">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><!--fr-->Projets<!--en-->Projects<!--/--> · Marie Tiers</title>
+  <!--fr-->
+  <meta name="description" content="Projets de Marie Tiers, étudiante en BUT informatique : sites web à visiter et applications à télécharger.">
+  <!--en-->
+  <meta name="description" content="Projects by Marie Tiers, Computer Science student in France: websites to visit and applications to download.">
+  <!--/-->
+  <link rel="alternate" hreflang="fr" href="https://marietiers59.github.io/e-portfolio/pages/projets.html">
+  <link rel="alternate" hreflang="en-GB" href="https://marietiers59.github.io/e-portfolio/en/projects.html">
+  <link rel="alternate" hreflang="x-default" href="https://marietiers59.github.io/e-portfolio/pages/projets.html">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <!-- Réglages posés avant l'affichage : thème, zoom mémorisé, apparition, retour à l'accueil (scripts/tete.js) -->
+  <script src="{{racine}}scripts/tete.js?v=1" data-zoom data-apparition data-balayage="{{page:index}}"></script>
+
+  <link rel="stylesheet" href="{{racine}}styles/style.css?v=62">
+  <script src="{{racine}}scripts/rideau.js?v=6" defer></script>
+  <script src="{{racine}}scripts/script.js?v=27" defer></script>
+  <script src="{{racine}}scripts/apparition.js?v=4" defer></script>
+  <script src="{{racine}}scripts/zoom.js?v=2" defer></script>
+  <script src="{{racine}}scripts/carte-zone.js?v=5" defer></script>
+  <script src="{{racine}}scripts/balayage.js?v=6" defer></script>
+  <script src="{{racine}}scripts/contact-eggs.js?v=15" defer></script>
+  <script src="{{racine}}scripts/visite.js?v=3" defer></script>
+</head>
+
+<body id="haut">
+  <a class="evitement" href="#<!--fr-->contenu<!--en-->content<!--/-->"><!--fr-->Aller au contenu<!--en-->Skip to content<!--/--></a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <a class="langue" href="{{traduction}}" hreflang="<!--fr-->en-GB<!--en-->fr<!--/-->" data-actif="<!--fr-->fr<!--en-->en<!--/-->">
+      <img class="langue-drapeau" src="{{racine}}medias/drapeau-fr.svg" alt="" width="24" height="16">
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <img class="langue-drapeau" src="{{racine}}medias/drapeau-gb.svg" alt="" width="24" height="16">
+      <span class="sr" lang="<!--fr-->en-GB<!--en-->fr<!--/-->"><!--fr-->Read this page in English<!--en-->Lire cette page en français<!--/--></span>
+    </a>
+    <button class="theme" type="button" aria-pressed="false" hidden>
+      <svg class="theme-icone theme-soleil" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <svg class="theme-icone theme-lune" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      <span class="sr"><!--fr-->Thème sombre<!--en-->Dark theme<!--/--></span>
+    </button>
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+    <div class="conteneur entete-nav">
+      <a class="logo" href="{{page:index}}">Marie TIERS</a>
+      <nav class="navigation" aria-label="<!--fr-->Navigation principale<!--en-->Main navigation<!--/-->">
+        <ul class="navigation-liste">
+          <li><a href="{{page:index}}"><!--fr-->Accueil<!--en-->Home<!--/--></a></li>
+          <li><a href="{{page:projets}}" aria-current="page"><!--fr-->Projets<!--en-->Projects<!--/--></a></li>
+          <li><a href="{{page:competences}}"><!--fr-->Compétences<!--en-->Skills<!--/--></a></li>
+          <li><a href="{{page:index}}#<!--fr-->parcours<!--en-->journey<!--/-->"><!--fr-->Parcours<!--en-->Journey<!--/--></a></li>
+          <li><a href="{{page:univers}}"><!--fr-->Loisirs<!--en-->Hobbies<!--/--></a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="{{racine}}cv-marie-tiers<!--en-->-en<!--/-->.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="{{page:cv-video}}"><!--fr-->CV vidéo<!--en-->Video CV<!--/--></a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="<!--fr-->contenu<!--en-->content<!--/-->">
+
+    <!--fr-->
+    <!-- ===== Projets : intro, filtres, tri, cartes ===== -->
+    <!--en-->
+    <!-- ===== Projects: intro, filters, sorting, cards ===== -->
+    <!--/-->
+    <section class="section" id="<!--fr-->projets<!--en-->projects<!--/-->" aria-labelledby="titre-principal">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h1 class="section-titre" id="titre-principal" tabindex="-1"><!--fr-->Mes projets<!--en-->My projects<!--/--></h1>
+          <p class="section-intro">
+            <!--fr-->
+            Travaux d'<strong class="kw">équipe</strong> ou réalisations en <strong class="kw">solo</strong>, projets de cours
+            ou idées nées d'une envie personnelle : chaque vignette raconte une étape de mon apprentissage,
+            en <strong>Java</strong>, en <strong>web</strong>, en <strong>Python</strong> ou en <strong>réseau</strong>.
+            Les plus récents ouvrent la marche. Faites défiler pour remonter le temps,
+            et voyez mon code rajeunir à chaque projet.
+            <!--en-->
+            <strong class="kw">Team</strong> work or <strong class="kw">solo</strong> builds, course projects
+            or ideas sparked by personal curiosity: each card tells one step of my learning,
+            in <strong>Java</strong>, <strong>web</strong>, <strong>Python</strong> or <strong>networking</strong>.
+            The most recent lead the way. Scroll down to travel back in time
+            and watch my code grow younger with each project.
+            <!--/-->
+          </p>
+          <p class="section-intro section-intro-pratique">
+            <!--fr-->
+            Les <strong class="kw">applications</strong> se récupèrent en archive <strong>.zip</strong> ;
+            la pastille <strong>bientôt en ligne</strong> signale un dépôt encore en préparation.
+            <!--en-->
+            <strong class="kw">Applications</strong> can be downloaded as a <strong>.zip</strong> archive;
+            the <strong>coming soon</strong> badge marks a repository still being prepared.
+            <i lang="fr">BUT 1</i> and <i lang="fr">BUT 2</i> (first and second year of my French Bachelor of Technology)
+            show when each course project was done.
+            <!--/-->
+          </p>
+        </div>
+
+        <!-- Filtres et tri : barre cachée sans JavaScript (toutes les cartes s'affichent alors, des plus récentes aux plus anciennes) -->
+        <div class="outils-projets" hidden>
+          <div class="filtres" role="group" aria-label="<!--fr-->Filtrer les projets<!--en-->Filter projects<!--/-->">
+            <button class="filtre" type="button" data-filtre="tous" aria-pressed="true"><!--fr-->Tous<!--en-->All<!--/--> <span class="filtre-nombre"></span></button>
+            <button class="filtre" type="button" data-filtre="but2" aria-pressed="false"><!--fr-->BUT<!--en--><i lang="fr">BUT</i><!--/--> 2 <span class="filtre-nombre"></span></button>
+            <button class="filtre" type="button" data-filtre="but1" aria-pressed="false"><!--fr-->BUT<!--en--><i lang="fr">BUT</i><!--/--> 1 <span class="filtre-nombre"></span></button>
+            <button class="filtre" type="button" data-filtre="perso" aria-pressed="false"><!--fr-->Projets perso<!--en-->Personal projects<!--/--> <span class="filtre-nombre"></span></button>
+          </div>
+          <div class="outils-tri">
+			<label class="bascule" for="afficher-en-cours">
+			  <input class="bascule-case" type="checkbox" id="afficher-en-cours">
+			  <span class="bascule-texte"><!--fr-->Afficher les projets bientôt en ligne<!--en-->Show projects coming soon<!--/--></span>
+			  <span class="filtre-nombre" id="nombre-en-cours"></span>
+			</label>
+            <button class="outil" type="button" id="bouton-tri" data-ordre="recent"><span aria-hidden="true">&#x21C5;&#xFE0E;</span> <span class="outil-texte"><!--fr-->Du plus récent au plus ancien<!--en-->Newest first<!--/--></span></button>
+            <button class="outil outil-discret" type="button" id="bouton-reinitialiser" hidden><!--fr-->Réinitialiser<!--en-->Reset<!--/--></button>
+          </div>
+        </div>
+        <p class="sr" id="filtres-statut" role="status"></p>
+
+        <!--
+          Du plus récent au plus ancien : c'est l'ordre par défaut, le bouton de tri l'inverse.
+          data-cadre = "but2", "but1" ou "perso" (sert aux filtres) ; data-annee-projet = l'année de l'étiquette (pas data-annee, réservé au © du pied de page).
+          Étiquettes : tag-annee (vert sapin), tag-cadre (lavande), tag-techno (bleu).
+          · Carte disponible : class="carte carte-appli", lien .zip + bouton « Voir le code ».
+              application → https://github.com/marietiers59/nom-du-depot/archive/refs/heads/main.zip
+              code source → https://github.com/marietiers59/nom-du-depot
+              site web    → class="carte carte-web", lien https://marietiers59.github.io/nom-du-depot/, carte-type « site web »
+          · Carte en attente : class="carte carte-bientot" tabindex="0", titre sans lien, pas de bouton,
+            carte-type « bientôt en ligne ». Quand le dépôt devient public, la transformer en carte disponible.
+        -->
+        <h2 class="sr"><!--fr-->Liste des projets<!--en-->Project list<!--/--></h2>
+        <ul class="cartes">
+
+          <li class="emplacement carte-emplacement" id="otaku-list" data-cadre="but2" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-otaku-list.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 2<sup>e</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 2</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 2<sup>nd</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 2</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/Otaku-List"><!--fr--><i lang="en">Otaku List</i><!--en-->Otaku List<!--/--></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Laravel</li><li class="tag tag-techno">PHP</li><li class="tag tag-techno">GitLab</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Application web <strong class="kw">Laravel</strong> conçue à quatre pour que les fans d'animés et de mangas tiennent leurs listes à jour.</p>
+                    <!--en-->
+                    <p class="carte-resume">A <strong class="kw">Laravel</strong> web app built by a team of four so that anime and manga fans can keep their lists up to date.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <!--fr-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Une application web pour consulter et gérer des animés et des mangas, avec comptes et rôles (utilisateur, contributeur, administrateur).</li>
+                        <!--en-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Need</strong> A web app to browse and manage anime and manga, with accounts and roles (user, contributor, administrator).</li>
+                        <!--/-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette"><!--fr-->Mon rôle<!--en-->My role<!--/--></strong> <!--fr-->Création du dépôt, découpage du travail en tickets et développement des jalons 1 à<!--en-->Set up the repository, broke the work down into tickets and developed milestones 1 to<!--/--> 3.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette"><!--fr-->Démarche<!--en-->Approach<!--/--></strong> <!--fr-->Une branche par ticket, relue avant fusion <!--en-->One branch per ticket, reviewed before merging<!--/-->; <strong>Fortify</strong> <!--fr-->pour l'authentification, <i lang="en">policies</i> et <i lang="en">gates</i> Laravel pour les droits<!--en-->for authentication, Laravel policies and gates for permissions<!--/-->.</li>
+                        <!--fr-->
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Trois jalons sur cinq livrés et fonctionnels : un choix assumé de la <strong>qualité</strong> plutôt que du volume.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Outcome</strong> Three of five milestones delivered and working: a deliberate choice of <strong>quality</strong> over quantity.</li>
+                        <!--/-->
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/Otaku-List"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">code · Laravel</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="space-invaders" data-cadre="but2" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-space-invaders.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 2<sup>e</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 2</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 2<sup>nd</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 2</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/space-invaders"><!--fr--><i lang="en">Space Invaders</i><!--en-->Space Invaders<!--/--></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">GitLab</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Le classique <i lang="en">Space Invaders</i> recodé en <strong class="kw">Java</strong> en équipe sous GitLab, avec la qualité du code pour boussole.</p>
+                    <!--en-->
+                    <p class="carte-resume">The classic Space Invaders recoded in <strong class="kw">Java</strong> as a team on GitLab, with code quality as our compass.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette"><!--fr-->Besoin<!--en-->Need<!--/--></strong> <!--fr-->Compléter jalon par jalon un jeu JavaFX fourni par l'enseignant, en appliquant les patrons de conception<!--en-->Complete a JavaFX game provided by our lecturer, milestone by milestone, using design patterns<!--/-->.</li>
+                        <!--fr-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Vaisseau alien, fin de partie, une partie des collisions, puis déplacement et tir aléatoire des aliens (patron <strong>Stratégie</strong>).</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Tickets GitLab, une branche par fonctionnalité, <strong>relecture croisée</strong> avant chaque fusion.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">My role</strong> The alien ship, the end of the game, part of the collisions, then alien movement and random alien fire (<strong>Strategy</strong> pattern).</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Approach</strong> GitLab tickets, one branch per feature, <strong>peer review</strong> before every merge.</li>
+                        <!--/-->
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette"><!--fr-->Résultat<!--en-->Outcome<!--/--></strong> <!--fr-->Un jeu jouable qui se lance d'une seule commande Gradle, documenté par un diagramme de classes UML<!--en-->A playable game that starts with a single Gradle command, documented with a UML class diagram<!--/-->.</li>
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/space-invaders"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">code · Java</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="voix-en-image" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/voixenimage/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre"><span class="cadre-long"><!--fr-->projet personnel<!--en-->personal project<!--/--></span><span class="cadre-court" aria-hidden="true"><!--fr-->perso<!--en-->personal<!--/--></span></li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Voix en image<!--en-->Voice to Image<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li><li class="tag tag-techno">audio</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Script <strong class="kw">Python</strong> qui transforme une voix en image : son spectrogramme s'enroule en spirale lumineuse ou en couronne de rayons.</p>
+                    <!--en-->
+                    <p class="carte-resume">A <strong class="kw">Python</strong> script that turns a voice into an image: its spectrogram curls into a glowing spiral or a crown of rays.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="carte-tout-petits" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/cartetoutpetits/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre"><span class="cadre-long"><!--fr-->projet personnel<!--en-->personal project<!--/--></span><span class="cadre-court" aria-hidden="true"><!--fr-->perso<!--en-->personal<!--/--></span></li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Carte des tout-petits<!--en-->Toddler Map<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Laravel</li><li class="tag tag-techno">PHP</li><li class="tag tag-techno">OpenStreetMap</li></ul>
+                    <p class="carte-resume"><!--fr-->Application web<!--en-->A<!--/--> <strong class="kw">Laravel</strong><!--fr-->, conçue seule, où les parents épinglent sur une carte<!--en--> web app, built solo, where parents pin toddler-friendly places on an<!--/--> OpenStreetMap <!--fr-->les lieux adaptés aux tout-petits<!--en-->map<!--/-->.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="fractalens" data-cadre="but2" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <picture>
+                    <source srcset="{{racine}}medias/fractalens.png" media="(prefers-reduced-motion: reduce)">
+                    <img class="carte-image" src="{{racine}}medias/fractalens.gif" alt="" width="300" height="300" loading="lazy">
+                  </picture>
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 2<sup>e</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 2</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 2<sup>nd</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 2</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/FractaLens/archive/refs/heads/main.zip"><!--fr--><i lang="en">FractaLens</i><!--en-->FractaLens<!--/--><span class="sr"> (<!--fr-->télécharger l'archive .zip<!--en-->download the .zip archive<!--/-->)</span></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Gradle</li><li class="tag tag-techno"><!--fr-->tests unitaires<!--en-->unit tests<!--/--></li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Six <i lang="en">sprints</i> en équipe pour bâtir <i lang="en">FractaLens</i> : une bibliothèque <strong class="kw">Java</strong> qui change des nombres complexes en fractales animées.</p>
+                    <!--en-->
+                    <p class="carte-resume">Six sprints as a team to build FractaLens: a <strong class="kw">Java</strong> library that turns complex numbers into animated fractals.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette"><!--fr-->Besoin<!--en-->Need<!--/--></strong> <!--fr-->Une bibliothèque Java qui génère des fractales<!--en-->A Java library that generates fractals<!--/--> (Julia, Mandelbrot…) <!--fr-->en images fixes ou animées<!--en-->as still or animated images<!--/-->.</li>
+                        <!--fr-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Nombres complexes, suite Tricorn, palettes de couleurs (patrons <strong>Stratégie</strong> et <strong>Décorateur</strong>) et animation par rotation.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Six paquets bâtis chacun autour d'un ou deux patrons de conception ; <strong>tests unitaires</strong> et couverture mesurée avec JaCoCo.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">My role</strong> Complex numbers, the Tricorn sequence, colour palettes (<strong>Strategy</strong> and <strong>Decorator</strong> patterns) and rotation-based animation.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Approach</strong> Six packages, each built around one or two design patterns; <strong>unit tests</strong> with coverage measured by JaCoCo.</li>
+                        <!--/-->
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette"><!--fr-->Résultat<!--en-->Outcome<!--/--></strong> <!--fr-->Un programme en ligne de commande qui produit des images PNG et des GIF animés<!--en-->A command-line program that produces PNG images and animated GIFs<!--/-->.</li>
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/FractaLens"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">application · .zip</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="geocodage-flask" data-cadre="but2" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-geocodage.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 2<sup>e</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 2</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 2<sup>nd</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 2</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Géocodage<!--en-->Geocoding with<!--/--> Flask</h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li><li class="tag tag-techno">Flask</li><li class="tag tag-techno"><!--fr-->API REST<!--en-->REST API<!--/--></li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Application <strong class="kw">Flask</strong> qui interroge l'API de géocodage de l'État et traduit chaque adresse en données lisibles, en français.</p>
+                    <!--en-->
+                    <p class="carte-resume">A <strong class="kw">Flask</strong> app that queries the French government's geocoding API and turns each address into readable data, in French.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="caisse-food-truck" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-caisse.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre"><span class="cadre-long"><!--fr-->projet personnel<!--en-->personal project<!--/--></span><span class="cadre-court" aria-hidden="true"><!--fr-->perso<!--en-->personal<!--/--></span></li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Caisse de <i lang="en">food-truck</i><!--en-->Food-truck till<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Android</li><li class="tag tag-techno">Flask</li><li class="tag tag-techno">PostgreSQL</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Caisse Android pour <i lang="en">food-truck</i> de quiches : API <strong class="kw">Flask</strong>, PostgreSQL et TPE SumUp suivent chaque vente jusqu'au dernier ingrédient.</p>
+                    <!--en-->
+                    <p class="carte-resume">An Android till for a quiche food truck: a <strong class="kw">Flask</strong> API, PostgreSQL and a SumUp card reader track every sale down to the last ingredient.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="amis-de-buxton" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/jumelage/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre"><span class="cadre-long"><!--fr-->projet personnel<!--en-->personal project<!--/--></span><span class="cadre-court" aria-hidden="true"><!--fr-->perso<!--en-->personal<!--/--></span></li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--en--><i lang="fr"><!--/-->Les Amis de Buxton</<!--en-->i></<!--/-->h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSS</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Site de l'association de <strong class="kw">jumelage</strong> Oignies–Buxton, un pont numérique entre deux villes de part et d'autre de la Manche.</p>
+                    <!--en-->
+                    <p class="carte-resume">Website of the Oignies–Buxton <strong class="kw">town-twinning</strong> association (the Friends of Buxton), a digital bridge between two towns on either side of the Channel.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="labo-netsim" data-cadre="perso" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-netsim.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <li class="tag tag-cadre"><span class="cadre-long"><!--fr-->projet personnel<!--en-->personal project<!--/--></span><span class="cadre-court" aria-hidden="true"><!--fr-->perso<!--en-->personal<!--/--></span></li>
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Labo netsim<!--en-->netsim lab<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">KVM</li><li class="tag tag-techno">Linux</li><li class="tag tag-techno"><!--fr-->réseau<!--en-->networking<!--/--></li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Laboratoire <strong class="kw">réseau</strong> personnel sous KVM qui fait naître huit topologies de cours à partir d'une seule image système.</p>
+                    <!--en-->
+                    <p class="carte-resume">A personal <strong class="kw">networking</strong> lab on KVM that spins up eight course topologies from a single system image.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="centre-sante" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-centre-sante.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/centre_sante_bien-etre/archive/refs/heads/main.zip"><!--en--><i lang="fr"><!--/-->Centre Santé Bien-Être<!--en--></i><!--/--><span class="sr"> (<!--fr-->télécharger l'archive .zip<!--en-->download the .zip archive<!--/-->)</span></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Gradle</li><li class="tag tag-techno"><!--fr-->journalisation<!--en-->logging<!--/--></li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Application <strong class="kw">Java</strong> et Gradle menée à trois pour un cabinet médical : patients, médecins, rendez-vous et ordonnances y trouvent leur dossier.</p>
+                    <!--en-->
+                    <p class="carte-resume">A <strong class="kw">Java</strong> and Gradle app built by a team of three for a medical practice (a fictional health and wellbeing centre): patients, doctors, appointments and prescriptions each get their own record.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <!--fr-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Gérer les patients, médecins, médicaments, rendez-vous et ordonnances d'un cabinet médical, avec recherche et statistiques.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Need</strong> Manage the patients, doctors, medicines, appointments and prescriptions of a medical practice, with search and statistics.</li>
+                        <!--/-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette"><!--fr-->Mon rôle<!--en-->My role<!--/--></strong> <!--fr-->Modules de recherche et de statistiques, journalisation,<!--en-->Search and statistics modules, logging, model<!--/--> documentation <!--fr-->du modèle et vue des rendez-vous<!--en-->and the appointments view<!--/-->.</li>
+                        <!--fr-->
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Travail réparti en tickets GitLab, <strong>tests unitaires</strong> des services et journalisation des classes métier.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Approach</strong> Work split into GitLab tickets, <strong>unit tests</strong> for the services and logging in the business classes.</li>
+                        <!--/-->
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette"><!--fr-->Résultat<!--en-->Outcome<!--/--></strong> <!--fr-->Une application Java sous Gradle, testée et documentée, avec une interface graphique<!--en-->A Java application built with Gradle, tested and documented, with a graphical interface<!--/-->.</li>
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/centre_sante_bien-etre"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">application · .zip</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="todolist" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/todolist/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr--><i lang="en"><!--/-->ToDoList+</<!--fr-->i></<!--/-->h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">JavaFX</li><li class="tag tag-techno">Gradle</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Gestionnaire de tâches en <strong class="kw">JavaFX</strong> et Gradle, monté presque de zéro, de la configuration jusqu'à la première case cochée.</p>
+                    <!--en-->
+                    <p class="carte-resume">A task manager in <strong class="kw">JavaFX</strong> and Gradle, built almost from scratch, from the set-up to the very first ticked box.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="resumecv" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/resumecv/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr--><i lang="en">resumeCV</i><!--en-->resumeCV<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">JavaFX</li><li class="tag tag-techno">MVC</li><li class="tag tag-techno">Scene Builder</li></ul>
+                    <p class="carte-resume"><!--fr-->Visionneuse de CV en<!--en-->A CV viewer in<!--/--> <strong class="kw">JavaFX</strong><!--fr--> bâtie en MVC avec<!--en-->, built on MVC with<!--/--> Scene Builder, <!--fr-->où l'interface et les données vivent chacune chez elles<!--en-->where the interface and the data each live in their own home<!--/-->.</p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="pac-man" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/pacman/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr--><i lang="en"><!--/-->Pac-Man</<!--fr-->i></<!--/-->h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">JavaFX</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume"><i lang="en">Pac-Man</i> recodé en <strong class="kw">JavaFX</strong>, où le héros pivote pour toujours regarder dans la direction où il avance.</p>
+                    <!--en-->
+                    <p class="carte-resume">Pac-Man recoded in <strong class="kw">JavaFX</strong>, where the hero turns to always face the way he is moving.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="base-de-donnees" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-base-de-donnees.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Base de données (SAÉ R2.04)<!--en-->Database<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">PostgreSQL</li><li class="tag tag-techno">Merise</li><li class="tag tag-techno masque">Docker</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Base <strong class="kw">PostgreSQL</strong> sur l'emploi modélisée en Merise, normalisée en 3FN puis interrogée en SQL<span class="masque"> depuis un conteneur Docker</span>.</p>
+                    <!--en-->
+                    <p class="carte-resume"><i lang="fr">SAÉ</i> R2.04 (assessed hands-on project): an employment <strong class="kw">PostgreSQL</strong> database modelled with Merise (a French data-modelling method), normalised to 3NF, then queried in SQL<span class="masque"> from a Docker container</span>.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="scripts-reseau" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-scripts-reseau.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Scripts réseau<!--en-->Network scripts<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Bash</li><li class="tag tag-techno"><!--fr-->réseau<!--en-->networking<!--/--></li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Scripts <strong class="kw">Bash</strong> qui configurent routeurs et réseaux d'entreprises fictives en Suisse, pour une topologie qui démarre d'un seul geste.</p>
+                    <!--en-->
+                    <p class="carte-resume"><strong class="kw">Bash</strong> scripts that configure the routers and networks of fictional companies in Switzerland, so that a whole topology starts up in a single move.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="graphes" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/graphes/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Graphes<!--en-->Graphs<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li><li class="tag tag-techno">Jupyter</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Boîte à outils <strong class="kw">Python</strong> en <i lang="en">notebook</i> Jupyter qui trouve plus courts chemins et arbres couvrants sur n'importe quel graphe.</p>
+                    <!--en-->
+                    <p class="carte-resume">A <strong class="kw">Python</strong> toolkit in a Jupyter notebook that finds shortest paths and spanning trees on any graph.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="statistiques" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://picsum.photos/seed/statistiques/600/600" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Statistiques<!--en-->Statistics<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Python</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Moyennes, écarts-types et corrélations recodés en <strong class="kw">Python</strong>, pour voir les formules statistiques prendre vie ligne par ligne.</p>
+                    <!--en-->
+                    <p class="carte-resume">Means, standard deviations and correlations recoded in <strong class="kw">Python</strong>, to watch statistical formulas come to life line by line.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="portfolio-but1" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-bientot" tabindex="0">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-portfolio-but1.jpg" alt="" width="800" height="800" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><!--fr-->Portfolio BUT 1<!--en--><i lang="fr">BUT</i> 1 portfolio<!--/--></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Markdown</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">Portfolio de BUT 1 qui relie chaque SAÉ aux <strong class="kw">six compétences</strong> du référentiel, preuves à l'appui.</p>
+                    <!--en-->
+                    <p class="carte-resume">My first-year portfolio, linking each <i lang="fr">SAÉ</i> (assessed hands-on project) to the <strong class="kw">six competencies</strong> of the national framework, with evidence.</p>
+                    <!--/-->
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->bientôt en ligne<!--en-->coming soon<!--/--></span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="sae-1-02" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-sae-1-02.jpg" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes"><!--fr-->Comparaison d'approches algorithmiques<!--en-->Comparing algorithmic approaches<!--/--></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">Python</li><li class="tag tag-techno">Jupyter</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">SAÉ 1.02 : tests d'une <strong>structure de données inconnue</strong>, algorithmes de piles, files et <strong>tri fusion</strong>, mesures de performance analysées dans un <i lang="en">notebook</i> Python.</p>
+                    <!--en-->
+                    <p class="carte-resume"><i lang="fr">SAÉ</i> 1.02 (assessed hands-on project): testing an <strong>unknown data structure</strong>, stack, queue and <strong>merge sort</strong> algorithms, with performance measurements analysed in a Python notebook.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <!--fr-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Découvrir par l'expérience le fonctionnement et les performances d'une structure de données dont on ne connaît que l'API.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Need</strong> Work out, through experiments, how a data structure behaves and performs when only its API is known.</li>
+                        <!--/-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette"><!--fr-->Mon rôle<!--en-->My role<!--/--></strong> <!--fr-->Rédaction du compte rendu de tests de la première période, sous la supervision des deux testeurs<!--en-->Wrote the test report for the first period, under the supervision of the two testers<!--/-->.</li>
+                        <!--fr-->
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> 11 fonctions sur 13 testées et chronométrées, puis piles, files et tri fusion mesurés de 2<sup>10</sup> à 2<sup>19</sup> éléments ; courbes tracées dans un <i lang="en">notebook</i> Python.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Opérer en début de structure est <strong>près de quatre fois plus rapide</strong> qu'en fin : 40 ms contre 153 ms pour 64 ajouts sur 524 288 éléments.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Approach</strong> 11 of 13 functions tested and timed, then stacks, queues and merge sort measured from 2<sup>10</sup> to 2<sup>19</sup> elements; curves plotted in a Python notebook.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Outcome</strong> Working at the start of the structure is <strong>almost four times faster</strong> than at the end: 40 ms versus 153 ms for 64 insertions into 524,288 elements.</li>
+                        <!--/-->
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-02-comparaison-algorithmes"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">code · Java, Python</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="sae-1-01" data-cadre="but1" data-annee-projet="2026">
+            <article class="carte carte-appli">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="{{racine}}medias/carte-sae-1-01.jpg" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2026">2026</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://github.com/marietiers59/sae-1-01-gestion-notes"><!--fr-->Gestion des notes en<!--en-->Grade management in<!--/--> Java</a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">Java</li><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSV</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">SAÉ 1.01 : application <strong>Java</strong> pilotant le navigateur pour saisir les notes d'une promotion, calculer les <strong>moyennes pondérées</strong>, sauvegarder, classer et exporter en CSV.</p>
+                    <!--en-->
+                    <p class="carte-resume"><i lang="fr">SAÉ</i> 1.01 (assessed hands-on project): a <strong>Java</strong> application that drives the browser to enter a class's grades, compute <strong>weighted averages</strong>, then save, rank and export them to CSV.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <!--fr-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Besoin</strong> Saisir les notes d'une promotion, calculer les moyennes pondérées, sauvegarder et recharger, dans un navigateur piloté par Java.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Méthodes de gestion des saisies, puis <strong>débogage</strong> de l'enchaînement des pages.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Un prototype en console, puis l'application web ; en options : moyennes par matière, classement et export CSV.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Résultat</strong> Application rendue, puis fiabilisée en octobre 2026 : plus de page blanche entre deux formulaires, plus de plantage sur une saisie invalide.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette">Need</strong> Enter a class's marks, compute weighted averages, save and reload them, in a browser driven by Java.</li>
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">My role</strong> Input-handling methods, then <strong>debugging</strong> how the pages chain together.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Approach</strong> A console prototype first, then the web application; optional features: averages per subject, rankings and CSV export.</li>
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette">Outcome</strong> Submitted, then made more robust in October 2026: no more blank page between two forms, no more crash on invalid input.</li>
+                        <!--/-->
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/sae-1-01-gestion-notes"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type">code · Java</span>
+            </article>
+          </li>
+
+          <li class="emplacement carte-emplacement" id="byclowatt" data-cadre="but1" data-annee-projet="2025">
+            <article class="carte carte-web">
+              <div class="carte-face">
+                <div class="carte-visuel">
+                  <img class="carte-image" src="https://marietiers59.github.io/BycloWatt/img/carouselProduct.jpg" alt="" width="600" height="600" loading="lazy">
+                  <ul class="carte-tags carte-tags-repere" aria-label="<!--fr-->Année et cadre<!--en-->Year and context<!--/-->">
+                    <li class="tag tag-annee"><time datetime="2025">2025</time></li>
+                    <!--fr-->
+                    <li class="tag tag-cadre"><span class="cadre-long">BUT info · 1<sup>re</sup> année</span><span class="cadre-court" aria-hidden="true">BUT 1</span></li>
+                    <!--en-->
+                    <li class="tag tag-cadre"><span class="cadre-long"><i lang="fr">BUT</i> · 1<sup>st</sup> year</span><span class="cadre-court" aria-hidden="true"><i lang="fr">BUT</i> 1</span></li>
+                    <!--/-->
+                  </ul>
+                </div>
+                <h3 class="carte-titre"><a class="carte-lien" href="https://marietiers59.github.io/BycloWatt/">BycloWatt, <!--fr-->attractions festives autonomes en énergie<!--en-->energy-independent festival attractions<!--/--></a></h3>
+              </div>
+              <div class="carte-deploiement">
+                <div class="carte-deploiement-interieur">
+                  <div class="carte-texte">
+                    <ul class="carte-tags" aria-label="Technologies"><li class="tag tag-techno">HTML</li><li class="tag tag-techno">CSS</li><li class="tag tag-techno">JavaScript</li><li class="tag tag-techno">Figma</li></ul>
+                    <!--fr-->
+                    <p class="carte-resume">SAÉ 1.05 / 1.06 : création d'une <strong>entreprise fictive</strong> de l'économie sociale et solidaire, de l'enquête et des <strong>personae</strong> jusqu'aux chartes, aux maquettes Figma et au <strong>site vitrine</strong> <i lang="en">responsive</i> en HTML, CSS et JavaScript.</p>
+                    <!--en-->
+                    <p class="carte-resume"><i lang="fr">SAÉ</i> 1.05 / 1.06 (assessed hands-on project): creating a <strong>fictional company</strong> in the social and solidarity economy, from the survey and <strong>personas</strong> to the brand guidelines, Figma mock-ups and a responsive <strong>showcase website</strong> in HTML, CSS and JavaScript.</p>
+                    <!--/-->
+                    <details class="cas">
+                      <summary class="cas-titre"><!--fr-->Étude de cas<!--en-->Case study<!--/--></summary>
+                      <ol class="cas-etapes">
+                        <li class="cas-etape cas-besoin"><strong class="cas-etiquette"><!--fr-->Besoin<!--en-->Need<!--/--></strong> <!--fr-->Inventer une entreprise fictive de l'économie sociale et solidaire, puis son site vitrine<!--en-->Invent a fictional social-economy company, then its showcase website<!--/-->.</li>
+                        <!--fr-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">Mon rôle</strong> Nom et concept, vectorisation du logo, dessin des trois attractions, rapport, vidéo et une version du site plus riche en JavaScript.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Démarche</strong> Enquête et <strong>personae</strong>, chartes graphique et éditoriale, maquettes Figma pour mobile, tablette et ordinateur.</li>
+                        <!--en-->
+                        <li class="cas-etape cas-role"><strong class="cas-etiquette">My role</strong> Name and concept, logo vectorisation, drawings of the three attractions, report, video and a JavaScript-rich version of the site.</li>
+                        <li class="cas-etape cas-demarche"><strong class="cas-etiquette">Approach</strong> Survey and <strong>personas</strong>, visual and editorial style guides, Figma mock-ups for mobile, tablet and desktop.</li>
+                        <!--/-->
+                        <li class="cas-etape cas-resultat"><strong class="cas-etiquette"><!--fr-->Résultat<!--en-->Outcome<!--/--></strong> <!--fr-->Un site <i lang="en">responsive</i> en ligne, au HTML valide W3C, avec des images allégées de 15,7 à 4,1 Mo<!--en-->A responsive website online, with W3C-valid HTML and images slimmed down from 15.7 MB to 4.1 MB<!--/-->.</li>
+                      </ol>
+                    </details>
+                    <p class="carte-actions"><a class="carte-action" href="https://github.com/marietiers59/BycloWatt"><!--fr-->Voir le<!--en-->View the<!--/--> code</a></p>
+                  </div>
+                </div>
+              </div>
+              <span class="carte-type"><!--fr-->site web<!--en-->website<!--/--></span>
+            </article>
+          </li>
+
+        </ul>
+		<!--fr-->
+		<!-- Message affiché par le script quand le filtre choisi ne contient que des projets en cours -->
+		<!--en-->
+		<!-- Shown by the script when the chosen filter only contains projects coming soon -->
+		<!--/-->
+		<p class="projets-vide" id="projets-vide" hidden>
+		  <!--fr-->
+		  <span>Les projets de cette catégorie sont encore <strong>bientôt en ligne</strong>.</span>
+		  <!--en-->
+		  <span>The projects in this category are still <strong>coming soon</strong>.</span>
+		  <!--/-->
+		  <button class="outil" type="button" id="bouton-voir-en-cours"><!--fr-->Les afficher<!--en-->Show them<!--/--></button>
+		</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!--fr-->
+  <!-- ===== Pied de page (défile avec la page) ===== -->
+  <!--en-->
+  <!-- ===== Footer (scrolls with the page) ===== -->
+  <!--/-->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1"><!--fr-->Me contacter<!--en-->Contact me<!--/--></h2>
+        <!--fr-->
+        <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
+        <!--en-->
+        <p>An <strong class="kw">internship</strong> or <strong class="kw">work-study</strong> offer, a question about a project? Write to me and I will get back to you quickly.</p>
+        <!--/-->
+        <ul class="coordonnees">
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span><span class="lieu-carte" tabindex="0" role="button" data-carte-zone>Lille, Lens, Douai, Arras</span></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="<!--fr-->Formulaire de contact<!--en-->Contact form<!--/-->"
+            data-endpoint="">
+        <p class="champ">
+          <label for="nom"><!--fr-->Nom<!--en-->Name<!--/--> <span class="obligatoire">(<!--fr-->obligatoire<!--en-->required<!--/-->)</span></label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email"><!--fr-->Adresse e-mail<!--en-->Email address<!--/--> <span class="obligatoire">(<!--fr-->obligatoire<!--en-->required<!--/-->)</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet"><!--fr-->Objet<!--en-->Subject<!--/--></label>
+          <select id="objet" name="objet">
+            <option><!--fr-->Proposition de stage<!--en-->Internship offer<!--/--></option>
+            <option><!--fr-->Proposition d'alternance<!--en-->Work-study offer<!--/--></option>
+            <option>Question <!--fr-->sur un projet<!--en-->about a project<!--/--></option>
+            <option><!--fr-->Autre<!--en-->Other<!--/--></option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message <span class="obligatoire">(<!--fr-->obligatoire<!--en-->required<!--/-->)</span></label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!--fr-->
+        <!-- Champ piège anti-robots : invisible pour les humains -->
+        <!--en-->
+        <!-- Anti-bot trap field: invisible to humans -->
+        <!--/-->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege"><!--fr-->Ne pas remplir<!--en-->Do not fill in<!--/--></label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit"><!--fr-->Envoyer<!--en-->Send<!--/--></button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · <!--fr-->tous droits réservés : aucun réemploi sans mon accord écrit, et alors avec mention obligatoire de l'autrice et de la<!--en-->all rights reserved: no reuse without my written permission, and even then only with credit to the author and the<!--/--> source · <a href="https://github.com/marietiers59/e-portfolio/blob/main/LICENSE"><!--fr-->licence complète<!--en-->full licence<!--/--></a><br>
+      <!--fr-->
+      Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="{{page:accessibilite}}">déclaration et détail des tests</a><br>
+      Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site, dans le respect du <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/fra" target="_blank" rel="noopener" hreflang="fr">RGPD<span class="sr"> (règlement général sur la protection des données, nouvel onglet)</span></a><br>
+      <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
+      <!--en-->
+      Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="{{page:accessibilite}}">statement and test details</a><br>
+      Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site, in line with the <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener" hreflang="en">GDPR<span class="sr"> (General Data Protection Regulation, new tab)</span></a><br>
+      <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
+      <!--/-->
+      <!--fr-->Thème au rythme du soleil si vous autorisez la localisation (position gardée sur votre appareil) · mesure d'audience sans cookie <!--en-->Theme follows the sun if you allow location (your position stays on your device) · cookie-free visitor analytics<!--/-->: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="{{page:espace}}"<!--fr-->>espace personnel<!--en--> hreflang="fr">personal area<!--/--></a><br>
+      <span class="sources" data-sources>
+        <button class="sources-bouton" type="button" aria-expanded="false" aria-controls="sources-volet"><span class="sources-texte"><!--fr-->Afficher plus de<!--en-->Show more<!--/--> sources</span></button>
+        <span class="sources-volet" id="sources-volet">
+        <strong class="sources-groupe"><!--fr-->Conception et hébergement<!--en-->Design and hosting<!--/--></strong>
+        Site <!--fr-->conçu et codé avec l'assistance de l'IA<!--en-->designed and built with the help of the AI assistant<!--/--> <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic)<br>
+        <!--fr-->Hébergement <!--en-->Hosting<!--/-->: <a href="https://pages.github.com"><!--fr--><i lang="en"><!--/-->GitHub Pages</<!--fr-->i></<!--/-->a>
+        <strong class="sources-groupe">Images</strong>
+        <!--fr-->
+        Bannière et illustrations des piliers « Ma philosophie » et « Mon objectif » : générées par IA<br>
+        Photo de profil : retouchée par IA<br>
+        Photo de l'IUT : authentique, tirée de la couverture LinkedIn « IUT de Lens Alumni »<br>
+        Vignettes des projets : illustrations générées par IA, ou captures d'écran de mes propres projets<br>
+        <!--en-->
+        Banner and illustrations for the “My philosophy” and “My goal” pillars: generated by AI<br>
+        Profile photo: retouched with AI<br>
+        Photo of the <i lang="fr">IUT</i>: genuine, taken from the LinkedIn cover of “IUT de Lens Alumni”<br>
+        Project thumbnails: illustrations generated by AI, or screenshots of my own projects<br>
+        <!--/-->
+        <!--fr-->Images provisoires des projets bientôt en ligne <!--en-->Placeholder images for upcoming projects<!--/-->: <a href="https://picsum.photos">Lorem Picsum</a><br>
+        <!--fr-->Logos des technologies <!--en-->Technology logos<!--/-->: <a href="https://simpleicons.org">Simple Icons</a> (CC0), <!--fr-->marques de leurs propriétaires ; pictogrammes dessinés pour le<!--en-->trademarks of their respective owners; pictograms drawn for this<!--/--> site<br>
+        <!--fr-->Carte de la zone de recherche : fond © contributeurs<!--en-->Map of the search area: background ©<!--/--> <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a><!--fr-->, communes situées avec<!--en--> contributors, towns located with<!--/--> <a href="https://nominatim.org">Nominatim</a>, image <!--fr-->composée avec Pillow et<!--en-->composed with Pillow and<!--/--> NumPy
+        <strong class="sources-groupe"><!--fr-->Contenus<!--en-->Content<!--/--></strong>
+        <!--fr-->
+        Compétences et notions : programme national du BUT informatique<br>
+        Projets d'équipe : menés avec mes coéquipières et coéquipiers, nommés dans chaque dépôt ; base du jeu <i lang="en">Space Invaders</i> fournie par l'IUT de Lens<br>
+        Nuage de compétences : communautés (méthode de Louvain) et disposition (ForceAtlas2) calculées avec <a href="https://gephi.org">Gephi</a>
+        <!--en-->
+        Skills and topics: the national curriculum of the <i lang="fr">BUT</i> in Computer Science (French three-year university degree)<br>
+        Team projects: built with my teammates, named in each repository; the base of the Space Invaders game was provided by the <i lang="fr">IUT de Lens</i><br>
+        Skills network: communities (Louvain method) and layout (ForceAtlas2) computed with <a href="https://gephi.org">Gephi</a>
+        <!--/-->
+        <strong class="sources-groupe">Code <!--fr-->et<!--en-->and<!--/--> services</strong>
+        <!--fr-->
+        Polices Nunito et Atkinson Hyperlegible : <a href="https://fonts.google.com"><i lang="en">Google Fonts</i></a> ; Trebuchet MS, police de l'appareil<br>
+        <!--en-->
+        Nunito and Atkinson Hyperlegible fonts: <a href="https://fonts.google.com">Google Fonts</a>; Trebuchet MS, the device's own font<br>
+        <!--/-->
+        <!--fr-->Moteur physique<!--en-->Physics engine<!--/--> <a href="https://brm.io/matter-js/">Matter.js</a> (<!--fr-->licence MIT<!--en-->MIT licence<!--/-->)<br>
+        <!--fr-->Vérification du domaine des adresses e-mail du formulaire <!--en-->Checking the domain of e-mail addresses in the form<!--/-->: <a href="https://developers.google.com/speed/public-dns"><!--fr--><i lang="en"><!--/-->Google Public DNS</<!--fr-->i></a> (seul le domaine est transmis<!--en-->a> (only the domain is sent<!--/-->)<br>
+        <!--fr-->
+        Tests d'accessibilité et de code : Lighthouse, axe-core, validateur du W3C
+        <!--en-->
+        Accessibility and code testing: Lighthouse, axe-core, W3C validator
+        <!--/-->
+        <strong class="sources-groupe"><!--fr-->Clins d'œil<!--en-->Nods and winks<!--/--></strong>
+        <!--fr-->
+        Quelques surprises cachées rendent hommage aux <i lang="en">easter eggs</i> de Google et à la culture populaire : œuvres et marques de leurs propriétaires respectifs
+        <!--en-->
+        A few hidden surprises pay tribute to Google's easter eggs and to popular culture: works and trademarks of their respective owners
+        <!--/-->
+        </span>
+      </span></p>
+  </footer>
+
+  <!--fr-->
+  <!-- ===== Barre fixe du bas ===== -->
+  <!--en-->
+  <!-- ===== Fixed bottom bar ===== -->
+  <!--/-->
+  <div class="barre barre-bas">
+    <div class="zoom" role="group" aria-label="<!--fr-->Zoom de la page<!--en-->Page zoom<!--/-->" hidden>
+      <span class="zoom-plateau" aria-hidden="true"></span>
+      <button class="zoom-cote zoom-moins" type="button" aria-label="<!--fr-->Dézoomer<!--en-->Zoom out<!--/-->" data-infobulle="<!--fr-->Dézoomer<!--en-->Zoom out<!--/-->" data-bulle="debut">
+        <svg class="zoom-loupe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.3 15.3 5.2 5.2M7.8 10.5h5.4"/></svg>
+        <span class="zoom-demi" aria-hidden="true"></span>
+      </button>
+      <button class="zoom-crete" type="button" aria-label="<!--fr-->Taille réelle, zoom actuel 100 <!--en-->Actual size, current zoom 100<!--/-->%" data-infobulle="<!--fr-->Taille réelle (actuellement 100 <!--en-->Actual size (now 100<!--/-->%)"><span aria-hidden="true"></span></button>
+      <button class="zoom-cote zoom-plus" type="button" aria-label="<!--fr-->Zoomer<!--en-->Zoom in<!--/-->" data-infobulle="<!--fr-->Zoomer<!--en-->Zoom in<!--/-->">
+        <span class="zoom-demi" aria-hidden="true"></span>
+        <svg class="zoom-loupe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.3 15.3 5.2 5.2M7.8 10.5h5.4M10.5 7.8v5.4"/></svg>
+      </button>
+      <span class="zoom-annonce sr" aria-live="polite"></span>
+    </div>
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>

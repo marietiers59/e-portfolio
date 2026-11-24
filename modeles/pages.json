@@ -1,0 +1,12 @@
+{
+  "_mode_d_emploi": "Une entrée par page : identifiant (= nom du modèle dans modeles/) → fichier publié pour chaque langue. Voir outils/pages/LISEZMOI.md.",
+  "index": { "fr": "index.html", "en": "en/index.html" },
+  "projets": { "fr": "pages/projets.html", "en": "en/projects.html" },
+  "competences": { "fr": "pages/competences.html", "en": "en/skills.html" },
+  "univers": { "fr": "pages/univers.html", "en": "en/my-world.html" },
+  "cv-video": { "fr": "pages/cv-video.html", "en": "en/video-cv.html" },
+  "accessibilite": { "fr": "pages/accessibilite.html", "en": "en/accessibility.html" },
+  "calendrier-alternance": { "fr": "pages/calendrier-alternance.html", "en": "en/work-study-calendar.html" },
+  "formulaire-convention": { "fr": "pages/formulaire-convention.html", "en": "en/internship-form.html" },
+  "espace": { "fr": "pages/espace.html" }
+}

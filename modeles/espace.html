@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espace personnel · Marie Tiers</title>
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Espace personnel de gestion du portfolio de Marie Tiers.">
+  <meta name="theme-color" content="#ddedf8">
+
+  <!-- Polices : Trebuchet MS (système, corps de texte) + Nunito (titres) + Atkinson Hyperlegible (interface) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Nunito:wght@600;800&amp;display=swap">
+
+  <!-- Réglages posés avant l'affichage : thème, zoom mémorisé, apparition, retour à l'accueil (scripts/tete.js) -->
+  <script src="{{racine}}scripts/tete.js?v=1" data-zoom data-apparition></script>
+
+  <link rel="stylesheet" href="{{racine}}styles/style.css?v=62">
+  <script src="{{racine}}scripts/rideau.js?v=6" defer></script>
+  <script src="{{racine}}scripts/script.js?v=27" defer></script>
+  <script src="{{racine}}scripts/apparition.js?v=4" defer></script>
+  <script src="{{racine}}scripts/zoom.js?v=2" defer></script>
+  <script src="{{racine}}scripts/carte-zone.js?v=5" defer></script>
+  <script src="{{racine}}scripts/contact-eggs.js?v=15" defer></script>
+</head>
+
+<body id="haut" data-sans-compteur>
+  <a class="evitement" href="#contenu">Aller au contenu</a>
+
+  <!-- ===== Barre fixe du haut ===== -->
+  <div class="barre barre-haut">
+    <button class="theme" type="button" aria-pressed="false" hidden>
+      <svg class="theme-icone theme-soleil" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+      <span class="langue-interrupteur" aria-hidden="true"></span>
+      <svg class="theme-icone theme-lune" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      <span class="sr">Thème sombre</span>
+    </button>
+    <a class="barre-lien" href="#haut" data-defilement="haut">Menu <span aria-hidden="true">&#x23EB;&#xFE0E;</span></a>
+  </div>
+
+  <!-- ===== En-tête (défile avec la page) ===== -->
+  <header class="entete">
+    <div class="conteneur entete-nav">
+      <a class="logo" href="{{page:index}}">Marie TIERS</a>
+      <nav class="navigation" aria-label="Navigation principale">
+        <ul class="navigation-liste">
+          <li><a href="{{page:index}}">Accueil</a></li>
+          <li><a href="{{page:projets}}">Projets</a></li>
+          <li><a href="{{page:competences}}">Compétences</a></li>
+          <li><a href="{{page:index}}#parcours">Parcours</a></li>
+          <li><a href="{{page:univers}}">Loisirs</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="{{racine}}cv-marie-tiers.pdf" type="application/pdf">CV <span class="sr">(PDF)</span></a></li>
+          <li><a href="{{page:cv-video}}">CV vidéo</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="section" aria-labelledby="titre-principal">
+      <div class="conteneur">
+        <div class="section-entete">
+          <h1 class="section-titre" id="titre-principal" tabindex="-1">Espace personnel</h1>
+          <p class="section-intro">
+            Raccourcis réservés à la gestion du portfolio. Cette page n'est pas protégée par un mot de passe :
+            elle ne contient rien de confidentiel.
+          </p>
+        </div>
+
+        <div class="espace">
+          <div class="espace-bloc">
+            <h2 class="espace-titre">Compteur de visites</h2>
+            <p class="espace-etat" id="etat-comptage" role="status">…</p>
+            <p class="espace-aide">
+              Le réglage vaut pour <strong>ce navigateur, sur cet appareil</strong> :
+              à refaire sur ton téléphone, ta tablette, etc.
+            </p>
+            <button class="bouton" id="bouton-comptage" type="button" aria-pressed="false">Ne plus compter cet appareil</button>
+          </div>
+
+          <div class="espace-bloc">
+            <h2 class="espace-titre">Liens utiles</h2>
+            <ul class="espace-liens">
+              <li><a href="https://github.com/marietiers59/e-portfolio">Dépôt GitHub du portfolio</a></li>
+              <li><a href="https://github.com/marietiers59/e-portfolio/settings/pages">Réglages GitHub Pages</a></li>
+              <!-- Remplacer marie-tiers par ton code GoatCounter -->
+              <li><a href="https://marie-tiers.goatcounter.com">Statistiques de visites (GoatCounter)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Pied de page (défile avec la page) ===== -->
+  <footer class="pied" id="contact" aria-labelledby="contact-titre">
+    <div class="conteneur pied-grille">
+
+      <div class="pied-coordonnees">
+        <h2 class="section-titre" id="contact-titre" tabindex="-1">Me contacter</h2>
+        <p>Une offre de <strong class="kw">stage</strong> ou d'<strong class="kw">alternance</strong>, une question sur un projet ? Écrivez-moi, je vous réponds rapidement.</p>
+        <ul class="coordonnees">
+		  <li data-rideau="email"></li>
+		  <li data-rideau="tel"></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&#x2316;</span><span class="lieu-carte" tabindex="0" role="button" data-carte-zone>Lille, Lens, Douai, Arras</span></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">in</span><a href="https://www.linkedin.com/in/marie-tiers-1991-59-France">LinkedIn</a></li>
+          <li><span class="coordonnees-icone" aria-hidden="true">&lt;/&gt;</span><a href="https://github.com/marietiers59">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!--
+        data-endpoint vide  → le formulaire prépare un e-mail dans la messagerie du visiteur.
+        data-endpoint rempli (ex. https://formspree.io/f/xxxxxx) → envoi direct, sans quitter la page.
+      -->
+      <form class="formulaire" id="formulaire-contact" aria-label="Formulaire de contact"
+            data-endpoint="">
+        <p class="champ">
+          <label for="nom">Nom <span class="obligatoire">(obligatoire)</span></label>
+          <input id="nom" name="nom" autocomplete="name" required>
+        </p>
+        <p class="champ">
+          <label for="email">Adresse e-mail <span class="obligatoire">(obligatoire)</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </p>
+        <p class="champ champ-large">
+          <label for="objet">Objet</label>
+          <select id="objet" name="objet">
+            <option>Proposition de stage</option>
+            <option>Proposition d'alternance</option>
+            <option>Question sur un projet</option>
+            <option>Autre</option>
+          </select>
+        </p>
+        <p class="champ champ-large">
+          <label for="message">Message <span class="obligatoire">(obligatoire)</span></label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </p>
+        <!-- Champ piège anti-robots : invisible pour les humains -->
+        <p class="champ-piege" aria-hidden="true">
+          <label for="piege">Ne pas remplir</label>
+          <input id="piege" name="_gotcha" tabindex="-1" autocomplete="off">
+        </p>
+        <!-- Vérification anti-robots Turnstile : affichée seulement une fois configurée (scripts/script.js, REGLAGES_ENVOI) -->
+        <div class="champ-captcha champ-large" data-turnstile hidden></div>
+        <p class="formulaire-pied champ-large">
+          <button class="bouton" type="submit">Envoyer</button>
+          <span class="formulaire-statut" role="status"></span>
+        </p>
+      </form>
+
+    </div>
+    <p class="pied-mentions" id="bas">© <span data-annee>2026</span> Marie Tiers · tous droits réservés : aucun réemploi sans mon accord écrit, et alors avec mention obligatoire de l'autrice et de la source · <a href="https://github.com/marietiers59/e-portfolio/blob/main/LICENSE">licence complète</a><br>
+      Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="{{page:accessibilite}}">déclaration et détail des tests</a><br>
+      Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site, dans le respect du <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/fra" target="_blank" rel="noopener" hreflang="fr">RGPD<span class="sr"> (règlement général sur la protection des données, nouvel onglet)</span></a><br>
+      <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
+      Thème au rythme du soleil si vous autorisez la localisation (position gardée sur votre appareil) · mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="{{page:espace}}" aria-current="page">espace personnel</a><br>
+      <span class="sources" data-sources>
+        <button class="sources-bouton" type="button" aria-expanded="false" aria-controls="sources-volet"><span class="sources-texte">Afficher plus de sources</span></button>
+        <span class="sources-volet" id="sources-volet">
+        <strong class="sources-groupe">Conception et hébergement</strong>
+        Site conçu et codé avec l'assistance de l'IA <a href="https://www.anthropic.com/claude">Claude</a> (Anthropic)<br>
+        Hébergement : <a href="https://pages.github.com"><i lang="en">GitHub Pages</i></a>
+        <strong class="sources-groupe">Images</strong>
+        Bannière et illustrations des piliers « Ma philosophie » et « Mon objectif » : générées par IA<br>
+        Photo de profil : retouchée par IA<br>
+        Photo de l'IUT : authentique, tirée de la couverture LinkedIn « IUT de Lens Alumni »<br>
+        Vignettes des projets : illustrations générées par IA, ou captures d'écran de mes propres projets<br>
+        Images provisoires des projets bientôt en ligne : <a href="https://picsum.photos">Lorem Picsum</a><br>
+        Logos des technologies : <a href="https://simpleicons.org">Simple Icons</a> (CC0), marques de leurs propriétaires ; pictogrammes dessinés pour le site<br>
+        Carte de la zone de recherche : fond © contributeurs <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, communes situées avec <a href="https://nominatim.org">Nominatim</a>, image composée avec Pillow et NumPy
+        <strong class="sources-groupe">Contenus</strong>
+        Compétences et notions : programme national du BUT informatique<br>
+        Projets d'équipe : menés avec mes coéquipières et coéquipiers, nommés dans chaque dépôt ; base du jeu <i lang="en">Space Invaders</i> fournie par l'IUT de Lens<br>
+        Nuage de compétences : communautés (méthode de Louvain) et disposition (ForceAtlas2) calculées avec <a href="https://gephi.org">Gephi</a>
+        <strong class="sources-groupe">Code et services</strong>
+        Polices Nunito et Atkinson Hyperlegible : <a href="https://fonts.google.com"><i lang="en">Google Fonts</i></a> ; Trebuchet MS, police de l'appareil<br>
+        Moteur physique <a href="https://brm.io/matter-js/">Matter.js</a> (licence MIT)<br>
+        Vérification du domaine des adresses e-mail du formulaire : <a href="https://developers.google.com/speed/public-dns"><i lang="en">Google Public DNS</i></a> (seul le domaine est transmis)<br>
+        Tests d'accessibilité et de code : Lighthouse, axe-core, validateur du W3C
+        <strong class="sources-groupe">Clins d'œil</strong>
+        Quelques surprises cachées rendent hommage aux <i lang="en">easter eggs</i> de Google et à la culture populaire : œuvres et marques de leurs propriétaires respectifs
+        </span>
+      </span></p>
+  </footer>
+
+  <!-- ===== Barre fixe du bas ===== -->
+  <div class="barre barre-bas">
+    <div class="zoom" role="group" aria-label="Zoom de la page" hidden>
+      <span class="zoom-plateau" aria-hidden="true"></span>
+      <button class="zoom-cote zoom-moins" type="button" aria-label="Dézoomer" data-infobulle="Dézoomer" data-bulle="debut">
+        <svg class="zoom-loupe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.3 15.3 5.2 5.2M7.8 10.5h5.4"/></svg>
+        <span class="zoom-demi" aria-hidden="true"></span>
+      </button>
+      <button class="zoom-crete" type="button" aria-label="Taille réelle, zoom actuel 100 %" data-infobulle="Taille réelle (actuellement 100 %)"><span aria-hidden="true"></span></button>
+      <button class="zoom-cote zoom-plus" type="button" aria-label="Zoomer" data-infobulle="Zoomer">
+        <span class="zoom-demi" aria-hidden="true"></span>
+        <svg class="zoom-loupe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.3 15.3 5.2 5.2M7.8 10.5h5.4M10.5 7.8v5.4"/></svg>
+      </button>
+      <span class="zoom-annonce sr" aria-live="polite"></span>
+    </div>
+    <a class="barre-lien" href="#bas" data-defilement="bas">Contact <span aria-hidden="true">&#x23EC;&#xFE0E;</span></a>
+  </div>
+</body>
+</html>

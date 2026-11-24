@@ -2,8 +2,8 @@
 # Régénère le nuage de compétences de la page Compétences (FR et EN).
 #   1. donnees.py → entree.gexf
 #   2. Gephi Toolkit : communautés (modularité) + spatialisation ForceAtlas2 → medias/nuage-competences.gexf
-#   3. rendu SVG injecté dans pages/competences.html et en/skills.html, + medias/nuage-competences.svg
-# Prérequis : Python 3, Java 11 ou plus. Le Gephi Toolkit (≈ 80 Mo) est téléchargé une fois dans /tmp.
+#   3. rendu SVG en fragments (modeles/fragments/nuage-*.html), pages FR et EN régénérées, + medias/nuage-competences.svg
+# Prérequis : Python 3, Java 11 ou plus, Node 18 ou plus. Le Gephi Toolkit (≈ 80 Mo) est téléchargé une fois dans /tmp.
 set -euo pipefail
 cd "$(dirname "$0")"
 
