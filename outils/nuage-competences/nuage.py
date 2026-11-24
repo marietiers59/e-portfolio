@@ -5,20 +5,18 @@ Nuage de compétences façon Gephi.
   python3 nuage.py graphe   → entree.gexf (nœuds, liens, tailles, positions de départ)
   java … Spatialiser.java   → ../../medias/nuage-competences.gexf (Gephi : modularité + ForceAtlas2)
   python3 nuage.py rendu    → fragments FR et EN dans modeles/fragments/ (nuage-*.fr.html, nuage-*.en.html),
-                              pages Compétences et Skills régénérées (outils/pages/construire.mjs),
+                              à reporter dans les pages : node outils/pages/construire.mjs,
                               + medias/nuage-competences.svg (image seule)
 
 construire.sh enchaîne les trois étapes.
 """
-import html
+import hashlib
 import math
-import random
-import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from donnees import BUT, BUT_LONG, NOTIONS, OUTILS, PROJETS
+from donnees import BUT, NOTIONS, OUTILS, PROJETS
 
 ICI = Path(__file__).resolve().parent
 RACINE = ICI.parent.parent
@@ -27,6 +25,16 @@ GEPHI = RACINE / "medias" / "nuage-competences.gexf"
 IMAGE = RACINE / "medias" / "nuage-competences.svg"
 MODELE = RACINE / "modeles" / "competences.html"   # modèle bilingue de la page Compétences / Skills
 FRAGMENTS = RACINE / "modeles" / "fragments"
+
+
+def empreinte(noeud, usage):
+    """Nombre dans [0, 1[ tiré de l'identifiant d'un nœud (SHA-256), pour un usage donné.
+
+    Remplace un générateur pseudo-aléatoire (S2245) : la valeur ne dépend que du nœud, pas de
+    l'ordre ni du nombre des autres. Ajouter une compétence ne rebat donc pas les cartes,
+    et le résultat reste reproductible d'une construction à l'autre."""
+    condense = hashlib.sha256(f"{usage}:{noeud}".encode("utf-8")).digest()
+    return int.from_bytes(condense[:8], "big") / 2**64
 
 
 # ---------- 1. Graphe ----------
@@ -75,7 +83,6 @@ def rayon(deg, type_):
 def ecrire_entree():
     noeuds, liens = graphe()
     d = degres(noeuds, liens)
-    alea = random.Random(2026)
     gexf = ET.Element("gexf", {"xmlns": "http://gexf.net/1.3", "xmlns:viz": "http://gexf.net/1.3/viz", "version": "1.3"})
     g = ET.SubElement(gexf, "graph", {"defaultedgetype": "undirected"})
     attrs = ET.SubElement(g, "attributes", {"class": "node"})
@@ -88,7 +95,8 @@ def ecrire_entree():
         ET.SubElement(av, "attvalue", {"for": "type", "value": t})
         ET.SubElement(av, "attvalue", {"for": "label_en", "value": en})
         ET.SubElement(n, "viz:size", {"value": f"{rayon(d[i], t):.2f}"})
-        ET.SubElement(n, "viz:position", {"x": f"{alea.uniform(-300, 300):.1f}", "y": f"{alea.uniform(-300, 300):.1f}", "z": "0"})
+        ET.SubElement(n, "viz:position", {"x": f"{600 * empreinte(i, 'x') - 300:.1f}",
+                                          "y": f"{600 * empreinte(i, 'y') - 300:.1f}", "z": "0"})
     xe = ET.SubElement(g, "edges")
     for k, ((a, b), w) in enumerate(liens.items()):
         ET.SubElement(xe, "edge", {"id": str(k), "source": a, "target": b, "weight": str(w)})

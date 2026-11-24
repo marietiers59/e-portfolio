@@ -17,6 +17,7 @@ export default defineConfig({
       coverage: {
         outputDir: 'couverture',
         reports: ['lcovonly', 'v8', 'console-summary'],
+        inline: true,                    // page de couverture autonome : pas de dossier assets/ à la racine
         entryFilter: (entree) => entree.url.includes('/e-portfolio/scripts/') && !entree.url.includes('/vendor/'),
         sourcePath: (chemin) => chemin.replace(/^.*?e-portfolio\//, ''),   // chemin dans le dépôt
       },

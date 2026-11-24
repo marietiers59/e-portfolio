@@ -8,15 +8,13 @@ pour que les noms ne se chevauchent pas.
 import html
 import json
 import math
-import random
 import re
-import subprocess
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from couleurs import arrondir, couleur, couleur_point, couleur_texte
-from donnees import BUT_LONG, MASQUES, NOTIONS
-from nuage import FRAGMENTS, GEPHI, IMAGE, MODELE, RACINE, degres, graphe, rayon
+from couleurs import couleur_point, couleur_texte
+from donnees import BUT_LONG, MASQUES
+from nuage import FRAGMENTS, GEPHI, IMAGE, MODELE, degres, empreinte, graphe, rayon
 
 NS = {"g": "http://gexf.net/1.3", "viz": "http://gexf.net/1.3/viz"}
 
@@ -112,14 +110,13 @@ def profondeur(noeuds, liens, pos, classe):
     Le nuage prend la forme d'une boule : plus un nœud est près du centre, plus il peut s'enfoncer ;
     chaque communauté reçoit sa propre profondeur, puis on lisse le long des liens
     pour que des nœuds reliés restent proches, comme des neurones voisins."""
-    alea = random.Random(2026)
     ids = list(noeuds)
     cx = sum(pos[i][0] for i in ids) / len(ids)
     cy = sum(pos[i][1] for i in ids) / len(ids)
     rmax = max(math.hypot(pos[i][0] - cx, pos[i][1] - cy) for i in ids)
     comms = sorted(set(classe.values()))
     decalage = {c: math.cos(n * 2.4) * 0.7 for n, c in enumerate(comms)}
-    u = {i: decalage[classe[i]] + alea.uniform(-0.6, 0.6) for i in ids}
+    u = {i: decalage[classe[i]] + 1.2 * empreinte(i, "profondeur") - 0.6 for i in ids}   # écart propre à chaque nœud, entre −0,6 et +0,6
     voisins = defaultdict(list)
     for a, b in liens:
         voisins[a].append(b)
@@ -185,15 +182,6 @@ def construire(langue, fige=False):
         nom[c] = lib[p]
     k = {i: teinte[classe[i]] for i in noeuds}
 
-    # Place de chaque nœud sur le dégradé : de gauche à droite (un peu de haut en bas), en continu ;
-    # on prend le rang plutôt que la distance, pour que les trois couleurs soient également présentes
-    gx = [pos[i][0] for i in noeuds]
-    gy = [pos[i][1] for i in noeuds]
-    axe = {i: 0.85 * (pos[i][0] - min(gx)) / (max(gx) - min(gx)) + 0.15 * (pos[i][1] - min(gy)) / (max(gy) - min(gy))
-           for i in noeuds}
-    rangs = sorted(noeuds, key=lambda i: axe[i])
-    u = {i: arrondir(n / (len(rangs) - 1)) for n, i in enumerate(rangs)}
-    u_comm = {c: arrondir(sum(u[m] for m in ms) / len(ms)) for c, ms in membres.items()}
 
     # Ajustement des étiquettes (mêmes positions pour les deux langues : on prend la plus longue)
     boites = {}
@@ -204,15 +192,12 @@ def construire(langue, fige=False):
         boites[i] = (max(w, 2 * r[i] + 2), h, r[i] ** 2, h / 2 - r[i])
     ajuster_etiquettes(pos, boites)
 
-    xs = [pos[i][0] for i in noeuds]
-    ys = [pos[i][1] for i in noeuds]
     marge = 24
     x0 = min(pos[i][0] - boites[i][0] / 2 for i in noeuds) - marge
     x1 = max(pos[i][0] + boites[i][0] / 2 for i in noeuds) + marge
     y0 = min(pos[i][1] + boites[i][3] - boites[i][1] / 2 for i in noeuds) - marge
     y1 = max(pos[i][1] + boites[i][3] + boites[i][1] / 2 for i in noeuds) + marge
     vb = f"{x0:.0f} {y0:.0f} {x1 - x0:.0f} {y1 - y0:.0f}"
-    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
 
     # Liens courbes (sens horaire, comme Gephi), couleur de l'extrémité la moins connectée
     aretes = []
@@ -228,9 +213,7 @@ def construire(langue, fige=False):
         aretes.append(f'<path class="l {k[b]}{cache}" data-a="{a}" data-b="{b}" style="{st}" stroke-width="{0.5 + 0.55 * w:.2f}" '
                       f'd="M{xa:.1f} {ya:.1f}Q{qx:.1f} {qy:.1f} {xb:.1f} {yb:.1f}"/>')
 
-    # Nœuds du centre vers l'extérieur (ordre d'apparition de l'animation), petits dessous, gros dessus
-    ordre = sorted(noeuds, key=lambda i: math.hypot(pos[i][0] - cx, pos[i][1] - cy))
-    rang = {i: n for n, i in enumerate(ordre)}
+    # Nœuds : petits dessous, gros dessus
     formes, etiquettes = [], []
     for i in sorted(noeuds, key=lambda i: r[i]):
         t = noeuds[i][2]
@@ -254,8 +237,8 @@ def construire(langue, fige=False):
     svg = (f'<svg class="nuage-svg" viewBox="{vb}" style="--etq-apercu: {etq_apercu:.0f}px" role="img" aria-label="{titre}" focusable="false" '
            f'preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">\n'
            f'<g class="liens">\n' + "\n".join(aretes) + '\n</g>\n'
-           f'<g class="noeuds">\n' + "\n".join(formes) + '\n</g>\n'
-           f'<g class="etiquettes">\n' + "\n".join(etiquettes) + '\n</g>\n</svg>')
+           '<g class="noeuds">\n' + "\n".join(formes) + '\n</g>\n'
+           '<g class="etiquettes">\n' + "\n".join(etiquettes) + '\n</g>\n</svg>')
 
     # Légende : une puce par communauté (bouton de filtre dans la vue agrandie)
     comms = sorted(membres, key=lambda c: -len(membres[c]))
@@ -336,7 +319,7 @@ def rendre():
         ecrire_fragment("nuage-texte", langue, texte)
         ecrire_fragment("nuage-donnees", langue, '<script type="application/json" id="nuage-donnees">' + json_donnees + "</script>")
         print(f"modeles/fragments/nuage-*.{langue}.html écrits")
-    # Les pages publiées se régénèrent à partir du modèle et des fragments
-    subprocess.run(["node", str(RACINE / "outils" / "pages" / "construire.mjs")], check=True)
+    # Les pages publiées se régénèrent ensuite à partir du modèle et des fragments (construire.sh le fait)
+    print("pages à régénérer : node outils/pages/construire.mjs")
     image_seule()
     print(f"{IMAGE.name} écrit")

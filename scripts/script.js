@@ -33,6 +33,19 @@ const amorti = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 const hauteurMax = () => document.documentElement.scrollHeight - window.innerHeight;
 const borner = (y) => Math.max(0, Math.min(y, hauteurMax()));
 
+/** Nombre au hasard dans [0, 1[, comme Math.random(), mais tiré par le générateur du navigateur
+    (crypto.getRandomValues) : aucun usage sensible ici, simple hasard des animations et des surprises. */
+const tirages = new Uint32Array(64);
+let tiragesRestants = 0;
+function hasard() {
+  if (tiragesRestants === 0) {
+    crypto.getRandomValues(tirages);
+    tiragesRestants = tirages.length;
+  }
+  tiragesRestants -= 1;
+  return tirages[tiragesRestants] / 4294967296;     // 2³², pour rester strictement sous 1
+}
+
 function decalageBarre() {
   const barre = document.querySelector('.barre-haut');
   return (barre ? barre.offsetHeight : 0) + 16;
@@ -1217,12 +1230,12 @@ document.querySelectorAll('.carte picture').forEach((image) => {
     // qui le relaie parfois à son tour (réaction en chaîne).
     lancer(depuis) {
       const choix = this.selection ? [...this.selection] : null;
-      let a = depuis ?? (choix ? choix[Math.floor(Math.random() * choix.length)] : Math.floor(Math.random() * N));
+      let a = depuis ?? (choix ? choix[Math.floor(hasard() * choix.length)] : Math.floor(hasard() * N));
       const possibles = liensDe[a].filter((li) => !this.liensActifs || this.liensActifs.has(li));
       if (!possibles.length) return;
-      const l = liens[possibles[Math.floor(Math.random() * possibles.length)]];
+      const l = liens[possibles[Math.floor(hasard() * possibles.length)]];
       const b = l.a === a ? l.b : l.a;
-      this.impulsions.push({ a, b, t: 0, duree: 650 + Math.random() * 650 });
+      this.impulsions.push({ a, b, t: 0, duree: 650 + hasard() * 650 });
       this.eclats[a] = Math.max(this.eclats[a], 0.6);
     }
     avancer(dt) {
@@ -1242,7 +1255,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
       this.prochaine -= dt;
       if (this.prochaine <= 0 && this.apparition >= 1) {
         this.lancer();
-        this.prochaine = (this.apercu ? 420 : 240) * (0.5 + Math.random());   // influx espacés : discrets
+        this.prochaine = (this.apercu ? 420 : 240) * (0.5 + hasard());   // influx espacés : discrets
       }
       for (let i = this.impulsions.length - 1; i >= 0; i--) {
         const im = this.impulsions[i];
@@ -1250,7 +1263,7 @@ document.querySelectorAll('.carte picture').forEach((image) => {
         if (im.t >= 1) {
           this.impulsions.splice(i, 1);
           this.eclats[im.b] = 1;
-          if (Math.random() < 0.5 && this.impulsions.length < (this.apercu ? 10 : 20)) this.lancer(im.b);
+          if (hasard() < 0.5 && this.impulsions.length < (this.apercu ? 10 : 20)) this.lancer(im.b);
         }
       }
       const extinction = Math.exp(-dt / 420);
@@ -1714,7 +1727,7 @@ function dessinChantier(suffixe) {
   const liens = document.querySelectorAll('a[data-chantier]');
   if (!liens.length) return;
   let apercu = false;
-  try { apercu = sessionStorage.getItem('univers-apercu') === '1'; } catch (e) { /* stockage indisponible */ }
+  try { apercu = sessionStorage.getItem('univers-apercu') === '1'; } catch { /* stockage indisponible */ }
   if (apercu) return;                                   // Marie consulte le chantier : liens normaux
 
   let dialogue = null;
