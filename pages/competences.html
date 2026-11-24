@@ -18,9 +18,9 @@
   <!-- Réglages posés avant l'affichage : thème, zoom mémorisé, apparition, retour à l'accueil (scripts/tete.js) -->
   <script src="../scripts/tete.js?v=1" data-zoom data-apparition data-balayage="../index.html"></script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=58">
+  <link rel="stylesheet" href="../styles/style.css?v=62">
   <script src="../scripts/rideau.js?v=6" defer></script>
-  <script src="../scripts/script.js?v=23" defer></script>
+  <script src="../scripts/script.js?v=27" defer></script>
   <script src="../scripts/apparition.js?v=4" defer></script>
   <script src="../scripts/zoom.js?v=2" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
@@ -716,6 +716,77 @@
         </section>
         </div>
 
+        <!-- ===== Diplômes et certifications (#216) : vignettes cliquables ; vue agrandie dans un <dialog>
+             (scripts/script.js, section 13). Sans JavaScript, la vignette ouvre l'image seule.
+             Images : medias/diplomes/ (date et lieu de naissance, signature masqués). ===== -->
+        <section class="diplomes" aria-labelledby="titre-diplomes">
+          <h2 class="diplomes-titre" id="titre-diplomes">Diplômes et certifications</h2>
+          <p class="diplomes-intro">Les justificatifs, consultables en grand. Sur les images, la <strong>date et le lieu de naissance</strong> et ma <strong>signature</strong> sont masqués.</p>
+          <ul class="diplomes-liste" role="list">
+            <li class="diplome accent-indigo">
+              <a class="diplome-lien" href="../medias/diplomes/istqb-ctfl.webp" data-diplome data-alt="Certificat du Comité français des tests logiciels attestant que Marie TIERS a réussi le 25/07/2025 l'examen Testeur de logiciel certifié, ISTQB Testeur certifié niveau Fondation, syllabus v4.0 : fondamentaux des tests, test tout au long du cycle de vie, test statique, analyse et conception des tests, gestion des activités de test, outils de test. Certificat n° CFTL-CTFL-FR-25-122864, avec code QR de vérification.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/istqb-ctfl-vignette.webp" alt="" width="480" height="340" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">ISTQB® Testeur certifié, niveau Fondation</strong>
+                  <span class="diplome-detail"><abbr title="Comité français des tests logiciels">CFTL</abbr>, syllabus v4.0 · réussi le 25/07/2025 · n° CFTL-CTFL-FR-25-122864</span>
+                </span>
+                <span class="sr">(voir le justificatif en grand)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+            <li class="diplome accent-lavande">
+              <a class="diplome-lien" href="../medias/diplomes/master-tourisme.webp" data-diplome data-alt="Diplôme de Master Sciences humaines et sociales, mention Tourisme, parcours type Ingénierie du tourisme et littoral, délivré par l'Université du Littoral à Marie TIERS avec la mention assez bien, au titre de l'année universitaire 2016-2017, fait le 15 mars 2018. Date et lieu de naissance masqués.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/master-tourisme-vignette.webp" alt="" width="480" height="339" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">Master Sciences humaines et sociales, mention Tourisme</strong>
+                  <span class="diplome-detail">Université du Littoral · parcours Ingénierie du tourisme et littoral · mention assez bien · 2016-2017</span>
+                </span>
+                <span class="sr">(voir le justificatif en grand)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+            <li class="diplome accent-bleu">
+              <a class="diplome-lien" href="../medias/diplomes/cambridge-fce.webp" data-diplome data-alt="Certificat de l'université de Cambridge, ESOL Examinations, attestant que Marie TIERS a obtenu le First Certificate in English avec le grade C, niveau B2 du Conseil de l'Europe, examen de juin 2013 passé à Lille, délivré le 30/07/2013.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/cambridge-fce-vignette.webp" alt="" width="255" height="360" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">Cambridge <i lang="en">First Certificate in English</i> (FCE)</strong>
+                  <span class="diplome-detail">Cambridge ESOL · niveau B2 du cadre européen (CECRL) · <i lang="en">grade C</i> · juin 2013</span>
+                </span>
+                <span class="sr">(voir le justificatif en grand)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+            <li class="diplome accent-sapin">
+              <a class="diplome-lien" href="../medias/diplomes/c2i-niveau-1.webp" data-diplome data-alt="Certificat informatique et internet niveau 1 (C2i), délivré par le président de l'Université Lille 1 à Marie TIERS, d'après le procès-verbal du jury du 12/07/2011, fait à Villeneuve-d'Ascq le 02/10/2012. Date et lieu de naissance et signature de l'intéressée masqués.">
+                <span class="diplome-cadre"><img class="diplome-vignette" src="../medias/diplomes/c2i-niveau-1-vignette.webp" alt="" width="480" height="340" loading="lazy" decoding="async"></span>
+                <span class="diplome-texte">
+                  <strong class="diplome-nom">C2i niveau 1, certificat informatique et internet</strong>
+                  <span class="diplome-detail">Université Lille 1, Sciences et technologies · jury du 12/07/2011</span>
+                </span>
+                <span class="sr">(voir le justificatif en grand)</span>
+                <span class="diplome-loupe" aria-hidden="true"><svg class="nuage-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <dialog class="diplome-dialogue" aria-labelledby="diplome-dialogue-titre">
+          <div class="diplome-barre">
+            <h2 class="diplome-dialogue-titre" id="diplome-dialogue-titre">Justificatif</h2>
+            <p class="diplome-compteur" aria-hidden="true"></p>
+            <div class="diplome-outils" role="toolbar" aria-label="Commandes de la visionneuse">
+              <button class="nuage-outil" type="button" data-diplome-action="precedent" title="Précédent"><span aria-hidden="true">&#x2039;</span><span class="sr">Précédent</span></button>
+              <button class="nuage-outil" type="button" data-diplome-action="suivant" title="Suivant"><span aria-hidden="true">&#x203A;</span><span class="sr">Suivant</span></button>
+              <a class="nuage-outil nuage-outil-texte diplome-seule" href="#" target="_blank" rel="noopener">Image seule</a>
+              <button class="nuage-outil nuage-fermer" type="button" data-diplome-action="fermer"><span aria-hidden="true">&#xD7;</span> <span class="nuage-fermer-texte">Retour à la page</span></button>
+            </div>
+          </div>
+          <figure class="diplome-scene">
+            <img class="diplome-image" src="" alt="">
+            <figcaption class="diplome-legende"></figcaption>
+          </figure>
+        </dialog>
+
         <p class="apercu-pied">
           <a class="bouton" href="projets.html">Les voir à l'œuvre dans mes projets</a>
           <a class="bouton bouton-second" href="../cv-marie-tiers.pdf" type="application/pdf">Mon CV <span class="sr">(PDF)</span></a>
@@ -786,7 +857,7 @@
       Accessibilité : RGAA 4.1.2 respecté à 98,5 % (auto-évaluation), WCAG 2.2 AA : 0 erreur aux tests automatiques, Lighthouse 100/100 · <a href="accessibilite.html">déclaration et détail des tests</a><br>
       Coordonnées réservées aux recruteurs : l'adresse IP des visiteurs est vérifiée par <a href="https://ipapi.is">ipapi.is</a> (UE), sans rien enregistrer sur ce site, dans le respect du <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/fra" target="_blank" rel="noopener" hreflang="fr">RGPD<span class="sr"> (règlement général sur la protection des données, nouvel onglet)</span></a><br>
       <span data-mention-turnstile hidden>Formulaire protégé contre les robots par <a href="https://www.cloudflare.com/fr-fr/application-services/products/turnstile/">Cloudflare Turnstile</a>, sans test à passer (<a href="https://www.cloudflare.com/turnstile-privacy-policy/" hreflang="en">confidentialité</a>)<br></span>
-      Mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a><br>
+      Thème au rythme du soleil si vous autorisez la localisation (position gardée sur votre appareil) · mesure d'audience sans cookie : <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="espace.html">espace personnel</a><br>
       <span class="sources" data-sources>
         <button class="sources-bouton" type="button" aria-expanded="false" aria-controls="sources-volet"><span class="sources-texte">Afficher plus de sources</span></button>
         <span class="sources-volet" id="sources-volet">
