@@ -771,7 +771,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
 });
 
 /* ---------- 7. Thème clair / sombre ---------- */
-// Le thème est déjà posé avant l'affichage par le petit script du <head> de chaque page
+// Le thème est déjà posé avant l'affichage par scripts/tete.js, chargé dans le <head> de chaque page
 // (choix encore valable, sinon thème du soleil encore valable, sinon réglage de l'appareil). Ici :
 //  · le bouton soleil ⇄ lune de la barre du haut (caché sans JavaScript) ;
 //  · la mémorisation du choix sur cet appareil (localStorage, clé « theme ») ;
