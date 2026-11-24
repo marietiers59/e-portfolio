@@ -21,16 +21,16 @@
   <!-- Réglages posés avant l'affichage : thème, zoom mémorisé, apparition, retour à l'accueil (scripts/tete.js) -->
   <script src="../scripts/tete.js?v=1" data-zoom data-apparition data-balayage="index.html"></script>
 
-  <link rel="stylesheet" href="../styles/style.css?v=58">
+  <link rel="stylesheet" href="../styles/style.css?v=62">
   <link rel="stylesheet" href="../styles/univers.css?v=5">
   <script src="../scripts/rideau.js?v=6" defer></script>
-  <script src="../scripts/script.js?v=23" defer></script>
+  <script src="../scripts/script.js?v=27" defer></script>
   <script src="../scripts/apparition.js?v=4" defer></script>
   <script src="../scripts/zoom.js?v=2" defer></script>
   <script src="../scripts/carte-zone.js?v=5" defer></script>
   <script src="../scripts/balayage.js?v=6" defer></script>
   <script src="../scripts/contact-eggs.js?v=15" defer></script>
-  <script src="../scripts/univers.js?v=5" defer></script>
+  <script src="../scripts/univers.js?v=6" defer></script>
 </head>
 
 <body id="haut">
@@ -109,7 +109,7 @@
           <!-- Cadre : scène 3D, cartel et message ; le cartel reste hors de la perspective (sinon il ne peut pas se fixer en bas d'écran sur téléphone) -->
           <div class="univers-cadre">
             <div class="univers-scene">
-              <div class="maison" role="group" aria-label="Model of the house, eight rooms">
+              <div class="maison" role="group" aria-label="Model of the house, eleven rooms">
                 <div class="maison-toit">
                   <span class="toit-ficelle" aria-hidden="true"></span>
                   <span class="toit-pignon" aria-hidden="true"></span>
@@ -145,6 +145,81 @@
                   </ol>
                 </div>
                 <ol class="maison-pieces">
+                  <li class="piece piece-bibliotheque" data-piece="bibliotheque" data-image="" style="--teinte-100:var(--sapin-100);--teinte-200:var(--sapin-200);--teinte-400:var(--sapin-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3M9 7h6"/></svg><em class="pastille-bientot">Image coming soon</em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:24%;--y:44%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The pile of novels</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:54%;--y:66%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The manuscript</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:78%;--y:36%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The poetry collection</span></button>
+                      <button class="indice" type="button" data-indice="bibliotheque" data-texte="The reading lamp is an upturned drawing pin topped with a thimble!" style="--x:86%;--y:22%;--r:9%" tabindex="-1"><span class="sr">Look at this detail</span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The library</span><span class="sr">: Reading and writing</span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre">Reading and writing</p>
+                      <h2 class="cartel-titre" tabindex="-1">The library</h2>
+                      <p>I read in French and English, from J. K. Rowling to Dan Brown. I also write: <strong class="kw">short stories</strong>, a <strong class="kw">fantasy novel</strong> and <strong class="kw">poems</strong>, including many <strong class="kw">Petrarchan sonnets in alexandrines</strong>.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: a respect for form and a taste for the right word, useful for writing clear documentation.</p>
+                      <h3 class="cartel-sous-titre">Things to explore</h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The pile of novels</strong>: J. K. Rowling and Dan Brown, in English as well as in French.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The manuscript</strong>: a fantasy novel inspired by the worlds of Tolkien, J. K. Rowling, Narnia and Nanny McPhee.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The poetry collection</strong>: Petrarchan sonnets in alexandrines and triolets, about nature, landscapes and memories.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-projection" data-piece="projection" data-image="" style="--teinte-100:var(--indigo-100);--teinte-200:var(--indigo-200);--teinte-400:var(--indigo-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><rect x="3" y="8" width="18" height="12" rx="1.5"/><path d="M3 8l2.5-4.5 15 0L18 8M8 3.5 6.5 8M13 3.5 11.5 8M18 3.5 16.5 8"/></svg><em class="pastille-bientot">Image coming soon</em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:50%;--y:30%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The film reels</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:24%;--y:66%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The editing desk</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:78%;--y:70%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The clapperboard</span></button>
+                      <button class="indice" type="button" data-indice="projection" data-texte="The cinema screen is an unrolled till receipt!" style="--x:50%;--y:30%;--r:14%" tabindex="-1"><span class="sr">Look at this detail</span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The screening room</span><span class="sr">: Films and video editing</span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre">Films and video editing</p>
+                      <h2 class="cartel-titre" tabindex="-1">The screening room</h2>
+                      <p>I love a laugh with <i lang="fr">Les Visiteurs</i> or Louis de Funès’s Gendarme films, a thrill with <i>The Da Vinci Code</i>, and adventure with Indiana Jones or <i>The Lord of the Rings</i>. I also <strong class="kw">edit my own videos</strong>, mostly with <strong class="kw">Pinnacle Studio</strong>.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: telling a story in a short time, and a sense of pace for a demo or a project video.</p>
+                      <h3 class="cartel-sous-titre">Things to explore</h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The film reels</strong>: comedies (<i lang="fr">Opération Corned Beef</i>, <i lang="fr">Le Pari</i>), esoteric thrillers (<i>Angels &amp; Demons</i>), fantasy (Harry Potter, <i>The Hobbit</i>, <i>Charlie and the Chocolate Factory</i>), animation (<i>Elemental</i>, <i>Toy Story</i>, <i>Zootopia</i>) and a little science fiction (<i>Ready Player One</i>).</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The editing desk</strong>: Pinnacle Studio above all; I have also tried Final Cut, Premiere Pro, Windows Movie Maker and PowToon.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The clapperboard</strong>: videos for study projects and associations, short films and music clips.</span></li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="piece piece-jeux" data-piece="jeux" data-image="" style="--teinte-100:var(--anis-100);--teinte-200:var(--anis-200);--teinte-400:var(--anis-400)">
+                    <div class="piece-boite" aria-hidden="true">
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="9" cy="15" r="1"/><circle cx="15" cy="15" r="1"/></svg><em class="pastille-bientot">Image coming soon</em></span>
+                      <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
+                    </div>
+                    <div class="piece-calque">
+                      <button class="objet" type="button" data-objet="1" style="--x:26%;--y:40%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The party game boxes</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:52%;--y:66%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The twenty-sided dice</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:78%;--y:44%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The handheld console</span></button>
+                      <button class="indice" type="button" data-indice="jeux" data-texte="The game board is a postage stamp!" style="--x:52%;--y:66%;--r:13%" tabindex="-1"><span class="sr">Look at this detail</span></button>
+                    </div>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The games room</span><span class="sr">: Board games and role-playing games</span></button>
+                    <div class="piece-texte" hidden>
+                      <p class="cartel-surtitre">Board games and role-playing games</p>
+                      <h2 class="cartel-titre" tabindex="-1">The games room</h2>
+                      <p>Around a table, I love <strong class="kw">party board games</strong> and <strong class="kw">role-playing games</strong>. On screen, just one exception: <strong class="kw">Pokémon</strong>, from Game Boy cartridges to Pokémon GO.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: improvisation, listening and team spirit.</p>
+                      <h3 class="cartel-sous-titre">Things to explore</h3>
+                      <ul class="cartel-objets">
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The party game boxes</strong>: for evenings full of laughter.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The twenty-sided dice</strong>: for role-playing sessions.</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The handheld console</strong>: Pokémon on cartridge, then Pokémon GO.</span></li>
+                      </ul>
+                    </div>
+                  </li>
                   <li class="piece piece-atelier" data-piece="atelier" data-image="" style="--teinte-100:var(--lavande-100);--teinte-200:var(--lavande-200);--teinte-400:var(--lavande-400)">
                     <div class="piece-boite" aria-hidden="true">
                       <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><path d="M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3M4 20l1-4"/></svg><em class="pastille-bientot">Image coming soon</em></span>
@@ -197,26 +272,30 @@
                   </li>
                   <li class="piece piece-piste" data-piece="piste" data-image="" style="--teinte-100:var(--rose-100);--teinte-200:var(--rose-200);--teinte-400:var(--rose-400)">
                     <div class="piece-boite" aria-hidden="true">
-                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.5"/><path d="M12 6.5a5.5 5.5 0 0 1 5.5 5.5"/></svg><em class="pastille-bientot">Image coming soon</em></span>
+                      <span class="face face-fond"><svg class="piece-picto" viewBox="0 0 24 24" focusable="false"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg><em class="pastille-bientot">Image coming soon</em></span>
                       <span class="face face-sol"></span><span class="face face-plafond"></span><span class="face face-gauche"></span><span class="face face-droite"></span>
                     </div>
                     <div class="piece-calque">
-                      <button class="objet" type="button" data-objet="1" style="--x:24%;--y:58%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The jukebox</span></button>
-                      <button class="objet" type="button" data-objet="2" style="--x:54%;--y:22%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The disco ball</span></button>
-                      <button class="objet" type="button" data-objet="3" style="--x:78%;--y:70%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The concert ticket</span></button>
+                      <button class="objet" type="button" data-objet="1" style="--x:14%;--y:40%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The music stand</span></button>
+                      <button class="objet" type="button" data-objet="2" style="--x:38%;--y:64%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The instruments</span></button>
+                      <button class="objet" type="button" data-objet="3" style="--x:62%;--y:80%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The dance shoes</span></button>
+                      <button class="objet" type="button" data-objet="4" style="--x:84%;--y:62%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Item 4: The concert ticket</span></button>
+                      <button class="objet" type="button" data-objet="5" style="--x:56%;--y:26%" tabindex="-1"><span aria-hidden="true">5</span><span class="sr">Item 5: The microphone</span></button>
                       <button class="indice" type="button" data-indice="piste" data-texte="The jukebox is a painted matchbox: look at the striker on its side!" style="--x:24%;--y:58%;--r:12%" tabindex="-1"><span class="sr">Look at this detail</span></button>
                     </div>
-                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The dance floor</span><span class="sr">: 80s and 90s music</span></button>
+                    <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The stage</span><span class="sr">: Music, dance and drama</span></button>
                     <div class="piece-texte" hidden>
-                      <p class="cartel-surtitre">80s and 90s music</p>
-                      <h2 class="cartel-titre" tabindex="-1">The dance floor</h2>
-                      <p><strong class="kw">80s and 90s hits</strong> are my favourite soundtrack. On 7 June 2025, I was <strong class="kw">in the front row</strong> at <i lang="fr">Stars 80 vs Stars 90 : La Grande Battle</i>, broadcast live on the French TV channel M6.</p>
-                      <p class="cartel-retire"><strong>What I take from it</strong>: energy and good spirits, which matter in a team too.</p>
+                      <p class="cartel-surtitre">Music, dance and drama</p>
+                      <h2 class="cartel-titre" tabindex="-1">The stage</h2>
+                      <p>I sang for about ten years and learnt the <strong class="kw">drums</strong>, the <strong class="kw">violin</strong> and the <strong class="kw">piano</strong>. I have performed on stage in <strong class="kw">singing</strong>, <strong class="kw">dance</strong> and <strong class="kw">drama</strong>. These days it is karaoke and 80s-90s hits, which I cheered on <strong class="kw">from the front row</strong> at <i lang="fr">Stars 80 vs Stars 90 : La Grande Battle</i>.</p>
+                      <p class="cartel-retire"><strong>What I take from it</strong>: confidence when speaking in front of an audience, and listening to the group.</p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
-                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The jukebox</strong>: 80s and 90s hits.</span></li>
-                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The disco ball</strong>: to keep the party going.</span></li>
-                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The concert ticket</strong>: <i lang="fr">Stars 80 vs Stars 90 : La Grande Battle</i>, 7 June 2025, front row.</span></li>
+                        <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The music stand</strong>: about ten years of singing: a choir at primary school, then an association and a municipal music school.</span></li>
+                        <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The instruments</strong>: drums (2 years, municipal music school), violin (2 years, private lessons), piano (1 year, self-taught then at a private music school).</span></li>
+                        <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The dance shoes</strong>: a folk dance club and a Zumba club.</span></li>
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The concert ticket</strong>: <i lang="fr">Stars 80 vs Stars 90 : La Grande Battle</i>, 7 June 2025, front row, broadcast live on the French TV channel M6.</span></li>
+                        <li data-objet="5"><span class="cartel-num" aria-hidden="true">5</span> <span><strong>The microphone</strong>: for karaoke nights.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -254,21 +333,23 @@
                       <button class="objet" type="button" data-objet="1" style="--x:26%;--y:32%" tabindex="-1"><span aria-hidden="true">1</span><span class="sr">Item 1: The annotated map</span></button>
                       <button class="objet" type="button" data-objet="2" style="--x:62%;--y:58%" tabindex="-1"><span aria-hidden="true">2</span><span class="sr">Item 2: The binoculars and magnifying glass</span></button>
                       <button class="objet" type="button" data-objet="3" style="--x:82%;--y:70%" tabindex="-1"><span aria-hidden="true">3</span><span class="sr">Item 3: The backpack</span></button>
-                      <button class="objet" type="button" data-objet="4" style="--x:50%;--y:22%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Item 4: The map of my travels</span></button>
+                      <button class="objet" type="button" data-objet="4" style="--x:50%;--y:22%" tabindex="-1"><span aria-hidden="true">4</span><span class="sr">Item 4: The camera and the telescope</span></button>
+                      <button class="objet" type="button" data-objet="5" style="--x:40%;--y:80%" tabindex="-1"><span aria-hidden="true">5</span><span class="sr">Item 5: The map of my travels</span></button>
                       <button class="indice" type="button" data-indice="refuge" data-texte="A lichen tree, just like on model railways!" style="--x:14%;--y:62%;--r:12%" tabindex="-1"><span class="sr">Look at this detail</span></button>
                     </div>
                     <button class="piece-ouvrir" type="button" aria-controls="cartel" aria-expanded="false"><span class="piece-plaque">The adventurer’s refuge</span><span class="sr">: Nature, adventure and mapping</span></button>
                     <div class="piece-texte" hidden>
                       <p class="cartel-surtitre">Nature, adventure and mapping</p>
                       <h2 class="cartel-titre" tabindex="-1">The adventurer’s refuge</h2>
-                      <p>Before computing, I was a <strong class="kw">nature guide</strong> and a <strong class="kw">tour guide</strong>, and I <strong class="kw">led a team of ten</strong> on a mapping assignment. Backpack on, I have travelled through 88 of the 96 <i lang="fr">départements</i> of mainland France and Corsica, and 22 European countries and territories.</p>
+                      <p>Before computing, I was a <strong class="kw">nature guide</strong> and a <strong class="kw">tour guide</strong>, and I <strong class="kw">led a team of ten</strong> on a mapping assignment. On walks, I still try to identify every plant and understand what it does for living things. Backpack on, I have travelled through 88 of the 96 <i lang="fr">départements</i> of mainland France and Corsica, and 22 European countries and territories.</p>
                       <p class="cartel-retire"><strong>What I take from it</strong>: independence, a good sense of direction, and the knack of explaining complex things simply.</p>
                       <h3 class="cartel-sous-titre">Things to explore</h3>
                       <ul class="cartel-objets">
                         <li data-objet="1"><span class="cartel-num" aria-hidden="true">1</span> <span><strong>The annotated map</strong>: the mapping assignment, with a team of ten.</span></li>
                         <li data-objet="2"><span class="cartel-num" aria-hidden="true">2</span> <span><strong>The binoculars and magnifying glass</strong>: a two-year multilingual nature guide diploma (DEUST, a French university diploma), and training as a game and fishing warden (swearing-in to come).</span></li>
                         <li data-objet="3"><span class="cartel-num" aria-hidden="true">3</span> <span><strong>The backpack</strong>: from my guided tours for the 4 Rivières and Sambre-Avesnois tourist offices.</span></li>
-                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The map of my travels</strong>: <a class="cartel-carte" href="../medias/carte-voyages.svg" data-carte-voyages>see the map</a> · Andorra, Austria, Belgium, the Czech Republic, Denmark, England, Finland, Germany, Hungary, Ireland, Latvia, Luxembourg, Monaco, the Netherlands, Portugal, Slovakia, Spain, Switzerland and the Vatican, not forgetting Jersey and Gibraltar.</span></li>
+                        <li data-objet="4"><span class="cartel-num" aria-hidden="true">4</span> <span><strong>The camera and the telescope</strong>: landscapes photographed to promote places (I have created tourist documentation and signage), and astronomy on clear nights.</span></li>
+                        <li data-objet="5"><span class="cartel-num" aria-hidden="true">5</span> <span><strong>The map of my travels</strong>: <a class="cartel-carte" href="../medias/carte-voyages.svg" data-carte-voyages>see the map</a> · Andorra, Austria, Belgium, the Czech Republic, Denmark, England, Finland, Germany, Hungary, Ireland, Latvia, Luxembourg, Monaco, the Netherlands, Portugal, Slovakia, Spain, Switzerland and the Vatican, not forgetting Jersey and Gibraltar.</span></li>
                       </ul>
                     </div>
                   </li>
@@ -342,7 +423,7 @@
             <!-- Cartel : étiquette de musée de la pièce ouverte (contenu recopié depuis .piece-texte) -->
             <div class="cartel" id="cartel" role="region" aria-label="Room label" hidden>
               <button class="cartel-fermer" type="button" aria-label="Back to the overview">×</button>
-              <p class="cartel-position" data-modele="Room {i} of 8"></p>
+              <p class="cartel-position" data-modele="Room {i} of 11"></p>
               <div class="cartel-contenu"></div>
             </div>
             <p class="univers-message" role="status" aria-live="polite"></p>
@@ -356,7 +437,7 @@
               <button class="univers-bouton" type="button" data-action="pause" aria-pressed="false"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12"/></svg><span>Pause</span></button>
             </div>
             <div class="univers-groupe univers-jeu" role="group" aria-labelledby="jeu-titre">
-              <p class="univers-jeu-texte" id="jeu-titre"><strong>The clue game</strong>: this set is a model, and eleven details give it away. <span class="univers-compteur"><span data-trouves>0</span> / 11 found</span></p>
+              <p class="univers-jeu-texte" id="jeu-titre"><strong>The clue game</strong>: this set is a model, and fourteen details give it away. <span class="univers-compteur"><span data-trouves>0</span> / 14 found</span></p>
               <button class="univers-bouton" type="button" data-action="indice"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg><span>A clue</span></button>
               <button class="univers-bouton" type="button" data-action="reponses"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><span>The answers</span></button>
               <button class="univers-bouton" type="button" data-action="zero"><svg class="univers-icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4v6h6"/><path d="M4.8 15a8 8 0 1 0 1.6-8.4L4 10"/></svg><span>Reset everything</span></button>
@@ -439,7 +520,7 @@
       Accessibility: <i lang="fr">RGAA</i> 4.1.2 met at 98.5% (self-assessment), WCAG 2.2 AA: 0 errors in automated tests, Lighthouse 100/100 · <a href="accessibility.html">statement and test details</a><br>
       Contact details reserved for recruiters: visitors' IP addresses are checked by <a href="https://ipapi.is">ipapi.is</a> (EU), with nothing stored on this site, in line with the <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener" hreflang="en">GDPR<span class="sr"> (General Data Protection Regulation, new tab)</span></a><br>
       <span data-mention-turnstile hidden>Form protected against bots by <a href="https://www.cloudflare.com/application-services/products/turnstile/">Cloudflare Turnstile</a>, with no test to pass (<a href="https://www.cloudflare.com/turnstile-privacy-policy/">privacy</a>)<br></span>
-      Cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a><br>
+      Theme follows the sun if you allow location (your position stays on your device) · cookie-free visitor analytics: <a href="https://www.goatcounter.com">GoatCounter</a> · <a class="lien-discret" href="../pages/espace.html" hreflang="fr">personal area</a><br>
       <span class="sources" data-sources>
         <button class="sources-bouton" type="button" aria-expanded="false" aria-controls="sources-volet"><span class="sources-texte">Show more sources</span></button>
         <span class="sources-volet" id="sources-volet">

@@ -12,6 +12,7 @@
   10. Nuage de compétences en 3D (page Compétences : aperçu animé, vue agrandie)
   11. Vignettes de compétences : rangées équilibrées et centrées
   12. Page en travaux : panneau « chantier en cours » à la place du lien (#174)
+  13. Diplômes et certifications : visionneuse (page Compétences, #216)
    Les textes affichés existent en français et en anglais britannique :
    la langue suit l'attribut lang de la page (<html lang="fr"> ou "en-GB").
    ========================================================= */
@@ -784,18 +785,32 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
 
 /* ---------- 7. Thème clair / sombre ---------- */
 // Le thème est déjà posé avant l'affichage par scripts/tete.js, chargé dans le <head> de chaque page
-// (choix mémorisé, sinon réglage clair/sombre de l'appareil). Ici :
+// (choix encore valable, sinon thème du soleil encore valable, sinon réglage de l'appareil). Ici :
 //  · le bouton soleil ⇄ lune de la barre du haut (caché sans JavaScript) ;
 //  · la mémorisation du choix sur cet appareil (localStorage, clé « theme ») ;
-//  · le suivi du réglage de l'appareil tant que le visiteur n'a rien choisi.
+//  · le thème au rythme du soleil (#208) : si le visiteur autorise sa localisation, clair entre le lever
+//    et le coucher du soleil chez lui, sombre la nuit, avec bascule automatique à l'heure dite.
+//    Le calcul se fait sur l'appareil ; la position, arrondie à 0,1° (environ 10 km), n'en sort jamais.
+//    Un choix fait au bouton vaut alors jusqu'au prochain lever ou coucher du soleil ;
+//  · sans localisation : le choix au bouton est gardé, sinon le réglage clair/sombre de l'appareil est suivi.
 (() => {
   const racine = document.documentElement;
   const bouton = document.querySelector('.theme');
   const systeme = window.matchMedia('(prefers-color-scheme: dark)');
   const couleurNavigateur = document.querySelector('meta[name="theme-color"]');
 
+  const lire = (cle) => { try { return localStorage.getItem(cle); } catch { return null; } };
+  const ecrire = (cle, valeur) => {
+    try { if (valeur == null) localStorage.removeItem(cle); else localStorage.setItem(cle, valeur); } catch { /* stockage bloqué */ }
+  };
+  const THEMES = ['clair', 'sombre'];
+
+  // Choix fait au bouton, s'il est encore valable (avec le soleil, il expire au prochain lever ou coucher)
   const choixMemorise = () => {
-    try { return localStorage.getItem('theme'); } catch { return null; }
+    const jusqua = Number(lire('theme-jusqua'));
+    if (jusqua && jusqua <= Date.now()) { ecrire('theme', null); ecrire('theme-jusqua', null); return null; }
+    const t = lire('theme');
+    return THEMES.includes(t) ? t : null;
   };
 
   function appliquer(theme, avecTransition) {
@@ -808,14 +823,154 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
     if (couleurNavigateur) couleurNavigateur.content = theme === 'sombre' ? '#222d3a' : '#ddedf8';
   }
 
+  /* ----- Le soleil : hauteur au-dessus de l'horizon (formules NOAA simplifiées, précision de quelques minutes) ----- */
+  const RAD = Math.PI / 180;
+  const SEUIL = -0.833;                                     // bord du disque au ras de l'horizon, réfraction comprise
+  const hauteurSoleil = (t, lat, lon) => {
+    const d = t / 864e5 - 10957.5;                          // jours depuis le 1er janvier 2000 à 12 h TU
+    const g = (357.529 + 0.98560028 * d) * RAD;             // anomalie moyenne
+    const q = 280.459 + 0.98564736 * d;                     // longitude moyenne
+    const L = (q + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * RAD;
+    const e = (23.439 - 0.00000036 * d) * RAD;              // obliquité de l'écliptique
+    const ascension = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L));
+    const declinaison = Math.asin(Math.sin(e) * Math.sin(L));
+    const tempsSideral = ((280.46061837 + 360.98564736629 * d + lon) % 360) * RAD;
+    const H = tempsSideral - ascension;                     // angle horaire
+    return Math.asin(Math.sin(lat * RAD) * Math.sin(declinaison)
+      + Math.cos(lat * RAD) * Math.cos(declinaison) * Math.cos(H)) / RAD;
+  };
+  const faitJour = (t, p) => hauteurSoleil(t, p.lat, p.lon) > SEUIL;
+  // Prochain lever ou coucher dans les 36 h (pas de 10 min, puis dichotomie à 30 s près) ; null en nuit ou jour polaire
+  const prochaineBascule = (t, p) => {
+    const jour = faitJour(t, p);
+    for (let a = t, b = t + 6e5; b <= t + 36 * 36e5; a = b, b += 6e5) {
+      if (faitJour(b, p) !== jour) {
+        while (b - a > 3e4) { const m = (a + b) / 2; if (faitJour(m, p) !== jour) b = m; else a = m; }
+        return Math.ceil(b);
+      }
+    }
+    return null;
+  };
+
+  let position = null;                                     // { lat, lon, t[, estime] } une fois la localisation autorisée
+  const adresseScripts = document.querySelector('script[src*="scripts/script.js"]')?.src;
+
+  // Localisation autorisée mais position introuvable (cas fréquent sous Linux : navigateur sans service
+  // de localisation) : position estimée d'après le fuseau horaire de l'appareil, sans aucune requête
+  // extérieure — table tirée de la base tz (scripts/fuseaux-horaires.json), chargée seulement dans ce cas (#212)
+  const estimerParFuseau = async () => {
+    try {
+      const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!zone || !adresseScripts) return;
+      const table = await (await fetch(new URL('fuseaux-horaires.json', adresseScripts))).json();
+      const c = table[zone];
+      if (!c) return;
+      position = { lat: c[0], lon: c[1], t: Date.now(), estime: true };
+      ecrire('soleil-position', JSON.stringify(position));
+      suivreSoleil();
+    } catch { /* table indisponible : on reste sur le réglage de l'appareil */ }
+  };
+  let minuterie = 0;
+  const suivreSoleil = () => {
+    clearTimeout(minuterie);
+    if (!position) return;
+    const maintenant = Date.now();
+    const themeSoleil = faitJour(maintenant, position) ? 'clair' : 'sombre';
+    const bascule = prochaineBascule(maintenant, position);
+    const jusqua = bascule ?? maintenant + 6 * 36e5;       // nuit ou jour polaire : on revérifie dans 6 h
+    ecrire('theme-soleil', themeSoleil);
+    ecrire('theme-soleil-jusqua', String(jusqua));          // lu par le script du <head> des autres pages
+    // Un ancien choix au bouton, fait sans le soleil (donc sans date de fin), cède la place au soleil (#210)
+    if (lire('theme') && !lire('theme-jusqua')) ecrire('theme', null);
+    const cible = choixMemorise() ?? themeSoleil;
+    if (racine.dataset.theme !== cible) appliquer(cible, true);
+    expliquer();
+    // setTimeout plafonné à 6 h ; à la sortie de veille, « visibilitychange » relance le calcul
+    minuterie = setTimeout(suivreSoleil, Math.min(jusqua - maintenant + 1000, 6 * 36e5));
+  };
+
+  const oublierSoleil = () => {
+    position = null;
+    clearTimeout(minuterie);
+    ['soleil-position', 'theme-soleil', 'theme-soleil-jusqua'].forEach((cle) => ecrire(cle, null));
+    expliquer();
+  };
+
+  // Infobulle du bouton : dit si le thème suit le soleil, et jusqu'à quelle heure (#210)
+  const anglais = racine.lang.startsWith('en');
+  const heure = (t) => {
+    const d = new Date(t);
+    return anglais
+      ? d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true })
+      : `${d.getHours()}\u00A0h\u00A0${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+  function expliquer() {
+    if (!bouton) return;
+    const sombre = racine.dataset.theme === 'sombre';
+    let texte = anglais ? 'Light or dark theme' : 'Thème clair ou sombre';
+    if (position) {
+      const manuel = choixMemorise();
+      const jusqua = Number(lire(manuel ? 'theme-jusqua' : 'theme-soleil-jusqua'));
+      const nom = anglais ? (sombre ? 'dark' : 'light') : (sombre ? 'sombre' : 'clair');
+      if (jusqua) {
+        texte = manuel
+          ? (anglais ? `Your choice: ${nom} until ${heure(jusqua)}, then the sun takes over` : `Votre choix : ${nom} jusqu'à ${heure(jusqua)}, puis le soleil reprend la main`)
+          : (anglais ? `Follows the sun: ${nom} until ${heure(jusqua)}` : `Au rythme du soleil : ${nom} jusqu'à ${heure(jusqua)}`);
+        if (position.estime) texte += anglais ? ' (position estimated from your time zone)' : ' (position estimée d’après votre fuseau horaire)';
+      }
+    }
+    bouton.dataset.infobulle = texte;
+    bouton.dataset.bulle = 'bas-debut';
+  }
+
+  // Demande de localisation dès l'arrivée sur le site (une fois par session tant que le visiteur n'a pas répondu)
+  const localiser = async () => {
+    if (!('geolocation' in navigator)) return;
+    let etat = 'prompt';
+    try { etat = (await navigator.permissions.query({ name: 'geolocation' })).state; } catch { /* API absente */ }
+    if (etat === 'denied') { oublierSoleil(); return; }
+    let memo = null;
+    try { memo = JSON.parse(lire('soleil-position')); } catch { /* valeur abîmée */ }
+    if (memo && Number.isFinite(memo.lat) && Number.isFinite(memo.lon)) {
+      position = memo;
+      suivreSoleil();
+      if (Date.now() - (memo.t || 0) < 864e5) return;        // position de moins d'un jour : inutile de redemander
+    }
+    if (etat !== 'granted') {
+      try {
+        if (sessionStorage.getItem('soleil-demande')) return; // déjà demandé pendant cette visite
+        sessionStorage.setItem('soleil-demande', '1');
+      } catch { /* stockage bloqué */ }
+    }
+    navigator.geolocation.getCurrentPosition((pos) => {
+      position = {
+        lat: Math.round(pos.coords.latitude * 10) / 10,
+        lon: Math.round(pos.coords.longitude * 10) / 10,
+        t: Date.now(),
+      };
+      ecrire('soleil-position', JSON.stringify(position));
+      suivreSoleil();
+    }, (erreur) => {
+      if (erreur.code === erreur.PERMISSION_DENIED) oublierSoleil();
+      else estimerParFuseau();                               // autorisée mais introuvable ou trop lente
+    }, { enableHighAccuracy: false, maximumAge: 864e5, timeout: 8000 });
+  };
+
   appliquer(racine.dataset.theme === 'sombre' ? 'sombre' : 'clair', false);
+  expliquer();
+  localiser();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) suivreSoleil(); });
 
   if (bouton) {
     bouton.hidden = false;
     bouton.addEventListener('click', () => {
       const suivant = racine.dataset.theme === 'sombre' ? 'clair' : 'sombre';
       appliquer(suivant, true);
-      try { localStorage.setItem('theme', suivant); } catch { /* stockage bloqué : le choix vaut pour cette page seulement */ }
+      ecrire('theme', suivant);                              // stockage bloqué : le choix vaut pour cette page seulement
+      // Avec le soleil, le choix au bouton vaut jusqu'au prochain lever ou coucher ; sans, il est gardé
+      if (position) ecrire('theme-jusqua', String(prochaineBascule(Date.now(), position) ?? Date.now() + 6 * 36e5));
+      else ecrire('theme-jusqua', null);
+      expliquer();
       // Juste après le clic, la pastille va jusqu'au bout de l'interrupteur, même si la souris est encore dessus
       bouton.classList.add('vient-de-basculer');
     });
@@ -824,7 +979,7 @@ document.querySelectorAll('time[data-calendrier]').forEach((date, rang) => {
   }
 
   systeme.addEventListener('change', (e) => {
-    if (!['clair', 'sombre'].includes(choixMemorise())) appliquer(e.matches ? 'sombre' : 'clair', true);
+    if (!choixMemorise() && !position) appliquer(e.matches ? 'sombre' : 'clair', true);
   });
 })();
 
@@ -1608,4 +1763,83 @@ function dessinChantier(suffixe) {
     if (typeof dialogue.showModal === 'function') dialogue.showModal();
     else window.location.href = lien.href;              // très vieux navigateur : la page affiche le panneau
   }));
+})();
+
+/* ---------- 13. Diplômes et certifications : visionneuse (page Compétences, #216) ---------- */
+// Clic sur une carte : le justificatif s'ouvre en grand dans un <dialog>, avec sa description complète
+// (texte alternatif lu par les lecteurs d'écran, repris en légende). Précédent / suivant aux boutons,
+// aux flèches du clavier ou d'un glissement du doigt ; « Image seule » l'ouvre dans un nouvel onglet.
+// Fermeture : ×, Échap, clic autour du cadre, ou bouton / geste « retour » du navigateur (comme le nuage).
+// Sans JavaScript, la carte est un simple lien vers l'image.
+(() => {
+  const liens = [...document.querySelectorAll('[data-diplome]')];
+  const dialogue = document.querySelector('.diplome-dialogue');
+  if (!liens.length || !dialogue || typeof dialogue.showModal !== 'function') return;
+
+  const image = dialogue.querySelector('.diplome-image');
+  const legende = dialogue.querySelector('.diplome-legende');
+  const titre = dialogue.querySelector('.diplome-dialogue-titre');
+  const compteur = dialogue.querySelector('.diplome-compteur');
+  const lienSeul = dialogue.querySelector('.diplome-seule');
+  let courant = 0;
+
+  // Les grandes images ne se chargent qu'à la demande ; on précharge la voisine pour un défilement fluide
+  const precharger = (i) => { const im = new Image(); im.src = liens[(i + liens.length) % liens.length].href; };
+
+  function afficher(i) {
+    courant = (i + liens.length) % liens.length;
+    const lien = liens[courant];
+    image.classList.remove('change');
+    void image.offsetWidth;                    // relance le fondu
+    image.classList.add('change');
+    image.src = lien.href;
+    image.alt = lien.dataset.alt;
+    legende.textContent = lien.dataset.alt;
+    titre.innerHTML = lien.querySelector('.diplome-nom').innerHTML;
+    compteur.textContent = `${courant + 1} / ${liens.length}`;
+    lienSeul.href = lien.href;
+    precharger(courant + 1);
+  }
+
+  // Retour du navigateur : referme la visionneuse au lieu de quitter la page
+  if (history.state?.diplome) history.replaceState(null, '');
+  window.addEventListener('popstate', () => { if (dialogue.open) dialogue.close(); });
+  dialogue.addEventListener('close', () => {
+    if (history.state?.diplome) history.back();
+    image.removeAttribute('src');
+  });
+
+  liens.forEach((lien, i) => lien.addEventListener('click', (e) => {
+    e.preventDefault();
+    afficher(i);
+    dialogue.showModal();
+    if (!history.state?.diplome) history.pushState({ diplome: true }, '');
+  }));
+
+  const actions = {
+    precedent: () => afficher(courant - 1),
+    suivant: () => afficher(courant + 1),
+    fermer: () => dialogue.close(),
+  };
+  dialogue.querySelectorAll('[data-diplome-action]').forEach((b) => b.addEventListener('click', () => actions[b.dataset.diplomeAction]()));
+  dialogue.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); actions.precedent(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); actions.suivant(); }
+  });
+  let appuiSurVoile = false;                   // clic sur le voile, autour du cadre
+  dialogue.addEventListener('pointerdown', (e) => { appuiSurVoile = e.target === dialogue; });
+  dialogue.addEventListener('click', (e) => { if (appuiSurVoile && e.target === dialogue) dialogue.close(); });
+
+  // Glissement horizontal du doigt : image précédente ou suivante
+  const scene = dialogue.querySelector('.diplome-scene');
+  let depart = null;
+  scene.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') depart = { x: e.clientX, y: e.clientY }; });
+  scene.addEventListener('pointerup', (e) => {
+    if (!depart) return;
+    const dx = e.clientX - depart.x, dy = e.clientY - depart.y;
+    depart = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) (dx < 0 ? actions.suivant : actions.precedent)();
+  });
+  scene.addEventListener('pointercancel', () => { depart = null; });
 })();
